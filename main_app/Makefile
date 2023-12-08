@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -g
-LDFLAGS=-lstdc++ -Wl,-Map=$(TARGET).map,-lX11
+LDFLAGS=-Wl,-Map=$(TARGET).map -lX11 -lstdc++ -lm 
 SRC_DIR=src
 
 SRCS=
@@ -11,7 +11,7 @@ INCLUDE_PATHS=
 include include_paths.mk
 INCLUDES=$(addprefix -I,$(INCLUDE_PATHS))
 
-TARGET=OUTPUT/hexaFPV
+TARGET=OUTPUT/HexaFPV_main_app
 
 all: $(TARGET)
 
