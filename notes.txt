@@ -22,6 +22,6 @@ Servo Driver HAT (PWM)
     i2c addr 0x40
     i2cdump -y 1 0x40 b
 
-gituser@KnowBase.local:/repos/test_repo.git
+#git clone gituser@KnowBase.local:/repos/test_repo.git
 git clone gituser@KnowBase.local:/repos/HexaFPV.git
 
