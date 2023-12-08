@@ -1,0 +1,42 @@
+
+#How to Configure Wi-Fi on Raspberry Pi https://raspberrytips.com/raspberry-pi-wifi-setup/
+    $ sudo nmtui
+        [Activate a connection]
+            add SSID and PASS
+        [change hostname]
+
+activate SSH
+    Open the Raspberry Pi Terminal.
+    Enter the command: sudo raspi-config
+    Use the arrow keys to navigate to Interfacing Options. Press the Enter key.
+    Go to SSH, I2C, SPI, Serial and press enter.
+    When prompted, select <Yes>.
+    Select Enter to confirm, then click Finish to exit raspi-config.
+    Close the terminal window.
+        $ cd ~
+        $ mkdir .ssh
+        $ echo "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoUxevl5lrTlW4EOne8JIiU9rgXcvr9o61DITaU3l5/oojuTCHK3Vx05s0zuYAtbQ1zfsriH77PGUKCScngyWQ+WJcaCVUeFGipKk8+D/F5xJZc17Zaw/2rKNsBXTnCSDoh5KrY15eAeQGgtrTX+MhgxATqmjl3BB26GHM7HsvYSsFjde8579yNQSXAJMpDnSZlYaY5tdkz8J04HosR+mCQrvUu65EhYqHU41IQNIOjp9z6adHHo5y8GYcQ8JPfGwy+8MBRoRAtHkLP4IYoqjSJqfBzNpHJt46HarZq+5YqzDqmRM+0l3AlkimQSlwaQ7S5QWzBWXpXxMRZoSyiE/0Q== rsa-key-20220116" >>  ~/.ssh/authorized_keys
+
+
+How do I increase the size of swapfile without removing it in the terminal
+    https://askubuntu.com/questions/927854/how-do-i-increase-the-size-of-swapfile-without-removing-it-in-the-terminal
+        $ sudo swapoff /var/swap
+        $ sudo dd if=/dev/zero of=/var/swap bs=1M count=1024 oflag=append conv=notrunc
+        $ sudo mkswap /var/swap
+        $ sudo swapon /var/swap
+
+#linux tools to INSTALL
+$ sudo apt install \
+    locate \
+    lm-sensors \
+    i2c-tools \
+    nptd \
+    p7zip \
+    mc \
+    gparted \
+    gedit \
+    gcc-arm-linux-gnueabi \
+    libx11-dev \
+    git \
+    make \
+    python \

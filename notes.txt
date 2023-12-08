@@ -1,0 +1,27 @@
+
+debian 12
+libcamera-hello
+    https://raspberrypi.stackexchange.com/questions/135522/camera-only-working-with-deprecated-legacy-options
+    https://forums.raspberrypi.com/viewtopic.php?t=119566
+    https://docs.arducam.com/Raspberry-Pi-Camera/Native-camera/Libcamera-User-Guide/
+
+Raspberry Pi Wifi (Station + AP modes)
+    https://pifi.imti.co
+    https://github.com/cjimti/iotwifi
+
+MPU6050
+    https://github.com/jarzebski/Arduino-MPU6050
+    Работа С Arduino И MPU6050
+        https://alexgyver.ru/arduino-mpu6050/
+
+Servo Driver with ESP32
+    https://www.waveshare.com/wiki/Servo_Driver_with_ESP32
+
+Servo Driver HAT (PWM)
+    https://www.waveshare.com/wiki/Servo_Driver_HAT
+    i2c addr 0x40
+    i2cdump -y 1 0x40 b
+
+gituser@KnowBase.local:/repos/test_repo.git
+git clone gituser@KnowBase.local:/repos/HexaFPV.git
+
