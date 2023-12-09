@@ -9,13 +9,16 @@ Servo::Servo(PCA9685* pca, uint8_t pin, uint16_t minPulseWidth, uint16_t maxPuls
     minPulseWidth_(minPulseWidth),
     maxPulseWidth_(maxPulseWidth)
 {
-    unitDuration_ = pca_->calcUnitDurationUs();
+    // unitDuration_ = pca_->calcUnitDurationUs();
+    pca_->setFreq_Hz(100);
+    deactivate();
+    pca_->wakeUp();
 }
 
 void Servo::_setAngle(float angle) {
     float pulseWidth = map(angle, 0.0f, 180.0f, minPulseWidth_, maxPulseWidth_);
-    uint16_t onTime = static_cast<uint16_t>(round(pulseWidth * unitDuration_));
-    pca_->setDutyCycle(pin_, 0, onTime);
+    // uint16_t onTime = static_cast<uint16_t>(round(pulseWidth * unitDuration_));
+    pca_->setDutyCycle(pin_, 0, pulseWidth);
 }
 
 void Servo::setAngleDegrees(float angle) {

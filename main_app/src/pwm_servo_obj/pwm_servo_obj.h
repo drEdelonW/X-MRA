@@ -4,8 +4,8 @@
 class Servo {
 public:
     // Constructor: initializes a servo on a specific PCA9685 channel with min and max pulse widths
-    Servo(PCA9685* pca, uint8_t pin, uint16_t minPulseWidth, uint16_t maxPulseWidth);
-    
+    Servo(PCA9685* pca, uint8_t pin, uint16_t minPulseWidth = 180, uint16_t maxPulseWidth = 1040);
+
     void setAngleDegrees(float angle); // Set the servo angle in degrees
     void setAngleRadians(float angle); // Set the servo angle in radians
 
