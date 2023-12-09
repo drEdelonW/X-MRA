@@ -110,7 +110,7 @@ float PCA9685::getFreq_Hz() {
 }
 
 int PCA9685::calcUnitDurationUs() {
-    float period = 1 / getRealFrequencyHz(); // Период ШИМ в секундах
+    float period = 1 / getFreq_Hz(); // Период ШИМ в секундах
     float unitWeight = (period / 4096) * 1000000; // Вес единицы в микросекундах
 
     return static_cast<int>(std::round(unitWeight));    // Округляем результат до ближайшего целого числа
