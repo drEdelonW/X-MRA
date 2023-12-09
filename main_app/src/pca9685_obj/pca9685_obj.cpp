@@ -74,7 +74,6 @@ void PCA9685::sleepMode() {
     _writeRegister(MODE1, mode1);
 }
 
-
 float PCA9685::getRealFrequencyHz(float desiredFreq) {
     float oscFreq = 25000000.0; // Осцилляторная частота PCA9685 в Гц (25 МГц)
     float prescaleVal = oscFreq / (4096 * desiredFreq) - 1;

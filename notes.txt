@@ -19,6 +19,7 @@ Servo Driver with ESP32
 
 Servo Driver HAT (PWM)
     https://www.waveshare.com/wiki/Servo_Driver_HAT
+    i2cdetect -y 1
     i2c addr 0x40
     i2cdump -y 1 0x40 b
 
