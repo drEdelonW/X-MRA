@@ -26,5 +26,9 @@ objects/%.o: $(SRC_DIR)/%.c
 objects/%.o: $(SRC_DIR)/%.cpp
 	mkdir -p objects
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+run: $(TARGET)
+	./$(TARGET)
+
 clean:
 	rm -rf objects OUTPUT

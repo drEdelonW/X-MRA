@@ -20,10 +20,10 @@ activate SSH
 
 How do I increase the size of swapfile without removing it in the terminal
     https://askubuntu.com/questions/927854/how-do-i-increase-the-size-of-swapfile-without-removing-it-in-the-terminal
-        $ sudo swapoff /var/swap
-        $ sudo dd if=/dev/zero of=/var/swap bs=1M count=4096 oflag=append conv=notrunc
-        $ sudo mkswap /var/swap
-        $ sudo swapon /var/swap
+      $ sudo swapoff /var/swap &&\
+        sudo dd if=/dev/zero of=/var/swap bs=1M count=4096 oflag=append conv=notrunc &&\
+        sudo mkswap /var/swap &&\
+        sudo swapon /var/swap
 
 #linux tools to INSTALL
 $ sudo apt install \

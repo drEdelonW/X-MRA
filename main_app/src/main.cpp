@@ -6,56 +6,35 @@
 
 #include "pca9685_obj.h"
 
+static PCA9685 PWM(1, 0x40);
+
+void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint16_t delay_us) {
+    PWM.setFreq_Hz(freq);
+    printf("new freq %f\n", PWM.getFreq_Hz());
+    PWM.wakeUp();
+    for(int i = min_dur; i < max_dur; i++){
+        usleep(delay_us);
+        PWM.setDutyCycle(0, 0, i);
+        // PWM.setDutyCycle(1, 0, i);
+    }
+}
+
 int main() {
     // busScan();
     // dumpAddr(0x40);
     // drawWindow();
-
-    PCA9685 PWM(1, 0x40); // Указываем номер шины и адрес устройства
-    // printf("base freq %f\n", PWM.getPWMFreq());
-    PWM.setPWMFreq(50); // Установка частоты ШИМ
-    printf("new freq %f\n", PWM.getPWMFreq());
-    PWM.wakeUp();
-    for(int i = 205; i < 410; i++){
-        // printf("duty %d\n", PWM.getPWMDutyCycle(0));
-        usleep(10000);
-        PWM.setPWMDutyCycle(0, 0, i); // Установка скважности для канала 0
-        PWM.setPWMDutyCycle(1, 0, i); // Установка скважности для канала 0
-    }
+    
+    testSRV(50, 205, 410, 10000);
 
     usleep(1000 * 1000);
-
-    PWM.setPWMFreq(100); // Установка частоты ШИМ
-    printf("new freq %f\n", PWM.getPWMFreq());
-    PWM.wakeUp();
-    for(int i = 409; i < 819; i++){
-        usleep(5000);
-        PWM.setPWMDutyCycle(0, 0, i); // Установка скважности для канала 0
-        PWM.setPWMDutyCycle(1, 0, i); // Установка скважности для канала 0
-    }
+    testSRV(100, 409, 819, 5000);
 
     usleep(1000 * 1000);
+    testSRV(150, 614, 1229, 3000);
 
-    PWM.setPWMFreq(150); // Установка частоты ШИМ
-    printf("new freq %f\n", PWM.getPWMFreq());
-    PWM.wakeUp();
-    for(int i = 614; i < 1229; i++){
-        usleep(3000);
-        PWM.setPWMDutyCycle(0, 0, i); // Установка скважности для канала 0
-        PWM.setPWMDutyCycle(1, 0, i); // Установка скважности для канала 0
-    }
-
-    usleep(1000 * 1000);
-
-    PWM.setPWMFreq(200); // Установка частоты ШИМ
-    printf("new freq %f\n", PWM.getPWMFreq());
-    PWM.wakeUp();
-    for(int i = 819; i < 1638; i++){
-        usleep(2500);
-        PWM.setPWMDutyCycle(0, 0, i); // Установка скважности для канала 0
-        PWM.setPWMDutyCycle(1, 0, i); // Установка скважности для канала 0
-    }
-
+    // usleep(1000 * 1000);
+    // testSRV(200, 819, 1638, 2500);
+    
     PWM.sleepMode();
 
     // PWM.printStatus();
