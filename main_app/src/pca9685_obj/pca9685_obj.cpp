@@ -109,6 +109,13 @@ float PCA9685::getFreq_Hz() {
     return freq;
 }
 
+int PCA9685::calcUnitDurationUs() {
+    float period = 1 / getRealFrequencyHz(); // Период ШИМ в секундах
+    float unitWeight = (period / 4096) * 1000000; // Вес единицы в микросекундах
+
+    return static_cast<int>(std::round(unitWeight));    // Округляем результат до ближайшего целого числа
+}
+
 void PCA9685::setDutyCycle(uint8_t channel, uint16_t on, uint16_t off) {
     if(channel < LED_NUM) {
         _writeRegister(LED0_ON_L  + 4 * channel, on & 0xFF);

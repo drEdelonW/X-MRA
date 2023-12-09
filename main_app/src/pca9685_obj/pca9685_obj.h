@@ -26,6 +26,9 @@ public:
     // Method to get the current PWM frequency
     float getFreq_Hz();
 
+    // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
+    int calcUnitDurationUs();
+
     // Set the PWM duty cycle
     void setDutyCycle(uint8_t channel, uint16_t on, uint16_t off);
 

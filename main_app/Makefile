@@ -1,6 +1,9 @@
 CC=gcc
 CFLAGS=-Wall -g
-LDFLAGS=-Wl,-Map=$(TARGET).map -lX11 -lstdc++ -lm 
+LDFLAGS=-Wl,-Map=$(TARGET).map
+LDFLAGS += -lX11
+LDFLAGS += -lstdc++
+LDFLAGS += -lm
 SRC_DIR=src
 
 SRCS=
