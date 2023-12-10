@@ -9,7 +9,11 @@
 #include <linux/i2c-dev.h>
 #include <cmath>
 
-PCA9685::PCA9685(uint8_t bus, uint8_t address) : i2c_bus(bus), i2c_address(address) {
+
+PCA9685::PCA9685(uint8_t bus, uint8_t address) :
+    i2c_bus(bus),
+    i2c_address(address),
+    channelInversion_{false} {
     // Открытие шины I2C
     char filename[20];
     snprintf(filename, 19, "/dev/i2c-%d", bus);
@@ -67,7 +71,6 @@ void PCA9685::wakeUp() {
     usleep(500);    // Ждем 500 микросекунд, чтобы убедиться в стабилизации осциллятора
 }
 
-
 void PCA9685::sleepMode() {
     REG_TYPE mode1 = _readRegister(MODE1);
     mode1 |= (1 << 4);  // Установка бита сна (бит 4)
@@ -115,15 +118,24 @@ int PCA9685::calcUnitDurationUs() {
     return static_cast<int>(std::round(unitWeight));    // Округляем результат до ближайшего целого числа
 }
 
-void PCA9685::setDutyCycle(uint8_t channel, uint16_t on, uint16_t off) {
-    if(channel < LED_NUM) {
+void PCA9685::setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phaseShift) {
+    duration = duration % 4096;
+    phaseShift = phaseShift % 4096;
+
+    uint16_t on = phaseShift;   // Вычисляем значения on и off, учитывая сдвиг фазы
+    uint16_t off = (on + duration) % 4096; // Учитываем переполнение
+    
+    if (channelInversion_[channel]) {
+        std::swap(on, off);    // Инвертируем сигнал для данного канала
+    }
+    
+    if (channel < LED_NUM) {
         _writeRegister(LED0_ON_L  + 4 * channel, on & 0xFF);
         _writeRegister(LED0_ON_H  + 4 * channel, on >> 8);
         _writeRegister(LED0_OFF_L + 4 * channel, off & 0xFF);
         _writeRegister(LED0_OFF_H + 4 * channel, off >> 8);
     }
 }
-
 
 uint16_t PCA9685::getDutyCycle(uint8_t channel) {
     if(!(channel < LED_NUM)) {
@@ -136,10 +148,28 @@ uint16_t PCA9685::getDutyCycle(uint8_t channel) {
     int offValue    = _readRegister(LED0_OFF_L + 4 * channel) |
                      (_readRegister(LED0_OFF_H + 4 * channel) << 8);
 
-    int dutyCycle = offValue - onValue; // Расчет скважности
+    int dutyCycle;
+    if (offValue >= onValue) {
+        dutyCycle = offValue - onValue;
+    } else {
+        // Учитываем закольцованность значений
+        dutyCycle = (4096 - onValue) + offValue;
+    }
     return dutyCycle;
 }
 
+void PCA9685::setInversion(uint8_t channel, bool inverted) {
+    if (channel < LED_NUM) {
+        channelInversion_[channel] = inverted;
+    }
+}
+
+bool PCA9685::getInversion(uint8_t channel) const {
+    if (channel < LED_NUM) {
+        return channelInversion_[channel];
+    }
+    return false;
+}
 
 void PCA9685::_writeRegister(uint8_t reg, REG_TYPE value) {
     REG_TYPE buf[2] = {reg, value};
@@ -147,7 +177,6 @@ void PCA9685::_writeRegister(uint8_t reg, REG_TYPE value) {
         // Обработка ошибки записи
     }
 }
-
 
 REG_TYPE PCA9685::_readRegister(uint8_t reg) {
     if (write(fd, &reg, 1) != 1) {  // Установка адреса регистра для чтения
@@ -160,3 +189,6 @@ REG_TYPE PCA9685::_readRegister(uint8_t reg) {
     return value;
 }
 
+uint16_t PCA9685::getMaxValue() const {
+    return MAX_VALUE;
+}

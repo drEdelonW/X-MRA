@@ -29,4 +29,5 @@ void HexapodLeg::setTipPosition(float x, float y, float z) {
 std::tuple<float, float, float> HexapodLeg::getTipPosition() const {
     // Реализация получения текущего положения кончика ноги
     // ...
+    return std::make_tuple(0.0f, 0.0f, 0.0f);
 }
