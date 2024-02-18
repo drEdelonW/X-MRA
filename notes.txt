@@ -89,3 +89,9 @@ git clone gituser@KnowBase.local:/repos/HexaFPV.git
     В примере используется WiringPi номер пина. Номера пинов WiringPi могут отличаться от физических номеров пинов на Raspberry Pi. Вам нужно будет убедиться, что вы используете правильный номер пина.
     WiringPi была объявлена устаревшей, но всё ещё широко используется. В качестве альтернативы можно рассмотреть другие библиотеки, такие как pigpio или bcm2835.
     Работая с GPIO, следует соблюдать осторожность, чтобы не повредить ваш Raspberry Pi. Убедитесь, что вы правильно подключили все компоненты и соблюдаете рекомендации по безопасности.
+
+    edelon@HexaFPV01:~/HexaFPV_proj/HexaFPV $ git remote -v
+origin  gituser@KnowBase.local:/repos/HexaFPV.git (fetch)
+origin  gituser@KnowBase.local:/repos/HexaFPV.git (push)
+
+remote set-url origin http://GitLab.local/child_edu/HexaFPV.git
