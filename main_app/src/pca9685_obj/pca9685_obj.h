@@ -8,40 +8,27 @@ class PCA9685 {
 public:
     PCA9685(uint8_t bus, uint8_t address);
    ~PCA9685();
+
+    void wakeUp();  // Method to wake up the chip from sleep mode
+    void sleepMode();   // Method to put the chip into sleep mode
+
+    void printStatus(); // Method to print the state of the registers
     
-    // Method to print the state of the registers
-    void printStatus();
+    float getRealFrequencyHz(float desiredFreq);    // Method to calculate the real PWM frequency based on the desired frequency
+    int   calcUnitDurationUs();   // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
 
-    // Method to wake up the chip from sleep mode
-    void wakeUp();
+    void  setFreq_Hz(uint16_t freq);    // Set the PWM frequency
+    float getFreq_Hz();                 // Method to get the current PWM frequency
 
-    // Method to put the chip into sleep mode
-    void sleepMode();
 
-    // Method to calculate the real PWM frequency based on the desired frequency
-    float getRealFrequencyHz(float desiredFreq);
-
-    // Set the PWM frequency
-    void setFreq_Hz(uint16_t freq);
-
-    // Method to get the current PWM frequency
-    float getFreq_Hz();
-
-    // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
-    int calcUnitDurationUs();
-
-    // Set the PWM duty cycle
-    void setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phaseShift = 0) ;
-
-    // Method to get the PWM duty cycle for a specific channel
-    uint16_t getDutyCycle(uint8_t channel);
+    void     setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phaseShift = 0) ;    // Set the PWM duty cycle
+    uint16_t getDutyCycle(uint8_t channel); // Method to get the PWM duty cycle for a specific channel
 
     void setInversion(uint8_t channel, bool inverted);
-
     bool getInversion(uint8_t channel) const;
 
     uint16_t getMaxValue() const;
-    
+
 private:
     static constexpr uint16_t MAX_VALUE = 4095; // Максимальное значение для 12-битного ШИМ
     // Constants for register addresses
@@ -61,14 +48,12 @@ private:
 
     def(PRE_SCALE,      0xFE);  // static constexpr int PRE_SCALE = 0xFE;
 
-    int fd;
-    uint8_t i2c_bus;
-    uint8_t i2c_address;
+    int         fd;
+    uint8_t     i2c_bus;
+    uint8_t     i2c_address;
     std::array<bool, LED_NUM> channelInversion_; // Флаги инверсии для каждого канала
 
-    // Function to write to a register
-    void _writeRegister(uint8_t reg, REG_TYPE value);
+    void     _writeRegister(uint8_t reg, REG_TYPE value);    // Function to write to a register
 
-    // Function to read from a register
-    REG_TYPE _readRegister(uint8_t reg);
+    REG_TYPE _readRegister(uint8_t reg);    // Function to read from a register
 };

@@ -61,11 +61,11 @@ void testLegs() {
     servos[0].setPhaseShift(3500);
     PWM[0].wakeUp();
     BR.setJointAngles(30.0, 90.0, 90.0);
-    usleep(1000 * 10000);
+    usleep(1000 * 5000);
     BR.setJointAngles(90.0, 90.0, 90.0);
-    usleep(1000 * 10000);
+    usleep(1000 * 5000);
     BR.setJointAngles(150.0, 90.0, 90.0);
-    usleep(1000 * 10000);
+    usleep(1000 * 5000);
         // CR.setJointAngles(5.0, 5.0, 5.0);
     // FR.setJointAngles(5.0, 5.0, 5.0);
     // usleep(1000 * 3000);
@@ -76,7 +76,7 @@ void testLegs() {
     // BR.setJointAngles(5.0, 5.0, 5.2);
     // CR.setJointAngles(5.0, 5.0, 5.2);
     // FR.setJointAngles(5.0, 5.0, 5.2);
-    usleep(1000 * 10000);
+    // usleep(1000 * 10000);
 
     PWM[0].sleepMode();
 }

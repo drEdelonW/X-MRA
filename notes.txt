@@ -22,6 +22,15 @@ Servo Driver HAT (PWM)
     i2cdetect -y 1
     i2c addr 0x40
     i2cdump -y 1 0x40 b
+    0x3c display SSD1306_128_32
+    0x68 DS RTC clock
+
+BlueTooth
+    sudo apt-get update
+    sudo apt-get install bluez bluez-tools
+
+    sudo bluetoothctl
+
 
 #git clone gituser@KnowBase.local:/repos/test_repo.git
 git clone gituser@KnowBase.local:/repos/HexaFPV.git
