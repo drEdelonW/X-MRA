@@ -1,3 +1,4 @@
 #=========Build args=========
 $ make
-$ make run
+$ make fresh
+$ make run ARGS="some args"

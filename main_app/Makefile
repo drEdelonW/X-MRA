@@ -71,7 +71,8 @@ SRCS_S 		= $(filter %.s, $(SRCS))
 OBJS_S 		= $(SRCS_S:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)
 
 OBJS 		+= $(OBJS_CPP) $(OBJS_C) $(OBJS_S)
-$(info OBJS:$(OBJS))
+# $(info OBJS:$(OBJS))
+
 INCLUDE_PATHS=
 include include_paths.mk
 INCLUDES=$(addprefix -I,$(INCLUDE_PATHS))

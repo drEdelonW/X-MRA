@@ -12,7 +12,11 @@
 #include "robot_spec.h"
 
 
-int main() {
+int main(int argc, char *argv[]) {
+    printf("Number of arguments: %d\n", argc);
+    for(int i = 0; i < argc; ++i) {
+        printf("Argument %d: %s\n", i, argv[i]);
+    }
     // busScan();
     // dumpAddr(0x40);
     // drawWindow();

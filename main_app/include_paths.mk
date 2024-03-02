@@ -4,3 +4,4 @@ INCLUDE_PATHS += $(SRC_DIR)/X11_lib
 INCLUDE_PATHS += $(SRC_DIR)/pca9685_obj
 INCLUDE_PATHS += $(SRC_DIR)/pwm_servo_obj
 INCLUDE_PATHS += $(SRC_DIR)/hexapod_leg_obj
+INCLUDE_PATHS += $(SRC_DIR)/robot_spec

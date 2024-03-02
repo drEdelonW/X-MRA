@@ -13,7 +13,7 @@ SRCS=
 SRCS += $(SRC_DIR)/i2c/i2c.c
 SRCS += $(SRC_DIR)/X11_lib/x11.c
 SRCS += $(SRC_DIR)/main.cpp
-SRCS += $(SRC_DIR)/robot_spec.cpp
+SRCS += $(SRC_DIR)/robot_spec/robot_spec.cpp
 SRCS += $(SRC_DIR)/hexapod_leg_obj/hexapod_leg_obj.cpp
 
 SRCS += $(SRC_DIR)/pca9685_obj/pca9685_obj.cpp
