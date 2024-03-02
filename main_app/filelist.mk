@@ -9,4 +9,12 @@ SRCS=
 
 # SRCS += $(wildcard $(SRC_DIR)/*.c)
 
-SRCS += $(shell find $(SRC_DIR) -name '*.c' -or -name '*.cpp')
+# SRCS += $(shell find $(SRC_DIR) -name '*.c' -or -name '*.cpp')
+SRCS += $(SRC_DIR)/i2c/i2c.c
+SRCS += $(SRC_DIR)/X11_lib/x11.c
+SRCS += $(SRC_DIR)/main.cpp
+SRCS += $(SRC_DIR)/robot_spec.cpp
+SRCS += $(SRC_DIR)/hexapod_leg_obj/hexapod_leg_obj.cpp
+
+SRCS += $(SRC_DIR)/pca9685_obj/pca9685_obj.cpp
+SRCS += $(SRC_DIR)/pwm_servo_obj/pwm_servo_obj.cpp

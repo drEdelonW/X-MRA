@@ -2,6 +2,7 @@
 
 // #include "Servo.h"
 #include <cmath>
+#include <limits>
 
 Servo::Servo(PCA9685* pca, uint8_t pin, uint16_t minPulseWidth, uint16_t maxPulseWidth, float maxAngle)
 :   pca_(pca),

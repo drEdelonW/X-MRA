@@ -1,41 +1,106 @@
-CC = gcc
-CXX = g++
+.DELETE_ON_ERROR:
 
-CFLAGS= -Wall -g
-LDFLAGS= \
-	-Wl,-Map=$(TARGET).map \
-	-lX11 \
-	-lstdc++ \
-	-lm
-	
-SRC_DIR=src
+
+#==============CONFIG VARS================
+SRC_DIR			?= src
+OBJ_DIR 		?= objects
+OUTPUT_DIR 		?= OUTPUT
+TARGET_NAME		?= HexaFPV_main_app
+ARCH			?= ARM
+# ARCH			?= x64
+# ARCH			?= x86
+
+TARGET 			= $(OUTPUT_DIR)/$(TARGET_NAME)
+
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+$(info Linux build)
+	GCC_PATH 	= 
+	EXEC_SUFIX 	= .elf
+	NUM_CORES	?= $(shell nproc)
+else ifeq ($(UNAME_S),MINGW64_NT-10.0-19045)
+$(info Windows Bash build)
+	GCC_PATH 	= 
+	EXEC_SUFIX 	= .exe
+	NUM_CORES	?= $(shell wmic cpu get NumberOfLogicalProcessors | grep -vE "^[^0-9]+$ ")
+else
+	$(info UNAME_S is $(UNAME_S))
+	$(info Unknown build)
+endif
+
+$(info NUM_CORES count $(NUM_CORES))
+
+CC 	= $(GCC_PATH)gcc
+CXX = $(GCC_PATH)g++
+
+GIT_BRANCH 		:= $(shell git rev-parse --abbrev-ref HEAD)
+GIT_COMMIT_HASH := $(shell git rev-parse HEAD)
+GIT_INFO 		= -DGIT_BRANCH=\"$(GIT_BRANCH)\" -DGIT_COMMIT_HASH=\"$(GIT_COMMIT_HASH)\"
+
+COMONFLAGS 		= $(GIT_INFO)
+
+# Language Specific Flags
+CFLAGS		= $(COMONFLAGS) -Wall -g -std=gnu11
+CXXFLAGS 	= $(COMONFLAGS) -std=c++11
+ASMFLAGS 	= $(COMONFLAGS) -c -x assembler-with-cpp
+
+# Linker Flags
+LDFLAGS		= -Wl,-Map=$(TARGET).map \
+			-lX11 \
+			-lstdc++ \
+			-lm
+#LDFLAGS 	= -L../lib/lib/$(ARCH)/ \
+			-lSDL2 \
+			-lstdc++ \
+			-Wl,-Map="$(TARGET).map"
+# -lSDL2test
+# -I../lib/include
+# -lSDL2main -lSDL2test
+
 
 SRCS=
 include filelist.mk
-OBJS=$(SRCS:$(SRC_DIR)/%.c=objects/%.o)
+SRCS_C 		= $(filter %.c, $(SRCS))
+OBJS_C 		= $(SRCS_C:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
+SRCS_CPP 	= $(filter %.cpp, $(SRCS))
+OBJS_CPP 	= $(SRCS_CPP:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+SRCS_S 		= $(filter %.s, $(SRCS))
+OBJS_S 		= $(SRCS_S:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)
+
+OBJS 		+= $(OBJS_CPP) $(OBJS_C) $(OBJS_S)
+$(info OBJS:$(OBJS))
 INCLUDE_PATHS=
 include include_paths.mk
 INCLUDES=$(addprefix -I,$(INCLUDE_PATHS))
 
-TARGET=OUTPUT/HexaFPV_main_app.elf
 
-all: $(TARGET)
+all: $(TARGET_NAME)$(EXEC_SUFIX)
 
-$(TARGET): $(OBJS)
-	mkdir -p OUTPUT
-	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(TARGET) $(LDFLAGS)
+$(TARGET_NAME)$(EXEC_SUFIX): $(OBJS)
+	@mkdir -p $(OUTPUT_DIR)
+	@$(CC) -o $(TARGET)$(EXEC_SUFIX) $(OBJS) $(LDFLAGS)
 
-objects/%.o: $(SRC_DIR)/%.c
-	mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@echo '### Building C target: $@'
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -c $< -o $@
 
-objects/%.o: $(SRC_DIR)/%.cpp
-	mkdir -p objects
-	@$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@echo '### Building C++ target: $@'
+	@mkdir -p $(@D)
+	@$(CXX) $(CXXFLAGS) $(DEFINES) $(INCLUDES) $(INCLUDES_CXX) -c $< -o "$@"
 
-run: $(TARGET)
-	./$(TARGET)
+# @$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+run: $(TARGET_NAME)$(EXEC_SUFIX)
+	@$(TARGET)$(EXEC_SUFIX) $(ARGS)
 
 clean:
-	rm -rf objects OUTPUT
+	@echo "Clean $(TARGET_NAME)"
+	@rm -rf $(OBJ_DIR) OUTPUT
+
+fresh: clean 
+	make -j$(NUM_CORES) $(TARGET_NAME)$(EXEC_SUFIX)
