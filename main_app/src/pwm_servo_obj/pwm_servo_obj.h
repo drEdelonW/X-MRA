@@ -1,10 +1,12 @@
 #pragma once 
 #include "pca9685_obj.h"
 
+#define PWM_UNIT    uint16_t
+
 class Servo {
 public:
     // Constructor: initializes a servo on a specific PCA9685 channel with min and max pulse widths
-    Servo(PCA9685* pca, uint8_t pin, uint16_t minPulseWidth = 180, uint16_t maxPulseWidth = 1040, float maxAngle = 180.0f);
+    Servo(PCA9685* pca, uint8_t pin, PWM_UNIT minPulseWidth = 180, PWM_UNIT maxPulseWidth = 1040, float maxAngle = 180.0f);
 
     float    getAngleDegrees() const;
     void     setAngleDegrees(float angle); // Set the servo angle in degrees
@@ -12,14 +14,14 @@ public:
     float    getAngleRadians() const;
     void     setAngleRadians(float angle); // Set the servo angle in radians
 
-    uint16_t getMinPulseWidth() const;
-    void     setMinPulseWidth(uint16_t minPulseWidth);
+    PWM_UNIT getMinPulseWidth() const;
+    void     setMinPulseWidth(PWM_UNIT minPulseWidth);
 
-    uint16_t getMaxPulseWidth() const;
-    void     setMaxPulseWidth(uint16_t maxPulseWidth);
+    PWM_UNIT getMaxPulseWidth() const;
+    void     setMaxPulseWidth(PWM_UNIT maxPulseWidth);
 
-    uint16_t getPhaseShift() const;
-    void     setPhaseShift(uint16_t phaseShift);
+    PWM_UNIT getPhaseShift() const;
+    void     setPhaseShift(PWM_UNIT phaseShift);
 
     void     setMaxAngle(float maxAngle);
     float    getMaxAngle() const;
@@ -30,13 +32,13 @@ private:
     PCA9685*    pca_;  // Pointer to PCA9685 controller
     uint8_t     pin_;   // Servo pin on the PCA9685
 
-    uint16_t    minPulseWidth_;    // Min pulse width for 0-degree position
-    uint16_t    maxPulseWidth_;    // Max pulse width for 180-degree position
+    PWM_UNIT    minPulseWidth_;    // Min pulse width for 0-degree position
+    PWM_UNIT    maxPulseWidth_;    // Max pulse width for 180-degree position
     
     float       maxAngle_; 
-    uint16_t    phaseShift_; // Current phase shift for the servo
+    PWM_UNIT    phaseShift_; // Current phase shift for the servo
 
-    uint16_t    maxValue_; // Maximum PWM value obtained from PCA9685
+    PWM_UNIT    maxValue_; // Maximum PWM value obtained from PCA9685
 
     float       currentAngleDegrees_; // Current servo angle in degrees
 

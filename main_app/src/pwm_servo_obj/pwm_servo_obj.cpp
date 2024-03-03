@@ -1,9 +1,10 @@
 #include "pwm_servo_obj.h"
+#include "common_tools.h"
 
 #include <cmath>
 #include <limits>
 
-Servo::Servo(PCA9685* pca, uint8_t pin, uint16_t minPulseWidth, uint16_t maxPulseWidth, float maxAngle)
+Servo::Servo(PCA9685* pca, uint8_t pin, PWM_UNIT minPulseWidth, PWM_UNIT maxPulseWidth, float maxAngle)
 :   pca_(pca),
     pin_(pin),
     minPulseWidth_(minPulseWidth),
@@ -23,31 +24,31 @@ void Servo::setAngleDegrees(float angle) {
 }
 
 float Servo::getAngleRadians() const {
-    return currentAngleDegrees_ * (M_PI / 180.0f); // Convert angle to radians
+    return DEG_TO_RAD(currentAngleDegrees_); // Convert angle to radians
 }
 void Servo::setAngleRadians(float angle) {
-    float angleDegrees = angle * (180.0f / M_PI); // Convert from radians to degrees
+    float angleDegrees = DEG_TO_RAD(angle); // Convert from radians to degrees
     _setAngle(angleDegrees);
 }
 
-uint16_t Servo::getMinPulseWidth() const {
+PWM_UNIT Servo::getMinPulseWidth() const {
     return minPulseWidth_;
 }
-void Servo::setMinPulseWidth(uint16_t minPulseWidth) {
+void Servo::setMinPulseWidth(PWM_UNIT minPulseWidth) {
     minPulseWidth_ = minPulseWidth;
 }
 
-uint16_t Servo::getMaxPulseWidth() const {
+PWM_UNIT Servo::getMaxPulseWidth() const {
     return maxPulseWidth_;
 }
-void Servo::setMaxPulseWidth(uint16_t maxPulseWidth) {
+void Servo::setMaxPulseWidth(PWM_UNIT maxPulseWidth) {
     maxPulseWidth_ = maxPulseWidth;
 }
 
-uint16_t Servo::getPhaseShift() const {
+PWM_UNIT Servo::getPhaseShift() const {
     return phaseShift_;
 }
-void Servo::setPhaseShift(uint16_t phaseShift) {
+void Servo::setPhaseShift(PWM_UNIT phaseShift) {
     phaseShift_ = phaseShift;
 }
 
@@ -71,7 +72,7 @@ void Servo::_setAngle(float angle) {
         0.0f,           maxAngle_,
         minPulseWidth_, maxPulseWidth_
     );
-    uint16_t duration = std::min(static_cast<uint16_t>(pulseWidth), maxValue_);
+    PWM_UNIT duration = std::min(static_cast<PWM_UNIT>(pulseWidth), maxValue_);
     pca_->setDutyCycle(pin_, duration, phaseShift_);
 }
 
