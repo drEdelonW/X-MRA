@@ -1,7 +1,11 @@
+INCLUDE_PATHS += /usr/include/SDL2
+
 INCLUDE_PATHS += $(SRC_DIR)
 INCLUDE_PATHS += $(SRC_DIR)/i2c
+INCLUDE_PATHS += $(SRC_DIR)/tools
 INCLUDE_PATHS += $(SRC_DIR)/X11_lib
 INCLUDE_PATHS += $(SRC_DIR)/pca9685_obj
 INCLUDE_PATHS += $(SRC_DIR)/pwm_servo_obj
 INCLUDE_PATHS += $(SRC_DIR)/hexapod_leg_obj
 INCLUDE_PATHS += $(SRC_DIR)/robot_spec
+INCLUDE_PATHS += $(SRC_DIR)/joy

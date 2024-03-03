@@ -18,3 +18,4 @@ SRCS += $(SRC_DIR)/hexapod_leg_obj/hexapod_leg_obj.cpp
 
 SRCS += $(SRC_DIR)/pca9685_obj/pca9685_obj.cpp
 SRCS += $(SRC_DIR)/pwm_servo_obj/pwm_servo_obj.cpp
+SRCS += $(SRC_DIR)/joy/sdl_joystick.cpp

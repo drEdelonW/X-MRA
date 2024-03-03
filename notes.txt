@@ -31,6 +31,10 @@ BlueTooth
 
     sudo bluetoothctl
 
+SDL2 dev
+    sudo apt-get update
+    sudo apt-get install libsdl2-dev
+
 
 #git clone gituser@KnowBase.local:/repos/test_repo.git
 git clone gituser@KnowBase.local:/repos/HexaFPV.git
@@ -104,3 +108,4 @@ origin  gituser@KnowBase.local:/repos/HexaFPV.git (fetch)
 origin  gituser@KnowBase.local:/repos/HexaFPV.git (push)
 
 remote set-url origin http://GitLab.local/child_edu/HexaFPV.git
+
