@@ -28,8 +28,11 @@ Servo Driver HAT (PWM)
 BlueTooth
     sudo apt-get update
     sudo apt-get install bluez bluez-tools
+    sudo apt-get install bluez libbluetooth-dev
 
     sudo bluetoothctl
+    pair 90:FB:A6:C2:63:67
+    connect 90:FB:A6:C2:63:67
 
 SDL2 dev
     sudo apt-get update
