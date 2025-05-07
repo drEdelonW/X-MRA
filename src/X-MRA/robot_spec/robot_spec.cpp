@@ -59,9 +59,15 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
 void testLegs() {
     joint[0].setPhaseShift(3500);
     PWM[0].wakeUp();
-    // BR.setJointAngles( 15.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
-    BR.setJointAngles( 90.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
-    // BR.setJointAngles(170.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
+    // BR.setJointAngles( 15.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
+    // BR.setJointAngles( 90.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
+    // BR.setJointAngles(170.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
+
+    CR.setJointAngles( 55.0, 189.0f, 180.0f); //usleep(1000 * 2000);
+    BR.setJointAngles( 15.0, 185.0f, 165.0f); usleep(1000 * 5000);
+    CR.deactivate();
+    BR.deactivate();
+
         // CR.setJointAngles(5.0, 5.0, 5.0);
     // FR.setJointAngles(5.0, 5.0, 5.0);
     // usleep(1000 * 3000);
@@ -74,5 +80,5 @@ void testLegs() {
     // FR.setJointAngles(5.0, 5.0, 5.2);
     // usleep(1000 * 10000);
 
-    PWM[0].sleepMode();
+    // PWM[0].sleepMode();
 }

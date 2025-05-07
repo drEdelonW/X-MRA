@@ -11,6 +11,12 @@ void ArachnidLeg::setJointAngles(float coxaAngle, float femurAngle, float tibiaA
     tibiaServo_->setAngleDegrees(tibiaAngle);
 }
 
+void ArachnidLeg::deactivate() {
+    coxaServo_->deactivate();
+    femurServo_->deactivate();
+    tibiaServo_->deactivate();
+}
+
 void ArachnidLeg::setTipPosition(float x, float y, float z) {
     float distanceToTarget = sqrt(x * x + y * y);
 
