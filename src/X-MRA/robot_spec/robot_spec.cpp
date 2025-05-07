@@ -2,14 +2,14 @@
 // #include "pwm_servo_obj.h"
 #include <stdio.h>
 #include <unistd.h>
-#include "robot_spec.h"
+#include "robot_spec.hpp"
 
 PCA9685 PWM[2] = {
     PCA9685(1, 0x40),
     PCA9685(1, 0x41)
 };
 
-Servo servos[9] = {
+Servo joint[9] = {
     Servo(&PWM[0], 6),
     Servo(&PWM[0], 5),
     Servo(&PWM[0], 4),
@@ -23,22 +23,22 @@ Servo servos[9] = {
     Servo(&PWM[1], 15)
 };
 
-HexapodLeg BR = HexapodLeg(
-        &servos[0],
-        &servos[1],
-        &servos[2]
+ArachnidLeg BR = ArachnidLeg(
+        &joint[0],
+        &joint[1],
+        &joint[2]
     );
 
-HexapodLeg CR = HexapodLeg(
-        &servos[3],
-        &servos[4],
-        &servos[5]
+ArachnidLeg CR = ArachnidLeg(
+        &joint[3],
+        &joint[4],
+        &joint[5]
     );
 
-HexapodLeg FR = HexapodLeg(
-        &servos[6],
-        &servos[7],
-        &servos[8]
+ArachnidLeg FR = ArachnidLeg(
+        &joint[6],
+        &joint[7],
+        &joint[8]
     );
 
 
@@ -57,7 +57,7 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
 #define ANGLE_MID   (90.0f)
 
 void testLegs() {
-    servos[0].setPhaseShift(3500);
+    joint[0].setPhaseShift(3500);
     PWM[0].wakeUp();
     // BR.setJointAngles( 15.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
     BR.setJointAngles( 90.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);

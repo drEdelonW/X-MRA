@@ -2,10 +2,10 @@
 #include "pwm_servo.hpp"
 #include <tuple>
 
-class HexapodLeg {
+class ArachnidLeg {
 public:
     // Конструктор
-    HexapodLeg(Servo* coxaServo, Servo* femurServo, Servo* tibiaServo);
+    ArachnidLeg(Servo* coxaServo, Servo* femurServo, Servo* tibiaServo);
 
     // Установка положения суставов ноги
     void setJointAngles(float coxaAngle, float femurAngle, float tibiaAngle);

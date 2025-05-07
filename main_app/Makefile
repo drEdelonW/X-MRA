@@ -2,7 +2,7 @@
 
 
 #==============CONFIG VARS================
-SRC_DIR			?= src
+SRC_DIR			?= ../src
 OBJ_DIR 		?= objects
 OUTPUT_DIR 		?= OUTPUT
 TARGET_NAME		?= HexaFPV_main_app
@@ -61,6 +61,7 @@ LDFLAGS		= -Wl,-Map=$(TARGET).map \
 
 
 SRCS=
+INCLUDE_PATHS=
 include filelist.mk
 SRCS_C 		= $(filter %.c, $(SRCS))
 OBJS_C 		= $(SRCS_C:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -74,7 +75,6 @@ OBJS_S 		= $(SRCS_S:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)
 OBJS 		+= $(OBJS_CPP) $(OBJS_C) $(OBJS_S)
 # $(info OBJS:$(OBJS))
 
-INCLUDE_PATHS=
 include include_paths.mk
 INCLUDES=$(addprefix -I,$(INCLUDE_PATHS))
 

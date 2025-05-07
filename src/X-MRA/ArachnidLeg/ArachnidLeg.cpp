@@ -1,17 +1,17 @@
-#include "hexapod_leg.hpp"
+#include "ArachnidLeg.hpp"
 
 #include <cmath>
 
-HexapodLeg::HexapodLeg(Servo* coxaServo, Servo* femurServo, Servo* tibiaServo)
+ArachnidLeg::ArachnidLeg(Servo* coxaServo, Servo* femurServo, Servo* tibiaServo)
 : coxaServo_(coxaServo), femurServo_(femurServo), tibiaServo_(tibiaServo) {}
 
-void HexapodLeg::setJointAngles(float coxaAngle, float femurAngle, float tibiaAngle) {
+void ArachnidLeg::setJointAngles(float coxaAngle, float femurAngle, float tibiaAngle) {
     coxaServo_->setAngleDegrees(coxaAngle);
     femurServo_->setAngleDegrees(femurAngle);
     tibiaServo_->setAngleDegrees(tibiaAngle);
 }
 
-void HexapodLeg::setTipPosition(float x, float y, float z) {
+void ArachnidLeg::setTipPosition(float x, float y, float z) {
     float distanceToTarget = sqrt(x * x + y * y);
 
     // Вычисляем углы для фемура и тибии с использованием обратной кинематики
@@ -26,7 +26,7 @@ void HexapodLeg::setTipPosition(float x, float y, float z) {
     femurServo_->setAngleRadians(angleFemur);
     tibiaServo_->setAngleRadians(angleTibia);
 }
-std::tuple<float, float, float> HexapodLeg::getTipPosition() const {
+std::tuple<float, float, float> ArachnidLeg::getTipPosition() const {
     // Реализация получения текущего положения кончика ноги
     // ...
     return std::make_tuple(0.0f, 0.0f, 0.0f);
