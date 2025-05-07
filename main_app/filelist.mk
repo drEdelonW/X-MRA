@@ -14,8 +14,8 @@ SRCS += $(SRC_DIR)/i2c/i2c.c
 SRCS += $(SRC_DIR)/X11_lib/x11.c
 SRCS += $(SRC_DIR)/main.cpp
 SRCS += $(SRC_DIR)/robot_spec/robot_spec.cpp
-SRCS += $(SRC_DIR)/hexapod_leg_obj/hexapod_leg_obj.cpp
+SRCS += $(SRC_DIR)/hexapod_leg/hexapod_leg.cpp
 
-SRCS += $(SRC_DIR)/pca9685_obj/pca9685_obj.cpp
-SRCS += $(SRC_DIR)/pwm_servo_obj/pwm_servo_obj.cpp
+SRCS += $(SRC_DIR)/PCA9685/PWM_PCA9685.cpp
+SRCS += $(SRC_DIR)/pwm_servo/pwm_servo.cpp
 SRCS += $(SRC_DIR)/joy/sdl_joystick.cpp

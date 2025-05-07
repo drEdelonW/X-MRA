@@ -1,5 +1,5 @@
 #pragma once 
-#include "pwm_servo_obj.h"
+#include "pwm_servo.hpp"
 #include <tuple>
 
 class HexapodLeg {

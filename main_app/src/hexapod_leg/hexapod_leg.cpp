@@ -1,4 +1,4 @@
-#include "hexapod_leg_obj.h"
+#include "hexapod_leg.hpp"
 
 #include <cmath>
 

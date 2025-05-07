@@ -10,12 +10,13 @@
 // #include "x11.h"
 // #include "i2c.h"
 #include "robot_spec.h"
-#include "sdl_joystick.h"
+// #include "sdl_joystick.h"
 #include "common_tools.h"
 
 
 
 int main(int argc, char *argv[]) {
+#if 0
     ver_info();
     printf("Arg count is %d\n", argc);
     for(int i = 0; i < argc; ++i) {
@@ -32,6 +33,7 @@ int main(int argc, char *argv[]) {
             case 'j' : case 'J': return main_joy(argc, argv);
         }
     }
+#endif
     // busScan();
     // dumpAddr(0x40);
     // drawWindow();

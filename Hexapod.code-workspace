@@ -2,10 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"name": "edelon",
-			"path": "../../"
 		}
 	],
 	"settings": {}

@@ -1,5 +1,5 @@
 #pragma once 
-#include "pca9685_obj.h"
+#include "PWM_PCA9685.hpp"
 
 #define PWM_UNIT    uint16_t
 

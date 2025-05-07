@@ -10,17 +10,17 @@ PCA9685 PWM[2] = {
 };
 
 Servo servos[9] = {
-    Servo(&PWM[0], 0),
-    Servo(&PWM[0], 1),
-    Servo(&PWM[0], 2),
-
-    Servo(&PWM[0], 4),
-    Servo(&PWM[0], 5),
     Servo(&PWM[0], 6),
+    Servo(&PWM[0], 5),
+    Servo(&PWM[0], 4),
 
-    Servo(&PWM[0], 8),
-    Servo(&PWM[0], 9),
-    Servo(&PWM[0], 10)
+    Servo(&PWM[0], 2),
+    Servo(&PWM[0], 1),
+    Servo(&PWM[0], 0),
+
+    Servo(&PWM[1], 13),
+    Servo(&PWM[1], 14),
+    Servo(&PWM[1], 15)
 };
 
 HexapodLeg BR = HexapodLeg(
@@ -54,17 +54,14 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
     PWM[0].setDutyCycle(0, 0, (min_dur + max_dur) / 2);
     printf("mid is %d\n", (min_dur + max_dur) / 2);
 }
-
+#define ANGLE_MID   (90.0f)
 
 void testLegs() {
     servos[0].setPhaseShift(3500);
     PWM[0].wakeUp();
-    BR.setJointAngles(30.0, 90.0, 90.0);
-    usleep(1000 * 5000);
-    BR.setJointAngles(90.0, 90.0, 90.0);
-    usleep(1000 * 5000);
-    BR.setJointAngles(150.0, 90.0, 90.0);
-    usleep(1000 * 5000);
+    // BR.setJointAngles( 15.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
+    BR.setJointAngles( 90.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
+    // BR.setJointAngles(170.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 5000);
         // CR.setJointAngles(5.0, 5.0, 5.0);
     // FR.setJointAngles(5.0, 5.0, 5.0);
     // usleep(1000 * 3000);
