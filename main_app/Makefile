@@ -30,6 +30,7 @@ else
 endif
 
 $(info NUM_CORES count $(NUM_CORES))
+MAKEFLAGS += -j$(NUM_CORES)
 
 CC 	= $(GCC_PATH)gcc
 CXX = $(GCC_PATH)g++

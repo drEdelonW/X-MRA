@@ -1,70 +1,23 @@
 #include "PA_PCA9685.hpp"
 
-#include <iostream>
-#include <iomanip>
-#include <bitset>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <linux/i2c-dev.h>
-#include <cmath>
+#include <iomanip>   //std::setfill
+#include <bitset>    //std::bitset
+
+#include <unistd.h>  //usleep
+
+#include <cmath> //round floor
 
 #define MAX_VALUE (4095)
-
-
 
 PA_PCA9685::PA_PCA9685(uint8_t bus, uint8_t address) :
     i2c_bus(bus),
     i2c_address(address),
     channelInversion_{false} {
-    // Открытие шины I2C
-    char filename[20];
-    snprintf(filename, 19, "/dev/i2c-%d", bus);
-    fd = open(filename, O_RDWR);
-
-    if (fd < 0) {
-        // Обработка ошибки открытия файла
-    }
-
-    // Установка адреса устройства
-    if (ioctl(fd, I2C_SLAVE, address) < 0) {
-        // Обработка ошибки соединения
-    }
+    _busInit();
 }
 
 PA_PCA9685::~PA_PCA9685() {
-    close(fd);
-}
-
-void PA_PCA9685::printStatus() {
-    PCA_Register mode1      = _readRegister(MODE1);
-    PCA_Register mode2      = _readRegister(MODE2);
-    PCA_Register prescale   = _readRegister(PRE_SCALE);
-    
-    float oscFreq = 25000000.0; // Осцилляторная частота в Гц
-    float pwmFreq = oscFreq / (4096.0 * (prescale + 1)); // Расчет частоты ШИМ
-
-    std::cout   << "Расширенное состояние PA_PCA9685:" << std::endl;
-    std::cout   << "MODE1: " << std::bitset<8>(mode1)
-                    << " (режим сна: "
-                        << ((mode1 & 0x10) ? "включен" : "выключен")
-                    << ")"
-                << std::endl;
-    std::cout   << "MODE2: " << std::bitset<8>(mode2) << std::endl;
-    std::cout   << "PRE_SCALE: "
-                    << prescale << " (Приблизительная частота ШИМ: " << pwmFreq << " Гц)"
-                << std::endl;
-
-
-    for (int channel = 0; channel < 16; ++channel) {
-        int onValue  = _readRegister(LED0_ON_L + 4 * channel) | (_readRegister(LED0_ON_H + 4 * channel) << 8);
-        int offValue = _readRegister(LED0_OFF_L + 4 * channel) | (_readRegister(LED0_OFF_H + 4 * channel) << 8);
-
-        std::cout   << "Канал "     << std::setw(2) << std::setfill('0') << channel 
-                    << ": ON = "    << std::setw(4) << std::setfill('0') << onValue 
-                    << ", OFF = "   << std::setw(4) << std::setfill('0') << offValue
-                    << std::endl;
-    }
+    _busDeinit();
 }
 
 void PA_PCA9685::wakeUp() {
@@ -141,10 +94,11 @@ void PA_PCA9685::setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phase
 }
 
 uint16_t PA_PCA9685::getDutyCycle(uint8_t channel) {
-    if(!(channel < LED_NUM)) {
-        std::cerr << "Channel number out of range (0-15)." << std::endl;
+    if (!(channel < LED_NUM)) {
+        fprintf(stderr, "Error: Channel number out of range (0-15).\n");
         return -1;
     }
+    
 
     int onValue     = _readRegister(LED0_ON_L  + 4 * channel) |
                      (_readRegister(LED0_ON_H  + 4 * channel) << 8);
@@ -172,24 +126,6 @@ bool PA_PCA9685::getInversion(uint8_t channel) const {
         return channelInversion_[channel];
     }
     return false;
-}
-
-void PA_PCA9685::_writeRegister(uint8_t reg, PCA_Register value) {
-    PCA_Register buf[2] = {(uint8_t)reg, value};
-    if (write(fd, buf, 2) != 2) {
-        // Обработка ошибки записи
-    }
-}
-
-PCA_Register PA_PCA9685::_readRegister(uint8_t reg) {
-    if (write(fd, &reg, 1) != 1) {  // Установка адреса регистра для чтения
-        // Обработка ошибки чтения
-    };
-    PCA_Register value;
-    if (read(fd, &value, 1) != 1) {
-        // Обработка ошибки чтения
-    }
-    return value;
 }
 
 uint16_t PA_PCA9685::getMaxValue() const {

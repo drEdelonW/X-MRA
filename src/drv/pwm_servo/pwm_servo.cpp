@@ -1,10 +1,12 @@
 #include "pwm_servo.hpp"
 #include "common_tools.h"
 
+#include <array>
+
 #include <cmath>
 #include <limits>
 
-Servo::Servo(PCA9685* pca, uint8_t pin, PWM_UNIT minPulseWidth, PWM_UNIT maxPulseWidth, float maxAngle)
+Servo::Servo(PWM_ARRAY* pca, uint8_t pin, PWM_UNIT minPulseWidth, PWM_UNIT maxPulseWidth, float maxAngle)
 :   pca_(pca),
     pin_(pin),
     minPulseWidth_(minPulseWidth),

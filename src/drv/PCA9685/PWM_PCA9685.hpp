@@ -1,4 +1,6 @@
 #pragma once 
+#define PWM_ARRAY PCA9685
+
 #include <stdint.h>
 #include <array>
 

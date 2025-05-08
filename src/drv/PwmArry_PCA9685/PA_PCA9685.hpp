@@ -1,5 +1,6 @@
 #pragma once 
 #include "proto_PWM.hpp"
+#define PWM_ARRAY PA_PCA9685
 
 #define  PCA_Register uint8_t
 enum PCA_Register_en:PCA_Register {
@@ -52,6 +53,8 @@ private:
     uint8_t     i2c_address;
     bool channelInversion_[16];
 
+    void         _busInit();
+    void         _busDeinit();
     void         _writeRegister(uint8_t reg, PCA_Register value);    // Function to write to a register
     PCA_Register _readRegister(uint8_t reg);    // Function to read from a register
 };

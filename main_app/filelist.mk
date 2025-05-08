@@ -32,6 +32,8 @@ SRCS += $(SRC_DIR)/drv/PCA9685/PWM_PCA9685.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/drv/PwmArry_PCA9685
 SRCS += $(SRC_DIR)/drv/PwmArry_PCA9685/PA_PCA9685.cpp
+SRCS += $(SRC_DIR)/drv/PwmArry_PCA9685/PA_PCA9685_i2c.cpp
+SRCS += $(SRC_DIR)/drv/PwmArry_PCA9685/PA_PCA9685_tools.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/drv/pwm_servo
 SRCS += $(SRC_DIR)/drv/pwm_servo/pwm_servo.cpp

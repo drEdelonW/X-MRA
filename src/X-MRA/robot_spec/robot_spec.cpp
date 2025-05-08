@@ -4,19 +4,20 @@
 #include <unistd.h>
 #include "robot_spec.hpp"
 
-PCA9685 PWM[2] = {
-    PCA9685(1, 0x40),
-    PCA9685(1, 0x41)
+
+PWM_ARRAY PWM[2] = {
+    PWM_ARRAY(1, 0x40),
+    PWM_ARRAY(1, 0x41)
 };
 
 Servo joint[9] = {
-    Servo(&PWM[0], 6),
-    Servo(&PWM[0], 5),
-    Servo(&PWM[0], 4),
-
     Servo(&PWM[0], 2),
     Servo(&PWM[0], 1),
     Servo(&PWM[0], 0),
+
+    Servo(&PWM[0], 6),
+    Servo(&PWM[0], 5),
+    Servo(&PWM[0], 4),
 
     Servo(&PWM[1], 13),
     Servo(&PWM[1], 14),
@@ -59,12 +60,12 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
 void testLegs() {
     joint[0].setPhaseShift(3500);
     PWM[0].wakeUp();
-    // BR.setJointAngles( 15.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
-    // BR.setJointAngles( 90.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
-    // BR.setJointAngles(170.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
+    BR.setJointAngles( 15.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
+    BR.setJointAngles( 90.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
+    BR.setJointAngles(170.0, ANGLE_MID, ANGLE_MID); usleep(1000 * 2000);
 
-    CR.setJointAngles( 55.0, 189.0f, 180.0f); //usleep(1000 * 2000);
-    BR.setJointAngles( 15.0, 185.0f, 165.0f); usleep(1000 * 5000);
+    // CR.setJointAngles( 55.0, 189.0f, 180.0f); //usleep(1000 * 2000);
+    // BR.setJointAngles( 15.0, 185.0f, 165.0f); usleep(1000 * 5000);
     CR.deactivate();
     BR.deactivate();
 
