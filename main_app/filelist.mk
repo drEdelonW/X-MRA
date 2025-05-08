@@ -26,8 +26,12 @@ INCLUDE_PATHS += $(SRC_DIR)/tools
 
 SRCS += $(SRC_DIR)/main.cpp
 
+INCLUDE_PATHS += $(SRC_DIR)/drv
 INCLUDE_PATHS += $(SRC_DIR)/drv/PCA9685
 SRCS += $(SRC_DIR)/drv/PCA9685/PWM_PCA9685.cpp
+
+INCLUDE_PATHS += $(SRC_DIR)/drv/PwmArry_PCA9685
+SRCS += $(SRC_DIR)/drv/PwmArry_PCA9685/PA_PCA9685.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/drv/pwm_servo
 SRCS += $(SRC_DIR)/drv/pwm_servo/pwm_servo.cpp
