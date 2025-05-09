@@ -16,9 +16,6 @@ class ProtoPWMArray {
 
     virtual void setDutyCycle(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0) = 0;
     virtual MicroSeconds getDutyCycle(uint8_t channel) = 0;
-
-    virtual void setInversion(uint8_t channel, bool inverted) = 0;
-    virtual bool getInversion(uint8_t channel) = 0;
 };
 
 class PWMChannel : public ProtoPWM {

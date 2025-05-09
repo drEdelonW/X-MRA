@@ -14,7 +14,7 @@ Servo::Servo(PWM_ARRAY* pca, uint8_t pin, PWM_UNIT minPulseWidth, PWM_UNIT maxPu
     maxAngle_(maxAngle),
     maxValue_(pca_->getMaxValue())
 {
-    pca_->setFreq_Hz(100);
+    // pca_->setFreq_Hz(100);
     deactivate();
 }
 

@@ -25,8 +25,8 @@ public:
            void  setDutyCycle(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;    // Set the PWM duty cycle
     MicroSeconds getDutyCycle(uint8_t channel) override; // Method to get the PWM duty cycle for a specific channel
 
-    void setInversion(uint8_t channel, bool inverted) override;
-    bool getInversion(uint8_t channel) override;
+    void setInversion(uint8_t channel, bool inverted);
+    bool getInversion(uint8_t channel);
 
     uint16_t getMaxValue();
 

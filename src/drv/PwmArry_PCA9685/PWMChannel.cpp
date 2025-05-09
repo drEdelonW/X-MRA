@@ -1,10 +1,12 @@
 #include "PWMChannel.hpp"
-
+#include <stdio.h>
 PWMChannel::PWMChannel(ProtoPWMArray& ctrl, uint8_t ch)
     : controller(ctrl), channel(ch) {}
 
 
-void         PWMChannel::setPulseDurationUS(MicroSeconds duration_us) {};
+void PWMChannel::setPulseDurationUS(MicroSeconds duration_us) {
+    setDutyCycle(400);
+};
 MicroSeconds PWMChannel::getPulseDurationUS() {
     return 0;
 };
