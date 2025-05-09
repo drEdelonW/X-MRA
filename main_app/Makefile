@@ -15,13 +15,13 @@ TARGET 			= $(OUTPUT_DIR)/$(TARGET_NAME)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-$(info Linux build)
-	GCC_PATH 	= 
+  $(info Linux build)
+	GCC_PATH 	=
 	EXEC_SUFIX 	= .elf
 	NUM_CORES	?= $(shell nproc)
 else ifeq ($(UNAME_S),MINGW64_NT-10.0-19045)
-$(info Windows Bash build)
-	GCC_PATH 	= 
+  $(info Windows Bash build)
+	GCC_PATH 	=
 	EXEC_SUFIX 	= .exe
 	NUM_CORES	?= $(shell wmic cpu get NumberOfLogicalProcessors | grep -vE "^[^0-9]+$ ")
 else
@@ -105,5 +105,5 @@ clean:
 	@echo "Clean $(TARGET_NAME)"
 	@rm -rf $(OBJ_DIR) OUTPUT
 
-fresh: clean 
+fresh: clean
 	make -j$(NUM_CORES) $(TARGET_NAME)$(EXEC_SUFIX)

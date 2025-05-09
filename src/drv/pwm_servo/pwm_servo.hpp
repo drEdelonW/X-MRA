@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "proto_PWM.hpp"
 
 #if 0
@@ -40,8 +40,8 @@ private:
 
     PWM_UNIT    minPulseWidth_;    // Min pulse width for 0-degree position
     PWM_UNIT    maxPulseWidth_;    // Max pulse width for 180-degree position
-    
-    float       maxAngle_; 
+
+    float       maxAngle_;
     PWM_UNIT    phaseShift_; // Current phase shift for the servo
 
     PWM_UNIT    maxValue_; // Maximum PWM value obtained from PWM_ARRAY

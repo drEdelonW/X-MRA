@@ -82,12 +82,12 @@ void process_gamepad() {
   }
 #ifdef DEF_LEDS
   if (mode == wm_default) {                          //display selected gait on LEDs if button held
-    if (batt_LEDs > 3) 
+    if (batt_LEDs > 3)
       gait_LED_color = 0; //display gait using red LEDs if battery strong
-    else 
+    else
       gait_LED_color = 1;              //display gait using green LEDs if battery weak
-    if (ps2x.Button(PSB_PAD_DOWN))  //display gait 0 
-      LED_Bar(gait_LED_color, 1);  
+    if (ps2x.Button(PSB_PAD_DOWN))  //display gait 0
+      LED_Bar(gait_LED_color, 1);
     if (ps2x.Button(PSB_PAD_LEFT))  //display gait 1
       LED_Bar(gait_LED_color, 2);
     if (ps2x.Button(PSB_PAD_UP))    //display gait 2
@@ -274,7 +274,7 @@ void setup() {
 void loop() {
   //set up frame time
   currentTime = millis();
-  if ((currentTime - previousTime) < FRAME_TIME_MS) 
+  if ((currentTime - previousTime) < FRAME_TIME_MS)
     return;
   previousTime = currentTime;
 
@@ -297,9 +297,9 @@ void loop() {
   //position legs using IK calculations - unless set all to 90 degrees mode
   if (mode < wm_90_deg) {
     for (cur_leg = 0; cur_leg < LEG_NUM; cur_leg++)
-      leg_IK(cur_leg, 
-        current_[cur_leg].x + offset_[cur_leg].x + 50, 
-        current_[cur_leg].y + offset_[cur_leg].y, 
+      leg_IK(cur_leg,
+        current_[cur_leg].x + offset_[cur_leg].x + 50,
+        current_[cur_leg].y + offset_[cur_leg].y,
         current_[cur_leg].z + offset_[cur_leg].z);
   }
   //reset leg lift first pass flags if needed
@@ -325,7 +325,7 @@ void loop() {
         case ga_ripple:   ripple_gait(iinp);    break;   //walk using gait ripple
         case ga_tetrapod: tetrapod_gait(iinp);  break;   //walk using gait tetrapod
       }
-      break; 
+      break;
     }
     case wm_xyz: {        //joystick control x-y-z mode
       translate_control( {
@@ -333,31 +333,31 @@ void loop() {
           y:ps2x.Analog(PSS_RX),
           z:ps2x.Analog(PSS_LY)
         });
-      break; 
+      break;
     }
     case wm_ypr: {        //joystick control y-p-r mode
       rotate_control( {
           x:ps2x.Analog(PSS_RX),
           y:ps2x.Analog(PSS_RY),
           z:ps2x.Analog(PSS_LX)
-        }, ps2x.Analog(PSS_LY));       
-      break; 
-    }   
-    case wm_one_leg: {    //one leg lift mode 
+        }, ps2x.Analog(PSS_LY));
+      break;
+    }
+    case wm_one_leg: {    //one leg lift mode
       one_leg_lift( {
           x:ps2x.Analog(PSS_RX),
           y:ps2x.Analog(PSS_RY),
           z:ps2x.Analog(PSS_LX)
         }, ps2x.Analog(PSS_LY));
-      break; 
+      break;
     }
     case wm_90_deg: {     //set all servos to 90 degrees mode
       set_all_90();
-      break; 
+      break;
     }
     case wm_default:{
       wave_gait({x:100, y:100, z:100});
-      break; 
+      break;
     }
   }
 

@@ -14,7 +14,7 @@ public:
     void brk();
     void enable();
     void disable();
-    
+
 private:
     int _inA;
     int _inB;

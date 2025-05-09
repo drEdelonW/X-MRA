@@ -85,7 +85,7 @@ const float HOME_X[6] = {  82.0,   0.0, -82.0,  -82.0,    0.0,  82.0};  //coxa-t
 const float HOME_Y[6] = {  82.0, 116.0,  82.0,  -82.0, -116.0, -82.0};
 const float HOME_Z[6] = { -80.0, -80.0, -80.0,  -80.0,  -80.0, -80.0};
 
-const float BODY_X[6] = { 110.4,  0.0, -110.4, -110.4,    0.0, 110.4};  //body center-to-coxa servo distances 
+const float BODY_X[6] = { 110.4,  0.0, -110.4, -110.4,    0.0, 110.4};  //body center-to-coxa servo distances
 const float BODY_Y[6] = {  58.4, 90.8,   58.4,  -58.4,  -90.8, -58.4};
 const float BODY_Z[6] = {   0.0,  0.0,    0.0,    0.0,    0.0,   0.0};
 
@@ -113,7 +113,7 @@ int reset_position;
 int capture_offsets;
 
 int batt_LEDs;                        //battery monitor variables
-int batt_voltage; 
+int batt_voltage;
 int batt_voltage_index;
 int batt_voltage_array[50];
 long batt_voltage_sum;
@@ -181,7 +181,7 @@ void setup()
 {
   //start serial
   Serial.begin(115200);
-  
+
   //attach servos
   coxa1_servo.attach(COXA1_SERVO,610,2400);
   femur1_servo.attach(FEMUR1_SERVO,610,2400);
@@ -201,7 +201,7 @@ void setup()
   coxa6_servo.attach(COXA6_SERVO,610,2400);
   femur6_servo.attach(FEMUR6_SERVO,610,2400);
   tibia6_servo.attach(TIBIA6_SERVO,610,2400);
-    
+
   //connect the gamepad
   gamepad_error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_ATT, PS2_DAT, PRESSURES, RUMBLE);
   if(gamepad_error == 0)      Serial.println("Controller attached");
@@ -210,7 +210,7 @@ void setup()
   else if(gamepad_error == 3) Serial.println("Controller refusing to enter Pressures mode");
 
   //verify the gamepad type
-  gamepad_type = ps2x.readType(); 
+  gamepad_type = ps2x.readType();
   if(gamepad_type == 0)      Serial.println("Unknown Controller type found");
   else if(gamepad_type == 1) Serial.println("DualShock Controller found");
   else if(gamepad_type == 2) Serial.println("GuitarHero Controller found");
@@ -255,23 +255,23 @@ void setup()
 //***********************************************************************
 // Main Program
 //***********************************************************************
-void loop() 
+void loop()
 {
   //exit if no controller found or GuitarHero controller
   if((gamepad_error == 1) || (gamepad_type == 2))
   {
     Serial.println("Invalid Controller!");
-    return; 
+    return;
   }
 
   //set up frame time
   currentTime = millis();
   if((currentTime - previousTime) > FRAME_TIME_MS)
   {
-    previousTime = currentTime; 
+    previousTime = currentTime;
 
     //read controller and process inputs
-    ps2x.read_gamepad(false, gamepad_vibrate);      
+    ps2x.read_gamepad(false, gamepad_vibrate);
     process_gamepad();
 
     //reset legs to home position when commanded
@@ -283,21 +283,21 @@ void loop()
         current_Y[leg_num] = HOME_Y[leg_num];
         current_Z[leg_num] = HOME_Z[leg_num];
       }
-      reset_position = false; 
+      reset_position = false;
     }
-    
+
     //position legs using IK calculations - unless set all to 90 degrees mode
     if(mode < 99)
     {
       for(leg_num=0; leg_num<6; leg_num++)
-        leg_IK(leg_num,current_X[leg_num]+offset_X[leg_num],current_Y[leg_num]+offset_Y[leg_num],current_Z[leg_num]+offset_Z[leg_num]);       
+        leg_IK(leg_num,current_X[leg_num]+offset_X[leg_num],current_Y[leg_num]+offset_Y[leg_num],current_Z[leg_num]+offset_Z[leg_num]);
     }
 
     //reset leg lift first pass flags if needed
-    if(mode != 4) 
+    if(mode != 4)
     {
-      leg1_IK_control = true; 
-      leg6_IK_control = true; 
+      leg1_IK_control = true;
+      leg6_IK_control = true;
     }
 
     battery_monitor();                        //battery monitor and output to LEDs
@@ -330,13 +330,13 @@ void process_gamepad()
     gait = 0;
     reset_position = true;
   }
-  if(ps2x.ButtonPressed(PSB_PAD_LEFT))    //stop & select gait 1 
+  if(ps2x.ButtonPressed(PSB_PAD_LEFT))    //stop & select gait 1
   {
     mode = 0;
     gait = 1;
     reset_position = true;
   }
-  if(ps2x.ButtonPressed(PSB_PAD_UP))      //stop & select gait 2  
+  if(ps2x.ButtonPressed(PSB_PAD_UP))      //stop & select gait 2
   {
     mode = 0;
     gait = 2;
@@ -352,10 +352,10 @@ void process_gamepad()
   {
     if(batt_LEDs > 3) gait_LED_color=0;   //display gait using red LEDs if battery strong
     else gait_LED_color=1;                //display gait using green LEDs if battery weak
-    if(ps2x.Button(PSB_PAD_DOWN))  LED_Bar(gait_LED_color,1);    //display gait 0 
-    if(ps2x.Button(PSB_PAD_LEFT))  LED_Bar(gait_LED_color,2);    //display gait 1 
+    if(ps2x.Button(PSB_PAD_DOWN))  LED_Bar(gait_LED_color,1);    //display gait 0
+    if(ps2x.Button(PSB_PAD_LEFT))  LED_Bar(gait_LED_color,2);    //display gait 1
     if(ps2x.Button(PSB_PAD_UP))    LED_Bar(gait_LED_color,3);    //display gait 2
-    if(ps2x.Button(PSB_PAD_RIGHT)) LED_Bar(gait_LED_color,4);    //display gait 3 
+    if(ps2x.Button(PSB_PAD_RIGHT)) LED_Bar(gait_LED_color,4);    //display gait 3
   }
   if(ps2x.ButtonPressed(PSB_TRIANGLE))    //select walk mode
   {
@@ -363,8 +363,8 @@ void process_gamepad()
     reset_position = true;
   }
   if(ps2x.Button(PSB_TRIANGLE))           //vibrate controller if walk button held
-    gamepad_vibrate = 64; 
-  else 
+    gamepad_vibrate = 64;
+  else
     gamepad_vibrate = 0;
   if(ps2x.ButtonPressed(PSB_SQUARE))      //control x-y-z with joysticks mode
   {
@@ -395,7 +395,7 @@ void process_gamepad()
   }
   if(ps2x.ButtonPressed(PSB_SELECT))      //set all servos to 90 degrees for calibration
   {
-    mode = 99;   
+    mode = 99;
   }
   if((ps2x.ButtonPressed(PSB_L1)) || (ps2x.ButtonPressed(PSB_R1)))
   {
@@ -427,18 +427,18 @@ void leg_IK(int leg_number,float X,float Y,float Z)
   L3 = sqrt(sq(L0) + sq(Z));
 
   //process only if reach is within possible range (not too long or too short!)
-  if((L3 < (TIBIA_LENGTH+FEMUR_LENGTH)) && (L3 > (TIBIA_LENGTH-FEMUR_LENGTH)))  
+  if((L3 < (TIBIA_LENGTH+FEMUR_LENGTH)) && (L3 > (TIBIA_LENGTH-FEMUR_LENGTH)))
   {
     //compute tibia angle
     phi_tibia = acos((sq(FEMUR_LENGTH) + sq(TIBIA_LENGTH) - sq(L3))/(2*FEMUR_LENGTH*TIBIA_LENGTH));
     theta_tibia = phi_tibia*RAD_TO_DEG - 23.0 + TIBIA_CAL[leg_number];
     theta_tibia = constrain(theta_tibia,0.0,180.0);
-  
+
     //compute femur angle
     gamma_femur = atan2(Z,L0);
     phi_femur = acos((sq(FEMUR_LENGTH) + sq(L3) - sq(TIBIA_LENGTH))/(2*FEMUR_LENGTH*L3));
     theta_femur = (phi_femur + gamma_femur)*RAD_TO_DEG + 14.0 + 90.0 + FEMUR_CAL[leg_number];
-    theta_femur = constrain(theta_femur,0.0,180.0);  
+    theta_femur = constrain(theta_femur,0.0,180.0);
 
     //compute coxa angle
     theta_coxa = atan2(X,Y)*RAD_TO_DEG + COXA_CAL[leg_number];
@@ -451,56 +451,56 @@ void leg_IK(int leg_number,float X,float Y,float Z)
         {
           theta_coxa = theta_coxa + 45.0;                 //compensate for leg mounting
           theta_coxa = constrain(theta_coxa,0.0,180.0);
-          coxa1_servo.write(int(theta_coxa)); 
-          femur1_servo.write(int(theta_femur)); 
-          tibia1_servo.write(int(theta_tibia)); 
+          coxa1_servo.write(int(theta_coxa));
+          femur1_servo.write(int(theta_femur));
+          tibia1_servo.write(int(theta_tibia));
         }
         break;
       case 1:
         theta_coxa = theta_coxa + 90.0;                 //compensate for leg mounting
         theta_coxa = constrain(theta_coxa,0.0,180.0);
-        coxa2_servo.write(int(theta_coxa)); 
-        femur2_servo.write(int(theta_femur)); 
-        tibia2_servo.write(int(theta_tibia)); 
+        coxa2_servo.write(int(theta_coxa));
+        femur2_servo.write(int(theta_femur));
+        tibia2_servo.write(int(theta_tibia));
         break;
       case 2:
         theta_coxa = theta_coxa + 135.0;                 //compensate for leg mounting
         theta_coxa = constrain(theta_coxa,0.0,180.0);
-        coxa3_servo.write(int(theta_coxa)); 
-        femur3_servo.write(int(theta_femur)); 
-        tibia3_servo.write(int(theta_tibia)); 
+        coxa3_servo.write(int(theta_coxa));
+        femur3_servo.write(int(theta_femur));
+        tibia3_servo.write(int(theta_tibia));
         break;
       case 3:
         if(theta_coxa < 0)                                //compensate for leg mounting
           theta_coxa = theta_coxa + 225.0;                // (need to use different
-        else                                              //  positive and negative offsets 
+        else                                              //  positive and negative offsets
           theta_coxa = theta_coxa - 135.0;                //  due to atan2 results above!)
         theta_coxa = constrain(theta_coxa,0.0,180.0);
-        coxa4_servo.write(int(theta_coxa)); 
-        femur4_servo.write(int(theta_femur)); 
-        tibia4_servo.write(int(theta_tibia)); 
+        coxa4_servo.write(int(theta_coxa));
+        femur4_servo.write(int(theta_femur));
+        tibia4_servo.write(int(theta_tibia));
         break;
       case 4:
         if(theta_coxa < 0)                                //compensate for leg mounting
           theta_coxa = theta_coxa + 270.0;                // (need to use different
-        else                                              //  positive and negative offsets 
+        else                                              //  positive and negative offsets
           theta_coxa = theta_coxa - 90.0;                 //  due to atan2 results above!)
         theta_coxa = constrain(theta_coxa,0.0,180.0);
-        coxa5_servo.write(int(theta_coxa)); 
-        femur5_servo.write(int(theta_femur)); 
-        tibia5_servo.write(int(theta_tibia)); 
+        coxa5_servo.write(int(theta_coxa));
+        femur5_servo.write(int(theta_femur));
+        tibia5_servo.write(int(theta_tibia));
         break;
       case 5:
         if(leg6_IK_control == true)                       //flag for IK or manual control of leg
         {
           if(theta_coxa < 0)                              //compensate for leg mounting
             theta_coxa = theta_coxa + 315.0;              // (need to use different
-          else                                            //  positive and negative offsets 
+          else                                            //  positive and negative offsets
             theta_coxa = theta_coxa - 45.0;               //  due to atan2 results above!)
           theta_coxa = constrain(theta_coxa,0.0,180.0);
-          coxa6_servo.write(int(theta_coxa)); 
-          femur6_servo.write(int(theta_femur)); 
-          tibia6_servo.write(int(theta_tibia)); 
+          coxa6_servo.write(int(theta_coxa));
+          femur6_servo.write(int(theta_femur));
+          tibia6_servo.write(int(theta_tibia));
         }
         break;
     }
@@ -518,7 +518,7 @@ void tripod_gait()
   commandedX = map(ps2x.Analog(PSS_RY),0,255,127,-127);
   commandedY = map(ps2x.Analog(PSS_RX),0,255,-127,127);
   commandedR = map(ps2x.Analog(PSS_LX),0,255,127,-127);
-    
+
   //if commands more than deadband then process
   if((abs(commandedX) > 15) || (abs(commandedY) > 15) || (abs(commandedR) > 15) || (tick>0))
   {
@@ -593,7 +593,7 @@ void wave_gait()
           current_X[leg_num] = current_X[leg_num] - amplitudeX/numTicks/2.5;
           current_Y[leg_num] = current_Y[leg_num] - amplitudeY/numTicks/2.5;
           current_Z[leg_num] = HOME_Z[leg_num];
-          if(tick >= numTicks-1) 
+          if(tick >= numTicks-1)
             wave_case[leg_num] = 3;
           break;
         case 5:                               //move foot back one-fifth (on the ground)
@@ -680,13 +680,13 @@ void ripple_gait()
     //increment tick
     if(tick < numTicks-1) tick++;
     else tick = 0;
-  }  
+  }
 }
 
 
 //***********************************************************************
 // Tetrapod Gait
-// Right front and left rear legs move forward together, then right  
+// Right front and left rear legs move forward together, then right
 // rear and left middle, and finally right middle and left front.
 //***********************************************************************
 void tetrapod_gait()
@@ -729,7 +729,7 @@ void tetrapod_gait()
     //increment tick
     if(tick < numTicks-1) tick++;
     else tick = 0;
-  } 
+  }
 }
 
 
@@ -748,7 +748,7 @@ void compute_strides()
   cosRotZ = cos(radians(strideR));
 
   //set duration for normal and slow speed modes
-  if(gait_speed == 0) duration = 1080; 
+  if(gait_speed == 0) duration = 1080;
   else duration = 3240;
 }
 
@@ -778,7 +778,7 @@ void compute_amplitudes()
   else
     amplitudeZ = step_height_multiplier * (strideY + rotOffsetY) / 4.0;
 }
-      
+
 
 //***********************************************************************
 // Body translate with controller (xyz axes)
@@ -789,7 +789,7 @@ void translate_control()
   translateX = map(ps2x.Analog(PSS_RY),0,255,-2*TRAVEL,2*TRAVEL);
   for(leg_num=0; leg_num<6; leg_num++)
     current_X[leg_num] = HOME_X[leg_num] + translateX;
-    
+
   //compute Y direction move
   translateY = map(ps2x.Analog(PSS_RX),0,255,2*TRAVEL,-2*TRAVEL);
   for(leg_num=0; leg_num<6; leg_num++)
@@ -798,9 +798,9 @@ void translate_control()
   //compute Z direction move
   translateZ = ps2x.Analog(PSS_LY);
   if(translateZ > 127)
-    translateZ = map(translateZ,128,255,0,TRAVEL); 
+    translateZ = map(translateZ,128,255,0,TRAVEL);
   else
-    translateZ = map(translateZ,0,127,-3*TRAVEL,0);    
+    translateZ = map(translateZ,0,127,-3*TRAVEL,0);
   for(leg_num=0; leg_num<6; leg_num++)
     current_Z[leg_num] = HOME_Z[leg_num] + translateZ;
 
@@ -843,9 +843,9 @@ void rotate_control()
   //compute Z direction move
   translateZ = ps2x.Analog(PSS_LY);
   if(translateZ > 127)
-    translateZ = map(translateZ,128,255,0,TRAVEL); 
+    translateZ = map(translateZ,128,255,0,TRAVEL);
   else
-    translateZ = map(translateZ,0,127,-3*TRAVEL,0);    
+    translateZ = map(translateZ,0,127,-3*TRAVEL,0);
 
   for(int leg_num=0; leg_num<6; leg_num++)
   {
@@ -894,18 +894,18 @@ void one_leg_lift()
   //read current leg servo 1 positions the first time
   if(leg1_IK_control == true)
   {
-    leg1_coxa  = coxa1_servo.read(); 
-    leg1_femur = femur1_servo.read(); 
-    leg1_tibia = tibia1_servo.read(); 
+    leg1_coxa  = coxa1_servo.read();
+    leg1_femur = femur1_servo.read();
+    leg1_tibia = tibia1_servo.read();
     leg1_IK_control = false;
   }
 
   //read current leg servo 6 positions the first time
   if(leg6_IK_control == true)
   {
-    leg6_coxa  = coxa6_servo.read(); 
-    leg6_femur = femur6_servo.read(); 
-    leg6_tibia = tibia6_servo.read(); 
+    leg6_coxa  = coxa6_servo.read();
+    leg6_femur = femur6_servo.read();
+    leg6_tibia = tibia6_servo.read();
     leg6_IK_control = false;
   }
 
@@ -948,11 +948,11 @@ void one_leg_lift()
   }
 
   //process z height adjustment
-  if(z_height_left>z_height_right) 
+  if(z_height_left>z_height_right)
     z_height_right = z_height_left;             //use max left or right value
   if(batt_LEDs > 3) z_height_LED_color=0;       //use red LEDs if battery strong
   else z_height_LED_color=1;                    //use green LEDs if battery weak
-  LED_Bar(z_height_LED_color,z_height_right);   //display Z height 
+  LED_Bar(z_height_LED_color,z_height_right);   //display Z height
   if(capture_offsets == true)                   //lock in Z height if commanded
   {
     step_height_multiplier = 1.0 + ((z_height_right - 1.0) / 3.0);
@@ -964,33 +964,33 @@ void one_leg_lift()
 //***********************************************************************
 // Set all servos to 90 degrees
 // Note: this is useful for calibration/alignment of the servos
-// i.e: set COXA_CAL[6], FEMUR_CAL[6], and TIBIA_CAL[6] values in  
+// i.e: set COXA_CAL[6], FEMUR_CAL[6], and TIBIA_CAL[6] values in
 //      constants section above so all angles appear as 90 degrees
 //***********************************************************************
 void set_all_90()
 {
-  coxa1_servo.write(90+COXA_CAL[0]); 
-  femur1_servo.write(90+FEMUR_CAL[0]); 
-  tibia1_servo.write(90+TIBIA_CAL[0]); 
-  
-  coxa2_servo.write(90+COXA_CAL[1]); 
-  femur2_servo.write(90+FEMUR_CAL[1]); 
-  tibia2_servo.write(90+TIBIA_CAL[1]); 
-  
-  coxa3_servo.write(90+COXA_CAL[2]); 
-  femur3_servo.write(90+FEMUR_CAL[2]); 
-  tibia3_servo.write(90+TIBIA_CAL[2]); 
-  
-  coxa4_servo.write(90+COXA_CAL[3]); 
-  femur4_servo.write(90+FEMUR_CAL[3]); 
-  tibia4_servo.write(90+TIBIA_CAL[3]); 
-  
-  coxa5_servo.write(90+COXA_CAL[4]); 
-  femur5_servo.write(90+FEMUR_CAL[4]); 
-  tibia5_servo.write(90+TIBIA_CAL[4]); 
-  
-  coxa6_servo.write(90+COXA_CAL[5]); 
-  femur6_servo.write(90+FEMUR_CAL[5]); 
+  coxa1_servo.write(90+COXA_CAL[0]);
+  femur1_servo.write(90+FEMUR_CAL[0]);
+  tibia1_servo.write(90+TIBIA_CAL[0]);
+
+  coxa2_servo.write(90+COXA_CAL[1]);
+  femur2_servo.write(90+FEMUR_CAL[1]);
+  tibia2_servo.write(90+TIBIA_CAL[1]);
+
+  coxa3_servo.write(90+COXA_CAL[2]);
+  femur3_servo.write(90+FEMUR_CAL[2]);
+  tibia3_servo.write(90+TIBIA_CAL[2]);
+
+  coxa4_servo.write(90+COXA_CAL[3]);
+  femur4_servo.write(90+FEMUR_CAL[3]);
+  tibia4_servo.write(90+TIBIA_CAL[3]);
+
+  coxa5_servo.write(90+COXA_CAL[4]);
+  femur5_servo.write(90+FEMUR_CAL[4]);
+  tibia5_servo.write(90+TIBIA_CAL[4]);
+
+  coxa6_servo.write(90+COXA_CAL[5]);
+  femur6_servo.write(90+FEMUR_CAL[5]);
   tibia6_servo.write(90+TIBIA_CAL[5]);
 }
 
@@ -1015,7 +1015,7 @@ void battery_monitor()
 
   //remap battery voltage for display on the LEDs
   //minimum = 10.2V, maximum (full) = 12.3V
-  batt_LEDs = map(constrain(batt_voltage,1020,1230),1020,1230,1,8);  
+  batt_LEDs = map(constrain(batt_voltage,1020,1230),1020,1230,1,8);
   if(batt_LEDs > 3) LED_Bar(1,batt_LEDs); //display green if voltage >= 11.40V
   else LED_Bar(0,batt_LEDs);              //display red if voltage < 11.40V
 }
@@ -1043,7 +1043,7 @@ void LED_Bar(int LED_color,int LED_count)
       digitalWrite((GREEN_LED1+(4*i)),LOW);
     }
   }
-  
+
   //display a green bar
   else
   {
@@ -1098,7 +1098,7 @@ void print_debug()
   currentTime = millis();
   Serial.print(currentTime-previousTime);
   Serial.print(",");
-  Serial.print(float(batt_voltage)/100.0); 
+  Serial.print(float(batt_voltage)/100.0);
   Serial.print("\n");
 }
 

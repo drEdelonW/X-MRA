@@ -351,7 +351,7 @@ void tetrapod_gait(v3i inp) {
 //***********************************************************************
 void translate_control(v3i inp) {
   v3i translate;
-  
+
   translate.x = map(inp.x, 0, 255, -2 * TRAVEL, 2 * TRAVEL);  //compute X direction move
   translate.y = map(inp.y, 0, 255, 2 * TRAVEL, -2 * TRAVEL);  //compute Y direction move
   translate.z = inp.z;    //compute Z direction move
@@ -518,9 +518,9 @@ void  one_leg_lift(v3i inp, int ext) {
   if (z_height_left > z_height_right)
     z_height_right = z_height_left;             //use max left or right value
 #ifdef DEF_LEDS
-  if (batt_LEDs > 3) 
+  if (batt_LEDs > 3)
     z_height_LED_color = 0;    //use red LEDs if battery strong
-  else 
+  else
     z_height_LED_color = 1;                  //use green LEDs if battery weak
   LED_Bar(z_height_LED_color, z_height_right);  //display Z height
 #endif

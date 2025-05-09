@@ -24,7 +24,7 @@ typedef enum {
 } en_walk_mode;
 
 typedef enum {
-  ga_tripod,   
+  ga_tripod,
   ga_wave,
   ga_ripple,
   ga_tetrapod

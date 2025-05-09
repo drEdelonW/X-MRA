@@ -34,13 +34,13 @@ void drawWindow(){
     // Бесконечный цикл для обработки событий
     while (1) {
         XNextEvent(display, &event);
-        
+
         // Рисуем или перерисовываем окно
         if (event.type == Expose) {
             XFillRectangle(display, window, DefaultGC(display, s), 20, 20, 10, 10);
             XDrawString(display, window, DefaultGC(display, s), 50, 50, msg, strlen(msg));
         }
-        
+
         // Закрытие окна при нажатии клавиши
         if (event.type == KeyPress)
             break;

@@ -1,31 +1,27 @@
-#pragma once 
+#pragma once
 #include "pwm_servo.hpp"
 #include <tuple>
 
 class ArachnidLeg {
 public:
-    // Конструктор
     ArachnidLeg(Servo* coxaServo, Servo* femurServo, Servo* tibiaServo);
 
-    // Установка положения суставов ноги
-    void setJointAngles(float coxaAngle, float femurAngle, float tibiaAngle);
+    void setJointAngles(float coxaAngle, float femurAngle, float tibiaAngle);   // Set joint angles directly
 
-    // Установка положения кончика ноги с помощью обратной кинематики
-    void setTipPosition(float x, float y, float z);
+    void setTipPosition(float x, float y, float z);             // Set leg tip position using inverse kinematics
+    std::tuple<float, float, float> getTipPosition() const;     // Get current tip position (forward kinematics or cached)
 
     void deactivate();
-    // Получение текущего положения кончика ноги
-    std::tuple<float, float, float> getTipPosition() const;
 
 private:
     Servo* coxaServo_;
     Servo* femurServo_;
     Servo* tibiaServo_;
 
-    const float coxaLength_ = 4.0f;    // Длина коксы
-    const float femurLength_ = 3.5f;   // Длина фемура
-    const float tibiaLength_ = 8.7f;   // Длина тибии
+    const Millimeters coxaLength_ = 4.0f;    // Length of coxa segment
+    const Millimeters femurLength_ = 3.5f;   // Length of femur segment
+    const Millimeters tibiaLength_ = 8.7f;   // Length of tibia segment
 
-    // Обратная кинематика для расчета положения кончика ноги
+    // Inverse kinematics calculation
     void calculateInverseKinematics(float x, float y, float z);
 };

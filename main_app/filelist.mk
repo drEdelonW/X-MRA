@@ -23,6 +23,7 @@ INCLUDE_PATHS += /usr/include/SDL2
 
 INCLUDE_PATHS += $(SRC_DIR)
 INCLUDE_PATHS += $(SRC_DIR)/tools
+INCLUDE_PATHS += $(SRC_DIR)/tools/Math
 
 SRCS += $(SRC_DIR)/main.cpp
 

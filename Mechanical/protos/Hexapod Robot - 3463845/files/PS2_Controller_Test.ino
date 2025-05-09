@@ -7,27 +7,27 @@
 //***********************************************************************
 //Important Usage and troubleshooting notes:
 //***********************************************************************
-// For this test program, the arduino and the remote receiver will be powered 
-// by the USB cable from your PC for this testing purpose - you do not want to 
-// connect the LiPo battery that powers the hexapod for this.  Load the test 
-// sketch and you should see the remote joystick positions and the button presses 
-// on the arduino Serial Monitor window and verify that the remote control is 
+// For this test program, the arduino and the remote receiver will be powered
+// by the USB cable from your PC for this testing purpose - you do not want to
+// connect the LiPo battery that powers the hexapod for this.  Load the test
+// sketch and you should see the remote joystick positions and the button presses
+// on the arduino Serial Monitor window and verify that the remote control is
 // working properly.
 //
 // The guy who developed the PS2 library also has a troubleshooting page at:
 // http://www.billporter.info/2011/03/27/arduino-playstation-2-controller-library-troubleshooting-guide/
 //
 // Here are a couple other things to try if your controller is not working.
-//   1. Find the file named "PS2X_lib.h"  Mine is in the path Documents\Arduino\libraries\PS2X_lib.  
+//   1. Find the file named "PS2X_lib.h"  Mine is in the path Documents\Arduino\libraries\PS2X_lib.
 //   Edit it with a text editor (WordPad works well) and find these lines:
 //      #define CTRL_CLK        4
 //      #define CTRL_BYTE_DELAY 3
 //   Change both values to 16:
 //      #define CTRL_CLK        16
 //      #define CTRL_BYTE_DELAY 16
-//   Save the file and close WordPad. 
+//   Save the file and close WordPad.
 //
-//   2. In the same folder as the above, find the file named "PS2X_lib.cpp".  
+//   2. In the same folder as the above, find the file named "PS2X_lib.cpp".
 //   Edit it with the text editor and find these lines:
 //      pinMode(dat, INPUT);
 //      digitalWrite(dat, HIGH); //enable pull-up
@@ -81,7 +81,7 @@ void setup()
 {
   //start serial
   Serial.begin(115200);
-  
+
   //connect the gamepad
   gamepad_error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_ATT, PS2_DAT, PRESSURES, RUMBLE);
   if(gamepad_error == 0)      Serial.println("Controller attached");
@@ -90,7 +90,7 @@ void setup()
   else if(gamepad_error == 3) Serial.println("Controller refusing to enter Pressures mode");
 
   //verify the gamepad type
-  gamepad_type = ps2x.readType(); 
+  gamepad_type = ps2x.readType();
   if(gamepad_type == 0)      Serial.println("Unknown Controller type found");
   else if(gamepad_type == 1) Serial.println("DualShock Controller found");
   else if(gamepad_type == 2) Serial.println("GuitarHero Controller found");
@@ -104,23 +104,23 @@ void setup()
 //***********************************************************************
 // Main Program
 //***********************************************************************
-void loop() 
+void loop()
 {
   //exit if no controller found or GuitarHero controller
   if((gamepad_error == 1) || (gamepad_type == 2))
   {
     Serial.println("Invalid Controller!");
-    return; 
+    return;
   }
 
   //set up frame time
   currentTime = millis();
   if((currentTime - previousTime) > FRAME_TIME_MS)
   {
-    previousTime = currentTime; 
+    previousTime = currentTime;
 
     //read controller and process inputs
-    ps2x.read_gamepad(false, gamepad_vibrate);      
+    ps2x.read_gamepad(false, gamepad_vibrate);
     Serial.print(ps2x.Analog(PSS_LX));
     Serial.print(",");
     Serial.print(ps2x.Analog(PSS_LY));
@@ -142,9 +142,9 @@ void process_gamepad()
 {
   if(ps2x.ButtonPressed(PSB_PAD_DOWN))
     Serial.print("Down");
-  if(ps2x.ButtonPressed(PSB_PAD_LEFT)) 
+  if(ps2x.ButtonPressed(PSB_PAD_LEFT))
     Serial.print("Left");
-  if(ps2x.ButtonPressed(PSB_PAD_UP))   
+  if(ps2x.ButtonPressed(PSB_PAD_UP))
     Serial.print("Up");
   if(ps2x.ButtonPressed(PSB_PAD_RIGHT))
     Serial.print("Right");

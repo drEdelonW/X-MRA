@@ -1,10 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-using Hertz = float;
-using MicroSeconds = uint32_t;
-using MilliSeconds = uint32_t;
-using DutyCycle = float;        // Range: 0.0 to 1.0
+#include "PhysTypes.hpp"
 using Tick = uint16_t;          // Controller-specific tick unit
 
 class ProtoPWM {

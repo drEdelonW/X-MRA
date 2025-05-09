@@ -90,11 +90,11 @@ void PA_PCA9685::setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phase
 
     uint16_t on = phaseShift;   // Вычисляем значения on и off, учитывая сдвиг фазы
     uint16_t off = (on + duration) % 4096; // Учитываем переполнение
-    
+
     if (channelInversion_[channel]) {
         std::swap(on, off);    // Инвертируем сигнал для данного канала
     }
-    
+
     if (channel < LED_NUM) {
         _writeRegister(LED0_ON_L  + 4 * channel, on & 0xFF);
         _writeRegister(LED0_ON_H  + 4 * channel, on >> 8);
@@ -108,7 +108,7 @@ uint16_t PA_PCA9685::getDutyCycle(uint8_t channel) {
         fprintf(stderr, "Error: Channel number out of range (0-15).\n");
         return -1;
     }
-    
+
 
     int onValue     = _readRegister(LED0_ON_L  + 4 * channel) |
                      (_readRegister(LED0_ON_H  + 4 * channel) << 8);

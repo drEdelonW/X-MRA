@@ -49,10 +49,10 @@ int main_joy(int argc, char *argv[]) {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     break;
                 }
-            } else 
+            } else
 
             updateJoystickState(event, joystickState);
-            
+
             if (joystickState.buttons[SDL_CONTROLLER_BUTTON_GUIDE]) {
                 break;
             }
@@ -61,13 +61,13 @@ int main_joy(int argc, char *argv[]) {
             printf("\t\t\t\t\t\t\t\tButtons: "); for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i) {   printf("%i:%s  ", i, joystickState.buttons[i] ? "V" : " "); }
             printf("              \r");
         }
-        
+
         SDL_JoystickClose(joystick);
     } else {
         printf("no Joystick found");
     }
     printf("\n");
-    
+
     // SDL_DestroyRenderer(renderer);
     // SDL_DestroyWindow(window);
     // SDL_Quit();

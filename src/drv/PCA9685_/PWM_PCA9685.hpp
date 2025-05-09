@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #define PWM_ARRAY PCA9685
 
 #include <stdint.h>
@@ -15,7 +15,7 @@ public:
     void sleepMode();   // Method to put the chip into sleep mode
 
     void printStatus(); // Method to print the state of the registers
-    
+
     float getRealFrequencyHz(float desiredFreq);    // Method to calculate the real PWM frequency based on the desired frequency
     int   calcUnitDurationUs();   // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
 

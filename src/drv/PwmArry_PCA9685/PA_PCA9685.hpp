@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "proto_PWM.hpp"
 #define PWM_ARRAY PA_PCA9685
 
@@ -31,7 +31,7 @@ public:
     void sleepMode();   // Method to put the chip into sleep mode
 
     void printStatus(); // Method to print the state of the registers
-    
+
     Hertz getRealFrequencyHz(Hertz desiredFreq);    // Method to calculate the real PWM frequency based on the desired frequency
     MicroSeconds   calcUnitDurationUs();   // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
 
@@ -55,6 +55,6 @@ private:
 
     void         _busInit();
     void         _busDeinit();
-    void         _writeRegister(uint8_t reg, PCA_Register value);    // Function to write to a register
-    PCA_Register _readRegister(uint8_t reg);    // Function to read from a register
+    void         _writeRegister(PCA_Register reg, uint8_t value);    // Function to write to a register
+    uint8_t      _readRegister( PCA_Register reg);    // Function to read from a register
 };

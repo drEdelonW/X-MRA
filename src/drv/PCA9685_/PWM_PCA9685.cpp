@@ -37,7 +37,7 @@ void PCA9685::printStatus() {
     REG_TYPE mode1      = _readRegister(MODE1);
     REG_TYPE mode2      = _readRegister(MODE2);
     REG_TYPE prescale   = _readRegister(PRE_SCALE);
-    
+
     float oscFreq = 25000000.0; // Осцилляторная частота в Гц
     float pwmFreq = oscFreq / (4096.0 * (prescale + 1)); // Расчет частоты ШИМ
 
@@ -57,8 +57,8 @@ void PCA9685::printStatus() {
         int onValue  = _readRegister(LED0_ON_L + 4 * channel) | (_readRegister(LED0_ON_H + 4 * channel) << 8);
         int offValue = _readRegister(LED0_OFF_L + 4 * channel) | (_readRegister(LED0_OFF_H + 4 * channel) << 8);
 
-        std::cout   << "Канал "     << std::setw(2) << std::setfill('0') << channel 
-                    << ": ON = "    << std::setw(4) << std::setfill('0') << onValue 
+        std::cout   << "Канал "     << std::setw(2) << std::setfill('0') << channel
+                    << ": ON = "    << std::setw(4) << std::setfill('0') << onValue
                     << ", OFF = "   << std::setw(4) << std::setfill('0') << offValue
                     << std::endl;
     }
@@ -124,11 +124,11 @@ void PCA9685::setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phaseShi
 
     uint16_t on = phaseShift;   // Вычисляем значения on и off, учитывая сдвиг фазы
     uint16_t off = (on + duration) % 4096; // Учитываем переполнение
-    
+
     if (channelInversion_[channel]) {
         std::swap(on, off);    // Инвертируем сигнал для данного канала
     }
-    
+
     if (channel < LED_NUM) {
         _writeRegister(LED0_ON_L  + 4 * channel, on & 0xFF);
         _writeRegister(LED0_ON_H  + 4 * channel, on >> 8);
