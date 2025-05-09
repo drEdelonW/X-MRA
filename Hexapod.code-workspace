@@ -7,7 +7,10 @@
 	"settings": {
 		"files.associations": {
 			"compare": "cpp",
-			"array": "cpp"
+			"array": "cpp",
+			"algorithm": "cpp",
+			"cmath": "cpp",
+			"cstdint": "cpp"
 		}
 	}
 }

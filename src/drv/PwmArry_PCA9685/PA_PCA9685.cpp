@@ -1,4 +1,5 @@
 #include "PA_PCA9685.hpp"
+#include "PA_PCA9685_private.hpp"
 
 #include <iomanip>   //std::setfill
 #include <bitset>    //std::bitset
@@ -9,33 +10,38 @@
 
 #define MAX_VALUE (4095)
 
-PA_PCA9685::PA_PCA9685(uint8_t bus, uint8_t address) :
+
+PCA9685::PCA9685(uint8_t bus, uint8_t address) :
     i2c_bus(bus),
-    i2c_address(address),
+    i2c_address(address), PWM{
+        PWMChannel(*this, 0),  PWMChannel(*this, 1),  PWMChannel(*this, 2),  PWMChannel(*this, 3),
+        PWMChannel(*this, 4),  PWMChannel(*this, 5),  PWMChannel(*this, 6),  PWMChannel(*this, 7),
+        PWMChannel(*this, 8),  PWMChannel(*this, 9),  PWMChannel(*this,10),  PWMChannel(*this,11),
+        PWMChannel(*this,12),  PWMChannel(*this,13),  PWMChannel(*this,14),  PWMChannel(*this,15)},
     channelInversion_{false} {
     _busInit();
     printStatus();
 }
 
-PA_PCA9685::~PA_PCA9685() {
+PCA9685::~PCA9685() {
     _busDeinit();
 }
 
-void PA_PCA9685::wakeUp() {
+void PCA9685::wakeUp() {
     PCA_Register mode1 = _readRegister(MODE1);
     mode1 &= ~(1 << 4);    // Сброс бита сна (бит 4)
     _writeRegister(MODE1, mode1);
     usleep(500);    // Ждем 500 микросекунд, чтобы убедиться в стабилизации осциллятора
 }
 
-void PA_PCA9685::sleepMode() {
+void PCA9685::sleepMode() {
     PCA_Register mode1 = _readRegister(MODE1);
     mode1 |= (1 << 4);  // Установка бита сна (бит 4)
     _writeRegister(MODE1, mode1);
 }
 
-Hertz PA_PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
-    float oscFreq = 25000000.0; // Осцилляторная частота PA_PCA9685 в Гц (25 МГц)
+Hertz PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
+    float oscFreq = 25000000.0; // Осцилляторная частота PCA9685 в Гц (25 МГц)
     float prescaleVal = oscFreq / (4096 * desiredFreq) - 1;
     int prescale = std::round(prescaleVal); // Округляем до ближайшего целого
     // Обратное преобразование для получения реальной частоты
@@ -44,7 +50,7 @@ Hertz PA_PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
     return realFreq;
 }
 
-void PA_PCA9685::setFreq_Hz(Hertz freq) {
+void PCA9685::setFreq_Hz(Hertz freq) {
     Hertz prescale_val = 25000000.0;
     prescale_val /= 4096.0;
     prescale_val /= float(freq);
@@ -69,7 +75,7 @@ void PA_PCA9685::setFreq_Hz(Hertz freq) {
     _writeRegister(MODE1, old_mode | 0x80);
 }
 
-float PA_PCA9685::getFreq_Hz() {
+float PCA9685::getFreq_Hz() {
     PCA_Register prescale = _readRegister(PRE_SCALE);
     float freq = 25000000.0f; // Осцилляторная частота 25 МГц
     freq /= 4096.0f; // Разрешение ШИМ 12 бит
@@ -77,14 +83,14 @@ float PA_PCA9685::getFreq_Hz() {
     return freq;
 }
 
-MicroSeconds PA_PCA9685::calcUnitDurationUs() {
+MicroSeconds PCA9685::calcUnitDurationUs() {
     float period = 1 / getFreq_Hz(); // Период ШИМ в секундах
     float unitWeight = (period / 4096) * 1000000; // Вес единицы в микросекундах
 
     return static_cast<int>(std::round(unitWeight));    // Округляем результат до ближайшего целого числа
 }
 
-void PA_PCA9685::setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phaseShift) {
+void PCA9685::setDutyCycle(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift) {
     duration = duration % 4096;
     phaseShift = phaseShift % 4096;
 
@@ -103,7 +109,7 @@ void PA_PCA9685::setDutyCycle(uint8_t channel, uint16_t duration, uint16_t phase
     }
 }
 
-uint16_t PA_PCA9685::getDutyCycle(uint8_t channel) {
+MicroSeconds PCA9685::getDutyCycle(uint8_t channel) {
     if (!(channel < LED_NUM)) {
         fprintf(stderr, "Error: Channel number out of range (0-15).\n");
         return -1;
@@ -115,7 +121,7 @@ uint16_t PA_PCA9685::getDutyCycle(uint8_t channel) {
     int offValue    = _readRegister(LED0_OFF_L + 4 * channel) |
                      (_readRegister(LED0_OFF_H + 4 * channel) << 8);
 
-    int dutyCycle;
+    MicroSeconds dutyCycle;
     if (offValue >= onValue) {
         dutyCycle = offValue - onValue;
     } else {
@@ -125,19 +131,19 @@ uint16_t PA_PCA9685::getDutyCycle(uint8_t channel) {
     return dutyCycle;
 }
 
-void PA_PCA9685::setInversion(uint8_t channel, bool inverted) {
+void PCA9685::setInversion(uint8_t channel, bool inverted) {
     if (channel < LED_NUM) {
         channelInversion_[channel] = inverted;
     }
 }
 
-bool PA_PCA9685::getInversion(uint8_t channel) const {
+bool PCA9685::getInversion(uint8_t channel) {
     if (channel < LED_NUM) {
         return channelInversion_[channel];
     }
     return false;
 }
 
-uint16_t PA_PCA9685::getMaxValue() const {
+uint16_t PCA9685::getMaxValue() {
     return MAX_VALUE;
 }

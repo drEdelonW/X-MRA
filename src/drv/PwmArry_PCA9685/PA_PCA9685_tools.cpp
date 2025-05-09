@@ -1,8 +1,9 @@
 #include "PA_PCA9685.hpp"
+#include "PA_PCA9685_private.hpp"
 
 #include "common_tools.h"
 
-void PA_PCA9685::printStatus() {
+void PCA9685::printStatus() {
     PCA_Register mode1      = _readRegister(MODE1);
     PCA_Register mode2      = _readRegister(MODE2);
     PCA_Register prescale   = _readRegister(PRE_SCALE);
@@ -10,7 +11,7 @@ void PA_PCA9685::printStatus() {
     float oscFreq = 25000000.0; // Осцилляторная частота в Гц
     float pwmFreq = oscFreq / (4096.0 * (prescale + 1)); // Расчет частоты ШИМ
 
-    printf("Extended state of PA_PCA9685[%X]:\n",i2c_address);
+    printf("Extended state of PCA9685[%X]:\n",i2c_address);
     printf("MODE1: " BYTE_TO_BINARY_PATTERN " (sleep mode: %s)\n",
            BYTE_TO_BINARY(mode1),
            (mode1 & 0x10) ? "ON" : "OFF");

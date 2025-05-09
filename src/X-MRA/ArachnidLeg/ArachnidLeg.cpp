@@ -1,39 +1,53 @@
 #include "ArachnidLeg.hpp"
-
 #include <cmath>
 
-ArachnidLeg::ArachnidLeg(Servo* coxaServo, Servo* femurServo, Servo* tibiaServo)
-: coxaServo_(coxaServo), femurServo_(femurServo), tibiaServo_(tibiaServo) {}
+ArachnidLeg::ArachnidLeg(ProtoServo& coxaServo, ProtoServo& femurServo, ProtoServo& tibiaServo)
+    : coxaServo_(coxaServo), femurServo_(femurServo), tibiaServo_(tibiaServo) {}
 
-void ArachnidLeg::setJointAngles(float coxaAngle, float femurAngle, float tibiaAngle) {
-    coxaServo_->setAngleDegrees(coxaAngle);
-    femurServo_->setAngleDegrees(femurAngle);
-    tibiaServo_->setAngleDegrees(tibiaAngle);
+void ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
+    coxaServo_.setAngle(coxaAngle);
+    femurServo_.setAngle(femurAngle);
+    tibiaServo_.setAngle(tibiaAngle);
 }
 
 void ArachnidLeg::deactivate() {
-    coxaServo_->deactivate();
-    femurServo_->deactivate();
-    tibiaServo_->deactivate();
+    coxaServo_.disable();
+    femurServo_.disable();
+    tibiaServo_.disable();
 }
 
-void ArachnidLeg::setTipPosition(float x, float y, float z) {
-    float distanceToTarget = sqrt(x * x + y * y);
-
-    // Вычисляем углы для фемура и тибии с использованием обратной кинематики
-    float angleFemur = acos((tibiaLength_*tibiaLength_ - femurLength_*femurLength_ - distanceToTarget*distanceToTarget) / (-2 * femurLength_ * distanceToTarget));
-    float angleTibia = acos((distanceToTarget*distanceToTarget - femurLength_*femurLength_ - tibiaLength_*tibiaLength_) / (-2 * femurLength_ * tibiaLength_));
-
-    // Вычисляем угол для коксы
+void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
+    // Coxa angle from projection onto XY-plane
     float angleCoxa = atan2(y, x);
+    coxaServo_.setAngle(Angle::fromRadians(angleCoxa));
 
-    // Установка углов суставов напрямую в радианах
-    coxaServo_->setAngleRadians(angleCoxa);
-    femurServo_->setAngleRadians(angleFemur);
-    tibiaServo_->setAngleRadians(angleTibia);
+    // Shift to local femur-tibia plane
+    float planarX = sqrt(x * x + y * y) - coxaLength_;
+    float planarZ = -z; // downward is positive
+
+    // Distance from femur joint to target
+    float dist = sqrt(planarX * planarX + planarZ * planarZ);
+    dist = clamp(dist, 1e-3f, femurLength_ + tibiaLength_ - 1e-3f);
+
+    float angleToTarget = atan2(planarZ, planarX);
+
+    float a = femurLength_;
+    float b = tibiaLength_;
+    float c = dist;
+
+    // Use law of cosines
+    float angleA = acos(clamp((b*b + c*c - a*a) / (2*b*c), -1.0f, 1.0f)); // femur
+    float angleB = acos(clamp((a*a + b*b - c*c) / (2*a*b), -1.0f, 1.0f)); // tibia
+
+    float angleFemur = angleToTarget + angleA;
+    float angleTibia = M_PI - angleB;
+
+    femurServo_.setAngle(Angle::fromRadians(angleFemur));
+    tibiaServo_.setAngle(Angle::fromRadians(angleTibia));
 }
-std::tuple<float, float, float> ArachnidLeg::getTipPosition() const {
-    // Реализация получения текущего положения кончика ноги
-    // ...
-    return std::make_tuple(0.0f, 0.0f, 0.0f);
-}
+
+// std::tuple<float, float, float> ArachnidLeg::getTipPosition() const {
+//     // Stub for forward kinematics to retrieve current tip position
+//     // ...
+//     return std::make_tuple(0.0f, 0.0f, 0.0f);
+// }

@@ -1,13 +1,15 @@
 #pragma once
+
 #include <stdint.h>
 
 #ifndef M_PI
   #define M_PI 3.14159265358979323846f
 #endif
 
-#define DEG_TO_RAD(x) ((x) * M_PI / 180.0f)
-#define RAD_TO_DEG(x) ((x) * 180.0f / M_PI)
-
+// Local fallback clamp
+inline float clamp(float val, float minVal, float maxVal) {
+  return (val < minVal) ? minVal : (val > maxVal ? maxVal : val);
+}
 
 struct Degrees {
     explicit constexpr Degrees(float v) : value(v) {}
@@ -20,37 +22,28 @@ struct Radians {
 };
 
 class Angle {
-    public:
-        constexpr Angle() : radians_(0.0f) {}
+public:
+    Angle();
+    explicit Angle(Radians r);
+    explicit Angle(Degrees d);
 
-        constexpr Angle(Radians r) : radians_(r.value) {}
+    static Angle fromDegrees(float deg);
+    static Angle fromRadians(float rad);
 
-        constexpr Angle(Degrees d)
-            : radians_(d.value * (M_PI / 180.0f)) {}
+    float asRadians() const;
+    float asDegrees() const;
 
-        constexpr float asRadians() const { return radians_; }
+    void setRadians(Radians r);
+    void setDegrees(Degrees d);
 
-        constexpr float asDegrees() const {
-            return radians_ * (180.0f / M_PI);
-        }
+    Angle& operator+=(const Angle& other);
+    Angle& operator-=(const Angle& other);
+    Angle  operator+(const Angle& other) const;
+    Angle  operator-(const Angle& other) const;
 
-        void setRadians(Radians r) { radians_ = r.value; }
+    bool operator==(const Angle& other) const;
+    bool operator!=(const Angle& other) const;
 
-        void setDegrees(Degrees d) {
-            radians_ = d.value * (M_PI / 180.0f);
-        }
-
-        // Optional arithmetic operators
-        Angle& operator+=(const Angle& other) {
-            radians_ += other.radians_;
-            return *this;
-        }
-
-        Angle operator+(const Angle& other) const {
-            return Angle(Radians{radians_ + other.radians_});
-        }
-
-    private:
-        float radians_;
-    };
-    
+private:
+    float radians_;
+};
