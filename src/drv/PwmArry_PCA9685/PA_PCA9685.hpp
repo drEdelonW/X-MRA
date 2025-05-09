@@ -51,7 +51,7 @@ private:
     int         fd;
     uint8_t     i2c_bus;
     uint8_t     i2c_address;
-    bool channelInversion_[16];
+    bool        channelInversion_[16];
 
     void         _busInit();
     void         _busDeinit();

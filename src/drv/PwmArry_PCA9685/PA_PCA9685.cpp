@@ -5,7 +5,7 @@
 
 #include <unistd.h>  //usleep
 
-#include <cmath> //round floor
+#include <cmath>     //round floor
 
 #define MAX_VALUE (4095)
 
@@ -14,6 +14,7 @@ PA_PCA9685::PA_PCA9685(uint8_t bus, uint8_t address) :
     i2c_address(address),
     channelInversion_{false} {
     _busInit();
+    printStatus();
 }
 
 PA_PCA9685::~PA_PCA9685() {
@@ -44,19 +45,28 @@ Hertz PA_PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
 }
 
 void PA_PCA9685::setFreq_Hz(Hertz freq) {
-    Hertz prescale_val = 25000000.0; // 25MHz
-    prescale_val /= 4096.0;          // 12-bit
+    Hertz prescale_val = 25000000.0;
+    prescale_val /= 4096.0;
     prescale_val /= float(freq);
     prescale_val -= 1.0;
 
     PCA_Register prescale = floor(prescale_val + 0.5);
-    PCA_Register old_mode = _readRegister(0x00);    // Чтение MODE1 регистра
-    PCA_Register new_mode = (old_mode & 0x7F) | 0x10;   // Sleep
-    _writeRegister(0x00, new_mode);         // Переход в режим сна
-    _writeRegister(PRE_SCALE, prescale);    // Установка регистра предделителя
-    _writeRegister(0x00, old_mode);
-    usleep(5000);       // Задержка для установки частоты
-    _writeRegister(0x00, old_mode | 0x80);  // Включение
+
+    // Enter sleep
+    PCA_Register old_mode = _readRegister(MODE1);
+    PCA_Register sleep_mode = (old_mode & 0x7F) | 0x10;
+    _writeRegister(MODE1, sleep_mode);
+    usleep(500); // Wait for oscillator to stop
+
+    // Set prescale
+    _writeRegister(PRE_SCALE, prescale);
+
+    // Exit sleep
+    _writeRegister(MODE1, old_mode);   // Clear sleep
+    usleep(500); // Allow oscillator to stabilize
+
+    // Restart (if auto-increment etc. is needed)
+    _writeRegister(MODE1, old_mode | 0x80);
 }
 
 float PA_PCA9685::getFreq_Hz() {
