@@ -1,5 +1,5 @@
-#include "MachTypes.hpp"
-#include <cmath>
+#include "Mach_Angle.hpp"
+
 
 Angle::Angle() : radians_(0.0f) {}
 Angle::Angle(Radians r) : radians_(r.value) {}
@@ -46,6 +46,41 @@ Angle Angle::operator+(const Angle& other) const {
 Angle Angle::operator-(const Angle& other) const {
     return Angle(Radians{radians_ - other.radians_});
 }
+
+inline Angle Angle::operator*(float scalar) const {
+    return Angle::fromRadians(radians_ * scalar);
+}
+
+inline Angle& Angle::operator*=(float scalar) {
+    radians_ *= scalar;
+    return *this;
+}
+
+inline Angle Angle::operator/(float scalar) const {
+    return Angle::fromRadians(radians_ / scalar);
+}
+
+inline Angle& Angle::operator/=(float scalar) {
+    radians_ /= scalar;
+    return *this;
+}
+
+inline Angle Angle::operator*(int scalar) const {
+    return *this * static_cast<float>(scalar);
+}
+
+inline Angle& Angle::operator*=(int scalar) {
+    return *this *= static_cast<float>(scalar);
+}
+
+inline Angle Angle::operator/(int scalar) const {
+    return *this / static_cast<float>(scalar);
+}
+
+inline Angle& Angle::operator/=(int scalar) {
+    return *this /= static_cast<float>(scalar);
+}
+
 
 bool Angle::operator==(const Angle& other) const {
     return radians_ == other.radians_;

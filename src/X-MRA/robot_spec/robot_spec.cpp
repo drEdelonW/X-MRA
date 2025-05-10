@@ -67,7 +67,7 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
 void testLegs() {
     PWMarray.wakeUp();
     PWMarray.setFreq_Hz((Hertz)100);
-    Servo.setAngle(Angle::fromDegrees(90));
+    Servo.setAngle(deg(90));
     // joint[0].setPhaseShift(3500);
     // PWM[0].wakeUp();
     // PWM[1].wakeUp();

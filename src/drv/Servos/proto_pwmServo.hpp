@@ -1,5 +1,5 @@
 #pragma once
-#include "MachTypes.hpp"
+#include "Mach_Angle.hpp"
 
 class ProtoServo {
 public:

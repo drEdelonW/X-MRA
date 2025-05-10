@@ -13,7 +13,7 @@ MG996R::MG996R(
       maxAngle_(maxAngle),
       offset_(offset),
       reversed_(reversed),
-      currentAngle_(Angle::fromRadians(0.0f)) {}
+      currentAngle_(rad(0.0f)) {}
 
 void MG996R::setAngle(const Angle& angle) {
     Angle corrected = angle + offset_;
