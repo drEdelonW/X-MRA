@@ -1,0 +1,140 @@
+@startuml HexapodClasses
+' ======= base formatting =======
+skinparam classAttributeIconSize 0
+
+' ======= top-level robo software =======
+class Hexapod {
+  + moveBody(Pose target)
+}
+
+class BodyController {
+  + update()
+}
+
+class IMUSensor {
+  + getGyro()   : Vector3
+  + getAccel()  : Vector3
+  + getGravityVector() : Vector3
+}
+
+class MotionPlanner {
+  + planStep()
+}
+
+Hexapod  "1"  *-- "1"       BodyController
+BodyController "1" o-- "[6-8]" Leg
+Hexapod ..> MotionPlanner
+Hexapod --> IMUSensor
+
+
+' ======= leg anatomy =======
+class Leg {
+  + update()
+}
+
+abstract class Joint {
+  - Angle  position
+  - Angle  minLimit
+  - Angle  maxLimit
+  + setTarget(Angle)
+  + getPosition() : Angle
+}
+
+class ServoJoint {
+  - IPWM  pwm                ' reference to any PWM output
+  + setTarget(Angle)
+}
+
+class LinearActuatorJoint {
+  - MotorDriver driver
+  + setTarget(Angle)
+}
+
+ServoJoint        -up-|> Joint
+LinearActuatorJoint -up-|> Joint
+
+class Phalanx {
+  - Millimeters length_mm
+  - Vector3     anchorLocal
+  - CollisionShape shape
+}
+
+class TOFSensor {
+  + getDistance() : Millimeters
+}
+
+class TactileSensor {
+  + getForce() : Newtons
+}
+
+class LegKinematics {
+  + forward(Vector3 tip)  : JointAngles
+  + inverse(JointAngles)  : Vector3
+}
+
+' ownership inside the leg
+Leg "3" *-- Joint
+Leg "3" *-- Phalanx
+Leg "1" *-- TOFSensor
+Leg "1" *-- TactileSensor
+Leg "1" *-- LegKinematics     : owns
+
+' cross-links for kinematics & collision
+Joint   --> "proximal" Phalanx
+Joint   --> "distal"   Phalanx
+Phalanx --> "parent"   Joint
+Phalanx --> "child"    Joint
+
+' LegKinematics uses all these parts
+LegKinematics ..> Joint
+LegKinematics ..> Phalanx
+LegKinematics ..> TOFSensor
+LegKinematics ..> TactileSensor
+
+
+' ======= PWM abstraction =======
+interface IPWM {
+  + setDutyCycle(float duty)
+}
+
+class PWMChannel {
+  - ProtoPWMArray controller
+  - uint8_t       channel
+  + setDutyCycle(float duty)
+}
+PWMChannel ..|> IPWM       : realization
+ServoJoint   --> IPWM       : uses
+
+class ProtoPWMArray {
+  - PWMChannel channels[16]
+  + setFreq_Hz(Hertz)
+  + writeChannel(uint8_t, float duty)
+}
+ProtoPWMArray *-- "16" PWMChannel
+PWMChannel     -->      ProtoPWMArray
+
+
+' ======= alternative driver for linear joint =======
+class MotorDriver {
+  + setDuty(float)
+}
+LinearActuatorJoint --> MotorDriver
+
+
+' ======= helper datatypes / enums =======
+class Angle        <<datatype>>
+class Vector3      <<datatype>>
+class Pose         <<datatype>>
+class Hertz        <<datatype>>
+class Millimeters  <<datatype>>
+class Newtons      <<datatype>>
+class JointAngles  <<datatype>>
+
+enum CollisionShape {
+  SolidMesh
+  Cyl
+  Box
+  Capsule
+}
+
+@enduml

@@ -1,3 +1,5 @@
+X-MRA как "eXperimental Modular Robotic Arachnid"
+
 
 debian 12
 libcamera-hello
@@ -11,7 +13,7 @@ Raspberry Pi Wifi (Station + AP modes)
 
 MPU6050
     https://github.com/jarzebski/Arduino-MPU6050
-    Работа С Arduino И MPU6050
+    Работа C Arduino И MPU6050
         https://alexgyver.ru/arduino-mpu6050/
 
 Servo Driver with ESP32
