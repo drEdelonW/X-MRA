@@ -71,4 +71,17 @@
 #define BG_BRIGHT_WHITE   ESC "107m"
 
 
+#define DEBUG 3
+#define HOSTNAME "X-MRA01"
 
+#if DEBUG > 0
+    #include <stdio.h>
+    #define LLOG(...)    printf(__VA_ARGS__);                /* Lazy log */
+    #define LOG(...)     LLOG(__VA_ARGS__); fflush(stdout);  /* Strong log */
+#else
+    #define LLOG(...)
+    #define LOG(...)
+#endif
+    #define WARNING(...)    LLOG(TEXT_YELLOW __VA_ARGS__); LOG(TEXT_RESET "\n")
+    #define ERROR(...)      LLOG(TEXT_RED __VA_ARGS__);    LOG(TEXT_RESET "\n")
+    #define HALT(...)       ERROR(__VA_ARGS__);  while (1) {}

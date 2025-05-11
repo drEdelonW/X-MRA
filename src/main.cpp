@@ -1,19 +1,10 @@
-#include <stdio.h>
-// #include <unistd.h>
-
-// #include <iostream>
-// #include <fcntl.h>
-// #include <unistd.h>
-// #include <linux/hidraw.h>
-// #include <sys/ioctl.h>
+#include "CLI.h"
 
 // #include "x11.h"
-// #include "i2c.h"
-#include "robot_spec.hpp"
+// #include "i2c.h"     // busScan() dumpAddr()
+// #include "robot_spec.hpp"
 // #include "sdl_joystick.h"
 #include "common_tools.h"
-
-
 
 int main(int argc, char *argv[]) {
 #if 0
@@ -34,26 +25,12 @@ int main(int argc, char *argv[]) {
         }
     }
 #endif
+    printf("ok1\n");
+    startCLI();
     // busScan();
     // dumpAddr(0x40);
     // drawWindow();
-    testLegs();
+    // testLegs();
 
-    // int fd = open("/dev/hidraw0", O_RDONLY);
-    // if (fd < 0) {
-    //     std::cerr << "Не удалось открыть устройство" << std::endl;
-    //     return 1;
-    // }
-
-    // struct hidraw_devinfo info;
-    // if (ioctl(fd, HIDIOCGRAWINFO, &info) < 0) {
-    //     std::cerr << "Ошибка при получении информации о дескрипторе устройства" << std::endl;
-    //     close(fd);
-    //     return 1;
-    // }
-
-    // std::cout << "Вендор: " << info.vendor << " Продукт: " << info.product << std::endl;
-
-    // close(fd);
     return 0;
 }

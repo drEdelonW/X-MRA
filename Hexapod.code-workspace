@@ -6,11 +6,15 @@
 	],
 	"settings": {
 		"files.associations": {
+			"*.cpp": "cpp",
 			"compare": "cpp",
 			"array": "cpp",
 			"algorithm": "cpp",
 			"cmath": "cpp",
-			"cstdint": "cpp"
+			"cstdint": "cpp",
+			"common_tools.h": "c",
+			"random": "c",
+			"terminal_tools.h": "c"
 		}
 	}
 }

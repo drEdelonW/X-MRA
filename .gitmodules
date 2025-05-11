@@ -1,3 +1,6 @@
 [submodule "externals/SDL"]
 	path = externals/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "Libs/preHexa/c_libs/slam-constructor"]
+    path = Libs/preHexa/c_libs/slam-constructor
+    url = https://github.com/OSLL/slam-constructor.git

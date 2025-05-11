@@ -5,26 +5,26 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 
-
-int busScan(){
-      const char *device = "/dev/i2c-1"; // Замените на /dev/i2c-0, если необходимо
+// Scan all I2C addresses on the bus
+int busScan() {
+    const char *device = "/dev/i2c-1"; // Change to "/dev/i2c-0" if needed
     int file;
 
     if ((file = open(device, O_RDWR)) < 0) {
-        printf("Не удал ось открыть файл I2C");
+        printf("Failed to open I2C bus\n");
         return 1;
     }
 
-    printf("Сканирование шины I2C:\n");
+    printf("Scanning I2C bus:\n");
     for (int addr = 0x03; addr <= 0x77; addr++) {
         if (ioctl(file, I2C_SLAVE, addr) < 0) {
             continue;
         }
 
-        // Используем простую операцию чтения для проверки наличия устройства
+        // Use a simple read operation to check for device presence
         char buf;
         if (read(file, &buf, 1) == 1) {
-            printf("Найдено устройство на адресе 0x%02x\n", addr);
+            printf("Found device at address 0x%02x\n", addr);
         }
     }
 
@@ -32,59 +32,59 @@ int busScan(){
     return 0;
 }
 
-// #define I2C_BUS "/dev/i2c-1" // Используйте "/dev/i2c-0" или "/dev/i2c-1", в зависимости от вашей системы
-// #define I2C_ADDR 0x68 // Замените на адрес вашего I2C устройства
-#define REG_ADDR 0x00 // Начальный адрес регистра для чтения
-#define NUM_REGS 0x45 // Количество регистров для чтения
+// #define I2C_BUS "/dev/i2c-1" // Use "/dev/i2c-0" or "/dev/i2c-1" depending on your system
+// #define I2C_ADDR 0x68 // Replace with your device's I2C address
+#define REG_ADDR 0x00 // Starting register address for reading
+#define NUM_REGS 0x45 // Number of registers to read
 
-int dumpAddr(char addr){
-     int file;
-     const char *device = "/dev/i2c-1";
+// Dump register contents of a specific I2C device
+int dumpAddr(char addr) {
+    int file;
+    const char *device = "/dev/i2c-1";
     unsigned char buffer[128] = {0};
     unsigned char reg[3];
-    reg[0]  = REG_ADDR;
+    reg[0] = REG_ADDR;
 
-    // Открываем I2C шину
+    // Open the I2C bus
     if ((file = open(device, O_RDWR)) < 0) {
-        printf("Ошибка открытия шины I2C\n");
+        printf("Failed to open I2C bus\n");
         return 1;
     }
 
-    // Указываем адрес устройства
+    // Set the target device address
     if (ioctl(file, I2C_SLAVE, addr) < 0) {
-        printf("Ошибка при подключении к устройству I2C\n");
+        printf("Failed to connect to I2C device\n");
         close(file);
         return 1;
     }
 
-    // Побайтовое чтение регистров
+    // Read registers one by one
     for (int i = 0; i < NUM_REGS; ++i) {
         reg[0] = REG_ADDR + i;
 
-        // Записываем адрес регистра
+        // Write the register address
         if (write(file, reg, 1) != 1) {
-            printf("Ошибка при установке адреса регистра для чтения %x\n",reg[0]);
+            printf("Failed to write register address 0x%x\n", reg[0]);
             continue;
         }
 
-        // Чтение данных из регистра
+        // Read data from the register
         if (read(file, &buffer[i], 1) != 1) {
-            printf("Ошибка чтения из устройства I2C\n");
+            printf("Failed to read from I2C device\n");
             continue;
         }
-
-        // Печатаем данные
-        // printf("Регистр 0x%02x: 0x%02x\n", reg, buffer);
     }
 
+    // Example: write data 0xFF 0xAA to register 0x06
     reg[0] = 6;
     reg[1] = 0xFF;
     reg[2] = 0xAA;
     if (write(file, &reg, 2) != 2) {
-        printf("Ошибка при установке адреса регистра для чтения %x\n",reg[0]);
+        printf("Failed to write to register 0x%x\n", reg[0]);
     }
-    // Печатаем данные
-    printf("Данные с устройства I2C по адресу 0x%02x:\n", addr);
+
+    // Print collected data
+    printf("Data from I2C device at address 0x%02x:\n", addr);
     for (int i = 0; i < sizeof(buffer); i++) {
         printf("0x%02x ", buffer[i]);
         if ((i + 1) % 16 == 0)
@@ -93,4 +93,8 @@ int dumpAddr(char addr){
 
     close(file);
     return 0;
+}
+
+void busScan_() {
+    busScan();
 }
