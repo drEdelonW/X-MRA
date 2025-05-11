@@ -1,12 +1,22 @@
 // #include "CLI.h"
 #include "CLI_tools.h"
-#include "dpad.h"
 #include "common_tools.h"
+
+#include "dpad.h"
 #include "i2c.h"     // busScan() dumpAddr()
+
+void busScan_() {
+    busScan();
+}
+
+void busD4_() {
+    dumpAddr(0x40);
+}
 
 
 Command commands[] = {
     {.name = "i2cScan", .function = busScan_,    .description = "I2C Bus scan Tool"},
+    {.name = "i2cD4",   .function = busD4_,      .description = "I2C Bus dump 0x40 device"},
     {.name = "dpad",    .function = dpad,       .description = "keyboard control Tool"},
 
     // {.name = "arm",     .function = cwARM},

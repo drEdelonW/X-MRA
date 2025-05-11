@@ -95,6 +95,3 @@ int dumpAddr(char addr) {
     return 0;
 }
 
-void busScan_() {
-    busScan();
-}

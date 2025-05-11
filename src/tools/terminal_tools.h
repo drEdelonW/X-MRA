@@ -72,7 +72,6 @@
 
 
 #define DEBUG 3
-#define HOSTNAME "X-MRA01"
 
 #if DEBUG > 0
     #include <stdio.h>

@@ -1,7 +1,6 @@
 #include "CLI.h"
 
 // #include "x11.h"
-// #include "i2c.h"     // busScan() dumpAddr()
 // #include "robot_spec.hpp"
 // #include "sdl_joystick.h"
 #include "common_tools.h"

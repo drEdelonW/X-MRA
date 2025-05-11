@@ -14,7 +14,11 @@
 			"cstdint": "cpp",
 			"common_tools.h": "c",
 			"random": "c",
-			"terminal_tools.h": "c"
+			"terminal_tools.h": "c",
+			"cli_tools.h": "c",
+			"cli.h": "c",
+			"i2c.h": "c",
+			"keyconst.h": "c"
 		}
 	}
 }

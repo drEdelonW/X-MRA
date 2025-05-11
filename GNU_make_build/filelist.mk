@@ -33,11 +33,10 @@ SRCS += $(SRC_DIR)/main.cpp
 INCLUDE_PATHS += $(SRC_DIR)/tools/CLI
          SRCS += $(SRC_DIR)/tools/CLI/CLI.c
          SRCS += $(SRC_DIR)/tools/CLI/CLI_tools.c
-         SRCS += $(SRC_DIR)/tools/CLI/CLI_cmdList.c
 
 INCLUDE_PATHS += $(SRC_DIR)/tools/dPad
          SRCS += $(SRC_DIR)/tools/dPad/dpad.c
-         SRCS += $(SRC_DIR)/tools/dPad/dpad_cmds.c
+         SRCS += $(SRC_DIR)/tools/dPad/dpad_tools.c
 
 
 # INCLUDE_PATHS += $(SRC_DIR)/drv
@@ -58,6 +57,8 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/dPad
 
 # INCLUDE_PATHS += $(SRC_DIR)/X-MRA/robot_spec
 #          SRCS += $(SRC_DIR)/X-MRA/robot_spec/robot_spec.cpp
+         SRCS += $(SRC_DIR)/X-MRA/CLI_cmdList.c
+         SRCS += $(SRC_DIR)/X-MRA/dpad_cmds.c
 
 # INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidLeg
 #          SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg.cpp

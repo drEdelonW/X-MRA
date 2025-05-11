@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-extern bool fGetEcho;
-
 void startCLI();
 
 #ifdef __cplusplus

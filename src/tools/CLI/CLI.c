@@ -1,11 +1,8 @@
 #include "CLI.h"
 #include "CLI_tools.h"
 
-// #define DEBUG 3
-#include "common_tools.h"   // for fgets()
-// #include "eth_config.h"     // for HOSTNAME
+#include "common_tools.h"
 #define HOSTNAME "X-MRA01"
-
 
 void startCLI(){
 #if DEBUG > 0
