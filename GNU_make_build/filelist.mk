@@ -19,7 +19,7 @@ INCLUDE_PATHS += $(SRC_DIR)/sys_libs/i2c
 
 # INCLUDE_PATHS += $(SRC_DIR)/joy
 # SRCS += $(SRC_DIR)/sys_libs/joy/sdl_joystick.cpp
-INCLUDE_PATHS += /usr/include/SDL2
+# INCLUDE_PATHS += /usr/include/SDL2
 
 INCLUDE_PATHS += $(SRC_DIR)
 INCLUDE_PATHS += $(SRC_DIR)/tools
@@ -34,6 +34,10 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/CLI
          SRCS += $(SRC_DIR)/tools/CLI/CLI.c
          SRCS += $(SRC_DIR)/tools/CLI/CLI_tools.c
          SRCS += $(SRC_DIR)/tools/CLI/CLI_cmdList.c
+
+INCLUDE_PATHS += $(SRC_DIR)/tools/dPad
+         SRCS += $(SRC_DIR)/tools/dPad/dpad.c
+         SRCS += $(SRC_DIR)/tools/dPad/dpad_cmds.c
 
 
 # INCLUDE_PATHS += $(SRC_DIR)/drv
