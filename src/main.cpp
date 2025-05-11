@@ -25,7 +25,6 @@ int main(int argc, char *argv[]) {
         }
     }
 #endif
-    printf("ok1\n");
     startCLI();
     // busScan();
     // dumpAddr(0x40);

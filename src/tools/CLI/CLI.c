@@ -1,18 +1,21 @@
 #include "CLI.h"
 #include "CLI_tools.h"
 
-#define DEBUG 3
+// #define DEBUG 3
 #include "common_tools.h"   // for fgets()
 // #include "eth_config.h"     // for HOSTNAME
 #define HOSTNAME "X-MRA01"
 
 
 void startCLI(){
+#if DEBUG > 0
+    LOG(TEXT_BOLD TEXT_GREEN"CLI started:\n" TEXT_RESET);
+
     // executeCommand("mems");
 
     for(;;) {
         char cli_buffer[128] = {0};
-        LOG("%sroot@%s:/# ", TEXT_RESET, HOSTNAME);
+        LOG(TEXT_BRIGHT_GREEN "root" TEXT_RESET "@%s:/# ", HOSTNAME);
 
         if (fgets(BUFF_AND_SIZE(cli_buffer), stdin) != NULL) {
             if (ferror(stdin)) {
@@ -27,6 +30,9 @@ void startCLI(){
         }
 
     }
+#else
+    printf("DEBUG unset or less than 1. CLI not starting!\n");
+#endif
 }
 
 
