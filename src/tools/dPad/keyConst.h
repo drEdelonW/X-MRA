@@ -21,6 +21,7 @@ typedef enum {
     KEY_SPACE,
     KEY_TAB,
     KEY_ESCAPE,
+    KEY_TILDA,
     KEY_F1,
     KEY_F2,
     KEY_F3,

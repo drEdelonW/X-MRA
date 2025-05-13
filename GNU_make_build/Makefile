@@ -63,7 +63,8 @@ LDFLAGS		= -Wl,-Map=$(TARGET).map \
 
 SRCS=
 INCLUDE_PATHS=
-include filelist.mk
+# DEFINE_LIST=
+include list_filelist.mk
 SRCS_C 		= $(filter %.c, $(SRCS))
 OBJS_C 		= $(SRCS_C:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -76,8 +77,11 @@ OBJS_S 		= $(SRCS_S:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)
 OBJS 		+= $(OBJS_CPP) $(OBJS_C) $(OBJS_S)
 # $(info OBJS:$(OBJS))
 
-include include_paths.mk
+include list_include.mk
 INCLUDES=$(addprefix -I,$(INCLUDE_PATHS))
+# include list_defines.mk
+    DEFINES =
+    DEFINES += $(foreach d, $(DEFINE_LIST), -D$d)
 
 
 all: $(TARGET_NAME)$(EXEC_SUFIX)

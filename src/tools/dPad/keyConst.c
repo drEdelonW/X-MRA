@@ -15,7 +15,9 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_BACKSPACE, "Backspace"},
     {KEY_ENTER,     "Enter"},
     {KEY_TAB,       "Tab"},
+    {KEY_SPACE,     "Space"},
     {KEY_ESCAPE,    "Escape"},
+    {KEY_TILDA,     "Tilda"},
     {KEY_F1,        "F1"},
     {KEY_F2,        "F2"},
     {KEY_F3,        "F3"},
@@ -28,6 +30,7 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_F10,       "F10"},
     {KEY_F11,       "F11"},
     {KEY_F12,       "F12"},
+    {KEY_0,         "0"},
     {KEY_1,         "1"},
     {KEY_2,         "2"},
     {KEY_3,         "3"},
@@ -37,7 +40,16 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_7,         "7"},
     {KEY_8,         "8"},
     {KEY_9,         "9"},
-    {KEY_0,         "0"},
+    {KEY__0,        "^0"},
+    {KEY__1,        "^1"},
+    {KEY__2,        "^2"},
+    {KEY__3,        "^3"},
+    {KEY__4,        "^4"},
+    {KEY__5,        "^5"},
+    {KEY__6,        "^6"},
+    {KEY__7,        "^7"},
+    {KEY__8,        "^8"},
+    {KEY__9,        "^9"},
     {KEY_A,         "A"},
     {KEY_B,         "B"},
     {KEY_C,         "C"},
@@ -66,8 +78,11 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_Z,         "Z"}
 };
 
+
+#include "common_tools.h"
+
 const char* getKeyName(Key key) {
-    if (key >= 0 && key < KEY_COUNT) {
+    if ((key >= 0) && (key < KEY_COUNT)) {
         return keyInfos[key].name;
     }
     return "Unknown";

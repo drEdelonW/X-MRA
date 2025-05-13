@@ -71,7 +71,13 @@
 #define BG_BRIGHT_WHITE   ESC "107m"
 
 
-#define DEBUG 3
+#ifndef DEBUG
+    #warning DEBUG not defined!!!
+    #define DEBUG 2
+#else
+    // #warning DEBUG  defined V
+#endif
+
 
 #if DEBUG > 0
     #include <stdio.h>

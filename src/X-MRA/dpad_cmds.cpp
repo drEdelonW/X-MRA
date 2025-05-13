@@ -1,16 +1,20 @@
 #include "dpad.h"
 #include "common_tools.h"
 
+void _l() {LOG("Left\n");}
+void _r() {LOG("Right\n");}
+void _u() {LOG("Up\n");}
+void _d() {LOG("Down\n");}
 void _test() {LOG("OK\n");}
 void my() {LOG("WORK! \n");}
 
 KeyFunction fArray[KEY_COUNT] = {
     /*KEY_UNKNOWN*/     {},
 
-    /*KEY_LEFT*/        {},
-    /*KEY_RIGHT*/       {},
-    /*KEY_UP*/          {},
-    /*KEY_DOWN*/        {},
+    /*KEY_LEFT*/        {_l},
+    /*KEY_RIGHT*/       {_r},
+    /*KEY_UP*/          {_u},
+    /*KEY_DOWN*/        {_d},
 
     /*KEY_INSERT*/      {},
     /*KEY_DELETE*/      {},

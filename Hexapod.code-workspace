@@ -18,7 +18,8 @@
 			"cli_tools.h": "c",
 			"cli.h": "c",
 			"i2c.h": "c",
-			"keyconst.h": "c"
+			"keyconst.h": "c",
+			"termios.h": "c"
 		}
 	}
 }

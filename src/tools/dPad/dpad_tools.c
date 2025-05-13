@@ -7,7 +7,7 @@
 
 static uint8_t bCnt = 0;
 
-static void enableRawMode(struct termios* orig) {
+void enableRawMode(struct termios* orig) {
     struct termios raw;
     tcgetattr(STDIN_FILENO, orig);
     raw = *orig;
@@ -15,13 +15,11 @@ static void enableRawMode(struct termios* orig) {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
-static void restoreTerminal(const struct termios* orig) {
+void restoreTerminal(const struct termios* orig) {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, orig);
 }
 
 bool isKeyPressed() {
-    struct termios orig;
-    enableRawMode(&orig);
 
     bCnt = 0;
     memset(_keyBuff, 0, sizeof(_keyBuff));
@@ -41,12 +39,12 @@ bool isKeyPressed() {
         char c;
         if (read(STDIN_FILENO, &c, 1) == 1) {
             if (bCnt < sizeof(_keyBuff)) {
+                // LOG("%d\n",bCnt);
                 _keyBuff[bCnt++] = c;
             }
         }
     }
 
-    restoreTerminal(&orig);
     return bCnt > 0;
 }
 
@@ -58,14 +56,14 @@ Key getKeyFromBuffer() {
                     case '1': return
                         (_keyBuff[3] == 0x7E) ? KEY_HOME :
                         ((_keyBuff[3] == '1') && (_keyBuff[4] == 0x7E)) ? KEY_F1 :
-                        ((_keyBuff[3] == '2') && (_keyBuff[4] == 0x7E)) ? KEY_F2 :
-                        ((_keyBuff[3] == '3') && (_keyBuff[4] == 0x7E)) ? KEY_F3 :
-                        ((_keyBuff[3] == '4') && (_keyBuff[4] == 0x7E)) ? KEY_F4 :
-                        ((_keyBuff[3] == '5') && (_keyBuff[4] == 0x7E)) ? KEY_F5 :
-                        ((_keyBuff[3] == '6') && (_keyBuff[4] == 0x7E)) ? KEY_F6 :
-                        ((_keyBuff[3] == '7') && (_keyBuff[4] == 0x7E)) ? KEY_F7 :
-                        ((_keyBuff[3] == '8') && (_keyBuff[4] == 0x7E)) ? KEY_F8 :
-                        ((_keyBuff[3] == '9') && (_keyBuff[4] == 0x7E)) ? KEY_F9 :
+                        ((_keyBuff[3] == '2') && (_keyBuff[4] == 0x7E)) ? KEY_F1 :
+                        ((_keyBuff[3] == '3') && (_keyBuff[4] == 0x7E)) ? KEY_F2 :
+                        ((_keyBuff[3] == '4') && (_keyBuff[4] == 0x7E)) ? KEY_F3 :
+                        ((_keyBuff[3] == '5') && (_keyBuff[4] == 0x7E)) ? KEY_F4 :
+                        ((_keyBuff[3] == '6') && (_keyBuff[4] == 0x7E)) ? KEY_F5 :
+                        ((_keyBuff[3] == '7') && (_keyBuff[4] == 0x7E)) ? KEY_F6 :
+                        ((_keyBuff[3] == '8') && (_keyBuff[4] == 0x7E)) ? KEY_F7 :
+                        ((_keyBuff[3] == '9') && (_keyBuff[4] == 0x7E)) ? KEY_F8 :
                         KEY_UNKNOWN;
                     case '2': return
                         (_keyBuff[3] == 0x7E)? KEY_INSERT :
@@ -85,17 +83,30 @@ Key getKeyFromBuffer() {
                     case 'B': return KEY_DOWN;
                     case 'C': return KEY_RIGHT;
                     case 'D': return KEY_LEFT;
+                    case 'F': return KEY_END;
+                    case 'H': return KEY_HOME;
                 }
+            }
+        } else if (_keyBuff[1] == 0x4F) {
+            switch (_keyBuff[2]) {
+                case 0x51: return KEY_F2;
+                case 0x53: return KEY_F4;
+                case 'B': return KEY_DOWN;
+                case 'C': return KEY_RIGHT;
+                case 'D': return KEY_LEFT;
+                case 'F': return KEY_END;
+                case 'H': return KEY_HOME;
             }
         } else if (_keyBuff[1] == '\0') {
             return KEY_ESCAPE;
         }
     } else {
         switch (_keyBuff[0]) {
+            case 0x60: return KEY_TILDA;
             case 0x7F: return KEY_BACKSPACE;
             case 0x0D: return KEY_ENTER;
-            case 0x20: return KEY_SPACE;
-            case 0x09: return KEY_TAB;
+            case 0x20: return KEY_TAB;
+            case 0x09: return KEY_SPACE;
             case '0': return KEY_0;
             case '1': return KEY_1;
             case '2': return KEY_2;

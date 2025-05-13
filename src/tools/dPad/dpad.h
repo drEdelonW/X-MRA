@@ -4,7 +4,7 @@
 #include "terminal_tools.h"
 #include <stdbool.h>
 
-#define KEY_TIMEOUT_MS 100
+#define KEY_TIMEOUT_MS 15
 
 #define KEY_REPEAT_TIMOUT   (25)
 // #define KEY_REPEAT_TIMOUT   (30)
