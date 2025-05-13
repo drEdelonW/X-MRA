@@ -1,20 +1,31 @@
 #include "dpad.h"
 #include "common_tools.h"
 
-void _l() {LOG("Left\n");}
-void _r() {LOG("Right\n");}
-void _u() {LOG("Up\n");}
-void _d() {LOG("Down\n");}
-void _test() {LOG("OK\n");}
-void my() {LOG("WORK! \n");}
+#include "robot_spec.hpp"
+
+
+
+void _on()  { LOG("ON\n");  PWMarray.wakeUp(); PWMarray.setFreq_Hz((Hertz)50);}
+void _off() { LOG("OFF\n"); PWMarray.sleepMode();}
+void _1() {
+    LOG("1\n");
+    Servo.setAngle(deg(0));
+    Servo1.setAngle(deg(0));
+}
+void _2() {
+    LOG("2\n");
+    Servo.setAngle(deg(180));
+    Servo1.setAngle(deg(180));
+}
+
 
 KeyFunction fArray[KEY_COUNT] = {
     /*KEY_UNKNOWN*/     {},
 
-    /*KEY_LEFT*/        {_l},
-    /*KEY_RIGHT*/       {_r},
-    /*KEY_UP*/          {_u},
-    /*KEY_DOWN*/        {_d},
+    /*KEY_LEFT*/        {},
+    /*KEY_RIGHT*/       {},
+    /*KEY_UP*/          {},
+    /*KEY_DOWN*/        {},
 
     /*KEY_INSERT*/      {},
     /*KEY_DELETE*/      {},
@@ -24,9 +35,10 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_END*/         {},
     /*KEY_BACKSPACE*/   {},
     /*KEY_ENTER*/       {},
-    /*KEY_SPACE*/       {},
     /*KEY_TAB*/         {},
+    /*KEY_SPACE*/       {},
     /*KEY_ESCAPE*/      {},     // used for exit
+    /*KEY_TILDA*/       {},
 
     /*KEY_F1*/  {},
     /*KEY_F2*/  {},
@@ -42,10 +54,10 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_F12*/ {},
 
     /*KEY_0*/ {},
-    /*KEY_1*/ {},
-    /*KEY_2*/ {},
-    /*KEY_3*/ {},
-    /*KEY_4*/ {},
+    /*KEY_1*/ {_on},
+    /*KEY_2*/ {_off},
+    /*KEY_3*/ {_1},
+    /*KEY_4*/ {_2},
     /*KEY_5*/ {},
     /*KEY_6*/ {},
     /*KEY_7*/ {},
@@ -75,14 +87,14 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_J*/ {},
     /*KEY_K*/ {},
     /*KEY_L*/ {},
-    /*KEY_M*/ {my},
+    /*KEY_M*/ {},
     /*KEY_N*/ {},
     /*KEY_O*/ {},
     /*KEY_P*/ {},
-    /*KEY_Q*/ {},     // used for exit
+    /*KEY_Q*/ {},
     /*KEY_R*/ {},
     /*KEY_S*/ {},
-    /*KEY_T*/ {_test},
+    /*KEY_T*/ {},
     /*KEY_U*/ {},
     /*KEY_V*/ {},
     /*KEY_W*/ {},

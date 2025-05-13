@@ -18,10 +18,10 @@ void dpad() {
         bool isPressed = isKeyPressed();
         if (isPressed) {
             Key lastKey = getKeyFromBuffer();
-            LOG("%s\n", getKeyName(lastKey));
+            // LOG("%s\n", getKeyName(lastKey));
             switch (lastKey) {
                 case KEY_ESCAPE:
-                case KEY_Q:
+                // case KEY_Q:
                     LOG("exit\n");
                     restoreTerminal(&orig);
                     return;

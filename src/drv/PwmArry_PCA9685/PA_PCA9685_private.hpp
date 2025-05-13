@@ -1,5 +1,8 @@
 #pragma once
 
+#define OSC_FREQ_HZ (25000000)
+#define MAX_VAL     (4096)
+
 #define LED_NUM       (0x10) // Number of LED channels
 enum PCA_Register_en:PCA_Register {
     MODE1         = 0x00, // Mode register 1

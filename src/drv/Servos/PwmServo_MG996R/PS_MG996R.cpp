@@ -14,6 +14,7 @@ MG996R::MG996R(
       offset_(offset),
       reversed_(reversed),
       currentAngle_(rad(0.0f)) {}
+#include "terminal_tools.h"
 
 void MG996R::setAngle(const Angle& angle) {
     Angle corrected = angle + offset_;
@@ -25,7 +26,7 @@ void MG996R::setAngle(const Angle& angle) {
     MicroSeconds duration = static_cast<MicroSeconds>(
         minPulse_ + normalized * (maxPulse_ - minPulse_)
     );
-
+    // LOG("SetDurSRV %d\n", duration);
     pwm_.setPulseDurationUS(duration);
     currentAngle_ = angle;
 }

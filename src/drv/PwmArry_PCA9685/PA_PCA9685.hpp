@@ -1,6 +1,6 @@
 #pragma once
 #include "PWMChannel.hpp"
-// #define PWM_ARRAY PCA9685
+#define PWM_ARRAY PCA9685
 
 #define  PCA_Register uint8_t
 
@@ -15,26 +15,34 @@ public:
     void printStatus(); // Method to print the state of the registers
 
     Hertz getRealFrequencyHz(Hertz desiredFreq) override;    // Method to calculate the real PWM frequency based on the desired frequency
-    MicroSeconds   calcUnitDurationUs() override;   // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
+    // MicroSeconds   calcUnitDurationUs() override;   // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
 
     void  setFreq_Hz(Hertz freq) override;    // Set the PWM frequency
     Hertz getFreq_Hz() override;                 // Method to get the current PWM frequency
 
     PWMChannel PWM[16];
 
-           void  setDutyCycle(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;    // Set the PWM duty cycle
-    MicroSeconds getDutyCycle(uint8_t channel) override; // Method to get the PWM duty cycle for a specific channel
+    void        setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phaseShift = 0)  override;    // Set the PWM duty cycle
+    DutyCycle   getDutyCycle(uint8_t channel) override; // Method to get the PWM duty cycle for a specific channel
+
+    void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;    // Set the PWM duty cycle
+    MicroSeconds getDuration(uint8_t channel) override; // Method to get the PWM duty cycle for a specific channel
 
     void setInversion(uint8_t channel, bool inverted);
     bool getInversion(uint8_t channel);
 
-    uint16_t getMaxValue();
 
-private:
+    private:
     int         fd;
     uint8_t     i2c_bus;
     uint8_t     i2c_address;
     bool        channelInversion_[16];
+
+    Hertz       _freq;
+    Hertz       _readFreq_Hz();
+
+    MicroSeconds _periodUs;
+    MicroSeconds _getDutyCyclePeriodUs(Hertz frequencyHz);
 
     void         _busInit();
     void         _busDeinit();

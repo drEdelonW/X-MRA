@@ -6,10 +6,12 @@ extern "C" {
 
 typedef enum {
     KEY_UNKNOWN,
+
     KEY_LEFT,
     KEY_RIGHT,
     KEY_UP,
     KEY_DOWN,
+
     KEY_INSERT,
     KEY_DELETE,
     KEY_PAGE_UP,
@@ -22,6 +24,7 @@ typedef enum {
     KEY_TAB,
     KEY_ESCAPE,
     KEY_TILDA,
+
     KEY_F1,
     KEY_F2,
     KEY_F3,
@@ -34,6 +37,7 @@ typedef enum {
     KEY_F10,
     KEY_F11,
     KEY_F12,
+
     KEY_0,
     KEY_1,
     KEY_2,
@@ -44,6 +48,7 @@ typedef enum {
     KEY_7,
     KEY_8,
     KEY_9,
+
     KEY__0,
     KEY__1,
     KEY__2,
@@ -54,6 +59,7 @@ typedef enum {
     KEY__7,
     KEY__8,
     KEY__9,
+
     KEY_A,
     KEY_B,
     KEY_C,

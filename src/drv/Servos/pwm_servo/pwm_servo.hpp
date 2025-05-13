@@ -1,11 +1,8 @@
 #pragma once
 #include "proto_PWM.hpp"
 
-#if 0
-    #include "PWM_PCA9685.hpp"
-#else
+
     #include "PA_PCA9685.hpp"
-#endif
 
 #define PWM_UNIT    uint16_t
 

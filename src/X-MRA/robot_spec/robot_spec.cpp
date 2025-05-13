@@ -4,13 +4,13 @@
 #include <unistd.h>
 #include "robot_spec.hpp"
 
-#include "PA_PCA9685.hpp"
-#include "PS_MG996R.hpp"
+
 
 
 PCA9685 PWMarray(1, 0x40);
 
 MG996R Servo(PWMarray.PWM[0]);
+MG996R Servo1(PWMarray.PWM[1]);
 
 // PWM_ARRAY PWM[2] = {
 //     PWM_ARRAY(1, 0x40),
