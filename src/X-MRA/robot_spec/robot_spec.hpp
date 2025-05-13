@@ -7,6 +7,7 @@
 extern PCA9685 PWMarray;
 extern MG996R Servo;
 extern MG996R Servo1;
+extern MG996R Servo2;
 
 
 void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_us);

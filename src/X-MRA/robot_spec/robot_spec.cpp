@@ -11,6 +11,7 @@ PCA9685 PWMarray(1, 0x40);
 
 MG996R Servo(PWMarray.PWM[0]);
 MG996R Servo1(PWMarray.PWM[1]);
+MG996R Servo2(PWMarray.PWM[2]);
 
 // PWM_ARRAY PWM[2] = {
 //     PWM_ARRAY(1, 0x40),

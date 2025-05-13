@@ -19,7 +19,7 @@ MicroSeconds PCA9685::_getDutyCyclePeriodUs(Hertz frequencyHz) {
 }
 
 void PCA9685::setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift){
-    printf("setDur frq[%ld]Hz dur[%ld]us per[%ld]us\n", _freq, duration, _periodUs);
+    printf("setDur frq[%f]Hz dur[%ld]us per[%ld]us\n", _freq, duration, _periodUs);
     setDutyCycle(channel, (1.0f * duration) / _periodUs );
     // setDutyCycle(channel, /*(1.0f * duration) / _periodUs*/0.1 );
     // setDutyCycle(channel, /*(1.0f * duration) / _periodUs*/0.05 );

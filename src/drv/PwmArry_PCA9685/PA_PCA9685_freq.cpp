@@ -19,6 +19,7 @@ Hertz PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
 
 void PCA9685::setFreq_Hz(Hertz freq) {
     _freq = getRealFrequencyHz(freq);
+    _periodUs = _getDutyCyclePeriodUs(_freq);
     Hertz prescale_val = (
         (OSC_FREQ_HZ / MAX_VAL) /
         float(freq)

@@ -5,17 +5,25 @@
 
 
 
-void _on()  { LOG("ON\n");  PWMarray.wakeUp(); PWMarray.setFreq_Hz((Hertz)50);}
+void _on()  { LOG("ON\n");  PWMarray.wakeUp(); PWMarray.setFreq_Hz((Hertz)100);}
 void _off() { LOG("OFF\n"); PWMarray.sleepMode();}
 void _1() {
     LOG("1\n");
     Servo.setAngle(deg(0));
     Servo1.setAngle(deg(0));
+    Servo2.setAngle(deg(0));
 }
 void _2() {
     LOG("2\n");
+    Servo.setAngle(deg(90));
+    Servo1.setAngle(deg(90));
+    Servo2.setAngle(deg(90));
+}
+void _3() {
+    LOG("3\n");
     Servo.setAngle(deg(180));
     Servo1.setAngle(deg(180));
+    Servo2.setAngle(deg(180));
 }
 
 
@@ -58,7 +66,7 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_2*/ {_off},
     /*KEY_3*/ {_1},
     /*KEY_4*/ {_2},
-    /*KEY_5*/ {},
+    /*KEY_5*/ {_3},
     /*KEY_6*/ {},
     /*KEY_7*/ {},
     /*KEY_8*/ {},
