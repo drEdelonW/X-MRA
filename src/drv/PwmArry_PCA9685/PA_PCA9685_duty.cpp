@@ -6,7 +6,7 @@
 #include "terminal_tools.h"
 
 void PCA9685::setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phaseShift) {
-    LOG("setDC %f\n", dutyCycle);
+    // LOG("setDC %f\n", dutyCycle);
 
     dutyCycle = clampDuty(dutyCycle);
     phaseShift = clampDuty(phaseShift);

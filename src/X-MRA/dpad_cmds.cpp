@@ -2,36 +2,31 @@
 #include "common_tools.h"
 
 #include "robot_spec.hpp"
-
-
+static float _curAngle = 0;
+#define SV_ALL(v)  LOG("[%.2f]\n", (v)); _curAngle = (v); Servo.setAngle(deg(v));Servo1.setAngle(deg(v));Servo2.setAngle(deg(v));
 
 void _on()  { LOG("ON\n");  PWMarray.wakeUp(); PWMarray.setFreq_Hz((Hertz)100);}
 void _off() { LOG("OFF\n"); PWMarray.sleepMode();}
-void _1() {
-    LOG("1\n");
-    Servo.setAngle(deg(0));
-    Servo1.setAngle(deg(0));
-    Servo2.setAngle(deg(0));
-}
-void _2() {
-    LOG("2\n");
-    Servo.setAngle(deg(90));
-    Servo1.setAngle(deg(90));
-    Servo2.setAngle(deg(90));
-}
-void _3() {
-    LOG("3\n");
-    Servo.setAngle(deg(180));
-    Servo1.setAngle(deg(180));
-    Servo2.setAngle(deg(180));
-}
+void _1() { SV_ALL(0.0f) }
+void _2() { SV_ALL(10.0f) }
+void _3() { SV_ALL(20.0f) }
+void _4() { SV_ALL(30.0f) }
+void _5() { SV_ALL(40.0f) }
+void _6() { SV_ALL(50.0f) }
+void _7() { SV_ALL(60.0f) }
+void _8() { SV_ALL(70.0f) }
+void _9() { SV_ALL(80.0f) }
+void _10() { SV_ALL(90.0f) }
+
+void _left() { SV_ALL(_curAngle + 1) }
+void _right() { SV_ALL(_curAngle - 1) }
 
 
 KeyFunction fArray[KEY_COUNT] = {
     /*KEY_UNKNOWN*/     {},
 
-    /*KEY_LEFT*/        {},
-    /*KEY_RIGHT*/       {},
+    /*KEY_LEFT*/        {_left},
+    /*KEY_RIGHT*/       {_right},
     /*KEY_UP*/          {},
     /*KEY_DOWN*/        {},
 
@@ -61,20 +56,20 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_F11*/ {},
     /*KEY_F12*/ {},
 
-    /*KEY_0*/ {},
-    /*KEY_1*/ {_on},
-    /*KEY_2*/ {_off},
-    /*KEY_3*/ {_1},
-    /*KEY_4*/ {_2},
-    /*KEY_5*/ {_3},
-    /*KEY_6*/ {},
-    /*KEY_7*/ {},
-    /*KEY_8*/ {},
-    /*KEY_9*/ {},
+    /*KEY_0*/ {_10},
+    /*KEY_1*/ {_1},
+    /*KEY_2*/ {_2},
+    /*KEY_3*/ {_3},
+    /*KEY_4*/ {_4},
+    /*KEY_5*/ {_5},
+    /*KEY_6*/ {_6},
+    /*KEY_7*/ {_7},
+    /*KEY_8*/ {_8},
+    /*KEY_9*/ {_9},
 
     /*KEY__0*/ {},
-    /*KEY__1*/ {},
-    /*KEY__2*/ {},
+    /*KEY__1*/ {_on},
+    /*KEY__2*/ {_off},
     /*KEY__3*/ {},
     /*KEY__4*/ {},
     /*KEY__5*/ {},

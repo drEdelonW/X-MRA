@@ -7,10 +7,11 @@ public:
     MG996R(ProtoPWM& pwm,
             //  MicroSeconds minPulse = 525,
             //  MicroSeconds maxPulse = 2500,
-             MicroSeconds minPulse = 350,
+             MicroSeconds minPulse = 400,
              MicroSeconds maxPulse = 2600,
-             Angle maxAngle = deg(195.0f),
-             Angle offset = deg(-9.0f),
+             Angle maxAngle = deg(200.0f),
+            //  Angle maxAngle = deg(180.0f),
+             Angle offset = deg(-10.0f),
              bool reversed = false);
 
     void setAngle(const Angle& angle) override;
