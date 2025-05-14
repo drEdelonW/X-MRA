@@ -8,7 +8,7 @@ void startCLI(){
 #if DEBUG > 0
     LOG(TEXT_BOLD TEXT_GREEN"CLI started:\n" TEXT_RESET);
 
-    // executeCommand("mems");
+    executeCommand("dpad");
 
     for(;;) {
         char cli_buffer[128] = {0};

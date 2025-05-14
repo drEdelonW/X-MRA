@@ -9,8 +9,8 @@ public:
             //  MicroSeconds maxPulse = 2500,
              MicroSeconds minPulse = 350,
              MicroSeconds maxPulse = 2600,
-             Angle maxAngle = deg(180.0f),
-             Angle offset = deg(0.0f),
+             Angle maxAngle = deg(195.0f),
+             Angle offset = deg(-9.0f),
              bool reversed = false);
 
     void setAngle(const Angle& angle) override;

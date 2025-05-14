@@ -9,9 +9,9 @@ PCA9685::PCA9685(uint8_t bus, uint8_t address) :
         PWMChannel(*this, 8),  PWMChannel(*this, 9),  PWMChannel(*this,10),  PWMChannel(*this,11),
         PWMChannel(*this,12),  PWMChannel(*this,13),  PWMChannel(*this,14),  PWMChannel(*this,15)},
     channelInversion_{false} {
+    _busInit();
     _freq = _readFreq_Hz();
     _periodUs = _getDutyCyclePeriodUs(_freq);
-    _busInit();
     // printStatus();
 }
 

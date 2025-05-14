@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug HexaFPV (local)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/GNU_make_build/OUTPUT/HexaFPV_main_app.elf",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb", // Или arm-none-eabi-gdb, если кросскомпиляция
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "sourceFileMap": {
+        "/home/edelon/Work/HexaFPV/src": "${workspaceFolder}/src"
+      }
+    }
+  ]
+}

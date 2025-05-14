@@ -39,7 +39,7 @@ GIT_BRANCH 		:= $(shell git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT_HASH := $(shell git rev-parse HEAD)
 GIT_INFO 		= -DGIT_BRANCH=\"$(GIT_BRANCH)\" -DGIT_COMMIT_HASH=\"$(GIT_COMMIT_HASH)\"
 
-COMONFLAGS 		= $(GIT_INFO)
+COMONFLAGS 		= $(GIT_INFO) -g
 
 # Language Specific Flags
 CFLAGS		= $(COMONFLAGS) -Wall -g -std=gnu11
