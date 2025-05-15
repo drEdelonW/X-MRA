@@ -13,20 +13,34 @@ static float _curAngle = 0;
     Servo[4].setAngle(deg(v));\
     Servo[5].setAngle(deg(v));\
     Servo[6].setAngle(deg(v));\
-    Servo[7].setAngle(deg(v));
+    Servo[7].setAngle(deg(v));\
+    Servo[8].setAngle(deg(v));\
+    Servo[9].setAngle(deg(v));\
+    Servo[10].setAngle(deg(v));\
+    Servo[11].setAngle(deg(v));
 
-void _on()  { LOG("ON\n");  PWMarray.wakeUp(); PWMarray.setFreq_Hz((Hertz)100);}
-void _off() { LOG("OFF\n"); PWMarray.sleepMode();}
+void _on()  {
+    LOG("ON\n");
+    PWMarray[0].wakeUp();
+    PWMarray[1].wakeUp();
+    PWMarray[0].setFreq_Hz((Hertz)100);
+    PWMarray[1].setFreq_Hz((Hertz)100);
+}
+void _off() {
+    LOG("OFF\n");
+    PWMarray[0].sleepMode();
+    PWMarray[1].sleepMode();
+}
 void _1() { SV_ALL(0.0f) }
-void _2() { SV_ALL(10.0f) }
-void _3() { SV_ALL(20.0f) }
-void _4() { SV_ALL(30.0f) }
-void _5() { SV_ALL(40.0f) }
-void _6() { SV_ALL(50.0f) }
-void _7() { SV_ALL(60.0f) }
-void _8() { SV_ALL(70.0f) }
-void _9() { SV_ALL(80.0f) }
-void _10() { SV_ALL(90.0f) }
+void _2() { SV_ALL(-10.0f) }
+void _3() { SV_ALL(-20.0f) }
+void _4() { SV_ALL(-30.0f) }
+void _5() { SV_ALL(-40.0f) }
+void _6() { SV_ALL(-50.0f) }
+void _7() { SV_ALL(-60.0f) }
+void _8() { SV_ALL(-70.0f) }
+void _9() { SV_ALL(-80.0f) }
+void _10() { SV_ALL(-90.0f) }
 
 void _1on() { Servo[1].enable(); }
 void _1off() { Servo[1].disable(); }

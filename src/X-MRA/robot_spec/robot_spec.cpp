@@ -5,57 +5,31 @@
 #include "robot_spec.hpp"
 
 
-PCA9685 PWMarray(1, 0x40);
+PCA9685 PWMarray[] = {
+    {1, 0x40},
+    {1, 0x41}
+};
 
 MG996R Servo[] = {
-    { PWMarray.PWM[0],  TowerPro_MG996R_cfg },
-    { PWMarray.PWM[1],  TowerPro_MG996R_cfg },
+    { PWMarray[0].PWM[0],  TowerPro_MG996R_cfg },
+    { PWMarray[0].PWM[1],  TowerPro_MG996R_cfg },
 
-    { PWMarray.PWM[15], TowerPro_MG996R_cfg, CCW },
-    { PWMarray.PWM[14], TowerPro_MG996R_cfg, CCW },
+    { PWMarray[0].PWM[15], TowerPro_MG996R_cfg, CCW },
+    { PWMarray[0].PWM[14], TowerPro_MG996R_cfg, CCW },
 
-    { PWMarray.PWM[4],  TowerPro_MG996R_cfg },
-    { PWMarray.PWM[5],  TowerPro_MG996R_cfg },
+    { PWMarray[0].PWM[4],  TowerPro_MG996R_cfg },
+    { PWMarray[0].PWM[5],  TowerPro_MG996R_cfg },
 
-    { PWMarray.PWM[11], TowerPro_MG996R_cfg, CCW },
-    { PWMarray.PWM[10], TowerPro_MG996R_cfg, CCW },
+    { PWMarray[0].PWM[11], TowerPro_MG996R_cfg, CCW },
+    { PWMarray[0].PWM[10], TowerPro_MG996R_cfg, CCW },
+
+    { PWMarray[1].PWM[15],  TowerPro_MG996R_cfg },
+    { PWMarray[1].PWM[14],  TowerPro_MG996R_cfg },
+
+    { PWMarray[1].PWM[1], TowerPro_MG996R_cfg, CCW },
+    { PWMarray[1].PWM[0], TowerPro_MG996R_cfg, CCW },
 };
-// PWM_ARRAY PWM[2] = {
-//     PWM_ARRAY(1, 0x40),
-//     PWM_ARRAY(1, 0x41)
-// };
 
-// Servo joint[9] = {
-//     Servo(&PWM[1], 2),
-//     Servo(&PWM[0], 1),
-//     Servo(&PWM[0], 0),
-
-//     Servo(&PWM[0], 6),
-//     Servo(&PWM[0], 5),
-//     Servo(&PWM[0], 4),
-
-//     Servo(&PWM[1], 13),
-//     Servo(&PWM[1], 14),
-//     Servo(&PWM[1], 15)
-// };
-
-// ArachnidLeg BR = ArachnidLeg(
-//         &joint[0],
-//         &joint[1],
-//         &joint[2]
-//     );
-
-// ArachnidLeg CR = ArachnidLeg(
-//         &joint[3],
-//         &joint[4],
-//         &joint[5]
-//     );
-
-// ArachnidLeg FR = ArachnidLeg(
-//         &joint[6],
-//         &joint[7],
-//         &joint[8]
-//     );
 
 
 void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_us) {
@@ -73,8 +47,10 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
 #define ANGLE_MID   (90.0f)
 
 void testLegs() {
-    PWMarray.wakeUp();
-    PWMarray.setFreq_Hz((Hertz)100);
+    PWMarray[0].wakeUp();
+    PWMarray[1].wakeUp();
+    PWMarray[0].setFreq_Hz((Hertz)100);
+    PWMarray[1].setFreq_Hz((Hertz)100);
     Servo[0].setAngle(deg(90));
     // joint[0].setPhaseShift(3500);
     // PWM[0].wakeUp();
