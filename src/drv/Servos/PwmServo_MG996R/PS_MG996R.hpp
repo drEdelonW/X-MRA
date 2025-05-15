@@ -5,7 +5,10 @@
 #define TowerPro_MG996R_cfg     400, 2600, deg(210), deg(102)
 #define TowerPro_MG90S_cfg      650, 2400, deg(185), deg(92)
 
-#define HailangNiao_MG996R_cfg  525, 2500, deg(220), deg(100)
+#define HailangNiao_MG996R_cfg  525, 2500, deg(220), deg(115)
+
+#define CW  true
+#define CCW false
 
 class MG996R : public ProtoServo {
 public:
@@ -15,7 +18,7 @@ public:
         MicroSeconds maxPulse   = 2500,
         Angle maxAngle          = deg(180.0f),
         Angle offset            = deg(90.0f),
-        bool reversed           = false
+        bool reversed           = CW
     );
 
     void  setAngle(const Angle& angle) override;

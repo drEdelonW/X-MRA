@@ -7,9 +7,9 @@
 
 PCA9685 PWMarray(1, 0x40);
 
-MG996R Servo(PWMarray.PWM[0],  TowerPro_MG996R_cfg);
+MG996R Servo(PWMarray.PWM[0],  HailangNiao_MG996R_cfg);
 MG996R Servo1(PWMarray.PWM[1], TowerPro_MG90S_cfg);
-MG996R Servo2(PWMarray.PWM[2], HailangNiao_MG996R_cfg);
+MG996R Servo2(PWMarray.PWM[15], TowerPro_MG996R_cfg, CCW);
 
 // PWM_ARRAY PWM[2] = {
 //     PWM_ARRAY(1, 0x40),

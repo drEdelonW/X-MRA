@@ -24,8 +24,8 @@ void _1off() { Servo1.disable(); }
 void _2on() { Servo2.enable(); }
 void _2off() { Servo2.disable(); }
 
-void _left() { SV_ALL(_curAngle + 1) }
-void _right() { SV_ALL(_curAngle - 1) }
+void _left() { SV_ALL(_curAngle - 1) }
+void _right() { SV_ALL(_curAngle + 1) }
 
 
 KeyFunction fArray[KEY_COUNT] = {
