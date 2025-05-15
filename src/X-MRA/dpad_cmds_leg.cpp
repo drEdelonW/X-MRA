@@ -29,12 +29,14 @@ void _u()   { leg[0].setJointAngles(deg(0), deg(0), deg(0));    leg[1].setJointA
 void _d()   { leg[0].setJointAngles(deg(10), deg(10), deg(10)); leg[1].setJointAngles(deg(10), deg(10), deg(10)); }
 
 void __u()  { leg[0].setTipPosition( 0.0,  0.0,  0.0); leg[1].setTipPosition( 0.0,  0.0,  0.0); }
+#define DSTx     (150.0f)
+#define DSTz     (-50.0f)
 
-void __d()  { leg[0].setTipPosition( 150.0,  100.0,  0.0); leg[1].setTipPosition( 150.0,  100.0,  0.0); }
-void __d1() { leg[0].setTipPosition( 150.0,   50.0,  0.0); leg[1].setTipPosition( 150.0,   50.0,  0.0); }
-void __d2() { leg[0].setTipPosition( 150.0,    0.0,  0.0); leg[1].setTipPosition( 150.0,    0.0,  0.0); }
-void __d3() { leg[0].setTipPosition( 150.0,  -50.0,  0.0); leg[1].setTipPosition( 150.0,  -50.0,  0.0); }
-void __d4() { leg[0].setTipPosition( 150.0, -100.0,  0.0); leg[1].setTipPosition( 150.0, -100.0,  0.0); }
+void __d()  { leg[0].setTipPosition( DSTx,  100.0,  DSTz); leg[1].setTipPosition( DSTx,  100.0,  DSTz); }
+void __d1() { leg[0].setTipPosition( DSTx,   50.0,  DSTz); leg[1].setTipPosition( DSTx,   50.0,  DSTz); }
+void __d2() { leg[0].setTipPosition( DSTx,    0.0,  DSTz); leg[1].setTipPosition( DSTx,    0.0,  DSTz); }
+void __d3() { leg[0].setTipPosition( DSTx,  -50.0,  DSTz); leg[1].setTipPosition( DSTx,  -50.0,  DSTz); }
+void __d4() { leg[0].setTipPosition( DSTx, -100.0,  DSTz); leg[1].setTipPosition( DSTx, -100.0,  DSTz); }
 
 
 KeyFunction fArray[KEY_COUNT] = {

@@ -12,10 +12,11 @@ ArachnidLeg::ArachnidLeg(
 
 }
 
-void ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
+bool ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
     coxaJn_.setAngle(coxaAngle);
     femurJn_.setAngle(femurAngle);
     tibiaJn_.setAngle(tibiaAngle);
+    return true;
 }
 
 void ArachnidLeg::activate() {
@@ -29,17 +30,25 @@ void ArachnidLeg::deactivate() {
     tibiaJn_.release();
 }
 
-void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
+bool ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     // Coxa angle from projection onto XY-plane
-    float angleCoxa = atan2(y, x);
+    float angleCoxa = atan2(y, x); // V
 
     // Shift to local femur-tibia plane
     float planarX = sqrt(x * x + y * y) - coxaLength_;
-    float planarZ = -z; // downward is positive
+    float planarZ = z; // downward is positive
 
     // Distance from femur joint to target
     float dist = sqrt(planarX * planarX + planarZ * planarZ);
-    dist = clamp(dist, 1e-3f, femurLength_ + tibiaLength_ - 1e-3f);
+
+    float maxReach = femurLength_ + tibiaLength_;
+    float minReach = fabsf(femurLength_ - tibiaLength_); // folded inward
+
+    if (dist < minReach + 1e-3f || dist > maxReach - 1e-3f) {
+        return false; // unreachable
+    }
+
+    // dist = clamp(dist, 1e-3f, femurLength_ + tibiaLength_ - 1e-3f);
 
     float angleToTarget = atan2(planarZ, planarX);
 
@@ -56,7 +65,7 @@ void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
 
     coxaJn_.setAngle(rad(angleCoxa));
     femurJn_.setAngle(rad(-angleFemur) );
-    tibiaJn_.setAngle(rad(-angleTibia) + deg(90));
-
+    tibiaJn_.setAngle(rad(-angleTibia) + deg(80));
+    return true;
 }
 
