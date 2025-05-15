@@ -63,7 +63,8 @@ INCLUDE_PATHS += $(SRC_DIR)/drv/Servos/PwmServo_MG996R
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/robot_spec
          SRCS += $(SRC_DIR)/X-MRA/robot_spec/robot_spec.cpp
          SRCS += $(SRC_DIR)/X-MRA/CLI_cmdList.c
-         SRCS += $(SRC_DIR)/X-MRA/dpad_cmds.c
+        #  SRCS += $(SRC_DIR)/X-MRA/dpad_cmds_12servos.c
+         SRCS += $(SRC_DIR)/X-MRA/dpad_cmds_leg.c
 
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/JointBase
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidLeg

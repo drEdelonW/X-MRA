@@ -11,25 +11,54 @@ PCA9685 PWMarray[] = {
 };
 
 MG996R Servo[] = {
-    { PWMarray[0].PWM[0],  TowerPro_MG996R_cfg },
-    { PWMarray[0].PWM[1],  TowerPro_MG996R_cfg },
+    //FrontLeft
+    { PWMarray[0].PWM[0],  TowerPro_MG996R_cfg },   //Tiba
+    { PWMarray[0].PWM[1],  TowerPro_MG996R_cfg },   //Femur
+    { PWMarray[0].PWM[2],  TowerPro_MG996R_cfg, CCW},   //Coxa
 
-    { PWMarray[0].PWM[15], TowerPro_MG996R_cfg, CCW },
-    { PWMarray[0].PWM[14], TowerPro_MG996R_cfg, CCW },
+    // //FrontRight
+    // { PWMarray[0].PWM[15], TowerPro_MG996R_cfg, CCW },  //Tiba
+    // { PWMarray[0].PWM[14], TowerPro_MG996R_cfg, CCW },  //Femur
+    // { PWMarray[0].PWM[13], TowerPro_MG996R_cfg, CCW },  //Coxa
 
-    { PWMarray[0].PWM[4],  TowerPro_MG996R_cfg },
-    { PWMarray[0].PWM[5],  TowerPro_MG996R_cfg },
+    //MidleLeft
+    { PWMarray[0].PWM[4],  TowerPro_MG996R_cfg },  //Tiba
+    { PWMarray[0].PWM[5],  TowerPro_MG996R_cfg },  //Femur
+    { PWMarray[0].PWM[6],  TowerPro_MG996R_cfg, CCW},  //Coxa
 
-    { PWMarray[0].PWM[11], TowerPro_MG996R_cfg, CCW },
-    { PWMarray[0].PWM[10], TowerPro_MG996R_cfg, CCW },
+    // { PWMarray[0].PWM[11], TowerPro_MG996R_cfg, CCW },
+    // { PWMarray[0].PWM[10], TowerPro_MG996R_cfg, CCW },
 
-    { PWMarray[1].PWM[15],  TowerPro_MG996R_cfg },
-    { PWMarray[1].PWM[14],  TowerPro_MG996R_cfg },
+    // { PWMarray[1].PWM[15],  TowerPro_MG996R_cfg },
+    // { PWMarray[1].PWM[14],  TowerPro_MG996R_cfg },
 
-    { PWMarray[1].PWM[1], TowerPro_MG996R_cfg, CCW },
-    { PWMarray[1].PWM[0], TowerPro_MG996R_cfg, CCW },
+    // { PWMarray[1].PWM[1], TowerPro_MG996R_cfg, CCW },
+    // { PWMarray[1].PWM[0], TowerPro_MG996R_cfg, CCW },
 };
 
+ServoJoint FrontLeft[] = {
+    Servo[0],   //Tiba
+    Servo[1],   //Femur
+    Servo[2]    //Coxa
+};
+
+ServoJoint FrontRight[] = {
+    Servo[3],   //Tiba
+    Servo[4],   //Femur
+    Servo[5]    //Coxa
+};
+
+ArachnidLeg leg[] = {
+    {
+        FrontLeft[2],
+        FrontLeft[1],
+        FrontLeft[0]
+    },{
+        FrontRight[2],
+        FrontRight[1],
+        FrontRight[0]
+    }
+};
 
 
 void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_us) {

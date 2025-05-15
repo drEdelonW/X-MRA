@@ -7,6 +7,8 @@
 #define CUT_MAX(v, max) {v = (v > max)? max : v; }
 #define CUT_MIN(v, min) {v = (v < min)? min : v; }
 
+#define DIMOF(original) (sizeof(original) / sizeof(original[0]))
+
 #define BUFF_AND_SIZE(x)    x, sizeof(x)
 // #define TODO(x) _Pragma(TO_STRING(message("TODO: " x)));
 

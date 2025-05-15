@@ -32,7 +32,6 @@ void ArachnidLeg::deactivate() {
 void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     // Coxa angle from projection onto XY-plane
     float angleCoxa = atan2(y, x);
-    coxaJn_.setAngle(rad(angleCoxa));
 
     // Shift to local femur-tibia plane
     float planarX = sqrt(x * x + y * y) - coxaLength_;
@@ -55,7 +54,9 @@ void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     float angleFemur = angleToTarget + angleA;
     float angleTibia = M_PI - angleB;
 
-    femurJn_.setAngle(rad(angleFemur));
-    tibiaJn_.setAngle(rad(angleTibia));
+    coxaJn_.setAngle(rad(angleCoxa));
+    femurJn_.setAngle(rad(-angleFemur) );
+    tibiaJn_.setAngle(rad(-angleTibia) + deg(90));
+
 }
 
