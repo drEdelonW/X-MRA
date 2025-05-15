@@ -1,23 +1,33 @@
 #pragma once
-#include "proto_pwmServo.hpp"
+#include "JointBase.hpp"
 #include "PhysTypes.hpp"
-// #include <tuple>
+
+/*  ArachnidLeg:
+
+   [Body]
+      |
+   [Coxa]──▶──[Femur]
+                  |
+               [Tibia]
+                  |
+==============={Ground}==============
+
+*/
 
 class ArachnidLeg {
 public:
-    ArachnidLeg(ProtoServo& coxaServo, ProtoServo& femurServo, ProtoServo& tibiaServo);
+    ArachnidLeg(JointBase& coxaJn, JointBase& femurJn, JointBase& tibiaJn);
 
-    void setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle);   // Set joint angles directly
-
+    void setJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);   // Set joint angles directly
     void setTipPosition(float x, float y, float z);             // Set leg tip position using inverse kinematics
-    // std::tuple<float, float, float> getTipPosition() const;     // Get current tip position (forward kinematics or cached)
 
+    void activate();
     void deactivate();
 
 private:
-ProtoServo& coxaServo_;
-ProtoServo& femurServo_;
-ProtoServo& tibiaServo_;
+    JointBase& coxaJn_;
+    JointBase& femurJn_;
+    JointBase& tibiaJn_;
 
     const Millimeters coxaLength_ = 4.0f;    // Length of coxa segment
     const Millimeters femurLength_ = 3.5f;   // Length of femur segment

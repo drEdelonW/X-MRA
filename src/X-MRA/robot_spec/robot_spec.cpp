@@ -7,10 +7,19 @@
 
 PCA9685 PWMarray(1, 0x40);
 
-MG996R Servo(PWMarray.PWM[0],  HailangNiao_MG996R_cfg);
-MG996R Servo1(PWMarray.PWM[1], TowerPro_MG90S_cfg);
-MG996R Servo2(PWMarray.PWM[15], TowerPro_MG996R_cfg, CCW);
+MG996R Servo[] = {
+    { PWMarray.PWM[0],  TowerPro_MG996R_cfg },
+    { PWMarray.PWM[1],  TowerPro_MG996R_cfg },
 
+    { PWMarray.PWM[15], TowerPro_MG996R_cfg, CCW },
+    { PWMarray.PWM[14], TowerPro_MG996R_cfg, CCW },
+
+    { PWMarray.PWM[4],  TowerPro_MG996R_cfg },
+    { PWMarray.PWM[5],  TowerPro_MG996R_cfg },
+
+    { PWMarray.PWM[11], TowerPro_MG996R_cfg, CCW },
+    { PWMarray.PWM[10], TowerPro_MG996R_cfg, CCW },
+};
 // PWM_ARRAY PWM[2] = {
 //     PWM_ARRAY(1, 0x40),
 //     PWM_ARRAY(1, 0x41)
@@ -66,7 +75,7 @@ void testSRV(uint16_t freq, uint16_t min_dur, uint16_t max_dur, uint32_t delay_u
 void testLegs() {
     PWMarray.wakeUp();
     PWMarray.setFreq_Hz((Hertz)100);
-    Servo.setAngle(deg(90));
+    Servo[0].setAngle(deg(90));
     // joint[0].setPhaseShift(3500);
     // PWM[0].wakeUp();
     // PWM[1].wakeUp();

@@ -14,8 +14,8 @@ class MG996R : public ProtoServo {
 public:
     MG996R(
         ProtoPWM& pwm,
-        MicroSeconds minPulse   = 600,
-        MicroSeconds maxPulse   = 2500,
+        MicroSeconds minPulse   = 650,
+        MicroSeconds maxPulse   = 2400,
         Angle maxAngle          = deg(180.0f),
         Angle offset            = deg(90.0f),
         bool reversed           = CW

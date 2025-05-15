@@ -3,7 +3,17 @@
 
 #include "robot_spec.hpp"
 static float _curAngle = 0;
-#define SV_ALL(v)  LOG("[%.2f]\n", (v)); _curAngle = (v); Servo.setAngle(deg(v));Servo1.setAngle(deg(v));Servo2.setAngle(deg(v));
+#define SV_ALL(v)  \
+    LOG("[%.2f]\n", (v)); \
+    _curAngle = (v); \
+    Servo[0].setAngle(deg(v));\
+    Servo[1].setAngle(deg(v));\
+    Servo[2].setAngle(deg(v));\
+    Servo[3].setAngle(deg(v));\
+    Servo[4].setAngle(deg(v));\
+    Servo[5].setAngle(deg(v));\
+    Servo[6].setAngle(deg(v));\
+    Servo[7].setAngle(deg(v));
 
 void _on()  { LOG("ON\n");  PWMarray.wakeUp(); PWMarray.setFreq_Hz((Hertz)100);}
 void _off() { LOG("OFF\n"); PWMarray.sleepMode();}
@@ -18,11 +28,11 @@ void _8() { SV_ALL(70.0f) }
 void _9() { SV_ALL(80.0f) }
 void _10() { SV_ALL(90.0f) }
 
-void _1on() { Servo1.enable(); }
-void _1off() { Servo1.disable(); }
+void _1on() { Servo[1].enable(); }
+void _1off() { Servo[1].disable(); }
 
-void _2on() { Servo2.enable(); }
-void _2off() { Servo2.disable(); }
+void _2on() { Servo[2].enable(); }
+void _2off() { Servo[2].disable(); }
 
 void _left() { SV_ALL(_curAngle - 1) }
 void _right() { SV_ALL(_curAngle + 1) }

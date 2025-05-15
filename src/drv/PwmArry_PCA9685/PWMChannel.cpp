@@ -12,9 +12,9 @@ DutyCycle PWMChannel::getDutyCycle() {
     return controller.getDutyCycle(channel);
 };
 
-#include "terminal_tools.h"
+// #include "terminal_tools.h"
 void      PWMChannel::setDuration(MicroSeconds duration) {
-    LOG("setDur1 %d\n",duration);
+    // LOG("setDur1 %d\n",duration);
     controller.setDuration(channel, duration);
 };
 MicroSeconds PWMChannel::getDuration() {

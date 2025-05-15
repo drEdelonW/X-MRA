@@ -1,25 +1,38 @@
 #include "ArachnidLeg.hpp"
 #include <cmath>
 
-ArachnidLeg::ArachnidLeg(ProtoServo& coxaServo, ProtoServo& femurServo, ProtoServo& tibiaServo)
-    : coxaServo_(coxaServo), femurServo_(femurServo), tibiaServo_(tibiaServo) {}
+ArachnidLeg::ArachnidLeg(
+    JointBase& coxaJn,
+    JointBase& femurJn,
+    JointBase& tibiaJn
+    ):
+    coxaJn_(coxaJn),
+    femurJn_(femurJn),
+    tibiaJn_(tibiaJn) {
 
-void ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
-    coxaServo_.setAngle(coxaAngle);
-    femurServo_.setAngle(femurAngle);
-    tibiaServo_.setAngle(tibiaAngle);
 }
 
+void ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
+    coxaJn_.setAngle(coxaAngle);
+    femurJn_.setAngle(femurAngle);
+    tibiaJn_.setAngle(tibiaAngle);
+}
+
+void ArachnidLeg::activate() {
+    coxaJn_.engage();
+    femurJn_.engage();
+    tibiaJn_.engage();
+}
 void ArachnidLeg::deactivate() {
-    coxaServo_.disable();
-    femurServo_.disable();
-    tibiaServo_.disable();
+    coxaJn_.release();
+    femurJn_.release();
+    tibiaJn_.release();
 }
 
 void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     // Coxa angle from projection onto XY-plane
     float angleCoxa = atan2(y, x);
-    coxaServo_.setAngle(rad(angleCoxa));
+    coxaJn_.setAngle(rad(angleCoxa));
 
     // Shift to local femur-tibia plane
     float planarX = sqrt(x * x + y * y) - coxaLength_;
@@ -42,12 +55,7 @@ void ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     float angleFemur = angleToTarget + angleA;
     float angleTibia = M_PI - angleB;
 
-    femurServo_.setAngle(rad(angleFemur));
-    tibiaServo_.setAngle(rad(angleTibia));
+    femurJn_.setAngle(rad(angleFemur));
+    tibiaJn_.setAngle(rad(angleTibia));
 }
 
-// std::tuple<float, float, float> ArachnidLeg::getTipPosition() const {
-//     // Stub for forward kinematics to retrieve current tip position
-//     // ...
-//     return std::make_tuple(0.0f, 0.0f, 0.0f);
-// }

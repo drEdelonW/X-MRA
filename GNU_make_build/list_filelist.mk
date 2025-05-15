@@ -65,6 +65,7 @@ INCLUDE_PATHS += $(SRC_DIR)/X-MRA/robot_spec
          SRCS += $(SRC_DIR)/X-MRA/CLI_cmdList.c
          SRCS += $(SRC_DIR)/X-MRA/dpad_cmds.c
 
+INCLUDE_PATHS += $(SRC_DIR)/X-MRA/JointBase
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidLeg
          SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg.cpp
 
