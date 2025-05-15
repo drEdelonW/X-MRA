@@ -1,6 +1,5 @@
 #pragma once
 #include "PWMChannel.hpp"
-#define PWM_ARRAY PCA9685
 
 #define  PCA_Register uint8_t
 
@@ -9,28 +8,26 @@ public:
     PCA9685(uint8_t bus, uint8_t address);
    ~PCA9685();
 
-    void wakeUp() override;      // Method to wake up the chip from sleep mode
-    void sleepMode() override;   // Method to put the chip into sleep mode
+    void wakeUp() override;
+    void sleepMode() override;
 
-    void printStatus(); // Method to print the state of the registers
+    Hertz getRealFrequencyHz(Hertz desiredFreq) override;
 
-    Hertz getRealFrequencyHz(Hertz desiredFreq) override;    // Method to calculate the real PWM frequency based on the desired frequency
-    // MicroSeconds   calcUnitDurationUs() override;   // Method to calculate the weight of a unit in microseconds based on the current pre-scale value
-
-    void  setFreq_Hz(Hertz freq) override;    // Set the PWM frequency
-    Hertz getFreq_Hz() override;                 // Method to get the current PWM frequency
+    void  setFreq_Hz(Hertz freq) override;
+    Hertz getFreq_Hz() override;
 
     PWMChannel PWM[16];
 
-    void        setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phaseShift = 0)  override;    // Set the PWM duty cycle
-    DutyCycle   getDutyCycle(uint8_t channel) override; // Method to get the PWM duty cycle for a specific channel
+    void        setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phaseShift = 0)  override;
+    DutyCycle   getDutyCycle(uint8_t channel) override;
 
-    void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;    // Set the PWM duty cycle
-    MicroSeconds getDuration(uint8_t channel) override; // Method to get the PWM duty cycle for a specific channel
+    void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;
+    MicroSeconds getDuration(uint8_t channel) override;
 
     void setInversion(uint8_t channel, bool inverted);
     bool getInversion(uint8_t channel);
 
+    void printStatus();
 
     private:
     int         fd;

@@ -7,42 +7,51 @@ MG996R::MG996R(
     Angle maxAngle,
     Angle offset,
     bool reversed)
-    : pwm_(pwm),
-      minPulse_(minPulse),
-      maxPulse_(maxPulse),
-      maxAngle_(maxAngle),
-      offset_(offset),
-      reversed_(reversed),
-      currentAngle_(rad(0.0f)) {}
+    : _pwm(pwm),
+      _minPulse(minPulse),
+      _maxPulse(maxPulse),
+      _maxAngle(maxAngle),
+      _offset(offset),
+      _reversed(reversed),
+      _currentAngle(rad(0.0f)),
+      _enabled(true) {}
+
 #include "terminal_tools.h"
 
 void MG996R::setAngle(const Angle& angle) {
-    Angle corrected = angle + offset_;
-    if (reversed_) {
-        corrected = maxAngle_ - corrected;
+    if(!_enabled)
+        return;
+
+    _currentAngle = angle;
+
+    Angle corrected = angle + _offset;
+    if (_reversed) {
+        corrected = _maxAngle - corrected;
     }
 
-    float normalized = clamp(corrected.asRadians() / maxAngle_.asRadians(), 0.0f, 1.0f);
-    MicroSeconds duration = static_cast<MicroSeconds>(
-        minPulse_ + normalized * (maxPulse_ - minPulse_)
+    float normalized = clamp(corrected.asRadians() / _maxAngle.asRadians(), 0.0f, 1.0f);
+
+    _pwm.setDuration(
+        _minPulse + ((_maxPulse - _minPulse) * normalized)
     );
-    // LOG("SetDurSRV %d\n", duration);
-    pwm_.setPulseDurationUS(duration);
-    currentAngle_ = angle;
+    _currentAngle = angle;
 }
 
-Angle MG996R::getAngle() const {
-    return currentAngle_;
-}
+Angle MG996R::getAngle() const { return _currentAngle; }
+
+void  MG996R::setAngleOffset(const Angle& angle) { _offset = angle; }
+Angle MG996R::getAngleOffset() const { return _offset;}
+
+void MG996R::setReversion(const bool isReversed ){_reversed = isReversed; }
+
+bool MG996R::isEnabled() const { return _enabled; }
 
 void MG996R::enable() {
-    pwm_.enable();
+    _enabled = true;
+    setAngle(_currentAngle);
 }
 
 void MG996R::disable() {
-    pwm_.disable();
-}
-
-bool MG996R::isEnabled() const {
-    return pwm_.isEnabled();
+    _enabled = false;
+    _pwm.setDuration(0);
 }

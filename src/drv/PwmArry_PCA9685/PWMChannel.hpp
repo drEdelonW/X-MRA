@@ -27,9 +27,6 @@ class PWMChannel : public ProtoPWM {
     public:
     PWMChannel(ProtoPWMArray& ctrl, uint8_t ch);
 
-    void setPulseDurationUS(MicroSeconds duration_us) override;
-    MicroSeconds getPulseDurationUS() override;
-
     void setDutyCycle(DutyCycle duty) override;
     DutyCycle getDutyCycle() override;
 

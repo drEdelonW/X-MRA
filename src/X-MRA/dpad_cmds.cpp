@@ -18,6 +18,12 @@ void _8() { SV_ALL(70.0f) }
 void _9() { SV_ALL(80.0f) }
 void _10() { SV_ALL(90.0f) }
 
+void _1on() { Servo1.enable(); }
+void _1off() { Servo1.disable(); }
+
+void _2on() { Servo2.enable(); }
+void _2off() { Servo2.disable(); }
+
 void _left() { SV_ALL(_curAngle + 1) }
 void _right() { SV_ALL(_curAngle - 1) }
 
@@ -70,10 +76,10 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY__0*/ {},
     /*KEY__1*/ {_on},
     /*KEY__2*/ {_off},
-    /*KEY__3*/ {},
-    /*KEY__4*/ {},
-    /*KEY__5*/ {},
-    /*KEY__6*/ {},
+    /*KEY__3*/ {_1on},
+    /*KEY__4*/ {_1off},
+    /*KEY__5*/ {_2on},
+    /*KEY__6*/ {_2off},
     /*KEY__7*/ {},
     /*KEY__8*/ {},
     /*KEY__9*/ {},
