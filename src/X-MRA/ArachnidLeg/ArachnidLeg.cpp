@@ -13,10 +13,17 @@ ArachnidLeg::ArachnidLeg(
 }
 
 bool ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
-    coxaJn_.setAngle(coxaAngle);
-    femurJn_.setAngle(femurAngle);
-    tibiaJn_.setAngle(tibiaAngle);
-    return true;
+    if (
+        coxaJn_.checkPose(coxaAngle) &&
+        femurJn_.checkPose(femurAngle) &&
+        tibiaJn_.checkPose(tibiaAngle)
+    ) {
+        return
+            coxaJn_.applyPose() &&
+            femurJn_.applyPose() &&
+            tibiaJn_.applyPose();
+    }
+    return false;
 }
 
 void ArachnidLeg::activate() {
@@ -63,9 +70,11 @@ bool ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     float angleFemur = angleToTarget + angleA;
     float angleTibia = M_PI - angleB;
 
-    coxaJn_.setAngle(rad(angleCoxa));
-    femurJn_.setAngle(rad(-angleFemur) );
-    tibiaJn_.setAngle(rad(-angleTibia) + deg(80));
-    return true;
+    return
+        setJointAngles(
+            rad(angleCoxa),
+            rad(-angleFemur),
+            rad(-angleTibia) + deg(90 - 10.9)
+        );
 }
 

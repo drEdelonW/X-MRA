@@ -5,14 +5,59 @@
 
 class ServoJoint : public JointBase {
 public:
-    ServoJoint(ProtoServo& servo) : _servo(servo) {}
+  ServoJoint(
+    ProtoServo& servo,
+    Angle minLim = Angle::fromDegrees(-90),
+    Angle maxLim = Angle::fromDegrees( 90),
+    Angle offset = Angle::fromDegrees(  0)
+  ):
+    _servo(servo),
+    _min(minLim),
+    _max(maxLim),
+    _offset(offset),
+    _valid(false),
+    _skip(false) {}
 
-    void  setAngle(const Angle& angle) override     { _servo.setAngle(angle); }
-    Angle getAngle() const override                 { return _servo.getAngle(); }
+    bool checkPose(const Angle& logical) override {
+        if (std::isnan(logical.asRadians())) {  // NaN → skip on apply
+            return _skip = true;
+        }
+
+        _skip = false;
+
+        Angle phys = logical + _offset;
+        if ((phys < _min) ||
+            (phys > _max)) {
+            return _valid = false;
+        }
+        _plan = phys;
+
+        return _valid = true;
+    }
+
+    bool applyPose() override {
+        if (_skip) {      // NaN → skip on apply
+            return true;
+        }
+        if (!_valid){
+            return false;
+        }
+        _servo.setAngle(_plan);
+
+        return true;
+    }
+
+    Angle getAngle() const override { return _servo.getAngle() - _offset; }
 
     void engage() override  { _servo.enable(); }
     void release() override { _servo.disable(); }
 
 private:
     ProtoServo& _servo;
+
+    Angle _min, _max;
+    Angle _offset;
+    Angle _plan;
+    bool  _valid;
+    bool  _skip;
 };

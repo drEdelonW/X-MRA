@@ -26,27 +26,40 @@ public:
     void setRadians(Radians r);
     void setDegrees(Degrees d);
 
+    Angle operator-() const;
+
     Angle  operator+(const Angle& other) const;
     Angle& operator+=(const Angle& other);
-
     Angle  operator-(const Angle& other) const;
     Angle& operator-=(const Angle& other);
 
     Angle operator*(float scalar) const;
     Angle& operator*=(float scalar);
-
     Angle operator/(float scalar) const;
     Angle& operator/=(float scalar);
 
     Angle operator*(int scalar) const;
     Angle& operator*=(int scalar);
-
     Angle operator/(int scalar) const;
     Angle& operator/=(int scalar);
 
     bool operator==(const Angle& other) const;
     bool operator!=(const Angle& other) const;
+    bool operator< (const Angle& o) const;
+    bool operator> (const Angle& o) const;
+    bool operator<=(const Angle& o) const;
+    bool operator>=(const Angle& o) const;
 
+    // Angle  normalized() const;
+    // Angle& normalize();
+
+    // static Angle clamp(const Angle& a, const Angle& min, const Angle& max);
+    // static Angle min(const Angle& a, const Angle& b);
+    // static Angle max(const Angle& a, const Angle& b);
+
+    // static const Angle Zero;
+    // static const Angle Pi;
+    // static const Angle TwoPi;
 private:
     float radians_;
 };
