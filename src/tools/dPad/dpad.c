@@ -1,7 +1,8 @@
 #include "dpad.h"
 #include <termios.h>
 
-char _keyBuff[10] = {0};
+// char _keyBuff[10] = {0};
+uint64_t _keyBuff;
 bool isKeyPressed();
 Key getKeyFromBuffer();
 
@@ -27,9 +28,10 @@ void dpad() {
                     return;
 
                 case KEY_UNKNOWN:
-                    for (int i = 0; _keyBuff[i]; i++)
-                        LOG("0x%.2X ", _keyBuff[i]);
-                    LOG("\n");
+                    // for (int i = 0; _keyBuff[i]; i++)
+                    //     LOG("0x%.2X ", _keyBuff[i]);
+                    // LOG("\n");
+                    LOG("KEY_UNKNOWN: 0x%016llX\n", (unsigned long long)_keyBuff); /* → 0xDEADBEEFCAFEBAB */
                     break;
 
                 default:

@@ -75,7 +75,19 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_W,         "W"},
     {KEY_X,         "X"},
     {KEY_Y,         "Y"},
-    {KEY_Z,         "Z"}
+    {KEY_Z,         "Z"},
+    {KEY__LEFT,     "KEY__LEFT"},
+    {KEY__RIGHT,    "KEY__RIGHT"},
+    {KEY__UP,       "KEY__UP"},
+    {KEY__DOWN,     "KEY__DOWN"},
+
+    {KEY__INSERT},
+    {KEY__DELETE,   "KEY__DELETE"},
+    {KEY__PAGE_UP,  "KEY__PAGE_UP"},
+    {KEY__PAGE_DOWN,"KEY__PAGE_DOWN"},
+    {KEY__HOME,     "KEY__HOME"},
+    {KEY__END,      "KEY__END"},
+
 };
 
 

@@ -86,6 +86,19 @@ typedef enum {
     KEY_X,
     KEY_Y,
     KEY_Z,
+
+    KEY__LEFT,
+    KEY__RIGHT,
+    KEY__UP,
+    KEY__DOWN,
+
+    KEY__INSERT,
+    KEY__DELETE,
+    KEY__PAGE_UP,
+    KEY__PAGE_DOWN,
+    KEY__HOME,
+    KEY__END,
+
     KEY_COUNT
 } Key;
 
