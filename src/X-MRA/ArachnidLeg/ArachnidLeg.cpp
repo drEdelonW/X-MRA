@@ -12,32 +12,13 @@ ArachnidLeg::ArachnidLeg(
 
 }
 
-bool ArachnidLeg::setJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
-    if (
+bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
+    return
         coxaJn_.checkPose(coxaAngle) &&
         femurJn_.checkPose(femurAngle) &&
-        tibiaJn_.checkPose(tibiaAngle)
-    ) {
-        return
-            coxaJn_.applyPose() &&
-            femurJn_.applyPose() &&
-            tibiaJn_.applyPose();
-    }
-    return false;
+        tibiaJn_.checkPose(tibiaAngle);
 }
-
-void ArachnidLeg::activate() {
-    coxaJn_.engage();
-    femurJn_.engage();
-    tibiaJn_.engage();
-}
-void ArachnidLeg::deactivate() {
-    coxaJn_.release();
-    femurJn_.release();
-    tibiaJn_.release();
-}
-
-bool ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
+bool ArachnidLeg::checkTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     // Coxa angle from projection onto XY-plane
     float angleCoxa = atan2(y, x); // V
 
@@ -71,10 +52,29 @@ bool ArachnidLeg::setTipPosition(Millimeters x, Millimeters y, Millimeters z) {
     float angleTibia = M_PI - angleB;
 
     return
-        setJointAngles(
+        checkJointAngles(
             rad(angleCoxa),
             rad(-angleFemur),
             rad(-angleTibia) + deg(90 - 10.9)
         );
+}
+
+bool ArachnidLeg::applyPose() {
+    return
+        coxaJn_.applyPose() &&
+        femurJn_.applyPose() &&
+        tibiaJn_.applyPose();
+}
+
+
+void ArachnidLeg::activate() {
+    coxaJn_.engage();
+    femurJn_.engage();
+    tibiaJn_.engage();
+}
+void ArachnidLeg::deactivate() {
+    coxaJn_.release();
+    femurJn_.release();
+    tibiaJn_.release();
 }
 

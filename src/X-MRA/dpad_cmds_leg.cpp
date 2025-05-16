@@ -12,6 +12,18 @@ static float _curAngle = 0;
         Servo[i].setAngle(deg(v));\
     }
 
+#define LEG_J_ALL(v1, v2, v3)  \
+    for(int i = 0; i < 2; i++) { \
+        if (leg[i].checkJointAngles(deg(v1),deg(v2),deg(v3))) \
+            leg[i].applyPose(); \
+    }
+
+#define LEG_P_ALL(v1, v2, v3)  \
+    for(int i = 0; i < 2; i++) { \
+        if (leg[i].checkTipPosition(v1,v2,v3)) \
+            leg[i].applyPose(); \
+    }
+
 void _on()  {
     LOG("ON\n");
     PWMarray[0].wakeUp();
@@ -25,18 +37,18 @@ void _off() {
     PWMarray[1].sleepMode();
 }
 
-void _u()   { leg[0].setJointAngles(deg(0), deg(0), deg(0));    leg[1].setJointAngles(deg(0), deg(0), deg(0)); }
-void _d()   { leg[0].setJointAngles(deg(10), deg(10), deg(10)); leg[1].setJointAngles(deg(10), deg(10), deg(10)); }
+void _u()   { LEG_J_ALL(0,  0, 0) }
+void _d()   { LEG_J_ALL(10, 10, 10) }
 
-void __u()  { leg[0].setTipPosition( 0.0,  0.0,  0.0); leg[1].setTipPosition( 0.0,  0.0,  0.0); }
+void __u()  { LEG_P_ALL(0.0,  0.0,  0.0) }
 #define DSTx     (150.0f)
 #define DSTz     (-50.0f)
 
-void __d()  { leg[0].setTipPosition( DSTx,  100.0,  DSTz); leg[1].setTipPosition( DSTx,  100.0,  DSTz); }
-void __d1() { leg[0].setTipPosition( DSTx,   50.0,  DSTz); leg[1].setTipPosition( DSTx,   50.0,  DSTz); }
-void __d2() { leg[0].setTipPosition( DSTx,    0.0,  DSTz); leg[1].setTipPosition( DSTx,    0.0,  DSTz); }
-void __d3() { leg[0].setTipPosition( DSTx,  -50.0,  DSTz); leg[1].setTipPosition( DSTx,  -50.0,  DSTz); }
-void __d4() { leg[0].setTipPosition( DSTx, -100.0,  DSTz); leg[1].setTipPosition( DSTx, -100.0,  DSTz); }
+void __d()  { LEG_P_ALL( DSTx,  100.0,  DSTz) }
+void __d1() { LEG_P_ALL( DSTx,   50.0,  DSTz) }
+void __d2() { LEG_P_ALL( DSTx,    0.0,  DSTz) }
+void __d3() { LEG_P_ALL( DSTx,  -50.0,  DSTz) }
+void __d4() { LEG_P_ALL( DSTx, -100.0,  DSTz) }
 
 
 KeyFunction fArray[KEY_COUNT] = {

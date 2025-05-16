@@ -7,9 +7,9 @@ class ServoJoint : public JointBase {
 public:
   ServoJoint(
     ProtoServo& servo,
-    Angle minLim = Angle::fromDegrees(-90),
-    Angle maxLim = Angle::fromDegrees( 90),
-    Angle offset = Angle::fromDegrees(  0)
+    Angle minLim = deg(-90),
+    Angle maxLim = deg( 90),
+    Angle offset = deg(  0)
   ):
     _servo(servo),
     _min(minLim),

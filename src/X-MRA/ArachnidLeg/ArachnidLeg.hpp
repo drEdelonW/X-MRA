@@ -30,8 +30,9 @@ class ArachnidLeg {
 public:
     ArachnidLeg(JointBase& coxaJn, JointBase& femurJn, JointBase& tibiaJn);
 
-    bool setJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);   // Set joint angles directly
-    bool setTipPosition(float x, float y, float z);             // Set leg tip position using inverse kinematics
+    bool checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+    bool checkTipPosition(float x, float y, float z);
+    bool applyPose();
 
     void activate();
     void deactivate();
