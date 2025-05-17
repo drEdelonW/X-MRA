@@ -2,22 +2,26 @@
 
 const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_UNKNOWN,   "Unknown"},
+
     {KEY_LEFT,      "Left"},
     {KEY_RIGHT,     "Right"},
     {KEY_UP,        "Up"},
     {KEY_DOWN,      "Down"},
+
     {KEY_INSERT,    "Insert"},
     {KEY_DELETE,    "Delete"},
     {KEY_PAGE_UP,   "Page Up"},
     {KEY_PAGE_DOWN, "Page Down"},
     {KEY_HOME,      "Home"},
     {KEY_END,       "End"},
+
     {KEY_BACKSPACE, "Backspace"},
     {KEY_ENTER,     "Enter"},
     {KEY_TAB,       "Tab"},
     {KEY_SPACE,     "Space"},
     {KEY_ESCAPE,    "Escape"},
     {KEY_TILDA,     "Tilda"},
+
     {KEY_F1,        "F1"},
     {KEY_F2,        "F2"},
     {KEY_F3,        "F3"},
@@ -30,6 +34,7 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_F10,       "F10"},
     {KEY_F11,       "F11"},
     {KEY_F12,       "F12"},
+
     {KEY_0,         "0"},
     {KEY_1,         "1"},
     {KEY_2,         "2"},
@@ -40,6 +45,7 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_7,         "7"},
     {KEY_8,         "8"},
     {KEY_9,         "9"},
+
     {KEY__0,        "^0"},
     {KEY__1,        "^1"},
     {KEY__2,        "^2"},
@@ -50,6 +56,7 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY__7,        "^7"},
     {KEY__8,        "^8"},
     {KEY__9,        "^9"},
+
     {KEY_A,         "A"},
     {KEY_B,         "B"},
     {KEY_C,         "C"},
@@ -76,18 +83,45 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_X,         "X"},
     {KEY_Y,         "Y"},
     {KEY_Z,         "Z"},
+
     {KEY__LEFT,     "KEY__LEFT"},
     {KEY__RIGHT,    "KEY__RIGHT"},
     {KEY__UP,       "KEY__UP"},
     {KEY__DOWN,     "KEY__DOWN"},
 
-    {KEY__INSERT},
+    {KEY__INSERT,   "KEY__INSERT"},
     {KEY__DELETE,   "KEY__DELETE"},
     {KEY__PAGE_UP,  "KEY__PAGE_UP"},
     {KEY__PAGE_DOWN,"KEY__PAGE_DOWN"},
     {KEY__HOME,     "KEY__HOME"},
     {KEY__END,      "KEY__END"},
 
+    {KEY__A,        "^A"},
+    {KEY__B,        "^B"},
+    {KEY__C,        "^C"},
+    {KEY__D,        "^D"},
+    {KEY__E,        "^E"},
+    {KEY__F,        "^F"},
+    {KEY__G,        "^G"},
+    {KEY__H,        "^H"},
+    {KEY__I,        "^I"},
+    {KEY__J,        "^J"},
+    {KEY__K,        "^K"},
+    {KEY__L,        "^L"},
+    {KEY__M,        "^M"},
+    {KEY__N,        "^N"},
+    {KEY__O,        "^O"},
+    {KEY__P,        "^P"},
+    {KEY__Q,        "^Q"},
+    {KEY__R,        "^R"},
+    {KEY__S,        "^S"},
+    {KEY__T,        "^T"},
+    {KEY__U,        "^U"},
+    {KEY__V,        "^V"},
+    {KEY__W,        "^W"},
+    {KEY__X,        "^X"},
+    {KEY__Y,        "^Y"},
+    {KEY__Z,        "^Z"},
 };
 
 
