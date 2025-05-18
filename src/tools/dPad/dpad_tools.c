@@ -62,10 +62,16 @@ uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
 /* ───── lookup table exactly in enum order ───── */
 static const uint64_t keyTable[KEY_COUNT] = {
 /*  0 KEY_UNKNOWN  */ SEQ8(0,0,0,0,0,0,0,0),
+
 /*  1 KEY_LEFT     */ SEQ3(0x1B,0x5B,0x44),          /* ESC [ D */
 /*  2 KEY_RIGHT    */ SEQ3(0x1B,0x5B,0x43),          /* ESC [ C */
 /*  3 KEY_UP       */ SEQ3(0x1B,0x5B,0x41),          /* ESC [ A */
 /*  4 KEY_DOWN     */ SEQ3(0x1B,0x5B,0x42),          /* ESC [ B */
+
+/*  75 KEY__LEFT     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x44),
+/*  76 KEY__RIGHT    */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x43),
+/*  77 KEY__UP       */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x41),
+/*  78 KEY__DOWN     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x42),
 
 /*  5 KEY_INSERT   */ SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
 /*  6 KEY_DELETE   */ SEQ4(0x1B,0x5B,0x33,0x7E),     /* ESC [ 3 ~ */
@@ -73,6 +79,13 @@ static const uint64_t keyTable[KEY_COUNT] = {
 /*  8 KEY_PAGE_DOWN*/ SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
 /*  9 KEY_HOME     */ SEQ3(0x1B,0x5B,0x48),          /* ESC [ H */
 /* 10 KEY_END      */ SEQ3(0x1B,0x5B,0x46),          /* ESC [ F */
+
+/*  79 KEY__INSERT   */ SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
+/*  80 KEY__DELETE   */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x1B),
+/*  81 KEY__PAGE_UP  */ SEQ4(0x1B,0x5B,0x35,0x7E),     /* ESC [ 5 ~ */
+/*  82 KEY__PAGE_DOWN*/ SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
+/*  83 KEY__HOME     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x48),
+/*  84 KEY__END      */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x46),
 
 /* 11 KEY_BACKSPACE*/ SEQ1(0x7F),
 /* 12 KEY_ENTER    */ SEQ1(0x0A),
@@ -109,22 +122,21 @@ static const uint64_t keyTable[KEY_COUNT] = {
              SEQ1('p'), SEQ1('q'), SEQ1('r'), SEQ1('s'), SEQ1('t'),
              SEQ1('u'), SEQ1('v'), SEQ1('w'), SEQ1('x'), SEQ1('y'),
              SEQ1('z'),
-/*  75 KEY__LEFT     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x44),
-/*  76 KEY__RIGHT    */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x43),
-/*  77 KEY__UP       */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x41),
-/*  78 KEY__DOWN     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x42),
 
-/*  79 KEY__INSERT   */ SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
-/*  80 KEY__DELETE   */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x1B),
-/*  81 KEY__PAGE_UP  */ SEQ4(0x1B,0x5B,0x35,0x7E),     /* ESC [ 5 ~ */
-/*  82 KEY__PAGE_DOWN*/ SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
-/*  83 KEY__HOME     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x48),
-/*  84 KEY__END      */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x46),
+             /* 49‒74  letters a..z (lower-case chosen as базовый) */
+             SEQ1('A'), SEQ1('B'), SEQ1('C'), SEQ1('D'), SEQ1('E'),
+             SEQ1('F'), SEQ1('G'), SEQ1('H'), SEQ1('I'), SEQ1('J'),
+             SEQ1('K'), SEQ1('L'), SEQ1('M'), SEQ1('N'), SEQ1('O'),
+             SEQ1('P'), SEQ1('Q'), SEQ1('R'), SEQ1('S'), SEQ1('T'),
+             SEQ1('U'), SEQ1('V'), SEQ1('W'), SEQ1('X'), SEQ1('Y'),
+             SEQ1('Z'),
+
 };
 
 Key getKeyFromBuffer() {
     for (int k = 1; k < KEY_COUNT; ++k){
         if (_keyBuff == keyTable[k]) {
+            // LOG("%s\n", getKeyName(k));
             return (Key)k;
         }
     }

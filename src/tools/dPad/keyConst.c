@@ -8,12 +8,24 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_UP,        "Up"},
     {KEY_DOWN,      "Down"},
 
+    {KEY__LEFT,     "^Left"},
+    {KEY__RIGHT,    "^Right"},
+    {KEY__UP,       "^Up"},
+    {KEY__DOWN,     "^Down"},
+
     {KEY_INSERT,    "Insert"},
     {KEY_DELETE,    "Delete"},
     {KEY_PAGE_UP,   "Page Up"},
     {KEY_PAGE_DOWN, "Page Down"},
     {KEY_HOME,      "Home"},
     {KEY_END,       "End"},
+
+    {KEY__INSERT,   "^Insert"},
+    {KEY__DELETE,   "^Delete"},
+    {KEY__PAGE_UP,  "^Page Up"},
+    {KEY__PAGE_DOWN,"^Page Down"},
+    {KEY__HOME,     "^Home"},
+    {KEY__END,      "^End"},
 
     {KEY_BACKSPACE, "Backspace"},
     {KEY_ENTER,     "Enter"},
@@ -83,18 +95,6 @@ const KeyInfo keyInfos[KEY_COUNT] = {
     {KEY_X,         "X"},
     {KEY_Y,         "Y"},
     {KEY_Z,         "Z"},
-
-    {KEY__LEFT,     "KEY__LEFT"},
-    {KEY__RIGHT,    "KEY__RIGHT"},
-    {KEY__UP,       "KEY__UP"},
-    {KEY__DOWN,     "KEY__DOWN"},
-
-    {KEY__INSERT,   "KEY__INSERT"},
-    {KEY__DELETE,   "KEY__DELETE"},
-    {KEY__PAGE_UP,  "KEY__PAGE_UP"},
-    {KEY__PAGE_DOWN,"KEY__PAGE_DOWN"},
-    {KEY__HOME,     "KEY__HOME"},
-    {KEY__END,      "KEY__END"},
 
     {KEY__A,        "^A"},
     {KEY__B,        "^B"},

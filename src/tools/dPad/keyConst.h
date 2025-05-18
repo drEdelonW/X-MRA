@@ -12,6 +12,11 @@ typedef enum {
     KEY_UP,
     KEY_DOWN,
 
+    KEY__LEFT,
+    KEY__RIGHT,
+    KEY__UP,
+    KEY__DOWN,
+
     KEY_INSERT,
     KEY_DELETE,
     KEY_PAGE_UP,
@@ -86,11 +91,6 @@ typedef enum {
     KEY_X,
     KEY_Y,
     KEY_Z,
-
-    KEY__LEFT,
-    KEY__RIGHT,
-    KEY__UP,
-    KEY__DOWN,
 
     KEY__INSERT,
     KEY__DELETE,
