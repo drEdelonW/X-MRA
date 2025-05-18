@@ -23,16 +23,17 @@ bool ArachnidLeg::checkTipPosition(Millimeters x, Millimeters y, Millimeters z) 
     float angleCoxa = atan2(y, x); // V
 
     // Shift to local femur-tibia plane
-    float planarX = sqrt(x * x + y * y) - coxaLength_;
+    float planarX = sqrt((x * x) + (y * y)) - coxaLength_;
     float planarZ = z + (Millimeters)60.0;
 
     // Distance from femur joint to target
-    float dist = sqrt(planarX * planarX + planarZ * planarZ);
+    float dist = sqrt((planarX * planarX) + (planarZ * planarZ));
 
     float maxReach = femurLength_ + tibiaLength_;
     float minReach = fabsf(femurLength_ - tibiaLength_); // folded inward
 
-    if (dist < minReach + 1e-3f || dist > maxReach - 1e-3f) {
+    if ((dist < minReach + 1e-3f) ||
+        (dist > maxReach - 1e-3f)) {
         return false; // unreachable
     }
 
@@ -45,8 +46,10 @@ bool ArachnidLeg::checkTipPosition(Millimeters x, Millimeters y, Millimeters z) 
     float c = dist;
 
     // Use law of cosines
-    float angleA = acos(clamp((b*b + c*c - a*a) / (2*b*c), -1.0f, 1.0f)); // femur
-    float angleB = acos(clamp((a*a + b*b - c*c) / (2*a*b), -1.0f, 1.0f)); // tibia
+    // float angleA = acos(clamp((b*b + c*c - a*a) / (2*b*c), -1.0f, 1.0f)); // femur
+    // float angleB = acos(clamp((a*a + b*b - c*c) / (2*a*b), -1.0f, 1.0f)); // tibia
+    float angleA = acos((b*b + c*c - a*a) / (2*b*c)); // femur
+    float angleB = acos((a*a + b*b - c*c) / (2*a*b)); // tibia
 
     float angleFemur = angleToTarget + angleA;
     float angleTibia = M_PI - angleB;

@@ -44,10 +44,22 @@ void _off() {
     PWMarray[1].sleepMode();
 }
 
-void _u()   { LEG_J_ALL(0,  0, 0) }
-void _d()   { LEG_J_ALL(10, 10, 10) }
+// #define mStep (1.0f)
+Millimeters mStep = 1.0f;
 
-void __u()  { LEG_P_ALL(0.0,  0.0,  0.0) }
+void _u()   {
+    mStep = 0.1f;
+    // LEG_J_ALL(0,  0, 0)
+}
+void _d()   {
+    mStep = 1.0f;
+    //  LEG_J_ALL(10, 10, 10)
+}
+
+void __u()  {
+    mStep = 10.0f;
+    //  LEG_P_ALL(0.0,  0.0,  0.0)
+}
 #define DSTx     (150.0f)
 #define DSTz     (0.0f)
 
@@ -58,7 +70,7 @@ void __d3() { LEG_P_ALL( DSTx,  -50.0,  DSTz) }
 void __d4() { LEG_P_ALL( DSTx, -100.0,  DSTz) }
 
 Vector3D _curPose = {DSTx, 0.0f, DSTz};
-#define mStep (1.0f)
+
 void _xPos() { _curPose.x += mStep; LEG_PV_ALL(_curPose); }
 void _xNeg() { _curPose.x -= mStep; LEG_PV_ALL(_curPose); }
 
