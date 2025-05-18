@@ -13,13 +13,13 @@ static float _curAngle = 0;
     }
 
 #define LEG_J_ALL(v1, v2, v3)  \
-    for(int i = 0; i < 2; i++) { \
+    for(int i = 0; i < 6; i++) { \
         if (leg[i].checkJointAngles(deg(v1),deg(v2),deg(v3))) \
             leg[i].applyPose(); \
     }
 
 #define LEG_P_ALL(v1, v2, v3)  \
-    for(int i = 0; i < 2; i++) { \
+    for(int i = 0; i < 6; i++) { \
         if (leg[i].checkTipPosition(v1,v2,v3)) \
             leg[i].applyPose(); \
     }
@@ -42,7 +42,8 @@ void _d()   { LEG_J_ALL(10, 10, 10) }
 
 void __u()  { LEG_P_ALL(0.0,  0.0,  0.0) }
 #define DSTx     (150.0f)
-#define DSTz     (-50.0f)
+// #define DSTz     (60.0f)
+#define DSTz     (0.0f)
 
 void __d()  { LEG_P_ALL( DSTx,  100.0,  DSTz) }
 void __d1() { LEG_P_ALL( DSTx,   50.0,  DSTz) }

@@ -24,7 +24,7 @@ bool ArachnidLeg::checkTipPosition(Millimeters x, Millimeters y, Millimeters z) 
 
     // Shift to local femur-tibia plane
     float planarX = sqrt(x * x + y * y) - coxaLength_;
-    float planarZ = z; // downward is positive
+    float planarZ = z + (Millimeters)60.0;
 
     // Distance from femur joint to target
     float dist = sqrt(planarX * planarX + planarZ * planarZ);

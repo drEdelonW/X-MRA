@@ -16,24 +16,30 @@ MG996R Servo[] = {
     { PWMarray[0].PWM[1],  TowerPro_MG996R_cfg },   //Femur
     { PWMarray[0].PWM[2],  TowerPro_MG996R_cfg, CCW},   //Coxa
 
-    // //FrontRight
-    // { PWMarray[0].PWM[15], TowerPro_MG996R_cfg, CCW },  //Tiba
-    // { PWMarray[0].PWM[14], TowerPro_MG996R_cfg, CCW },  //Femur
-    // { PWMarray[0].PWM[13], TowerPro_MG996R_cfg, CCW },  //Coxa
+    //FrontRight
+    { PWMarray[0].PWM[15], TowerPro_MG996R_cfg, CCW },  //Tiba
+    { PWMarray[0].PWM[14], TowerPro_MG996R_cfg, CCW },  //Femur
+    { PWMarray[0].PWM[13], TowerPro_MG996R_cfg, CCW },  //Coxa
 
     //MidleLeft
-    { PWMarray[0].PWM[4],  TowerPro_MG996R_cfg },  //Tiba
-    { PWMarray[0].PWM[5],  TowerPro_MG996R_cfg },  //Femur
-    { PWMarray[0].PWM[6],  TowerPro_MG996R_cfg, CCW},  //Coxa
+    { PWMarray[0].PWM[4],  TowerPro_MG996R_cfg },       //Tiba
+    { PWMarray[0].PWM[5],  TowerPro_MG996R_cfg },       //Femur
+    { PWMarray[0].PWM[6],  TowerPro_MG996R_cfg, CCW},   //Coxa
 
-    // { PWMarray[0].PWM[11], TowerPro_MG996R_cfg, CCW },
-    // { PWMarray[0].PWM[10], TowerPro_MG996R_cfg, CCW },
+    //MidleRight
+    { PWMarray[0].PWM[11], TowerPro_MG996R_cfg, CCW },  //Tiba
+    { PWMarray[0].PWM[10], TowerPro_MG996R_cfg, CCW },  //Femur
+    { PWMarray[0].PWM[9],  TowerPro_MG996R_cfg, CCW },  //Coxa
 
-    // { PWMarray[1].PWM[15],  TowerPro_MG996R_cfg },
-    // { PWMarray[1].PWM[14],  TowerPro_MG996R_cfg },
+    //BackLeft
+    { PWMarray[1].PWM[15],  TowerPro_MG996R_cfg },      //Tiba
+    { PWMarray[1].PWM[14],  TowerPro_MG996R_cfg },      //Femur
+    { PWMarray[1].PWM[13],  TowerPro_MG996R_cfg, CCW }, //Coxa
 
-    // { PWMarray[1].PWM[1], TowerPro_MG996R_cfg, CCW },
-    // { PWMarray[1].PWM[0], TowerPro_MG996R_cfg, CCW },
+    //BackRight
+    { PWMarray[1].PWM[0], TowerPro_MG996R_cfg, CCW },   //Tiba
+    { PWMarray[1].PWM[1], TowerPro_MG996R_cfg, CCW },   //Femur
+    { PWMarray[1].PWM[2], TowerPro_MG996R_cfg, CCW },   //Coxa
 };
 
 ServoJoint FrontLeft[] = {
@@ -48,16 +54,39 @@ ServoJoint FrontRight[] = {
     Servo[5]    //Coxa
 };
 
+ServoJoint MidleLeft[] = {
+    Servo[6],   //Tiba
+    Servo[7],   //Femur
+    Servo[8]    //Coxa
+};
+
+ServoJoint MidleRight[] = {
+    Servo[9],   //Tiba
+    Servo[10],   //Femur
+    Servo[11]    //Coxa
+};
+
+ServoJoint BackLeft[] = {
+    Servo[12],   //Tiba
+    Servo[13],   //Femur
+    Servo[14]    //Coxa
+};
+
+ServoJoint BackRight[] = {
+    Servo[15],   //Tiba
+    Servo[16],   //Femur
+    Servo[17]    //Coxa
+};
+
+#define nameLeg(v)  {v[2], v[1], v[0] }
+
 ArachnidLeg leg[] = {
-    {
-        FrontLeft[2],
-        FrontLeft[1],
-        FrontLeft[0]
-    },{
-        FrontRight[2],
-        FrontRight[1],
-        FrontRight[0]
-    }
+    nameLeg(FrontLeft),
+    nameLeg(FrontRight),
+    nameLeg(MidleLeft),
+    nameLeg(MidleRight),
+    nameLeg(BackLeft),
+    nameLeg(BackRight),
 };
 
 
