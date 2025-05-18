@@ -1,6 +1,7 @@
 #pragma once
 #include "JointBase.hpp"
 #include "PhysTypes.hpp"
+#include "Vector3d.hpp"
 
 /*  ArachnidLeg:
 
@@ -32,6 +33,8 @@ public:
 
     bool checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
     bool checkTipPosition(float x, float y, float z);
+    bool checkTipPosition(Vector3D pos);
+
     bool applyPose();
 
     void activate();

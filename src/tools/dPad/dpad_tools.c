@@ -30,7 +30,7 @@ uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
         fd_set fds;
         struct timeval tv = {
             .tv_sec = 0,
-            .tv_usec = KEY_TIMEOUT_MS * 1000
+            .tv_usec = KEY_TIMEOUT_MS * 20
         };
 
         FD_ZERO(&fds);

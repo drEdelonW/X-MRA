@@ -2,6 +2,7 @@
 #include "common_tools.h"
 
 #include "robot_spec.hpp"
+#include "Vector3d.hpp"
 
 static float _curAngle = 0;
 
@@ -24,6 +25,12 @@ static float _curAngle = 0;
             leg[i].applyPose(); \
     }
 
+#define LEG_PV_ALL(v)  \
+    for(int i = 0; i < 6; i++) { \
+        if (leg[i].checkTipPosition(v)) \
+            leg[i].applyPose(); \
+    }
+
 void _on()  {
     LOG("ON\n");
     PWMarray[0].wakeUp();
@@ -42,7 +49,6 @@ void _d()   { LEG_J_ALL(10, 10, 10) }
 
 void __u()  { LEG_P_ALL(0.0,  0.0,  0.0) }
 #define DSTx     (150.0f)
-// #define DSTz     (60.0f)
 #define DSTz     (0.0f)
 
 void __d()  { LEG_P_ALL( DSTx,  100.0,  DSTz) }
@@ -51,19 +57,33 @@ void __d2() { LEG_P_ALL( DSTx,    0.0,  DSTz) }
 void __d3() { LEG_P_ALL( DSTx,  -50.0,  DSTz) }
 void __d4() { LEG_P_ALL( DSTx, -100.0,  DSTz) }
 
+Vector3D _curPose = {DSTx, 0.0f, DSTz};
+#define mStep (1.0f)
+void _xPos() { _curPose.x += mStep; LEG_PV_ALL(_curPose); }
+void _xNeg() { _curPose.x -= mStep; LEG_PV_ALL(_curPose); }
+
+void _yPos() { _curPose.y += mStep; LEG_PV_ALL(_curPose); }
+void _yNeg() { _curPose.y -= mStep; LEG_PV_ALL(_curPose); }
+
+void _zPos() { _curPose.z += mStep; LEG_PV_ALL(_curPose); }
+void _zNeg() { _curPose.z -= mStep; LEG_PV_ALL(_curPose); }
+
+void _goGome()  { _curPose = {DSTx, 0.0f, DSTz}; LEG_PV_ALL(_curPose); }
+
+
 
 KeyFunction fArray[KEY_COUNT] = {
     /*KEY_UNKNOWN*/     {},
 
-    /*KEY_LEFT*/        {},
-    /*KEY_RIGHT*/       {},
-    /*KEY_UP*/          {},
-    /*KEY_DOWN*/        {},
+    /*KEY_LEFT*/        {_yPos},
+    /*KEY_RIGHT*/       {_yNeg},
+    /*KEY_UP*/          {_xPos},
+    /*KEY_DOWN*/        {_xNeg},
 
     /*KEY__LEFT*/       {},
     /*KEY__RIGHT*/      {},
-    /*KEY__UP*/         {},
-    /*KEY__DOWN*/       {},
+    /*KEY__UP*/         {_zPos},
+    /*KEY__DOWN*/       {_zNeg},
 
     /*KEY_INSERT*/      {},
     /*KEY_DELETE*/      {},
@@ -99,7 +119,7 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_F11*/ {},
     /*KEY_F12*/ {},
 
-    /*KEY_0*/ {},
+    /*KEY_0*/ {_goGome},
     /*KEY_1*/ {_u},
     /*KEY_2*/ {_d},
     /*KEY_3*/ {__u},

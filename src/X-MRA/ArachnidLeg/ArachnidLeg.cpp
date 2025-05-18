@@ -58,6 +58,10 @@ bool ArachnidLeg::checkTipPosition(Millimeters x, Millimeters y, Millimeters z) 
             rad(-angleTibia) + deg(90 - 10.9)
         );
 }
+bool ArachnidLeg::checkTipPosition(Vector3D pos){
+    return checkTipPosition(pos.x, pos.y, pos.z);
+}
+
 
 bool ArachnidLeg::applyPose() {
     return
