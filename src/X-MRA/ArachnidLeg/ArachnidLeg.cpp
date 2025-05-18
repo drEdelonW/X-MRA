@@ -5,11 +5,9 @@ ArachnidLeg::ArachnidLeg(
     JointBase& coxaJn,
     JointBase& femurJn,
     JointBase& tibiaJn
-    ):
-    coxaJn_(coxaJn),
+):  coxaJn_(coxaJn),
     femurJn_(femurJn),
     tibiaJn_(tibiaJn) {
-
 }
 
 bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {

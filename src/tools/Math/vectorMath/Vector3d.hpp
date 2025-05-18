@@ -9,18 +9,19 @@ public:
     void print() const;
     void printXML() const;
 
-    Vector3D operator+(const Vector3D& other) const;
+    Vector3D  operator+(const  Vector3D& other) const;
     Vector3D& operator+=(const Vector3D& other);
-    Vector3D operator-(const Vector3D& other) const;
+    Vector3D  operator-(const  Vector3D& other) const;
     Vector3D& operator-=(const Vector3D& other);
-    Vector3D operator*(float scalar) const;
+
+    Vector3D  operator*(float  scalar) const;
     Vector3D& operator*=(float scalar);
-    Vector3D operator*(const Vector3D& other) const;
-    Vector3D operator/(float scalar) const;
+    Vector3D  operator*(const  Vector3D& other) const;
+    Vector3D  operator/(float  scalar) const;
     Vector3D& operator/=(float scalar);
 
-    float dot(const Vector3D& other) const;
-    Vector3D cross(const Vector3D& other) const;
+    float     dot(const   Vector3D& other) const;
+    Vector3D  cross(const Vector3D& other) const;
 
     float length() const;
     Vector3D normalize() const;

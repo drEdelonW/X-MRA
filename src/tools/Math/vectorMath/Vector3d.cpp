@@ -57,9 +57,11 @@ Vector3D Vector3D::operator*(const Vector3D& other) const {
 
     // Проверка на коллинеарность
     if ((nx == 0) && (ny == 0) && (nz == 0)) {
-        return Vector3D(std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN());
+        return Vector3D(
+            std::numeric_limits<float>::quiet_NaN(),
+            std::numeric_limits<float>::quiet_NaN(),
+            std::numeric_limits<float>::quiet_NaN()
+        );
     }
 
     return Vector3D(nx, ny, nz);
@@ -69,9 +71,11 @@ Vector3D Vector3D::operator/(float scalar) const {
     if (scalar != 0) {
         return Vector3D((x / scalar), (y / scalar), (z / scalar));
     } else {
-        return Vector3D(std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN());
+        return Vector3D(
+            std::numeric_limits<float>::quiet_NaN(),
+            std::numeric_limits<float>::quiet_NaN(),
+            std::numeric_limits<float>::quiet_NaN()
+        );
     }
 }
 
@@ -110,9 +114,11 @@ Vector3D Vector3D::normalize() const {
     if (len != 0) {
         return *this / len;
     } else {
-        return Vector3D(std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN());
+        return Vector3D(
+            std::numeric_limits<float>::quiet_NaN(),
+            std::numeric_limits<float>::quiet_NaN(),
+            std::numeric_limits<float>::quiet_NaN()
+        );
     }
 }
 

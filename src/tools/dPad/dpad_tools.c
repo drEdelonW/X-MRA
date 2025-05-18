@@ -21,8 +21,8 @@ void restoreTerminal(const struct termios* orig) {
 
 bool isKeyPressed(void) {
 uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
-    uint8_t *ptr  = base;
-    uint8_t *end  = base + sizeof(_keyBuff);
+    uint8_t *ptr = base;
+    uint8_t *end = base + sizeof(_keyBuff);
 
     memset(&_keyBuff, 0, sizeof(_keyBuff));
 
@@ -108,28 +108,28 @@ static const uint64_t keyTable[KEY_COUNT] = {
 /* 28 KEY_F12      */ SEQ5(0x1B,0x5B,0x32,0x33,0x7E),/* ESC [ 23 ~ */
 
 /* 29‒38  digits '0'..'9' */
-             SEQ1('0'), SEQ1('1'), SEQ1('2'), SEQ1('3'), SEQ1('4'),
-             SEQ1('5'), SEQ1('6'), SEQ1('7'), SEQ1('8'), SEQ1('9'),
+    SEQ1('0'), SEQ1('1'), SEQ1('2'), SEQ1('3'), SEQ1('4'),
+    SEQ1('5'), SEQ1('6'), SEQ1('7'), SEQ1('8'), SEQ1('9'),
 
 /* 39‒48  shifted digits ")!@#$%^&*(" */
-             SEQ1(')'), SEQ1('!'), SEQ1('@'), SEQ1('#'), SEQ1('$'),
-             SEQ1('%'), SEQ1('^'), SEQ1('&'), SEQ1('*'), SEQ1('('),
+    SEQ1(')'), SEQ1('!'), SEQ1('@'), SEQ1('#'), SEQ1('$'),
+    SEQ1('%'), SEQ1('^'), SEQ1('&'), SEQ1('*'), SEQ1('('),
 
 /* 49‒74  letters a..z (lower-case chosen as базовый) */
-             SEQ1('a'), SEQ1('b'), SEQ1('c'), SEQ1('d'), SEQ1('e'),
-             SEQ1('f'), SEQ1('g'), SEQ1('h'), SEQ1('i'), SEQ1('j'),
-             SEQ1('k'), SEQ1('l'), SEQ1('m'), SEQ1('n'), SEQ1('o'),
-             SEQ1('p'), SEQ1('q'), SEQ1('r'), SEQ1('s'), SEQ1('t'),
-             SEQ1('u'), SEQ1('v'), SEQ1('w'), SEQ1('x'), SEQ1('y'),
-             SEQ1('z'),
+    SEQ1('a'), SEQ1('b'), SEQ1('c'), SEQ1('d'), SEQ1('e'),
+    SEQ1('f'), SEQ1('g'), SEQ1('h'), SEQ1('i'), SEQ1('j'),
+    SEQ1('k'), SEQ1('l'), SEQ1('m'), SEQ1('n'), SEQ1('o'),
+    SEQ1('p'), SEQ1('q'), SEQ1('r'), SEQ1('s'), SEQ1('t'),
+    SEQ1('u'), SEQ1('v'), SEQ1('w'), SEQ1('x'), SEQ1('y'),
+    SEQ1('z'),
 
-             /* 49‒74  letters a..z (lower-case chosen as базовый) */
-             SEQ1('A'), SEQ1('B'), SEQ1('C'), SEQ1('D'), SEQ1('E'),
-             SEQ1('F'), SEQ1('G'), SEQ1('H'), SEQ1('I'), SEQ1('J'),
-             SEQ1('K'), SEQ1('L'), SEQ1('M'), SEQ1('N'), SEQ1('O'),
-             SEQ1('P'), SEQ1('Q'), SEQ1('R'), SEQ1('S'), SEQ1('T'),
-             SEQ1('U'), SEQ1('V'), SEQ1('W'), SEQ1('X'), SEQ1('Y'),
-             SEQ1('Z'),
+/* 49‒74  letters a..z (lower-case chosen as базовый) */
+    SEQ1('A'), SEQ1('B'), SEQ1('C'), SEQ1('D'), SEQ1('E'),
+    SEQ1('F'), SEQ1('G'), SEQ1('H'), SEQ1('I'), SEQ1('J'),
+    SEQ1('K'), SEQ1('L'), SEQ1('M'), SEQ1('N'), SEQ1('O'),
+    SEQ1('P'), SEQ1('Q'), SEQ1('R'), SEQ1('S'), SEQ1('T'),
+    SEQ1('U'), SEQ1('V'), SEQ1('W'), SEQ1('X'), SEQ1('Y'),
+    SEQ1('Z'),
 
 };
 
