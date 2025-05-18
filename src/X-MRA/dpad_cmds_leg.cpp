@@ -6,12 +6,12 @@
 
 static float _curAngle = 0;
 
-#define SV_ALL(v)  \
-    LOG("[%.2f]\n", (v)); \
-    _curAngle = (v); \
-    for(int i = 0; i < DIMOF(Servo); i++) {\
-        Servo[i].setAngle(deg(v));\
-    }
+// #define SV_ALL(v)  \
+//     LOG("[%.2f]\n", (v)); \
+//     _curAngle = (v); \
+//     for(int i = 0; i < DIMOF(Servo); i++) {\
+//         Servo[i].setAngle(deg(v));\
+//     }
 
 #define LEG_J_ALL(v1, v2, v3)  \
     for(int i = 0; i < 6; i++) { \
@@ -19,11 +19,11 @@ static float _curAngle = 0;
             leg[i].applyPose(); \
     }
 
-#define LEG_P_ALL(v1, v2, v3)  \
-    for(int i = 0; i < 6; i++) { \
-        if (leg[i].checkTipPosition(v1,v2,v3)) \
-            leg[i].applyPose(); \
-    }
+// #define LEG_P_ALL(v1, v2, v3)  \
+//     for(int i = 0; i < 6; i++) { \
+//         if (leg[i].checkTipPosition(v1,v2,v3)) \
+//             leg[i].applyPose(); \
+//     }
 
 #define LEG_PV_ALL(v)  \
     for(int i = 0; i < 6; i++) { \
@@ -44,30 +44,14 @@ void _off() {
     PWMarray[1].sleepMode();
 }
 
-// #define mStep (1.0f)
 Millimeters mStep = 1.0f;
 
-void _u()   {
-    mStep = 0.1f;
-    // LEG_J_ALL(0,  0, 0)
-}
-void _d()   {
-    mStep = 1.0f;
-    //  LEG_J_ALL(10, 10, 10)
-}
+void _1()  { mStep =  0.1f; }
+void _2()  { mStep =  1.0f; }
+void _3()  { mStep = 10.0f; }
 
-void __u()  {
-    mStep = 10.0f;
-    //  LEG_P_ALL(0.0,  0.0,  0.0)
-}
 #define DSTx     (150.0f)
 #define DSTz     (0.0f)
-
-void __d()  { LEG_P_ALL( DSTx,  100.0,  DSTz) }
-void __d1() { LEG_P_ALL( DSTx,   50.0,  DSTz) }
-void __d2() { LEG_P_ALL( DSTx,    0.0,  DSTz) }
-void __d3() { LEG_P_ALL( DSTx,  -50.0,  DSTz) }
-void __d4() { LEG_P_ALL( DSTx, -100.0,  DSTz) }
 
 Vector3D _curPose = {DSTx, 0.0f, DSTz};
 
@@ -101,7 +85,7 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_DELETE*/      {},
     /*KEY_PAGE_UP*/     {},
     /*KEY_PAGE_DOWN*/   {},
-    /*KEY_HOME*/        {},
+    /*KEY_HOME*/        {_goGome},
     /*KEY_END*/         {},
 
     /*KEY__INSERT*/      {},
@@ -132,14 +116,14 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_F12*/ {},
 
     /*KEY_0*/ {_goGome},
-    /*KEY_1*/ {_u},
-    /*KEY_2*/ {_d},
-    /*KEY_3*/ {__u},
-    /*KEY_4*/ {__d},
-    /*KEY_5*/ {__d1},
-    /*KEY_6*/ {__d2},
-    /*KEY_7*/ {__d3},
-    /*KEY_8*/ {__d4},
+    /*KEY_1*/ {_1},
+    /*KEY_2*/ {_2},
+    /*KEY_3*/ {_3},
+    /*KEY_4*/ {},
+    /*KEY_5*/ {},
+    /*KEY_6*/ {},
+    /*KEY_7*/ {},
+    /*KEY_8*/ {},
     /*KEY_9*/ {},
 
     /*KEY__0*/ {},

@@ -8,8 +8,8 @@
    [Body]
       |
    [Coxa]──▶──[Femur]
-                  |
-               [Tibia]
+      |           |
+   [Body]      [Tibia]
                   |
 ==============={Ground}==============
 
