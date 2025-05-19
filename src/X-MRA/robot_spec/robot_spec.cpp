@@ -42,39 +42,39 @@ MG996R Servo[] = {
 };
 
 ServoJoint FrontLeft[] = {
-    {Servo[0],  deg(-90), deg(90), deg(0)}, //Tiba
-    {Servo[1],  deg(-90), deg(90), deg(0)}, //Femur
-    {Servo[2],  deg(-90), deg(90), deg(0)}, //Coxa
+    {Servo[0],  deg(-105), deg(105), deg(0)}, //Tiba
+    {Servo[1],  deg(-105), deg(105), deg(0)}, //Femur
+    {Servo[2],  deg(-105), deg(105), deg(0)}, //Coxa
 };
 
 ServoJoint FrontRight[] = {
-    {Servo[3],  deg(-90), deg(90), deg(0)}, //Tiba
-    {Servo[4],  deg(-90), deg(90), deg(0)}, //Femur
-    {Servo[5],  deg(-90), deg(90), deg(0)}, //Coxa
+    {Servo[3],  deg(-105), deg(105), deg(0)}, //Tiba
+    {Servo[4],  deg(-105), deg(105), deg(0)}, //Femur
+    {Servo[5],  deg(-105), deg(105), deg(0)}, //Coxa
 };
 
 ServoJoint MidleLeft[] = {
-    {Servo[6],  deg(-90), deg(90), deg(0)}, //Tiba
-    {Servo[7],  deg(-90), deg(90), deg(0)}, //Femur
-    {Servo[8],  deg(-90), deg(90), deg(0)}, //Coxa
+    {Servo[6],  deg(-105), deg(105), deg(0)}, //Tiba
+    {Servo[7],  deg(-105), deg(105), deg(0)}, //Femur
+    {Servo[8],  deg(-105), deg(105), deg(0)}, //Coxa
 };
 
 ServoJoint MidleRight[] = {
-    {Servo[9],  deg(-90), deg(90), deg(0)}, //Tiba
-    {Servo[10], deg(-90), deg(90), deg(0)}, //Femur
-    {Servo[11], deg(-90), deg(90), deg(0)}, //Coxa
+    {Servo[9],  deg(-105), deg(105), deg(0)}, //Tiba
+    {Servo[10], deg(-105), deg(105), deg(0)}, //Femur
+    {Servo[11], deg(-105), deg(105), deg(0)}, //Coxa
 };
 
 ServoJoint BackLeft[] = {
-    {Servo[12], deg(-90), deg(90), deg(0)}, //Tiba
-    {Servo[13], deg(-90), deg(90), deg(0)}, //Femur
-    {Servo[14], deg(-90), deg(90), deg(0)}, //Coxa
+    {Servo[12], deg(-105), deg(105), deg(0)}, //Tiba
+    {Servo[13], deg(-105), deg(105), deg(0)}, //Femur
+    {Servo[14], deg(-105), deg(105), deg(0)}, //Coxa
 };
 
 ServoJoint BackRight[] = {
-    {Servo[15], deg(-90), deg(90), deg(0)}, //Tiba
-    {Servo[16], deg(-90), deg(90), deg(0)}, //Femur
-    {Servo[17], deg(-90), deg(90), deg(0)}, //Coxa
+    {Servo[15], deg(-105), deg(105), deg(0)}, //Tiba
+    {Servo[16], deg(-105), deg(105), deg(0)}, //Femur
+    {Servo[17], deg(-105), deg(105), deg(0)}, //Coxa
 };
 
 #define nameLeg(v)  {v[2], v[1], v[0] }

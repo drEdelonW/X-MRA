@@ -7,7 +7,7 @@
 
 static float _curAngle = 0;
 
-#define NUM_LEGS    (6)
+#define NUM_LEGS    (1)
 
 // #define SV_ALL(v)  \
 //     LOG("[%.2f]\n", (v)); \
@@ -63,14 +63,14 @@ const Millimeters coxaLength  = (Millimeters) 27.0f;
 const Millimeters femurLength = (Millimeters) 85.1f;
 const Millimeters tibiaLength = (Millimeters)144.23f;
 
-const Millimeters tibiaZ      = (Millimeters)141.6f;
 const Millimeters tibiaX      = (Millimeters) 27.33f;
+const Millimeters tibiaZ      = (Millimeters)141.6f;
 
-#define DSTx     (coxaLength + femurLength + tibiaX)
-#define DSTy     (0.0f)
-#define DSTz     (-tibiaZ)
+#define DSTx    (coxaLength + femurLength + tibiaX)
+#define DSTy    (0.0f)
+#define DSTz    (-tibiaZ)
 
-Vector3D _curPose = {DSTx, 0.0f, DSTz};
+Vector3D _curPose = {DSTx, DSTy, DSTz};
 
 void _xPos() { _curPose.x += mStep; LEG_PV_ALL(_curPose); }
 void _xNeg() { _curPose.x -= mStep; LEG_PV_ALL(_curPose); }
@@ -83,7 +83,9 @@ void _zNeg() { _curPose.z -= mStep; LEG_PV_ALL(_curPose); }
 
 void _goGome()  { _curPose = {DSTx, 0.0f, DSTz}; LEG_PV_ALL(_curPose); }
 
-
+void _info() {
+    leg[0].tipPosition(deg(0),deg(0),deg(0)).print();
+}
 
 KeyFunction fArray[KEY_COUNT] = {
     /*KEY_UNKNOWN*/     {},
@@ -162,7 +164,7 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_F*/ {},
     /*KEY_G*/ {},
     /*KEY_H*/ {},
-    /*KEY_I*/ {},
+    /*KEY_I*/ {_info},
     /*KEY_J*/ {},
     /*KEY_K*/ {},
     /*KEY_L*/ {},

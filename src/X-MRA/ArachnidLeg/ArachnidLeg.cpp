@@ -16,11 +16,7 @@ bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibi
         femurJn_.checkPose(femurAngle) &&
         tibiaJn_.checkPose(tibiaAngle);
 }
-bool ArachnidLeg::checkTipPosition(
-    Millimeters x,
-    Millimeters y,
-    Millimeters z
-) {
+bool ArachnidLeg::checkTipPosition(Millimeters x,Millimeters y, Millimeters z) {
     float angleCoxa = atan2(y, x);
 
     float planarX = sqrtf((x*x) + (y*y)) - coxaLength_;
@@ -57,6 +53,26 @@ bool ArachnidLeg::checkTipPosition(Vector3D pos){
     return checkTipPosition(pos.x, pos.y, pos.z);
 }
 
+Vector3D ArachnidLeg::tipPosition(Angle coxaAng, Angle femurAng, Angle tibiaAng) {
+    float aC = coxaAng.asRadians();
+    float aF = femurAng.asRadians();
+    float aT = (tibiaAng - deg(90.0f - 10.9f)).asRadians();
+
+    float knee = aF + aT;               // femur-tibia plane
+
+    float rx = coxaLength_ +
+        femurLength_ * cosf(aF) +
+        tibiaLength_ * cosf(knee);    // projection in Coxa plane
+
+    float rz =
+        femurLength_ * sinf(aF) +
+        tibiaLength_ * sinf(knee);
+
+    float cx = cosf(aC);
+    float sx = sinf(aC);
+
+    return { rx * cx, rx * sx, rz };
+}
 
 bool ArachnidLeg::applyPose() {
     return

@@ -2,6 +2,8 @@
 #include "JointBase.hpp"
 #include "PhysTypes.hpp"
 #include "Vector3d.hpp"
+#include "Matrix4x4.hpp"
+
 
 /*  ArachnidLeg:
 
@@ -31,10 +33,10 @@ class ArachnidLeg {
 public:
     ArachnidLeg(JointBase& coxaJn, JointBase& femurJn, JointBase& tibiaJn);
 
-    bool checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+    bool  checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+    Vector3D   tipPosition(Angle coxaAng, Angle femurAng, Angle tibiaAng);
     bool checkTipPosition(float x, float y, float z);
     bool checkTipPosition(Vector3D pos);
-
     bool applyPose();
 
     void activate();
@@ -49,6 +51,4 @@ private:
     const Millimeters femurLength_ = (Millimeters) 85.1f;   // Length of femur segment
     const Millimeters tibiaLength_ = (Millimeters)144.23f;   // Length of tibia segment
 
-    // Inverse kinematics calculation
-    void calculateInverseKinematics(Millimeters x, Millimeters y, Millimeters z);
 };
