@@ -44,24 +44,15 @@ MidleLeft           \ │ /            MidleRight
 
 class ArachnidBody {
 public:
-   ArachnidBody();
-
-//    bool  checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
-//    Vector3D   tipPosition(Angle coxaAng, Angle femurAng, Angle tibiaAng);
-//    bool checkTipPosition(float x, float y, float z);
-//    bool checkTipPosition(Vector3D pos);
-
-//    Vector3D bodyToLeg(Vector3D bodyPos);
-//    Vector3D legToBody(Vector3D legPos);
+   ArachnidBody(ArachnidLeg* legs, size_t legCount);
 
    bool applyPose();
 
    void activate();
    void deactivate();
 
+    ArachnidLeg* _legs = nullptr;
+    size_t       _legCount = 0;
 private:
-//    JointBase& coxaJn_;
-//    JointBase& femurJn_;
-//    JointBase& tibiaJn_;
 
 };

@@ -4,6 +4,16 @@
 #include "Vector3d.hpp"
 #include "Matrix4x4.hpp"
 
+/*
+      ▲ Z (up)
+      │
+      │    ▲ X (forward)
+      │   ╱
+      │  ╱
+      │ ╱
+      │╱
+      ◉─────────► Y (right)
+*/
 
 /*  ArachnidLeg:
 
@@ -16,18 +26,6 @@
 ==============={Ground}==============
 
 */
-
-/*
-      ▲ Z (up)
-      │
-      │    ▲ X (forward)
-      │   ╱
-      │  ╱
-      │ ╱
-      │╱
-      ◉─────────► Y (right)
-*/
-
 
 class ArachnidLeg {
 public:
@@ -44,6 +42,7 @@ public:
    bool checkTipPosition(float x, float y, float z);
    bool checkTipPosition(Vector3D pos);
 
+   void configureMount(Millimeters offset, Angle yaw);
    Vector3D bodyToLeg(Vector3D bodyPos);
    Vector3D legToBody(Vector3D legPos);
 

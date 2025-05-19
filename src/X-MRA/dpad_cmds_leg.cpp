@@ -18,23 +18,23 @@ static float _curAngle = 0;
 
 #define LEG_J_ALL(v1, v2, v3)  \
     for(int i = 0; i < NUM_LEGS; i++) { \
-        if (leg[i].checkJointAngles(deg(v1),deg(v2),deg(v3))) \
-            leg[i].applyPose(); \
+        if (XMRA._legs[i].checkJointAngles(deg(v1),deg(v2),deg(v3))) \
+            XMRA._legs[i].applyPose(); \
     }
 
 // #define LEG_P_ALL(v1, v2, v3)  \
 //     for(int i = 0; i < NUM_LEGS; i++) { \
-//         if (leg[i].checkTipPosition(v1,v2,v3)) \
-//             leg[i].applyPose(); \
+//         if (XMRA._legs[i].checkTipPosition(v1,v2,v3)) \
+//             XMRA._legs[i].applyPose(); \
 //     }
 
 #define LEG_PV_ALL(v)  \
     for(int i = 0; i < NUM_LEGS; i++) { \
-        if (leg[i].checkTipPosition(v)) \
-            leg[i].applyPose(); \
+        if (XMRA._legs[i].checkTipPosition(v)) \
+            XMRA._legs[i].applyPose(); \
     }
-#define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { leg[i].activate(); }}
-#define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { leg[i].deactivate(); }}
+#define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].activate(); }}
+#define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].deactivate(); }}
 
 void _on()  {
     LOG("ON\n");
@@ -86,12 +86,12 @@ void _goGome()  { _curPose = {DSTx, 0.0f, DSTz}; LEG_PV_ALL(_curPose); }
 void _info() {
     for (int i = 0; i < 6; i++){
         LOG("[%d] legSpace:", i);
-        leg[i].tipPosition(
+        XMRA._legs[i].tipPosition(
             deg(0),deg(0),deg(0)
         ).print();
         LOG("\t bodySpace:");
-        leg[i].legToBody(
-            leg[i].tipPosition(
+        XMRA._legs[i].legToBody(
+            XMRA._legs[i].tipPosition(
                 deg(0),deg(0),deg(0)
             )
         ).print();

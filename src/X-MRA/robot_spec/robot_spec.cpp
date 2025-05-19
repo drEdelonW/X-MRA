@@ -87,3 +87,5 @@ ArachnidLeg leg[] = {
     {nameLeg(BackLeft),   (Millimeters)( 84.36f), deg( 27.63f + 180.0f)},
     {nameLeg(BackRight),  (Millimeters)( 84.36f), deg(-27.63f + 180.0f)},
 };
+
+ArachnidBody XMRA(leg, sizeof(leg)/sizeof(leg[0]));
