@@ -4,10 +4,19 @@
 ArachnidLeg::ArachnidLeg(
     JointBase& coxaJn,
     JointBase& femurJn,
-    JointBase& tibiaJn
+    JointBase& tibiaJn,
+    Millimeters offs,
+    Angle rotation
 ):  coxaJn_(coxaJn),
     femurJn_(femurJn),
     tibiaJn_(tibiaJn) {
+    _legToBody.reset();
+    _legToBody *= Matrix4x4::createRotationZ(rotation.asRadians());
+    _legToBody *= Matrix4x4::createTranslation({offs, 0.0f, 0.0f});
+
+    _bodyToLeg.reset();
+    _bodyToLeg *= Matrix4x4::createTranslation({-offs, 0.0f, 0.0f});
+    _bodyToLeg *= Matrix4x4::createRotationZ(-rotation.asRadians());
 }
 
 bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
@@ -52,7 +61,6 @@ bool ArachnidLeg::checkTipPosition(Millimeters x,Millimeters y, Millimeters z) {
 bool ArachnidLeg::checkTipPosition(Vector3D pos){
     return checkTipPosition(pos.x, pos.y, pos.z);
 }
-
 Vector3D ArachnidLeg::tipPosition(Angle coxaAng, Angle femurAng, Angle tibiaAng) {
     float aC = coxaAng.asRadians();
     float aF = femurAng.asRadians();
@@ -72,6 +80,14 @@ Vector3D ArachnidLeg::tipPosition(Angle coxaAng, Angle femurAng, Angle tibiaAng)
     float sx = sinf(aC);
 
     return { rx * cx, rx * sx, rz };
+}
+
+Vector3D ArachnidLeg::bodyToLeg(Vector3D bodyPos) {
+    return _bodyToLeg.applyTransform(bodyPos);
+}
+
+Vector3D ArachnidLeg::legToBody(Vector3D legPos) {
+    return _legToBody.applyTransform(legPos);
 }
 
 bool ArachnidLeg::applyPose() {

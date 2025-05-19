@@ -84,7 +84,20 @@ void _zNeg() { _curPose.z -= mStep; LEG_PV_ALL(_curPose); }
 void _goGome()  { _curPose = {DSTx, 0.0f, DSTz}; LEG_PV_ALL(_curPose); }
 
 void _info() {
-    leg[0].tipPosition(deg(0),deg(0),deg(0)).print();
+    for (int i = 0; i < 6; i++){
+        LOG("[%d] legSpace:", i);
+        leg[i].tipPosition(
+            deg(0),deg(0),deg(0)
+        ).print();
+        LOG("\t bodySpace:");
+        leg[i].legToBody(
+            leg[i].tipPosition(
+                deg(0),deg(0),deg(0)
+            )
+        ).print();
+        LOG("\n");
+    }
+
 }
 
 KeyFunction fArray[KEY_COUNT] = {

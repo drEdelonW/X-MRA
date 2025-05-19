@@ -68,6 +68,7 @@ INCLUDE_PATHS += $(SRC_DIR)/X-MRA/robot_spec
 
 INCLUDE_PATHS += $(SRC_DIR)/tools/Math/vectorMath
          SRCS += $(SRC_DIR)/tools/Math/vectorMath/Vector3d.cpp
+         SRCS += $(SRC_DIR)/tools/Math/vectorMath/Matrix4x4.cpp
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/JointBase
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidLeg
          SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg.cpp

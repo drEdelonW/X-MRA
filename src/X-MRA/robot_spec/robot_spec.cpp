@@ -77,13 +77,13 @@ ServoJoint BackRight[] = {
     {Servo[17], deg(-105), deg(105), deg(0)}, //Coxa
 };
 
-#define nameLeg(v)  {v[2], v[1], v[0] }
+#define nameLeg(v)  v[2], v[1], v[0]
 
 ArachnidLeg leg[] = {
-    nameLeg(FrontLeft),
-    nameLeg(FrontRight),
-    nameLeg(MidleLeft),
-    nameLeg(MidleRight),
-    nameLeg(BackLeft),
-    nameLeg(BackRight),
+    {nameLeg(FrontLeft),  (Millimeters)( 84.36f), deg(-27.63f)},
+    {nameLeg(FrontRight), (Millimeters)( 84.36f), deg( 27.63f)},
+    {nameLeg(MidleLeft),  (Millimeters)( 39.25f), deg(-90.0f)},
+    {nameLeg(MidleRight), (Millimeters)( 39.25f), deg( 90.0f)},
+    {nameLeg(BackLeft),   (Millimeters)( 84.36f), deg( 27.63f + 180.0f)},
+    {nameLeg(BackRight),  (Millimeters)( 84.36f), deg(-27.63f + 180.0f)},
 };
