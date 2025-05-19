@@ -1,10 +1,13 @@
 #include "dpad.h"
 #include "common_tools.h"
+#include <unistd.h>  //usleep
 
 #include "robot_spec.hpp"
 #include "Vector3d.hpp"
 
 static float _curAngle = 0;
+
+#define NUM_LEGS    (6)
 
 // #define SV_ALL(v)  \
 //     LOG("[%.2f]\n", (v)); \
@@ -14,22 +17,24 @@ static float _curAngle = 0;
 //     }
 
 #define LEG_J_ALL(v1, v2, v3)  \
-    for(int i = 0; i < 6; i++) { \
+    for(int i = 0; i < NUM_LEGS; i++) { \
         if (leg[i].checkJointAngles(deg(v1),deg(v2),deg(v3))) \
             leg[i].applyPose(); \
     }
 
 // #define LEG_P_ALL(v1, v2, v3)  \
-//     for(int i = 0; i < 6; i++) { \
+//     for(int i = 0; i < NUM_LEGS; i++) { \
 //         if (leg[i].checkTipPosition(v1,v2,v3)) \
 //             leg[i].applyPose(); \
 //     }
 
 #define LEG_PV_ALL(v)  \
-    for(int i = 0; i < 6; i++) { \
+    for(int i = 0; i < NUM_LEGS; i++) { \
         if (leg[i].checkTipPosition(v)) \
             leg[i].applyPose(); \
     }
+#define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { leg[i].activate(); }}
+#define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { leg[i].deactivate(); }}
 
 void _on()  {
     LOG("ON\n");
@@ -37,9 +42,13 @@ void _on()  {
     PWMarray[1].wakeUp();
     PWMarray[0].setFreq_Hz((Hertz)300);
     PWMarray[1].setFreq_Hz((Hertz)300);
+    LEG_PON_ALL();
 }
 void _off() {
     LOG("OFF\n");
+    LEG_POFF_ALL();
+    usleep(1000);
+
     PWMarray[0].sleepMode();
     PWMarray[1].sleepMode();
 }
@@ -50,8 +59,16 @@ void _1()  { mStep =  0.1f; }
 void _2()  { mStep =  1.0f; }
 void _3()  { mStep = 10.0f; }
 
-#define DSTx     (150.0f)
-#define DSTz     (0.0f)
+const Millimeters coxaLength  = (Millimeters) 27.0f;
+const Millimeters femurLength = (Millimeters) 85.1f;
+const Millimeters tibiaLength = (Millimeters)144.23f;
+
+const Millimeters tibiaZ      = (Millimeters)141.6f;
+const Millimeters tibiaX      = (Millimeters) 27.33f;
+
+#define DSTx     (coxaLength + femurLength + tibiaX)
+#define DSTy     (0.0f)
+#define DSTz     (-tibiaZ)
 
 Vector3D _curPose = {DSTx, 0.0f, DSTz};
 
@@ -83,8 +100,8 @@ KeyFunction fArray[KEY_COUNT] = {
 
     /*KEY_INSERT*/      {},
     /*KEY_DELETE*/      {},
-    /*KEY_PAGE_UP*/     {},
-    /*KEY_PAGE_DOWN*/   {},
+    /*KEY_PAGE_UP*/     {_on},
+    /*KEY_PAGE_DOWN*/   {_off},
     /*KEY_HOME*/        {_goGome},
     /*KEY_END*/         {},
 
@@ -115,7 +132,7 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_F11*/ {},
     /*KEY_F12*/ {},
 
-    /*KEY_0*/ {_goGome},
+    /*KEY_0*/ {},
     /*KEY_1*/ {_1},
     /*KEY_2*/ {_2},
     /*KEY_3*/ {_3},
@@ -127,8 +144,8 @@ KeyFunction fArray[KEY_COUNT] = {
     /*KEY_9*/ {},
 
     /*KEY__0*/ {},
-    /*KEY__1*/ {_on},
-    /*KEY__2*/ {_off},
+    /*KEY__1*/ {},
+    /*KEY__2*/ {},
     /*KEY__3*/ {},
     /*KEY__4*/ {},
     /*KEY__5*/ {},

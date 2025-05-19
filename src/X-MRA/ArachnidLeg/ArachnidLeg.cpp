@@ -16,41 +16,35 @@ bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibi
         femurJn_.checkPose(femurAngle) &&
         tibiaJn_.checkPose(tibiaAngle);
 }
-bool ArachnidLeg::checkTipPosition(Millimeters x, Millimeters y, Millimeters z) {
-    // Coxa angle from projection onto XY-plane
-    float angleCoxa = atan2(y, x); // V
+bool ArachnidLeg::checkTipPosition(
+    Millimeters x,
+    Millimeters y,
+    Millimeters z
+) {
+    float angleCoxa = atan2(y, x);
 
-    // Shift to local femur-tibia plane
-    float planarX = sqrt((x * x) + (y * y)) - coxaLength_;
-    float planarZ = z + (Millimeters)60.0;
+    float planarX = sqrtf((x*x) + (y*y)) - coxaLength_;
+    float planarZ = z;
 
-    // Distance from femur joint to target
-    float dist = sqrt((planarX * planarX) + (planarZ * planarZ));
-
+    float dist = sqrtf((planarX*planarX) + (planarZ*planarZ));
     float maxReach = femurLength_ + tibiaLength_;
-    float minReach = fabsf(femurLength_ - tibiaLength_); // folded inward
+    float minReach = fabsf(femurLength_ - tibiaLength_);
 
-    if ((dist < minReach + 1e-3f) ||
-        (dist > maxReach - 1e-3f)) {
-        return false; // unreachable
-    }
+    if ((dist < minReach) || dist > maxReach)
+        return false;                           // unreachable
 
-    // dist = clamp(dist, 1e-3f, femurLength_ + tibiaLength_ - 1e-3f);
-
-    float angleToTarget = atan2(planarZ, planarX);
+    float angleToTarget = atan2f(planarZ, planarX);
 
     float a = femurLength_;
     float b = tibiaLength_;
     float c = dist;
 
-    // Use law of cosines
-    // float angleA = acos(clamp((b*b + c*c - a*a) / (2*b*c), -1.0f, 1.0f)); // femur
-    // float angleB = acos(clamp((a*a + b*b - c*c) / (2*a*b), -1.0f, 1.0f)); // tibia
-    float angleA = acos((b*b + c*c - a*a) / (2*b*c)); // femur
-    float angleB = acos((a*a + b*b - c*c) / (2*a*b)); // tibia
+    /* correct law-of-cosines */
+    float angleFemurRel = acosf((a*a + c*c - b*b) / (2.0f*a*c));
+    float angleKnee     = acosf((a*a + b*b - c*c) / (2.0f*a*b));
 
-    float angleFemur = angleToTarget + angleA;
-    float angleTibia = M_PI - angleB;
+    float angleFemur = angleToTarget + angleFemurRel;
+    float angleTibia = M_PI - angleKnee;
 
     return
         checkJointAngles(

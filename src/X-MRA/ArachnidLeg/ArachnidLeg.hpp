@@ -45,9 +45,9 @@ private:
     JointBase& femurJn_;
     JointBase& tibiaJn_;
 
-    const Millimeters coxaLength_ = 27.0f;    // Length of coxa segment
-    const Millimeters femurLength_ = 85.1f;   // Length of femur segment
-    const Millimeters tibiaLength_ = 144.23f;   // Length of tibia segment
+    const Millimeters coxaLength_  = (Millimeters) 27.0f;    // Length of coxa segment
+    const Millimeters femurLength_ = (Millimeters) 85.1f;   // Length of femur segment
+    const Millimeters tibiaLength_ = (Millimeters)144.23f;   // Length of tibia segment
 
     // Inverse kinematics calculation
     void calculateInverseKinematics(Millimeters x, Millimeters y, Millimeters z);
