@@ -49,8 +49,8 @@ public:
 
    bool applyPose();
 
-   void activate();
-   void deactivate();
+   void engage();
+   void release();
 
 private:
    JointBase& coxaJn_;

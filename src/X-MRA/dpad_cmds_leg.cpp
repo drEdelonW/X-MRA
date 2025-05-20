@@ -7,7 +7,7 @@
 
 static float _curAngle = 0;
 
-#define NUM_LEGS    (1)
+#define NUM_LEGS    (6)
 
 // #define SV_ALL(v)  \
 //     LOG("[%.2f]\n", (v)); \
@@ -33,8 +33,8 @@ static float _curAngle = 0;
         if (XMRA._legs[i].checkTipPosition(v)) \
             XMRA._legs[i].applyPose(); \
     }
-#define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].activate(); }}
-#define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].deactivate(); }}
+// #define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].engage(); }}
+// #define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].release(); }}
 
 void _on()  {
     LOG("ON\n");
@@ -42,11 +42,11 @@ void _on()  {
     PWMarray[1].wakeUp();
     PWMarray[0].setFreq_Hz((Hertz)300);
     PWMarray[1].setFreq_Hz((Hertz)300);
-    LEG_PON_ALL();
+    XMRA.ARM();
 }
 void _off() {
     LOG("OFF\n");
-    LEG_POFF_ALL();
+    XMRA.DISARM();
     usleep(1000);
 
     PWMarray[0].sleepMode();

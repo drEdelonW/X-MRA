@@ -102,12 +102,12 @@ bool ArachnidLeg::applyPose() {
 }
 
 
-void ArachnidLeg::activate() {
+void ArachnidLeg::engage() {
     coxaJn_.engage();
     femurJn_.engage();
     tibiaJn_.engage();
 }
-void ArachnidLeg::deactivate() {
+void ArachnidLeg::release() {
     coxaJn_.release();
     femurJn_.release();
     tibiaJn_.release();
