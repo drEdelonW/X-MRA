@@ -1,4 +1,5 @@
 #include "ArachnidBody.hpp"
+#include <unistd.h>  //usleep
 
 ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
     _legs(legs),
@@ -61,7 +62,15 @@ bool ArachnidBody::applyPose() {
     return true;
 }
 
+bool ArachnidBody::isArmed() {
+    return _isArmed;
+}
+
+
 bool ArachnidBody::ARM() {
+    if (_isArmed)
+        return true;
+
     for(int i = 0; i < _legCount; i++) {
         _legs[i].engage();
         _legs[i].checkTipPosition(
@@ -73,6 +82,28 @@ bool ArachnidBody::ARM() {
     return _isArmed = true;
 };
 void ArachnidBody::DISARM() {
+    if (!_isArmed)
+        return;
+
+    for(int i = 0; i < _legCount; i++) {
+        _legs[i].checkJointAngles(deg(0),deg(NAN),deg(NAN));
+        _legs[i].applyPose();
+        usleep(500);
+    }
+
+    for (int ang = 0; ang < 90; ang++){
+        for(int i = 0; i < _legCount; i++) {
+            _legs[i].checkJointAngles(deg(NAN),deg(-ang),deg(-(ang * 0.8f)));
+            _legs[i].applyPose();
+            usleep(1000);
+        }
+    }
+    usleep(1000000);
+    // for(int i = 0; i < _legCount; i++) {
+    //     _legs[i].checkJointAngles(deg(20),deg(NAN),deg(NAN));
+    //     _legs[i].applyPose();
+    //     // usleep(500);
+    // }
     for(int i = 0; i < _legCount; i++) {
         _legs[i].release();
     }

@@ -40,6 +40,7 @@ static float _curAngle = 0;
 // #define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].release(); }}
 
 void _on()  {
+    if (XMRA.isArmed()) return;
     LOG("ON\n");
     PWMarray[0].wakeUp();
     PWMarray[1].wakeUp();

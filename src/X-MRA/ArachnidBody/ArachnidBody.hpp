@@ -72,6 +72,7 @@ public:
 
     bool applyPose();
 
+    bool isArmed();
     bool ARM();
     void DISARM();
 
