@@ -7,6 +7,7 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
     _isArmed(false)
 {
     setPatMask(0, LEGS_ALL);
+    // setPatMask(0, TRIPOD_A);
     for( int i = 0;
         i < ((MAX_LEGS < _legCount)?
             MAX_LEGS : _legCount);
@@ -63,6 +64,11 @@ bool ArachnidBody::applyPose() {
 bool ArachnidBody::ARM() {
     for(int i = 0; i < _legCount; i++) {
         _legs[i].engage();
+        _legs[i].checkTipPosition(
+            _legs[i].bodyToLeg(
+                _defaultPose[i]
+            )
+        );
     }
     return _isArmed = true;
 };
