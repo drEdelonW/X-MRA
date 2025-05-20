@@ -33,6 +33,9 @@ static float _curAngle = 0;
         if (XMRA._legs[i].checkTipPosition(v)) \
             XMRA._legs[i].applyPose(); \
     }
+#define MRA_PV_ALL(v)  \
+    if (XMRA.setOffs(v)) \
+        XMRA.applyPose(); \
 // #define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].engage(); }}
 // #define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].release(); }}
 
@@ -66,22 +69,26 @@ const Millimeters tibiaLength = (Millimeters)144.23f;
 const Millimeters tibiaX      = (Millimeters) 27.33f;
 const Millimeters tibiaZ      = (Millimeters)141.6f;
 
-#define DSTx    (coxaLength + femurLength + tibiaX)
+// #define DSTx    (coxaLength + femurLength + tibiaX)
+// #define DSTy    (0.0f)
+// #define DSTz    (-tibiaZ)
+
+#define DSTx    (0.0f)
 #define DSTy    (0.0f)
-#define DSTz    (-tibiaZ)
+#define DSTz    (0.0f)
 
 Vector3D _curPose = {DSTx, DSTy, DSTz};
 
-void _xPos() { _curPose.x += mStep; LEG_PV_ALL(_curPose); }
-void _xNeg() { _curPose.x -= mStep; LEG_PV_ALL(_curPose); }
+void _xPos() { _curPose.x += mStep; MRA_PV_ALL(_curPose); }
+void _xNeg() { _curPose.x -= mStep; MRA_PV_ALL(_curPose); }
 
-void _yPos() { _curPose.y += mStep; LEG_PV_ALL(_curPose); }
-void _yNeg() { _curPose.y -= mStep; LEG_PV_ALL(_curPose); }
+void _yPos() { _curPose.y += mStep; MRA_PV_ALL(_curPose); }
+void _yNeg() { _curPose.y -= mStep; MRA_PV_ALL(_curPose); }
 
-void _zPos() { _curPose.z += mStep; LEG_PV_ALL(_curPose); }
-void _zNeg() { _curPose.z -= mStep; LEG_PV_ALL(_curPose); }
+void _zPos() { _curPose.z += mStep; MRA_PV_ALL(_curPose); }
+void _zNeg() { _curPose.z -= mStep; MRA_PV_ALL(_curPose); }
 
-void _goGome()  { _curPose = {DSTx, 0.0f, DSTz}; LEG_PV_ALL(_curPose); }
+void _goGome()  { _curPose = {DSTx, DSTy, DSTz}; MRA_PV_ALL(_curPose); }
 
 void _info() {
     for (int i = 0; i < 6; i++){
