@@ -39,4 +39,5 @@ int GameControllerInit () {
 
 int GameControllerDeinit () {
     jQuit = true;
+    return 0;
 }

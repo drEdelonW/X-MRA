@@ -69,7 +69,9 @@ public:
     uint8_t getPatMask(int pattern);
 
     bool setOffs(Vector3D offs, int pattern = 0);
-    // bool addOffs(Vector3D offs, int pattern = 0);
+    bool trySetOffs(Vector3D offs, int pattern = 0);
+    bool addOffs(Vector3D offs, int pattern = 0);
+    bool tryAddOffs(Vector3D offs, int pattern = 0);
     // bool setRotationOX(Angle angle, int pattern = 0);
     // bool setRotationOY(Angle angle, int pattern = 0);
     // bool setRotationOZ(Angle angle, int pattern = 0);
@@ -89,16 +91,16 @@ private:
         Matrix4x4   deltaMatrix;
     };
     inline bool _maskCheck(int pattern, int legIndex) const { return (_legMask[pattern] & (1 << legIndex)); }
-    size_t          _legCount = 0;
+    size_t  _legCount = 0;
 
-    bool            _isArmed;
+    bool    _isArmed;
 
-    uint8_t         _legMaskLimit;
-    uint8_t         _legMask[MAX_LEGS];
+    uint8_t _legMaskLimit;
+    uint8_t _legMask[MAX_LEGS];
 
-    LegExtras       _legExtras[MAX_LEGS];
-    // Vector3D        _defaultPose[MAX_LEGS];
-    // Vector3D        _currentPose[MAX_LEGS];
+    LegExtras   _legExtras[MAX_LEGS];
 
-    // Matrix4x4       _deltaMatrix[MAX_LEGS];  // one per leg mask pattern (e.g. tripod groups)
+    Angle   _azimuth;
+    Angle   _elevation;
+    uint8_t _lastLegError;
 };

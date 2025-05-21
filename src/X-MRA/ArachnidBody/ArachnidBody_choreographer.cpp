@@ -14,6 +14,7 @@ bool ArachnidBody::applyPose(int pattern) {
     for (int i = 0; i < _legCount; i++){
         if (_maskCheck(pattern, i)) {
             if (!_legs[i].applyPose()) {
+                _lastLegError = i;
                 return false;
             }
         }

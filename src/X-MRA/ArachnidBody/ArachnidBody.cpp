@@ -4,7 +4,9 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
     _legs(legs),
     _legCount(legCount),
     _isArmed(false),
-    _legMaskLimit(0xFF >> (MAX_LEGS - _legCount)) //mask for legGroup limits
+    _legMaskLimit(0xFF >> (MAX_LEGS - _legCount)), //mask for legGroup limits
+    _azimuth(deg(0)),
+    _elevation(deg(0))
 {
     setPatMask(0, LEGS_ALL);
     // setPatMask(0, TRIPOD_A);

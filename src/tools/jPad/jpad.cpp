@@ -9,13 +9,21 @@ void jpad() {
     LOG(TEXT_BOLD "Joy-Pad started\n\a" TEXT_RESET);
     joy_echo = false;
     bool _run = true;
+
     bool triAct = false;
+    float scaleStep = 50.0f;
+
     while(_run){
         if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_PS))) {
             printf("pressed BUTTON_PS. exit\n");
             _run = false;
             continue;
         }
+
+        IF_BTN_HIT(BUTTON_TRIANGLE,{
+            if (XMRA.isArmed()){ XMRA.DISARM(); }
+            else               { XMRA.ARM(); }
+        } )
 
         IF_BTN_HIT(BUTTON_R1,{
             triAct = !triAct;
@@ -28,40 +36,31 @@ void jpad() {
                 XMRA.setPatMask(0, LEGS_ALL);
             }
         })
-        if (triAct) { // non Tripod mode
-            XMRA.setOffs({
-                 ly * 50.0f,
-                -lx * 50.0f,
-                -lz * 50.0f
-            },0) &&
-            XMRA.applyPose(0);
-            XMRA.setOffs({
-                 ry * 50.0f,
-                -rx * 50.0f,
-                -rz * 50.0f
-            },1) &&
-            XMRA.applyPose(1);
+
+        if (triAct) { // Tripod mode
+            float lStep = 0.0f;
+            float rStep = 0.0f;
+            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_L3))) {
+                lStep = 1.0f;
+            } else { lStep = lz; }
+            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_R3))) {
+                rStep = 1.0f;
+            } else { rStep = rz; }
+            XMRA.trySetOffs(Vector3D{ly ,-lx, -lStep} * scaleStep, 0);
+            XMRA.trySetOffs(Vector3D{ry, -rx, -rStep} * scaleStep, 1);
         } else {    // non Tripod mode
             if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_L1))){
                 // LOG("%f %f %f\n", lx, ly, lz);
-                XMRA.setOffs({
-                    -ly * 50.0f,
-                        lx * 50.0f,
-                    (rz * 50.0f) - (lz * 50.0f)
-                }) &&
-                XMRA.applyPose();
+                XMRA.trySetOffs(Vector3D{-ly, lx, rz -lz}* scaleStep);
+            } else {
+                if ((fabsf(lx) > 0.028f) ||
+                    (fabsf(ly) > 0.028f)) {
+                    // LOG("%f %f %f\n", lx, ly, lz);
+
+                    XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 5.0f);
+                }
             }
         }
-
-
-
-        IF_BTN_HIT(BUTTON_TRIANGLE,{
-            if (XMRA.isArmed()){
-                XMRA.DISARM();
-            } else {
-                XMRA.ARM();
-            }
-        } )
     }
 
     LOG(TEXT_BOLD "Joy-Pad END\n\a" TEXT_RESET);
