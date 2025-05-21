@@ -6,10 +6,14 @@
 #include "joystick.hpp"
 #include "common_tools.h"
 
+#include "robot_spec.hpp"
+
+
 void handle_signal(int signal) {
     if (signal == SIGINT) {
         printf("Received SIGINT (Ctrl+C). Exiting...\n"); fflush(stdout);
         // posix_socket.Close();
+        XMRA.DISARM();
         restoreTerminal(&orig);
         exit(0);
     }

@@ -1,6 +1,5 @@
 #include "joystick.hpp"
 
-
 SDL_GameController *gPad = NULL;
 
 #define J_SCALE_FACTOR  (0x7FFF)

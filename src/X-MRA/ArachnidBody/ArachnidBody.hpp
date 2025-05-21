@@ -69,8 +69,13 @@ public:
     uint8_t getPatMask(int pattern);
 
     bool setOffs(Vector3D offs, int pattern = 0);
+    // bool addOffs(Vector3D offs, int pattern = 0);
+    // bool setRotationOX(Angle angle, int pattern = 0);
+    // bool setRotationOY(Angle angle, int pattern = 0);
+    // bool setRotationOZ(Angle angle, int pattern = 0);
 
-    bool applyPose();
+
+    bool applyPose(int pattern = 0);
 
     bool isArmed();
     bool ARM();
@@ -78,12 +83,22 @@ public:
 
     ArachnidLeg*    _legs = nullptr;
 private:
+    struct LegExtras {
+        Vector3D    defaultPose;
+        Vector3D    currentPose;
+        Matrix4x4   deltaMatrix;
+    };
+    inline bool _maskCheck(int pattern, int legIndex) const { return (_legMask[pattern] & (1 << legIndex)); }
     size_t          _legCount = 0;
-    Vector3D        _defaultPose[MAX_LEGS];
-    Vector3D        _curentPose[MAX_LEGS];
 
-    uint8_t         _legMask[MAX_LEGS];
-    uint8_t         _legMaskLimit;
-    Matrix4x4       _legDeltaMatrix[MAX_LEGS];  // one per leg mask pattern (e.g. tripod groups)
     bool            _isArmed;
+
+    uint8_t         _legMaskLimit;
+    uint8_t         _legMask[MAX_LEGS];
+
+    LegExtras       _legExtras[MAX_LEGS];
+    // Vector3D        _defaultPose[MAX_LEGS];
+    // Vector3D        _currentPose[MAX_LEGS];
+
+    // Matrix4x4       _deltaMatrix[MAX_LEGS];  // one per leg mask pattern (e.g. tripod groups)
 };

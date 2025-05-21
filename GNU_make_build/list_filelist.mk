@@ -72,15 +72,20 @@ INCLUDE_PATHS += $(SRC_DIR)/X-MRA/robot_spec
 INCLUDE_PATHS += $(SRC_DIR)/tools/Math/vectorMath
          SRCS += $(SRC_DIR)/tools/Math/vectorMath/Vector3d.cpp
          SRCS += $(SRC_DIR)/tools/Math/vectorMath/Matrix4x4.cpp
+
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/JointBase
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidLeg
          SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg.cpp
+
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidBody
          SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody.cpp
+         SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_activation.cpp
+         SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_coordinator.cpp
+         SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_choreographer.cpp
 
 DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2
 DEFINE_LIST += DEBUG=2
 
 LDFLAGS += -lSDL2
-# LDFLAGS += -lX11 
+# LDFLAGS += -lX11
