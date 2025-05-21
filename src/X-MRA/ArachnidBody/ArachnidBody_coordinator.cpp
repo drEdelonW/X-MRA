@@ -3,13 +3,7 @@
 bool ArachnidBody::setOffs(Vector3D offs, int pattern) {
     for (int i = 0; i < _legCount; i++){
         if (_maskCheck(pattern, i)) {
-            if (
-                _legs[i].checkTipPosition(
-                    _legs[i].bodyToLeg(
-                        _legExtras[i].defaultPose - offs
-                    )
-                )
-            ) {
+            if ( _legs[i].checkTipPosBodySpace(_legExtras[i].defaultPose - offs)) {
                 continue;
             } else {
                 return false;

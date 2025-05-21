@@ -76,6 +76,8 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/Math/vectorMath
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/JointBase
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidLeg
          SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg.cpp
+         SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg_wrap.cpp
+         SRCS += $(SRC_DIR)/X-MRA/ArachnidLeg/ArachnidLeg_FK_IK.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidBody
          SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody.cpp

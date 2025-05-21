@@ -83,8 +83,8 @@ Vector3D _curPose = {DSTx, DSTy, DSTz};
 void _xPos() { _curPose.x += mStep; MRA_PV_ALL(_curPose); }
 void _xNeg() { _curPose.x -= mStep; MRA_PV_ALL(_curPose); }
 
-void _yPos() { _curPose.y += mStep; MRA_PV_ALL(_curPose); }
-void _yNeg() { _curPose.y -= mStep; MRA_PV_ALL(_curPose); }
+void _yPos() { _curPose.y -= mStep; MRA_PV_ALL(_curPose); }
+void _yNeg() { _curPose.y += mStep; MRA_PV_ALL(_curPose); }
 
 void _zPos() { _curPose.z += mStep; MRA_PV_ALL(_curPose); }
 void _zNeg() { _curPose.z -= mStep; MRA_PV_ALL(_curPose); }
@@ -94,15 +94,9 @@ void _goGome()  { _curPose = {DSTx, DSTy, DSTz}; MRA_PV_ALL(_curPose); }
 void _info() {
     for (int i = 0; i < 6; i++){
         LOG("[%d] legSpace:", i);
-        XMRA._legs[i].tipPosition(
-            deg(0),deg(0),deg(0)
-        ).print();
+        XMRA._legs[i].tipPosLegSpace(deg(0), deg(0), deg(0)).print();
         LOG("\t bodySpace:");
-        XMRA._legs[i].legToBody(
-            XMRA._legs[i].tipPosition(
-                deg(0),deg(0),deg(0)
-            )
-        ).print();
+        XMRA._legs[i].tipPosBodySpace(deg(0), deg(0), deg(0)).print();
         LOG("\n");
     }
 

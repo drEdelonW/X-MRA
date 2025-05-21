@@ -14,13 +14,7 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
         i++ ) {
         _legExtras[i].currentPose =
         _legExtras[i].defaultPose =
-            _legs[i].legToBody(
-                _legs[i].tipPosition(
-                    deg(0.0f),
-                    deg(0.0f),
-                    deg(0.0f)
-                )
-            );
+            _legs[i].tipPosBodySpace( deg(0.0f), deg(0.0f), deg(0.0f));
         _legExtras[i].deltaMatrix.reset();
     }
 }

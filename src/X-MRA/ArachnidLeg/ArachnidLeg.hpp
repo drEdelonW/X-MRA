@@ -37,15 +37,15 @@ public:
       Angle rotation = deg(0.0F)
    );
 
+   void configMount(Millimeters offset, Angle yaw);
+
    bool  checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
-   Vector3D   tipPosition(Angle coxaAng, Angle femurAng, Angle tibiaAng);
-   bool checkTipPosition(float x, float y, float z);
-   bool checkTipPosition(Vector3D pos);
+   // Angle getJointAngles(); // TODO: to design and implement.
 
-   void configureMount(Millimeters offset, Angle yaw);
-   Vector3D bodyToLeg(Vector3D bodyPos);
-   Vector3D legToBody(Vector3D legPos);
-
+   Vector3D   tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+   Vector3D   tipPosBodySpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+   bool checkTipPosBodySpace(Vector3D bodyPos);
+   bool checkTipPosLegSpace(Vector3D legPos);
 
    bool applyPose();
 
@@ -53,6 +53,12 @@ public:
    void release();
 
 private:
+
+   Vector3D bodyToLeg(Vector3D bodyPos);
+   Vector3D legToBody(Vector3D legPos);
+
+   bool _checkTipPosLegSpace(float x, float y, float z);
+
    JointBase& coxaJn_;
    JointBase& femurJn_;
    JointBase& tibiaJn_;

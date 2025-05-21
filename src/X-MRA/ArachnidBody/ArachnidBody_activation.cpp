@@ -6,7 +6,6 @@ bool ArachnidBody::isArmed() {
     return _isArmed;
 }
 
-
 bool ArachnidBody::ARM() {
     if (_isArmed) {
         LOG("ARMED\n");
@@ -16,11 +15,7 @@ bool ArachnidBody::ARM() {
 
     for(int i = 0; i < _legCount; i++) {
         _legs[i].engage();
-        _legs[i].checkTipPosition(
-            _legs[i].bodyToLeg(
-                _legExtras[i].defaultPose
-            )
-        );
+        _legs[i].checkTipPosBodySpace( _legExtras[i].defaultPose );
     }
 
     LOG("DONE\n");
@@ -49,11 +44,6 @@ void ArachnidBody::DISARM() {
         }
     }
     usleep(1000000);
-    // for(int i = 0; i < _legCount; i++) {
-    //     _legs[i].checkJointAngles(deg(20),deg(NAN),deg(NAN));
-    //     _legs[i].applyPose();
-    //     // usleep(500);
-    // }
     for(int i = 0; i < _legCount; i++) {
         _legs[i].release();
     }
