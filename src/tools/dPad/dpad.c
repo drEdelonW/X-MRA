@@ -1,18 +1,15 @@
 #include "dpad.h"
-#include <termios.h>
 
 // char _keyBuff[10] = {0};
 uint64_t _keyBuff;
 bool isKeyPressed();
 Key getKeyFromBuffer();
 
-void enableRawMode(struct termios* orig);
-void restoreTerminal(const struct termios* orig);
+struct termios orig;
 
 void dpad() {
     LOG(TEXT_BOLD "D-Pad started\n\a" TEXT_RESET);
     // bool isPressed_ = false;
-    struct termios orig;
     enableRawMode(&orig);
 
     while (1) {

@@ -1,11 +1,25 @@
 #include "CLI.h"
+#include "dpad.h"
 
-// #include "x11.h"
-// #include "robot_spec.hpp"
+#include <csignal>
+
 #include "joystick.hpp"
 #include "common_tools.h"
 
+void handle_signal(int signal) {
+    if (signal == SIGINT) {
+        printf("Received SIGINT (Ctrl+C). Exiting...\n"); fflush(stdout);
+        // posix_socket.Close();
+        restoreTerminal(&orig);
+        exit(0);
+    }
+}
+
 int main(int argc, char *argv[]) {
+    if (signal(SIGINT, handle_signal) == SIG_ERR) {
+        perror("Error registering signal handler");
+        return 1;
+    }
 #if 0
     ver_info();
     printf("Arg count is %d\n", argc);

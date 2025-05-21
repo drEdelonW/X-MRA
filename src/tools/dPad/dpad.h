@@ -4,6 +4,7 @@
 #include "terminal_tools.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include <termios.h>
 
 #define KEY_TIMEOUT_MS 15
 
@@ -14,11 +15,16 @@
 // extern char _keyBuff[10];
 extern uint64_t _keyBuff;
 
+extern struct termios orig;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void dpad();
+
+void enableRawMode(struct termios* orig);
+void restoreTerminal(const struct termios* orig);
 
 typedef void (*KeyFunction)(void);
 
