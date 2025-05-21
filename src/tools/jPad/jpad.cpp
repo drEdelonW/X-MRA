@@ -54,7 +54,8 @@ void jpad() {
                 XMRA.trySetOffs(Vector3D{-ly, lx, rz -lz}* scaleStep);
             } else {
                 if ((fabsf(lx) > 0.028f) ||
-                    (fabsf(ly) > 0.028f)) {
+                    (fabsf(ly) > 0.028f) ||
+                    (fabsf(rz - lz) > 0.02f)) {
                     // LOG("%f %f %f\n", lx, ly, lz);
 
                     XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 5.0f);
