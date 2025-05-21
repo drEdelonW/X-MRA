@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include "terminal_tools.h"
 
 extern volatile bool joy_echo;
+extern volatile bool jQuit;
 
 #define IF_BTN_HIT(btn, action) if \
     (SDL_GameControllerGetButton(gPad, toPS(btn))) \
@@ -62,4 +64,5 @@ void printAllButtonState();
 void printAllButtons();
 
 int GameControllerInit();
+int GameControllerDeinit();
 void GameControllerHandler();

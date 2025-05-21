@@ -35,3 +35,8 @@ int GameControllerInit () {
     joystickThread.detach();
     return 0;
 }
+
+
+int GameControllerDeinit () {
+    jQuit = true;
+}

@@ -24,15 +24,16 @@ float GCgetAxis(SDL_GameControllerAxis axis) {
     return SDL_GameControllerGetAxis(gPad, axis) / 32768.0f;
 }
 
+volatile bool jQuit;
+
 void GameControllerHandler() {
     printf("GameController Started\n");
     SDL_Event event;
-    int quit = 0;
-    while (!quit) {
+    while (!jQuit) {
         while (SDL_PollEvent(&event) != 0) {
             // printf("GameController Tick 0x%X\n", event.type);
             if (event.type == SDL_QUIT) {
-                quit = 1;
+                jQuit = true;
             } else if (event.type == SDL_CONTROLLERBUTTONDOWN || event.type == SDL_CONTROLLERBUTTONUP) {
                 printAllButtons();
                 // printAllButtonState();
@@ -99,4 +100,5 @@ void GameControllerHandler() {
         usleep(1000);
         //TODO: remove
     }
+    LOG("GameController ENDED\n");
 }

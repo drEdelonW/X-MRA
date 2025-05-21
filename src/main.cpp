@@ -3,7 +3,6 @@
 
 #include <csignal>
 
-#include "joystick.hpp"
 #include "common_tools.h"
 
 #include "robot_spec.hpp"
@@ -24,6 +23,7 @@ int main(int argc, char *argv[]) {
         perror("Error registering signal handler");
         return 1;
     }
+    tcgetattr(STDIN_FILENO, &orig);
 #if 0
     ver_info();
     printf("Arg count is %d\n", argc);
@@ -42,7 +42,6 @@ int main(int argc, char *argv[]) {
         }
     }
 #endif
-    GameControllerInit();
     startCLI();
     // busScan();
     // dumpAddr(0x40);

@@ -1,5 +1,11 @@
 #include "ArachnidLeg.hpp"
 
+bool ArachnidLeg::tryJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng){
+    return
+        checkJointAngles(coxaAng, femurAng, tibiaAng) &&
+        applyPose();
+}
+
 
 bool ArachnidLeg::checkTipPosLegSpace(Vector3D pos){
     return _checkTipPosLegSpace(pos.x, pos.y, pos.z);
@@ -21,3 +27,4 @@ Vector3D ArachnidLeg::bodyToLeg(Vector3D bodyPos) {
 Vector3D ArachnidLeg::legToBody(Vector3D legPos) {
     return _legToBody.applyTransform(legPos);
 }
+

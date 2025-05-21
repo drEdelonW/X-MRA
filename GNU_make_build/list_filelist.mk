@@ -37,6 +37,8 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/dPad
 
 # INCLUDE_PATHS += $(SRC_DIR)/joy
 # SRCS += $(SRC_DIR)/sys_libs/joy/sdl_joystick.cpp
+INCLUDE_PATHS += $(SRC_DIR)/tools/jPad
+         SRCS += $(SRC_DIR)/tools/jPad/jpad.cpp
 INCLUDE_PATHS += /usr/include/SDL2
 INCLUDE_PATHS += $(SRC_DIR)/sys_libs/Joystick
          SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick.cpp

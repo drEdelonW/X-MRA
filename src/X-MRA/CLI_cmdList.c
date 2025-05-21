@@ -3,6 +3,7 @@
 #include "common_tools.h"
 
 #include "dpad.h"
+#include "jpad.hpp"
 #include "i2c.h"     // busScan() dumpAddr()
 
 void busScan_() {
@@ -18,6 +19,7 @@ Command commands[] = {
     {.name = "i2cScan", .function = busScan_,    .description = "I2C Bus scan Tool"},
     {.name = "i2cD4",   .function = busD4_,      .description = "I2C Bus dump 0x40 device"},
     {.name = "dpad",    .function = dpad,       .description = "keyboard control Tool"},
+    {.name = "jpad",    .function = jpad,       .description = "GamePad control Tool"},
 
     // {.name = "arm",     .function = cwARM},
     // {.name = "disarm",  .function = cwDISARM},

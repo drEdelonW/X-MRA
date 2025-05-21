@@ -27,6 +27,8 @@
 
 */
 
+#define JFREEZE    rad(NAN)
+
 class ArachnidLeg {
 public:
    ArachnidLeg(
@@ -40,6 +42,7 @@ public:
    void configMount(Millimeters offset, Angle yaw);
 
    bool  checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+   bool  tryJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
    // Angle getJointAngles(); // TODO: to design and implement.
 
    Vector3D   tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);

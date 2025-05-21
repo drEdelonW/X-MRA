@@ -16,6 +16,7 @@ bool ArachnidBody::ARM() {
     for(int i = 0; i < _legCount; i++) {
         _legs[i].engage();
         _legs[i].checkTipPosBodySpace( _legExtras[i].defaultPose );
+        _legs[i].applyPose();
     }
 
     LOG("DONE\n");
@@ -31,19 +32,17 @@ void ArachnidBody::DISARM() {
     LOG("DISARMING... ");
 
     for(int i = 0; i < _legCount; i++) {
-        _legs[i].checkJointAngles(deg(0),deg(NAN),deg(NAN));
-        _legs[i].applyPose();
-        usleep(500);
+        _legs[i].tryJointAngles(deg(0), JFREEZE, JFREEZE);
     }
 
     for (int ang = 0; ang < 90; ang++){
         for(int i = 0; i < _legCount; i++) {
-            _legs[i].checkJointAngles(deg(NAN),deg(-ang),deg(-(ang * 0.8f)));
-            _legs[i].applyPose();
-            usleep(1000);
+            _legs[i].tryJointAngles( JFREEZE, deg(-ang), deg(-(ang * 0.8f)));
         }
+        usleep(1000);
     }
     usleep(1000000);
+
     for(int i = 0; i < _legCount; i++) {
         _legs[i].release();
     }

@@ -1,6 +1,4 @@
 #include "ArachnidBody.hpp"
-#include <unistd.h>  //usleep
-#include "terminal_tools.h"
 
 void  ArachnidBody::setPatMask(int pattern, uint8_t mask) {
     _legMask[pattern] = mask & _legMaskLimit;
