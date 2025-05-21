@@ -48,8 +48,6 @@ ASMFLAGS 	= $(COMONFLAGS) -c -x assembler-with-cpp
 
 # Linker Flags
 LDFLAGS		= -Wl,-Map=$(TARGET).map \
-			-lX11 \
-			-lSDL2 \
 			-lstdc++ \
 			-lm
 #LDFLAGS 	= -L../lib/lib/$(ARCH)/ \

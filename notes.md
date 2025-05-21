@@ -29,14 +29,25 @@ Servo Driver HAT (PWM)
     0x3c display SSD1306_128_32
     0x68 DS RTC clock
 
-BlueTooth
+BlueTooth joystick
     sudo apt-get update
     sudo apt-get install bluez bluez-tools
     sudo apt-get install bluez libbluetooth-dev
 
     sudo bluetoothctl
-    pair 90:FB:A6:C2:63:67
-    connect 90:FB:A6:C2:63:67
+        power on
+        scan on
+        pair AC:36:1B:5C:14:6E
+        connect AC:36:1B:5C:14:6E
+        trust AC:36:1B:5C:14:6E
+    scan off
+    exit
+
+    sudo apt install joystick
+    jstest /dev/input/js0
+
+    ;; sudo apt install evtest
+    ;; sudo evtest
 
 SDL2 dev
     sudo apt-get update

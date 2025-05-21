@@ -2,7 +2,7 @@
 
 // #include "x11.h"
 // #include "robot_spec.hpp"
-// #include "sdl_joystick.h"
+#include "joystick.hpp"
 #include "common_tools.h"
 
 int main(int argc, char *argv[]) {
@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
         }
     }
 #endif
+    GameControllerInit();
     startCLI();
     // busScan();
     // dumpAddr(0x40);

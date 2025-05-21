@@ -17,10 +17,6 @@ INCLUDE_PATHS += $(SRC_DIR)/sys_libs/i2c
 # INCLUDE_PATHS += $(SRC_DIR)/X11_lib
 # SRCS += $(SRC_DIR)/sys_libs/X11_lib/x11.c
 
-# INCLUDE_PATHS += $(SRC_DIR)/joy
-# SRCS += $(SRC_DIR)/sys_libs/joy/sdl_joystick.cpp
-# INCLUDE_PATHS += /usr/include/SDL2
-
 INCLUDE_PATHS += $(SRC_DIR)
 INCLUDE_PATHS += $(SRC_DIR)/tools
 INCLUDE_PATHS += $(SRC_DIR)/tools/Math
@@ -39,6 +35,13 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/dPad
          SRCS += $(SRC_DIR)/tools/dPad/dpad_tools.c
          SRCS += $(SRC_DIR)/tools/dPad/keyConst.c
 
+# INCLUDE_PATHS += $(SRC_DIR)/joy
+# SRCS += $(SRC_DIR)/sys_libs/joy/sdl_joystick.cpp
+INCLUDE_PATHS += /usr/include/SDL2
+INCLUDE_PATHS += $(SRC_DIR)/sys_libs/Joystick
+         SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick.cpp
+         SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick_sys.cpp
+         SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick_tools.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/drv
 
@@ -78,3 +81,6 @@ INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidBody
 DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2
 DEFINE_LIST += DEBUG=2
+
+LDFLAGS += -lSDL2
+# LDFLAGS += -lX11 
