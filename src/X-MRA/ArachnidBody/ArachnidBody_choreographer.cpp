@@ -29,3 +29,14 @@ bool ArachnidBody::applyPose(int pattern) {
     }
     LEG_ERROR_OK;
 }
+
+void ArachnidBody::getMatrix(Matrix4x4* mx, int pattern){
+    if (pattern < MAX_LEGS) {
+        *mx = _legPattMatrix[pattern];
+    }
+}
+void ArachnidBody::setMatrix(Matrix4x4* mx, int pattern){
+    if (pattern < MAX_LEGS) {
+        _legPattMatrix[pattern] = *mx;
+    }
+}

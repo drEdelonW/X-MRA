@@ -13,6 +13,7 @@ void jpad() {
     bool triAct = false;
     float scaleStep = 50.0f;
 
+    Matrix4x4 buMx;
     while(_run){
         if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_PS))) {
             printf("pressed BUTTON_PS. exit\n");
@@ -60,12 +61,28 @@ void jpad() {
 
                     XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 3.0f);
                 }
+#if 0
+                Vector3D zOffs = {0.0, 0.0, 0.0};
                 if ((fabsf(rx) > 0.038f)) {
-                    XMRA.tryAddRotationOZ(deg(-rx));
+                    // XMRA.tryAddRotationOZ(deg(-rx));
+                    XMRA.getMatrix(&buMx);
+                    XMRA.addOffs(zOffs);
+                    XMRA.addRotationOX(deg(rx * 2.0f));
+                    XMRA.addOffs(-zOffs);
+                    if (!XMRA.applyPose()) {
+                        XMRA.setMatrix(&buMx);
+                    }
                 }
                 if ((fabsf(ry) > 0.038f)) {
-                    XMRA.tryAddRotationOY(deg(-ry));
+                    XMRA.getMatrix(&buMx);
+                    XMRA.addOffs(zOffs);
+                    XMRA.addRotationOY(deg(-ry * 2.0f));
+                    XMRA.addOffs(-zOffs);
+                    if (!XMRA.applyPose()) {
+                        XMRA.setMatrix(&buMx);
+                    }
                 }
+#endif
             }
         }
     }

@@ -87,6 +87,8 @@ public:
 
 
     bool applyPose(int pattern = 0);
+    void getMatrix(Matrix4x4* mx, int pattern = 0);
+    void setMatrix(Matrix4x4* mx, int pattern = 0);
 
     bool isArmed();
     bool ARM();
@@ -112,5 +114,5 @@ private:
 
     Angle   _azimuth;
     Angle   _elevation;
-    int8_t _lastLegError;
+    int8_t  _lastLegError;
 };
