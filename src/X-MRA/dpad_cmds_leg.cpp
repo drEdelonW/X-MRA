@@ -34,8 +34,8 @@ static float _curAngle = 0;
             XMRA._legs[i].applyPose(); \
     }
 #define MRA_PV_ALL(v)  \
-    if (XMRA.setOffs(v)) \
-        XMRA.applyPose(); \
+    XMRA.trySetOffs(v);
+
 // #define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].engage(); }}
 // #define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].release(); }}
 

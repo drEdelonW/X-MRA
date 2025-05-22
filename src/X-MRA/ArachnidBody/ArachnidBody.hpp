@@ -60,6 +60,11 @@ MidleLeft           \ | /            MidleRight
 
 #define MAX_LEGS  (8)
 
+#define PATTERN_LEG  for (int i = 0; i < _legCount; i++) if (_maskCheck(pattern, i))
+#define LEG_ERROR_OK        _lastLegError = MAX_LEGS; return true;
+#define LEG_ERROR_DISARMED  _lastLegError = MAX_LEGS; return false;
+#define LEG_ERROR           _lastLegError = i; return false;
+
 class ArachnidBody {
 public:
     ArachnidBody(ArachnidLeg* legs, size_t legCount);
@@ -68,13 +73,17 @@ public:
     void    setPatMask(int pattern, uint8_t mask);
     uint8_t getPatMask(int pattern);
 
-    bool setOffs(Vector3D offs, int pattern = 0);
+    void setOffs(Vector3D offs, int pattern = 0);
+    void addOffs(Vector3D offs, int pattern = 0);
+    void addRotationOX(Angle angle, int pattern = 0);
+    void addRotationOY(Angle angle, int pattern = 0);
+    void addRotationOZ(Angle angle, int pattern = 0);
+
     bool trySetOffs(Vector3D offs, int pattern = 0);
-    bool addOffs(Vector3D offs, int pattern = 0);
     bool tryAddOffs(Vector3D offs, int pattern = 0);
-    // bool setRotationOX(Angle angle, int pattern = 0);
-    // bool setRotationOY(Angle angle, int pattern = 0);
-    // bool setRotationOZ(Angle angle, int pattern = 0);
+    bool tryAddRotationOX(Angle angle, int pattern = 0);
+    bool tryAddRotationOY(Angle angle, int pattern = 0);
+    bool tryAddRotationOZ(Angle angle, int pattern = 0);
 
 
     bool applyPose(int pattern = 0);
@@ -88,19 +97,20 @@ private:
     struct LegExtras {
         Vector3D    defaultPose;
         Vector3D    currentPose;
-        Matrix4x4   deltaMatrix;
     };
-    inline bool _maskCheck(int pattern, int legIndex) const { return (_legMask[pattern] & (1 << legIndex)); }
+    inline bool _maskCheck(int pattern, int legIndex) const { return (_legPattMask[pattern] & (1 << legIndex)); }
+
     size_t  _legCount = 0;
 
     bool    _isArmed;
 
-    uint8_t _legMaskLimit;
-    uint8_t _legMask[MAX_LEGS];
+    uint8_t     _legMaskLimit;
+    uint8_t     _legPattMask[MAX_LEGS];
+    Matrix4x4   _legPattMatrix[MAX_LEGS];
 
     LegExtras   _legExtras[MAX_LEGS];
 
     Angle   _azimuth;
     Angle   _elevation;
-    uint8_t _lastLegError;
+    int8_t _lastLegError;
 };

@@ -1,23 +1,31 @@
 #include "ArachnidBody.hpp"
 
 void  ArachnidBody::setPatMask(int pattern, uint8_t mask) {
-    _legMask[pattern] = mask & _legMaskLimit;
+    _legPattMask[pattern] = mask & _legMaskLimit;
 }
 uint8_t ArachnidBody::getPatMask(int pattern) {
-    return _legMask[pattern];
+    return _legPattMask[pattern];
 }
 
 bool ArachnidBody::applyPose(int pattern) {
-    if (!_isArmed)
-        return false;
-
-    for (int i = 0; i < _legCount; i++){
-        if (_maskCheck(pattern, i)) {
-            if (!_legs[i].applyPose()) {
-                _lastLegError = i;
-                return false;
-            }
-        }
+    if (!_isArmed) {
+        _lastLegError = MAX_LEGS; return false;
     }
-    return true;
+    PATTERN_LEG {
+        _legExtras[i].currentPose =
+            _legPattMatrix[pattern].applyTransform(
+                _legExtras[i].defaultPose
+            );
+    }
+
+    PATTERN_LEG {
+        if ( !_legs[i].checkTipPosBodySpace(_legExtras[i].currentPose))
+            { LEG_ERROR; }
+    }
+
+    PATTERN_LEG {
+        if ( !_legs[i].applyPose())
+            { LEG_ERROR; }
+    }
+    LEG_ERROR_OK;
 }
