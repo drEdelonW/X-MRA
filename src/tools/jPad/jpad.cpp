@@ -53,12 +53,18 @@ void jpad() {
                 // LOG("%f %f %f\n", lx, ly, lz);
                 XMRA.trySetOffs(Vector3D{-ly, lx, rz -lz}* scaleStep);
             } else {
-                if ((fabsf(lx) > 0.028f) ||
-                    (fabsf(ly) > 0.028f) ||
-                    (fabsf(rz - lz) > 0.02f)) {
+                if ((fabsf(lx) > 0.038f) ||
+                    (fabsf(ly) > 0.038f) ||
+                    (fabsf(rz - lz) > 0.03f)) {
                     // LOG("%f %f %f\n", lx, ly, lz);
 
-                    XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 5.0f);
+                    XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 3.0f);
+                }
+                if ((fabsf(rx) > 0.038f)) {
+                    XMRA.tryAddRotationOZ(deg(-rx));
+                }
+                if ((fabsf(ry) > 0.038f)) {
+                    XMRA.tryAddRotationOY(deg(-ry));
                 }
             }
         }
