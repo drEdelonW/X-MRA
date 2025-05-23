@@ -5,18 +5,14 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
     _legCount(legCount),
     _isArmed(false),
     _legMaskLimit(0xFF >> (MAX_LEGS - _legCount)), //mask for legGroup limits
+    _lastLegError(MAX_LEGS),
     _azimuth(deg(0)),
     _elevation(deg(0))
 {
-    setPatMask(0, LEGS_ALL);
-    // setPatMask(0, TRIPOD_A);
-    for( int i = 0;
-        i < ((MAX_LEGS < _legCount)?
-            MAX_LEGS : _legCount);
-        i++ ) {
-        _legExtras[i].currentPose =
+    int8_t pattern = 0;
+    setPatMask(pattern, LEGS_ALL);
+    PATTERN_LEG {
         _legExtras[i].defaultPose =
             _legs[i].tipPosBodySpace( deg(0.0f), deg(0.0f), deg(0.0f));
-        _legPattMatrix[i].reset();
     }
 }

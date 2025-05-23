@@ -13,7 +13,7 @@ bool ArachnidBody::applyPose(int pattern) {
     }
     PATTERN_LEG {
         _legExtras[i].currentPose =
-            _legPattMatrix[pattern].applyTransform(
+            (_legPattMatrix[pattern] * _ctrlMatrix).applyTransform(
                 _legExtras[i].defaultPose
             );
     }

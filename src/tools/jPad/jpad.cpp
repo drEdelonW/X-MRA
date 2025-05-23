@@ -50,9 +50,9 @@ void jpad() {
             XMRA.trySetOffs(Vector3D{ly ,-lx, -lStep} * scaleStep, 0);
             XMRA.trySetOffs(Vector3D{ry, -rx, -rStep} * scaleStep, 1);
         } else {    // non Tripod mode
-            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_L1))){
+            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_L3))){
                 // LOG("%f %f %f\n", lx, ly, lz);
-                XMRA.trySetOffs(Vector3D{-ly, lx, rz -lz}* scaleStep);
+                XMRA.trySetOffs(Vector3D{0.0f, 0.0f, 0.0f});
             } else {
                 if ((fabsf(lx) > 0.038f) ||
                     (fabsf(ly) > 0.038f) ||
@@ -61,7 +61,19 @@ void jpad() {
 
                     XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 3.0f);
                 }
-#if 0
+#if 1
+                IF_BTN_HIT(BUTTON_R3,{
+                    if (XMRA.AimSetAngle(deg(0), deg(0))) {
+                        XMRA.applyPose();
+                    }
+                })
+                if ((fabsf(rx) > 0.038f) ||
+                    (fabsf(ry) > 0.038f)) {
+                    if (XMRA.AimAddAngle(deg(-rx), deg(-ry))) {
+                        XMRA.applyPose();
+                    }
+                }
+#else
                 Vector3D zOffs = {0.0, 0.0, 0.0};
                 if ((fabsf(rx) > 0.038f)) {
                     // XMRA.tryAddRotationOZ(deg(-rx));

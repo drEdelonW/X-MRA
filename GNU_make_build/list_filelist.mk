@@ -86,6 +86,7 @@ INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidBody
          SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_activation.cpp
          SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_coordinator.cpp
          SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_choreographer.cpp
+         SRCS += $(SRC_DIR)/X-MRA/ArachnidBody/ArachnidBody_Aim.cpp
 
 DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2

@@ -63,7 +63,7 @@ MidleLeft           \ | /            MidleRight
 #define PATTERN_LEG  for (int i = 0; i < _legCount; i++) if (_maskCheck(pattern, i))
 #define LEG_ERROR_OK        _lastLegError = MAX_LEGS; return true;
 #define LEG_ERROR_DISARMED  _lastLegError = MAX_LEGS; return false;
-#define LEG_ERROR           _lastLegError = i; return false;
+#define LEG_ERROR           _lastLegError = i;        return false;
 
 class ArachnidBody {
 public:
@@ -94,6 +94,13 @@ public:
     bool ARM();
     void DISARM();
 
+    bool AimSetAngle(Angle  azimuth, Angle  elevation);
+    void AimGetAngle(Angle* azimuth, Angle* elevation);
+    Angle AimGetAngleAzimuth();
+    Angle AimGetAngleElevation();
+
+    bool AimAddAngle(Angle  azimuth, Angle  elevation);
+
     ArachnidLeg*    _legs = nullptr;
 private:
     struct LegExtras {
@@ -109,10 +116,13 @@ private:
     uint8_t     _legMaskLimit;
     uint8_t     _legPattMask[MAX_LEGS];
     Matrix4x4   _legPattMatrix[MAX_LEGS];
+    int8_t      _lastLegError;
+
+    Matrix4x4   _ctrlMatrix;
+    Matrix4x4   _stabMatrix;
 
     LegExtras   _legExtras[MAX_LEGS];
 
     Angle   _azimuth;
     Angle   _elevation;
-    int8_t  _lastLegError;
 };
