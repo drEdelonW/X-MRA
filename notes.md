@@ -1,5 +1,8 @@
 X-MRA как "eXperimental Modular Robotic Arachnid"
 
+SSH key auth
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_ed25519_gitLab.txt
 
 debian 12
 libcamera-hello
