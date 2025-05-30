@@ -1,29 +1,29 @@
-X-MRA как "eXperimental Modular Robotic Arachnid"
+# X-MRA как "eXperimental Modular Robotic Arachnid"
 
-SSH key auth
+# SSH key auth
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519_gitLab.txt
 
-debian 12
-libcamera-hello
+# debian 12
+# libcamera-hello
     https://raspberrypi.stackexchange.com/questions/135522/camera-only-working-with-deprecated-legacy-options
     https://forums.raspberrypi.com/viewtopic.php?t=119566
     https://docs.arducam.com/Raspberry-Pi-Camera/Native-camera/Libcamera-User-Guide/
 
-Raspberry Pi Wifi (Station + AP modes)
+# Raspberry Pi Wifi (Station + AP modes)
     https://pifi.imti.co
     https://github.com/cjimti/iotwifi
 
-MPU6050
+# MPU6050
     https://github.com/jarzebski/Arduino-MPU6050
     Работа C Arduino И MPU6050
         https://alexgyver.ru/arduino-mpu6050/
 
-Servo Driver with ESP32
+# Servo Driver with ESP32
     https://www.waveshare.com/wiki/Servo_Driver_with_ESP32
 
-Servo Driver HAT (PWM)
-    # apt install i2c-tools
+# Servo Driver HAT (PWM)
+    sudo apt install i2c-tools
 
     https://www.waveshare.com/wiki/Servo_Driver_HAT
     i2cdetect -y 1
@@ -32,33 +32,33 @@ Servo Driver HAT (PWM)
     0x3c display SSD1306_128_32
     0x68 DS RTC clock
 
-BlueTooth joystick
+# BlueTooth joystick
     sudo apt-get update
     sudo apt-get install bluez bluez-tools
     sudo apt-get install bluez libbluetooth-dev
 
+    [10:18:49:62:5C:3C] hacky DS
+    [AC:36:1B:5C:14:6E] black DS
+
     sudo bluetoothctl
         power on
         scan on
-        pair AC:36:1B:5C:14:6E
-        connect AC:36:1B:5C:14:6E
-        trust AC:36:1B:5C:14:6E
+        pair [MAC]
+        trust [MAC]
+        connect [MAC]
     scan off
     exit
 
+# Joystick test
     sudo apt install joystick
     jstest /dev/input/js0
 
-    ;; sudo apt install evtest
-    ;; sudo evtest
+    #sudo apt install evtest
+    #sudo evtest
 
-SDL2 dev
+# SDL2 dev
     sudo apt-get update
     sudo apt-get install libsdl2-dev
-
-
-#git clone gituser@KnowBase.local:/repos/test_repo.git
-git clone gituser@KnowBase.local:/repos/HexaFPV.git
 
 
 

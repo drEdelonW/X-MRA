@@ -13,6 +13,8 @@ void handle_signal(int signal) {
         printf("Received SIGINT (Ctrl+C). Exiting...\n"); fflush(stdout);
         // posix_socket.Close();
         XMRA.DISARM();
+        PWMarray[0].sleepMode();
+        PWMarray[1].sleepMode();
         restoreTerminal(&orig);
         exit(0);
     }
@@ -42,6 +44,12 @@ int main(int argc, char *argv[]) {
         }
     }
 #endif
+
+    PWMarray[0].wakeUp();
+    PWMarray[1].wakeUp();
+    PWMarray[0].setFreq_Hz((Hertz)300);
+    PWMarray[1].setFreq_Hz((Hertz)300);
+
     startCLI();
     // busScan();
     // dumpAddr(0x40);
