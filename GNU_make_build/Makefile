@@ -5,7 +5,7 @@
 SRC_DIR			?= ../src
 OBJ_DIR 		?= objects
 OUTPUT_DIR 		?= OUTPUT
-TARGET_NAME		?= HexaFPV_main_app
+TARGET_NAME		?= HexaFPV_app
 ARCH			?= ARM
 # ARCH			?= x64
 # ARCH			?= x86
@@ -100,8 +100,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 # @$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-run: $(TARGET_NAME)$(EXEC_SUFIX)
-	@$(TARGET)$(EXEC_SUFIX) $(ARGS)
 
 clean:
 	@echo "Clean $(TARGET_NAME)"
@@ -109,3 +107,5 @@ clean:
 
 fresh: clean
 	make -j$(NUM_CORES) $(TARGET_NAME)$(EXEC_SUFIX)
+
+include extar_goals.mk

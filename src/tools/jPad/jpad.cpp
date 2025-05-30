@@ -15,10 +15,12 @@ void jpad() {
 
     Matrix4x4 buMx;
     while(_run){
-        if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_PS))) {
-            printf("pressed BUTTON_PS. exit\n");
-            _run = false;
-            continue;
+        if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_PS)) &&
+            SDL_GameControllerGetButton(gPad, toPS(BUTTON_CROSS))
+        ){
+                printf("pressed BUTTON_PS. exit\n");
+                _run = false;
+                continue;
         }
 
         IF_BTN_HIT(BUTTON_TRIANGLE,{

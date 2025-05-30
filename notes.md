@@ -40,6 +40,15 @@
     [10:18:49:62:5C:3C] hacky DS
     [AC:36:1B:5C:14:6E] black DS
 
+    # BT config
+    sudo bluetoothctl
+        power on
+        agent on
+        default-agent
+        discoverable on
+        pairable on
+        scan on
+
     sudo bluetoothctl
         power on
         scan on

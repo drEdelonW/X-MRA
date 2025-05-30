@@ -34,6 +34,25 @@ void GameControllerHandler() {
             // printf("GameController Tick 0x%X\n", event.type);
             if (event.type == SDL_QUIT) {
                 jQuit = true;
+            } else if (event.type == SDL_CONTROLLERDEVICEADDED) {   // GamePad connect handling
+                int device_index = event.cdevice.which;
+                if (!gPad &&
+                    SDL_IsGameController(device_index)
+                ) {
+                    gPad = SDL_GameControllerOpen(device_index);
+                    if (gPad) {
+                        printf("Game controller connected: %s\n", SDL_GameControllerName(gPad));
+                    }
+                }
+            } else if (event.type == SDL_CONTROLLERDEVICEREMOVED) { // GamePad disconnect handling
+                SDL_JoystickID removed_id = event.cdevice.which;
+                if (gPad &&
+                    SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(gPad)) == removed_id
+                ) {
+                    SDL_GameControllerClose(gPad);
+                    gPad = nullptr;
+                    printf("Game controller disconnected\n");
+                }
             } else if (event.type == SDL_CONTROLLERBUTTONDOWN || event.type == SDL_CONTROLLERBUTTONUP) {
                 printAllButtons();
                 // printAllButtonState();

@@ -29,8 +29,8 @@ int GameControllerInit () {
     if (gPad == NULL) {
         printf("No game controller found.\n");
 //        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
+        // SDL_Quit();
+        // return 1;
     }
     joystickThread.detach();
     return 0;

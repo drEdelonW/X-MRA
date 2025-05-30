@@ -9,7 +9,8 @@
 
 
 void handle_signal(int signal) {
-    if (signal == SIGINT) {
+    if ((signal == SIGINT) &&
+        (signal == SIGTERM)) {
         printf("Received SIGINT (Ctrl+C). Exiting...\n"); fflush(stdout);
         // posix_socket.Close();
         XMRA.DISARM();
@@ -21,7 +22,8 @@ void handle_signal(int signal) {
 }
 
 int main(int argc, char *argv[]) {
-    if (signal(SIGINT, handle_signal) == SIG_ERR) {
+    if (signal(SIGINT, handle_signal) == SIG_ERR ||
+        signal(SIGTERM, handle_signal) == SIG_ERR) {
         perror("Error registering signal handler");
         return 1;
     }
