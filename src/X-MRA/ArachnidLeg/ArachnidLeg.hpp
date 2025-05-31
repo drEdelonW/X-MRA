@@ -31,6 +31,11 @@
 
 class ArachnidLeg {
 public:
+   enum LegJoint {
+      COXA,
+      FEMUR,
+      TIBIA
+   };
    ArachnidLeg(
       JointBase& coxaJn,
       JointBase& femurJn,
@@ -43,12 +48,13 @@ public:
 
    bool  checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
    bool    tryJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
-   // Angle getJointAngles(); // TODO: to design and implement.
+
+   Angle getJointAngles(LegJoint jName);
 
    Vector3D    tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);
    Vector3D   tipPosBodySpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);
    bool checkTipPosBodySpace(Vector3D bodyPos);
-   bool checkTipPosLegSpace(Vector3D legPos);
+   bool  checkTipPosLegSpace(Vector3D legPos);
 
    bool applyPose();
 

@@ -85,6 +85,8 @@ public:
     bool tryAddRotationOY(Angle angle, int pattern = 0);
     bool tryAddRotationOZ(Angle angle, int pattern = 0);
 
+    bool animAngDeg(Vector3D from, Vector3D to, MicroSeconds duration = 0);
+
 
     bool applyPose(int pattern = 0);
     void getMatrix(Matrix4x4* mx, int pattern = 0);

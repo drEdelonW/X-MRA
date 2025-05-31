@@ -21,7 +21,8 @@ MG996R::MG996R(
 void MG996R::setAngle(const Angle& angle) {
     if(!_enabled)
         return;
-
+    if (isnan(angle.asRadians()))
+        return;
     _currentAngle = angle;
 
     Angle corrected = angle + _offset;

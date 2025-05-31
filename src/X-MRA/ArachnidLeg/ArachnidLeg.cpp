@@ -19,6 +19,15 @@ bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibi
         tibiaJn_.checkPose(tibiaAngle);
 }
 
+Angle ArachnidLeg::getJointAngles(LegJoint jName){
+    switch (jName) {
+      case COXA:  return coxaJn_.getAngle();
+      case FEMUR: return femurJn_.getAngle();
+      case TIBIA: return tibiaJn_.getAngle();
+      default:    return rad(NAN);
+   }
+}
+
 bool ArachnidLeg::applyPose() {
     return
         tibiaJn_.applyPose() &&

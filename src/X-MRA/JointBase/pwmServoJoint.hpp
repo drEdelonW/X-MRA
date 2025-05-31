@@ -15,7 +15,7 @@ public:
     _min(minLim),
     _max(maxLim),
     _offset(offset),
-    _plan(deg(  0)),
+    _plan(deg(NAN)),
     _valid(false),
     _skip(false) {}
 
