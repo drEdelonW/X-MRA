@@ -1,13 +1,66 @@
 R"HTML(
 <!DOCTYPE html>
 <html>
-  <head><meta charset='utf-8'><title>Web Control</title></head>
+  <head><meta charset='utf-8'><title>Web Control</title>
+    <style>
+      #hud {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        max-width: 55vw;
+        max-height: 90vh;
+        padding: 1rem;
+        background-color: rgba(32, 32, 32, 0.6);
+        color: white;
+        border-radius: 0.5rem;
+        overflow-y: auto;
+        font-family: sans-serif;
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        margin: 0.25rem 0;
+      }
+
+      .slider-row span {
+        margin-left: 0.5rem;
+        min-width: 3em;
+        text-align: right;
+      }
+
+      .checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .checkboxes label {
+        width: 3.5rem;
+      }
+    </style>
+
+  </head>
   <body>
+    <img id="bg" style="
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    " />
+    <script>
+      const host = location.hostname;
+      const port = 8081;
+      const stream = `http://${host}:${port}`;
+      document.getElementById("bg").src = stream;
+    </script>
     <h3>Clicks: <span id='cnt'>-1</span></h3>
     <button id='btn'>ADD</button>
     <button id='btnn'>SUB</button>
 
-    <div>
+    <div id="hud">
       <hr>
       <div>
         <label>Slider 1: <input type="range" id="s1" min="0" max="1" step="0.01" value="0.5"></label>
@@ -186,6 +239,86 @@ R"HTML(
       });
 
       requestAnimationFrame(gamepadLoop);
+
+
+
+      let keys = {};
+      let mouseX = 0, mouseY = 0;
+
+      window.addEventListener("keydown", e => {
+        keys[e.code] = true;
+      });
+
+      window.addEventListener("keyup", e => {
+        keys[e.code] = false;
+      });
+
+      document.getElementById("bg").addEventListener("click", () => {
+        if (document.pointerLockElement !== document.body) {
+          document.body.requestPointerLock();
+        }
+      });
+
+      document.addEventListener("pointerlockchange", () => {
+        if (document.pointerLockElement !== document.body) {
+          mouseX = 0;
+          mouseY = 0;
+        }
+      });
+
+      document.addEventListener("mousemove", e => {
+        if (document.pointerLockElement === document.body) {
+          mouseX += e.movementX;
+          mouseY += e.movementY;
+        }
+      });
+
+      function pollKeyboardAndMouse() {
+        if (gamepadIndex !== null) return; // skip if gamepad active
+        if (document.pointerLockElement !== document.body) return; // skip if not in capture mode
+
+        const scale = keys["ShiftLeft"] || keys["ShiftRight"] ? 1.0 : 0.5;
+        const moveX = (keys["KeyD"] ? 1 : 0) - (keys["KeyA"] ? 1 : 0);
+        const moveY = (keys["KeyS"] ? 1 : 0) - (keys["KeyW"] ? 1 : 0);
+
+        const axisLx = (moveX * scale + 1) / 2;
+        const axisLy = (moveY * scale + 1) / 2;
+
+        const mouseScale = 0.002;
+        const axisRx = Math.max(0, Math.min(1, (mouseX * mouseScale + 1) / 2));
+        const axisRy = Math.max(0, Math.min(1, (mouseY * mouseScale + 1) / 2));
+
+        s1.value = axisLx.toFixed(3);
+        s2.value = axisLy.toFixed(3);
+        s3.value = axisRx.toFixed(3);
+        s4.value = axisRy.toFixed(3);
+        s5.value = (keys["ControlLeft"] || keys["ControlRight"]) ? 1.0 : 0.0;
+        s6.value = keys["Space"] ? 1.0 : 0.0;
+
+        document.getElementById("v1").textContent = s1.value;
+        document.getElementById("v2").textContent = s2.value;
+        document.getElementById("v3").textContent = s3.value;
+        document.getElementById("v4").textContent = s4.value;
+        document.getElementById("v5").textContent = s5.value;
+        document.getElementById("v6").textContent = s6.value;
+
+        console.log(`[KEYBOARD] WASD=(${moveX},${moveY}) Mouse=(${mouseX},${mouseY})`);
+
+        queueSend();
+
+        mouseX = 0;
+        mouseY = 0;
+      }
+
+
+      function inputLoop() {
+        if (gamepadIndex === null && document.pointerLockElement === document.body) {
+          pollKeyboardAndMouse();
+        }
+        requestAnimationFrame(inputLoop);
+      }
+
+      inputLoop();
     </script>
   </body>
 </html>
