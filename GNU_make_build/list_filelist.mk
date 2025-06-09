@@ -48,6 +48,7 @@ INCLUDE_PATHS += $(SRC_DIR)/sys_libs/Joystick
 INCLUDE_PATHS += $(SRC_DIR)/tools/wPad
          SRCS += $(SRC_DIR)/tools/wPad/wpad.cpp
          SRCS += $(SRC_DIR)/tools/wPad/webJoystick.cpp
+         SRCS += $(SRC_DIR)/tools/wPad/http_socket.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/drv
 
