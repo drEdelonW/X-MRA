@@ -11,7 +11,7 @@
 #include "terminal_tools.h"   // WARNING/LOG
 
 #define NL  "\r\n"
-#define BUF_SIZE 4096
+#define BUF_SIZE 8192
 #define HTTP_PL(name) name, sizeof(name) - 1
 
 #pragma pack(push, 1)

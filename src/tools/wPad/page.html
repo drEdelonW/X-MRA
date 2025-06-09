@@ -7,46 +7,48 @@ R"HTML(
     <button id='btn'>ADD</button>
     <button id='btnn'>SUB</button>
 
-    <hr>
     <div>
-      <label>Slider 1: <input type="range" id="s1" min="0" max="1" step="0.01" value="0.5"></label>
-      <span id="v1">0.5</span>
-      <br>
-      <label>Slider 2: <input type="range" id="s2" min="0" max="1" step="0.01" value="0.5"></label>
-      <span id="v2">0.5</span>
-      <br>
-      <label>Slider 3: <input type="range" id="s3" min="0" max="1" step="0.01" value="0.5"></label>
-      <span id="v3">0.5</span>
-      <br>
-      <label>Slider 4: <input type="range" id="s4" min="0" max="1" step="0.01" value="0.5"></label>
-      <span id="v4">0.5</span>
-      <br>
-      <label>Slider 5: <input type="range" id="s5" min="0" max="1" step="0.01" value="0.5"></label>
-      <span id="v5">0.5</span>
-      <br>
-      <label>Slider 6: <input type="range" id="s6" min="0" max="1" step="0.01" value="0.5"></label>
-      <span id="v6">0.5</span>
-    </div>
+      <hr>
+      <div>
+        <label>Slider 1: <input type="range" id="s1" min="0" max="1" step="0.01" value="0.5"></label>
+        <span id="v1">0.5</span>
+        <br>
+        <label>Slider 2: <input type="range" id="s2" min="0" max="1" step="0.01" value="0.5"></label>
+        <span id="v2">0.5</span>
+        <br>
+        <label>Slider 3: <input type="range" id="s3" min="0" max="1" step="0.01" value="0.5"></label>
+        <span id="v3">0.5</span>
+        <br>
+        <label>Slider 4: <input type="range" id="s4" min="0" max="1" step="0.01" value="0.5"></label>
+        <span id="v4">0.5</span>
+        <br>
+        <label>Slider 5: <input type="range" id="s5" min="0" max="1" step="0.01" value="0.5"></label>
+        <span id="v5">0.5</span>
+        <br>
+        <label>Slider 6: <input type="range" id="s6" min="0" max="1" step="0.01" value="0.5"></label>
+        <span id="v6">0.5</span>
+      </div>
 
-    <hr>
-    <div>
-      Checkboxes:<br>
-      <label><input type="checkbox" class="cb" id="cb0">0</label>
-      <label><input type="checkbox" class="cb" id="cb1">1</label>
-      <label><input type="checkbox" class="cb" id="cb2">2</label>
-      <label><input type="checkbox" class="cb" id="cb3">3</label>
-      <label><input type="checkbox" class="cb" id="cb4">4</label>
-      <label><input type="checkbox" class="cb" id="cb5">5</label>
-      <label><input type="checkbox" class="cb" id="cb6">6</label>
-      <label><input type="checkbox" class="cb" id="cb7">7</label><br>
-      <label><input type="checkbox" class="cb" id="cb8">8</label>
-      <label><input type="checkbox" class="cb" id="cb9">9</label>
-      <label><input type="checkbox" class="cb" id="cb10">A</label>
-      <label><input type="checkbox" class="cb" id="cb11">B</label>
-      <label><input type="checkbox" class="cb" id="cb12">C</label>
-      <label><input type="checkbox" class="cb" id="cb13">D</label>
-      <label><input type="checkbox" class="cb" id="cb14">E</label>
-      <label><input type="checkbox" class="cb" id="cb15">F</label>
+      <hr>
+      <div>
+        Checkboxes:<br>
+        <label><input type="checkbox" class="cb" id="cb0">0</label>
+        <label><input type="checkbox" class="cb" id="cb1">1</label>
+        <label><input type="checkbox" class="cb" id="cb2">2</label>
+        <label><input type="checkbox" class="cb" id="cb3">3</label>
+        <label><input type="checkbox" class="cb" id="cb4">4</label>
+        <label><input type="checkbox" class="cb" id="cb5">5</label>
+        <label><input type="checkbox" class="cb" id="cb6">6</label>
+        <label><input type="checkbox" class="cb" id="cb7">7</label><br>
+        <label><input type="checkbox" class="cb" id="cb8">8</label>
+        <label><input type="checkbox" class="cb" id="cb9">9</label>
+        <label><input type="checkbox" class="cb" id="cb10">A</label>
+        <label><input type="checkbox" class="cb" id="cb11">B</label>
+        <label><input type="checkbox" class="cb" id="cb12">C</label>
+        <label><input type="checkbox" class="cb" id="cb13">D</label>
+        <label><input type="checkbox" class="cb" id="cb14">E</label>
+        <label><input type="checkbox" class="cb" id="cb15">F</label>
+      </div>
     </div>
 
     <script>
@@ -150,8 +152,8 @@ R"HTML(
         s2.value = (gp.axes[1] + 1) / 2;
         s3.value = (gp.axes[2] + 1) / 2;
         s4.value = (gp.axes[3] + 1) / 2;
-        s5.value = (gp.axes[4] + 1) / 2;
-        s6.value = (gp.axes[5] + 1) / 2;
+        s5.value = gp.buttons[6]?.value || 0;
+        s6.value = gp.buttons[7]?.value || 0;
 
         document.getElementById('v1').textContent = s1.value;
         document.getElementById('v2').textContent = s2.value;
