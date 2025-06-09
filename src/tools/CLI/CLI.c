@@ -4,13 +4,16 @@
 #include "common_tools.h"
 #define HOSTNAME "X-MRA01"
 
-#define CLI_AUTOEXEC_CMD "dpad"
+// add to makefile [DEFINE_LIST += CLI_AUTOEXEC_CMD=\"dpad\"]
+// #define CLI_AUTOEXEC_CMD "dpad"
+
 
 void startCLI(){
 #if DEBUG > 0
     LOG(TEXT_BOLD TEXT_GREEN"CLI started:\n" TEXT_RESET);
 
 #ifdef CLI_AUTOEXEC_CMD
+    LOG("autorun \"%s\"\n", CLI_AUTOEXEC_CMD);
     executeCommand(CLI_AUTOEXEC_CMD);
 #endif
 

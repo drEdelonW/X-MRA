@@ -24,7 +24,8 @@
 			"memory": "cpp",
 			"semaphore": "cpp",
 			"shared_mutex": "cpp",
-			"ratio": "cpp"
+			"ratio": "cpp",
+			"thread": "cpp"
 		}
 	}
 }

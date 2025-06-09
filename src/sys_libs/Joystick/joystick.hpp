@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include "terminal_tools.h"
+#include <thread>
 
+// extern std::thread joystickThread;
 extern volatile bool joy_echo;
 extern volatile bool jQuit;
 

@@ -32,7 +32,7 @@ void handle_signal(int signal) {
         (signal == SIGTERM)) {
         printf("Received SIGINT (Ctrl+C). Exiting...\n"); fflush(stdout);
         // posix_socket.Close();
-        bodyInit();
+        bodyDeinit();
         restoreTerminal(&orig);
         exit(0);
     }

@@ -45,6 +45,10 @@ INCLUDE_PATHS += $(SRC_DIR)/sys_libs/Joystick
          SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick_sys.cpp
          SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick_tools.cpp
 
+INCLUDE_PATHS += $(SRC_DIR)/tools/wPad
+         SRCS += $(SRC_DIR)/tools/wPad/wpad.cpp
+         SRCS += $(SRC_DIR)/tools/wPad/webJoystick.cpp
+
 INCLUDE_PATHS += $(SRC_DIR)/drv
 
 INCLUDE_PATHS += $(SRC_DIR)/drv/PwmArry_PCA9685
@@ -91,6 +95,7 @@ INCLUDE_PATHS += $(SRC_DIR)/X-MRA/ArachnidBody
 DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2
 DEFINE_LIST += DEBUG=2
+DEFINE_LIST += CLI_AUTOEXEC_CMD=\"wpad\"
 
 LDFLAGS += -lSDL2
 # LDFLAGS += -lX11

@@ -1,7 +1,8 @@
 #include "joystick.hpp"
 #include <thread>
 
-std::thread joystickThread(GameControllerHandler);
+// std::thread joystickThread(GameControllerHandler);
+std::thread joystickThread;
 
 int GameControllerInit () {
      if (SDL_Init( SDL_INIT_GAMECONTROLLER) < 0) {
@@ -30,14 +31,20 @@ int GameControllerInit () {
         printf("No game controller found.\n");
 //        SDL_DestroyWindow(window);
         // SDL_Quit();
-        // return 1;
+        return 1;
     }
-    joystickThread.detach();
+    // joystickThread.detach();
+    jQuit = false;
+    joystickThread = std::thread(GameControllerHandler);
     return 0;
 }
 
 
 int GameControllerDeinit () {
     jQuit = true;
+    if (joystickThread.joinable()) {
+        joystickThread.join();
+    }
+    SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
     return 0;
 }
