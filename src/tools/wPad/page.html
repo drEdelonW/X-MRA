@@ -1,0 +1,82 @@
+R"HTML(
+<!DOCTYPE html>
+<html>
+  <head><meta charset='utf-8'><title>Web Control</title></head>
+  <body>
+    <h3>Clicks: <span id='cnt'>-1</span></h3>
+    <button id='btn'>ADD</button>
+    <button id='btnn'>SUB</button>
+
+    <hr>
+    <div>
+      <label>Slider 1: <input type="range" id="s1" min="0" max="1" step="0.01" value="0.5"></label>
+      <span id="v1">0.5</span>
+      <br>
+      <label>Slider 2: <input type="range" id="s2" min="0" max="1" step="0.01" value="0.5"></label>
+      <span id="v2">0.5</span>
+    </div>
+
+    <hr>
+    <div>
+      Checkboxes:<br>
+      <label><input type="checkbox" class="cb" id="cb0">0</label>
+      <label><input type="checkbox" class="cb" id="cb1">1</label>
+      <label><input type="checkbox" class="cb" id="cb2">2</label>
+      <label><input type="checkbox" class="cb" id="cb3">3</label>
+      <label><input type="checkbox" class="cb" id="cb4">4</label>
+      <label><input type="checkbox" class="cb" id="cb5">5</label>
+      <label><input type="checkbox" class="cb" id="cb6">6</label>
+      <label><input type="checkbox" class="cb" id="cb7">7</label>
+    </div>
+
+    <button id="sendRaw">POST RAW</button>
+
+    <script>
+      let cnt = 13;
+      const span = document.getElementById('cnt');
+
+      document.getElementById('btn').onclick = () => {
+        span.textContent = ++cnt;
+        fetch('/ping', {
+          method: 'POST',
+          headers: {'Content-Type': 'text/plain'},
+          body: String(cnt)
+        });
+      };
+
+      document.getElementById('btnn').onclick = () => {
+        span.textContent = --cnt;
+        fetch('/ping', {
+          method: 'POST',
+          headers: {'Content-Type': 'text/plain'},
+          body: String(cnt)
+        });
+      };
+
+      const s1 = document.getElementById('s1');
+      const s2 = document.getElementById('s2');
+      s1.oninput = () => document.getElementById('v1').textContent = s1.value;
+      s2.oninput = () => document.getElementById('v2').textContent = s2.value;
+
+      document.getElementById('sendRaw').onclick = () => {
+        const buf = new ArrayBuffer(9);
+        const dv = new DataView(buf);
+        dv.setFloat32(0, parseFloat(s1.value), true);
+        dv.setFloat32(4, parseFloat(s2.value), true);
+
+        let flags = 0;
+        for (let i = 0; i < 8; ++i)
+          if (document.getElementById('cb' + i).checked)
+            flags |= (1 << i);
+        dv.setUint8(8, flags);
+
+        fetch('/raw', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/octet-stream'},
+          body: buf
+        });
+      };
+    </script>
+  </body>
+</html>
+)HTML"

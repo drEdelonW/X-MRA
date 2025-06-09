@@ -14,29 +14,19 @@
 #define BUF_SIZE 4096
 #define HTTP_PL(name) name, sizeof(name) - 1
 
+#pragma pack(push, 1)
+struct RawPacket {
+    float slider1;
+    float slider2;
+    uint8_t flags;
+};
+#pragma pack(pop)
+
+
 /*───────────────────────── static HTML page */
-static const char kHTML[] = R"(
-<!DOCTYPE html>
-<html>
-  <head><meta charset='utf-8'><title>Counter</title></head>
-  <body>
-    <h3>Clicks: <span id='cnt'>-1</span></h3>
-    <button id='btn'>ADD</button>
-    <script>
-      let cnt = 13;
-      const span = document.getElementById('cnt');
-      document.getElementById('btn').onclick = () => {
-        span.textContent = ++cnt;
-        fetch('/ping', {
-          method: 'POST',
-          headers: {'Content-Type': 'text/plain'},
-          body: String(cnt)
-        });
-      };
-    </script>
-  </body>
-</html>
-)";
+static const char kHTML[] =
+#include "page.html"
+;
 
 
 static const char k404[] = "Not Found\n";
@@ -181,11 +171,48 @@ int sMain() {
                     body = find_body(buf);
                     have = (buf + rcvd) - body;
                 }
+
                 uint32_t val =
                     body ?
                         strtoul(body, nullptr, 10) : 0;
                 WARNING("[PING] value from client = %u\n", val);
+
                 reply(cli_fd, "", 0, "200 OK", "text/plain", keep);
+
+            } else if (!strncmp(buf, "POST /raw", 9)) {
+                size_t need = get_content_length(buf);
+                const char *body = find_body(buf);
+                size_t have =
+                    body ?
+                        (buf + rcvd) - body : 0;
+                while (
+                    (have < need) &&
+                    (need < BUF_SIZE)
+                ) {
+                    ssize_t add = recv(cli_fd, buf + rcvd, sizeof(buf) - 1 - rcvd, 0);
+                    if (add <= 0) {
+                        perror("recv raw body");
+                        break;
+                    }
+                    rcvd += add;
+                    buf[rcvd] = '\0';
+                    body = find_body(buf);
+                    have = (buf + rcvd) - body;
+                }
+
+                if (body &&
+                    (have >= sizeof(RawPacket))
+                ) {
+                    RawPacket pkt;
+                    memcpy(&pkt, body, sizeof(pkt));
+                    WARNING("[RAW] slider1 = %.3f, slider2 = %.3f, flags = 0x%02X\n",
+                        pkt.slider1, pkt.slider2, pkt.flags);
+                } else {
+                    WARNING("[RAW] incomplete or missing payload\n");
+                }
+
+                reply(cli_fd, "", 0, "200 OK", "text/plain", keep);
+
             } else if (!strncmp(buf, "GET /favicon", 12)) {
                 reply(cli_fd, HTTP_PL(k404), "404 Not Found", "text/plain", keep);
             } else if (!strncmp(buf, "GET /", 5)) {
