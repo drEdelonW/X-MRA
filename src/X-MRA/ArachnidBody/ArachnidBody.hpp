@@ -68,6 +68,7 @@ MidleLeft           \ | /            MidleRight
 class ArachnidBody {
 public:
     ArachnidBody(ArachnidLeg* legs, size_t legCount);
+    ~ArachnidBody();
 
     // mask (bitmask) see ArachnidBody scheme for accord bits with actual legs
     void    setPatMask(int pattern, uint8_t mask);

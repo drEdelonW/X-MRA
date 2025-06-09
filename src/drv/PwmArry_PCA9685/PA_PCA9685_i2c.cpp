@@ -27,34 +27,39 @@ void PCA9685::_busInit() {
 
     if (ioctl(_fd, I2C_SLAVE, _i2c_address) < 0) {
         fprintf(stderr,
-                "[ERROR] %s: Failed to set I2C address 0x%02X on bus %d (%s). errno=%d\n",
-                __func__, _i2c_address, _i2c_bus, filename, errno);
-        close(_fd);
-        _fd = -1;
+            "[ERROR] %s: Failed to set I2C address 0x%02X on bus %d (%s). errno=%d\n",
+            __func__, _i2c_address, _i2c_bus, filename, errno
+        );
+        close(_fd); _fd = -1;
         return;
     }
 
     // Try to read MODE1 register (0x00) to check presence
-    uint8_t reg = 0x00;
+    PCA_Register reg = 0x00;
     uint8_t value = 0;
-    if (write(_fd, &reg, 1) != 1 || read(_fd, &value, 1) != 1) {
+    if ((write(_fd, &reg, 1) != 1 ) ||
+        (read(_fd, &value, 1) != 1)
+    ) {
         fprintf(stderr,
-                "[ERROR] %s: Device not responding at I2C address 0x%02X on bus %d. errno=%d (%s)\n",
-                __func__, _i2c_address, _i2c_bus, errno, strerror(errno));
-        close(_fd);
-        _fd = -1;
+            "[ERROR] %s: Device not responding at I2C address 0x%02X on bus %d. errno=%d (%s)\n",
+            __func__, _i2c_address, _i2c_bus, errno, strerror(errno)
+        );
+        close(_fd); _fd = -1;
         return;
     }
 
     // Success
     // fprintf(stderr,
-    //         "[INFO] %s: PCA9685 found at I2C address 0x%02X on bus %d.\n",
-    //         __func__, _i2c_address, _i2c_bus);
+    //     "[INFO] %s: PCA9685 found at I2C address 0x%02X on bus %d.\n",
+    //     __func__, _i2c_address, _i2c_bus
+    // );
     _initted = true;
 }
 
 void PCA9685::_busDeinit() {
-    close(_fd);
+    if (_fd != -1){
+        close(_fd);
+    }
     _initted = false;
 }
 

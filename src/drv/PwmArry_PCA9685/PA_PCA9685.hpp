@@ -6,7 +6,7 @@
 
 class PCA9685 : public ProtoPWMArray{
   public:
-    PCA9685(uint8_t bus, uint8_t address);
+    PCA9685(uint8_t bus, uint8_t address, Hertz freq = (Hertz)300);
    ~PCA9685();
 
     void wakeUp() override;

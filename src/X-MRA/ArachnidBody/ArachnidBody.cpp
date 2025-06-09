@@ -16,3 +16,7 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
             _legs[i].tipPosBodySpace( deg(0.0f), deg(0.0f), deg(0.0f));
     }
 }
+
+ArachnidBody::~ArachnidBody() {
+    DISARM();
+}
