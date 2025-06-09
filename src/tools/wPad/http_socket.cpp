@@ -18,7 +18,11 @@
 struct RawPacket {
     float slider1;
     float slider2;
-    uint8_t flags;
+    float slider3;
+    float slider4;
+    float slider5;
+    float slider6;
+    uint16_t flags;
 };
 #pragma pack(pop)
 
@@ -205,8 +209,15 @@ int sMain() {
                 ) {
                     RawPacket pkt;
                     memcpy(&pkt, body, sizeof(pkt));
-                    WARNING("[RAW] slider1 = %.3f, slider2 = %.3f, flags = 0x%02X\n",
-                        pkt.slider1, pkt.slider2, pkt.flags);
+                    WARNING("[RAW] [%.3f][%.3f][%.3f][%.3f][%.3f][%.3f] [0x%04X]",
+                        pkt.slider1,
+                        pkt.slider2,
+                        pkt.slider3,
+                        pkt.slider4,
+                        pkt.slider5,
+                        pkt.slider6,
+                        pkt.flags
+                    );
                 } else {
                     WARNING("[RAW] incomplete or missing payload\n");
                 }

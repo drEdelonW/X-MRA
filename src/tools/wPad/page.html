@@ -14,6 +14,18 @@ R"HTML(
       <br>
       <label>Slider 2: <input type="range" id="s2" min="0" max="1" step="0.01" value="0.5"></label>
       <span id="v2">0.5</span>
+      <br>
+      <label>Slider 3: <input type="range" id="s3" min="0" max="1" step="0.01" value="0.5"></label>
+      <span id="v3">0.5</span>
+      <br>
+      <label>Slider 4: <input type="range" id="s4" min="0" max="1" step="0.01" value="0.5"></label>
+      <span id="v4">0.5</span>
+      <br>
+      <label>Slider 5: <input type="range" id="s5" min="0" max="1" step="0.01" value="0.5"></label>
+      <span id="v5">0.5</span>
+      <br>
+      <label>Slider 6: <input type="range" id="s6" min="0" max="1" step="0.01" value="0.5"></label>
+      <span id="v6">0.5</span>
     </div>
 
     <hr>
@@ -26,15 +38,20 @@ R"HTML(
       <label><input type="checkbox" class="cb" id="cb4">4</label>
       <label><input type="checkbox" class="cb" id="cb5">5</label>
       <label><input type="checkbox" class="cb" id="cb6">6</label>
-      <label><input type="checkbox" class="cb" id="cb7">7</label>
+      <label><input type="checkbox" class="cb" id="cb7">7</label><br>
+      <label><input type="checkbox" class="cb" id="cb8">8</label>
+      <label><input type="checkbox" class="cb" id="cb9">9</label>
+      <label><input type="checkbox" class="cb" id="cb10">A</label>
+      <label><input type="checkbox" class="cb" id="cb11">B</label>
+      <label><input type="checkbox" class="cb" id="cb12">C</label>
+      <label><input type="checkbox" class="cb" id="cb13">D</label>
+      <label><input type="checkbox" class="cb" id="cb14">E</label>
+      <label><input type="checkbox" class="cb" id="cb15">F</label>
     </div>
-
-    <button id="sendRaw">POST RAW</button>
 
     <script>
       let cnt = 13;
       const span = document.getElementById('cnt');
-
       document.getElementById('btn').onclick = () => {
         span.textContent = ++cnt;
         fetch('/ping', {
@@ -43,7 +60,6 @@ R"HTML(
           body: String(cnt)
         });
       };
-
       document.getElementById('btnn').onclick = () => {
         span.textContent = --cnt;
         fetch('/ping', {
@@ -55,27 +71,59 @@ R"HTML(
 
       const s1 = document.getElementById('s1');
       const s2 = document.getElementById('s2');
-      s1.oninput = () => document.getElementById('v1').textContent = s1.value;
-      s2.oninput = () => document.getElementById('v2').textContent = s2.value;
+      const s3 = document.getElementById('s3');
+      const s4 = document.getElementById('s4');
+      const s5 = document.getElementById('s5');
+      const s6 = document.getElementById('s6');
 
-      document.getElementById('sendRaw').onclick = () => {
-        const buf = new ArrayBuffer(9);
+      function sendRaw() {
+        const buf = new ArrayBuffer(26);
         const dv = new DataView(buf);
-        dv.setFloat32(0, parseFloat(s1.value), true);
-        dv.setFloat32(4, parseFloat(s2.value), true);
-
+        dv.setFloat32(0,  parseFloat(s1.value), true);
+        dv.setFloat32(4,  parseFloat(s2.value), true);
+        dv.setFloat32(8,  parseFloat(s3.value), true);
+        dv.setFloat32(12, parseFloat(s4.value), true);
+        dv.setFloat32(16, parseFloat(s5.value), true);
+        dv.setFloat32(20, parseFloat(s6.value), true);
         let flags = 0;
-        for (let i = 0; i < 8; ++i)
+        for (let i = 0; i < 16; ++i)
           if (document.getElementById('cb' + i).checked)
             flags |= (1 << i);
-        dv.setUint8(8, flags);
-
+        dv.setUint16(24, flags);
         fetch('/raw', {
           method: 'POST',
           headers: {'Content-Type': 'application/octet-stream'},
           body: buf
         });
+      }
+
+      s1.oninput = () => {
+        document.getElementById('v1').textContent = s1.value;
+        sendRaw();
       };
+      s2.oninput = () => {
+        document.getElementById('v2').textContent = s2.value;
+        sendRaw();
+      };
+      s3.oninput = () => {
+        document.getElementById('v3').textContent = s3.value;
+        sendRaw();
+      };
+      s4.oninput = () => {
+        document.getElementById('v4').textContent = s4.value;
+        sendRaw();
+      };
+      s5.oninput = () => {
+        document.getElementById('v5').textContent = s5.value;
+        sendRaw();
+      };
+      s6.oninput = () => {
+        document.getElementById('v6').textContent = s6.value;
+        sendRaw();
+      };
+      document.querySelectorAll('.cb').forEach(cb => {
+        cb.onchange = sendRaw;
+      });
     </script>
   </body>
 </html>
