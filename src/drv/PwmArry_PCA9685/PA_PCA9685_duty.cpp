@@ -15,7 +15,7 @@ void PCA9685::setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phase
     uint16_t off = on + (MAX_VAL * dutyCycle);
     off %= MAX_VAL;
 
-    if (channelInversion_[channel]) {
+    if (_channelInversion[channel]) {
         std::swap(on, off);
     }
 

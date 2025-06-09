@@ -14,6 +14,9 @@ void busD4_() {
     dumpAddr(0x40);
 }
 
+void ver_info_() {
+    ver_info();
+}
 
 Command commands[] = {
     {.name = "i2cScan", .function = busScan_,    .description = "I2C Bus scan Tool"},
@@ -25,7 +28,7 @@ Command commands[] = {
     // {.name = "disarm",  .function = cwDISARM},
     // {.name = "imu",     .function = _IMU_Init,    .description = "init IMU"},
 
-    // {.name = "ver",     .function = ver_info,     .description = "Show curent Version Information"},
+    {.name = "ver",     .function = ver_info_,     .description = "Show curent Version Information"},
     // {.name = "reboot",  .function = reboot,     .description = "Reboot System"},
 
     {.name = "help",    .function = cliHelp,    .description = "command list"},

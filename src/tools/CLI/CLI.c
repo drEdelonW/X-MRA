@@ -4,11 +4,15 @@
 #include "common_tools.h"
 #define HOSTNAME "X-MRA01"
 
+#define CLI_AUTOEXEC_CMD "dpad"
+
 void startCLI(){
 #if DEBUG > 0
     LOG(TEXT_BOLD TEXT_GREEN"CLI started:\n" TEXT_RESET);
 
-    executeCommand("jpad");
+#ifdef CLI_AUTOEXEC_CMD
+    executeCommand(CLI_AUTOEXEC_CMD);
+#endif
 
     for(;;) {
         char cli_buffer[128] = {0};
@@ -25,7 +29,6 @@ void startCLI(){
                 }
             }
         }
-
     }
 #else
     printf("DEBUG unset or less than 1. CLI not starting!\n");

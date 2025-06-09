@@ -1,35 +1,52 @@
-#include "CLI.h"
-#include "dpad.h"
-
-#include <csignal>
-
 #include "common_tools.h"
 
-#include "robot_spec.hpp"
+#include "CLI.h"
+#include "dpad.h"
+// #include "robot_spec.hpp"
+
+#include <csignal>
+#include <cstdlib>
+
+static inline void bodyInit() {
+#ifdef PCA_Defined
+    PWMarray[0].wakeUp();
+    PWMarray[1].wakeUp();
+    PWMarray[0].setFreq_Hz((Hertz)300);
+    PWMarray[1].setFreq_Hz((Hertz)300);
+#endif
+}
+
+static inline void bodyDeinit() {
+#ifdef MAX_LEGS
+    XMRA.DISARM();
+#endif
+#ifdef PCA_Defined
+    PWMarray[0].sleepMode();
+    PWMarray[1].sleepMode();
+#endif
+}
 
 
 void handle_signal(int signal) {
-    if ((signal == SIGINT) &&
+    if ((signal == SIGINT) ||
         (signal == SIGTERM)) {
         printf("Received SIGINT (Ctrl+C). Exiting...\n"); fflush(stdout);
         // posix_socket.Close();
-        XMRA.DISARM();
-        PWMarray[0].sleepMode();
-        PWMarray[1].sleepMode();
+        bodyInit();
         restoreTerminal(&orig);
         exit(0);
     }
 }
 
 int main(int argc, char *argv[]) {
-    if (signal(SIGINT, handle_signal) == SIG_ERR ||
-        signal(SIGTERM, handle_signal) == SIG_ERR) {
+    if (signal(SIGINT, handle_signal) == SIG_ERR &&
+        signal(SIGTERM, handle_signal) == SIG_ERR ) {
         perror("Error registering signal handler");
         return 1;
     }
     tcgetattr(STDIN_FILENO, &orig);
-#if 0
     ver_info();
+#if 0
     printf("Arg count is %d\n", argc);
     for(int i = 0; i < argc; ++i) {
         printf("Arg[%d] is \"%s\"\n", i, argv[i]);
@@ -47,16 +64,9 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
-    PWMarray[0].wakeUp();
-    PWMarray[1].wakeUp();
-    PWMarray[0].setFreq_Hz((Hertz)300);
-    PWMarray[1].setFreq_Hz((Hertz)300);
+    bodyInit();
 
-    startCLI();
-    // busScan();
-    // dumpAddr(0x40);
-    // drawWindow();
-    // testLegs();
+    startCLI();  // main command processor
 
     return 0;
 }

@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <unistd.h>
 #include "robot_spec.hpp"
 
 #define CFG_1   TowerPro_MG996R_cfg
@@ -9,6 +7,7 @@ PCA9685 PWMarray[] = {
     {1, 0x41}
 };
 
+#include "PS_MG996R.hpp"
 MG996R Servo[] = {
     //FrontLeft
     { PWMarray[0].PWM[15], CFG_1, CW }, //Tibia
@@ -41,6 +40,8 @@ MG996R Servo[] = {
     { PWMarray[1].PWM[13],  CFG_1, CCW}, //Coxa
 };
 
+
+#include "pwmServoJoint.hpp"
 ServoJoint FrontLeft[] = {
     {Servo[0],  deg(-105), deg(105), deg(0)}, //Tibia
     {Servo[1],  deg(-105), deg(105), deg(35)},//Femur
@@ -78,14 +79,13 @@ ServoJoint BackRight[] = {
 };
 
 #define nameLeg(v)  v[2], v[1], v[0]
-
 ArachnidLeg leg[] = {
-    {nameLeg(FrontLeft),  (Millimeters)( 84.36f), deg(-27.63f)},
-    {nameLeg(FrontRight), (Millimeters)( 84.36f), deg( 27.63f)},
-    {nameLeg(MidleLeft),  (Millimeters)( 39.25f), deg(-90.0f)},
-    {nameLeg(MidleRight), (Millimeters)( 39.25f), deg( 90.0f)},
-    {nameLeg(BackLeft),   (Millimeters)( 84.36f), deg( 27.63f + 180.0f)},
-    {nameLeg(BackRight),  (Millimeters)( 84.36f), deg(-27.63f + 180.0f)},
+    {nameLeg(FrontLeft),  mm( 84.36f), deg(-27.63f)},
+    {nameLeg(FrontRight), mm( 84.36f), deg( 27.63f)},
+    {nameLeg(MidleLeft),  mm( 39.25f), deg(-90.0f)},
+    {nameLeg(MidleRight), mm( 39.25f), deg( 90.0f)},
+    {nameLeg(BackLeft),   mm( 84.36f), deg( 27.63f + 180.0f)},
+    {nameLeg(BackRight),  mm( 84.36f), deg(-27.63f + 180.0f)},
 };
 
 ArachnidBody XMRA(leg, sizeof(leg)/sizeof(leg[0]));

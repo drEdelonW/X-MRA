@@ -25,8 +25,16 @@
 
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 inline void ver_info() {
     printf("Branch: %s\n" TEXT_RESET, TEXT_BOLD GIT_BRANCH);
     printf("Commit: %s\n" TEXT_RESET, TEXT_BOLD GIT_COMMIT_HASH);
     printf("Compile date: %s  %s\n" TEXT_RESET, TEXT_BOLD __DATE__, __TIME__);
 }
+
+#ifdef __cplusplus
+}
+#endif

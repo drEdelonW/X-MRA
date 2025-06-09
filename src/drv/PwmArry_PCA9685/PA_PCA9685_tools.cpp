@@ -11,7 +11,7 @@ void PCA9685::printStatus() {
     float oscFreq = 25000000.0; // Осцилляторная частота в Гц
     float pwmFreq = oscFreq / (4096.0 * (prescale + 1)); // Расчет частоты ШИМ
 
-    printf("Extended state of PCA9685[%X]:\n",i2c_address);
+    printf("Extended state of PCA9685[%X]:\n",_i2c_address);
     printf("MODE1: " BYTE_TO_BINARY_PATTERN " (sleep mode: %s)\n",
            BYTE_TO_BINARY(mode1),
            (mode1 & 0x10) ? "ON" : "OFF");

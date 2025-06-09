@@ -63,12 +63,12 @@ void _1()  { mStep =  0.1f; }
 void _2()  { mStep =  1.0f; }
 void _3()  { mStep = 10.0f; }
 
-const Millimeters coxaLength  = (Millimeters) 27.0f;
-const Millimeters femurLength = (Millimeters) 85.1f;
-const Millimeters tibiaLength = (Millimeters)144.23f;
+const Millimeters coxaLength  = mm( 27.0f);
+const Millimeters femurLength = mm( 85.1f);
+const Millimeters tibiaLength = mm(144.23f);
 
-const Millimeters tibiaX      = (Millimeters) 27.33f;
-const Millimeters tibiaZ      = (Millimeters)141.6f;
+const Millimeters tibiaX      = mm( 27.33f);
+const Millimeters tibiaZ      = mm(141.6f);
 
 // #define DSTx    (coxaLength + femurLength + tibiaX)
 // #define DSTy    (0.0f)

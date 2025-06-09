@@ -1,18 +1,17 @@
 #pragma once
-#include "JointBase.hpp"
+#include "Matrix4x4.hpp" // #include "Vector3d.hpp"
 #include "PhysTypes.hpp"
-#include "Vector3d.hpp"
-#include "Matrix4x4.hpp"
+#include "JointBase.hpp"
 
 /*
-      ▲ Z (up)
+      ^ Z (up)
       │
-      │    ▲ X (forward)
+      │    ^ X (forward)
       │   ╱
       │  ╱
       │ ╱
       │╱
-      ◉─────────► Y (right)
+      *─────────> Y (right)
 */
 
 /*  ArachnidLeg:
@@ -72,8 +71,8 @@ private:
    JointBase& femurJn_;
    JointBase& tibiaJn_;
 
-   const Millimeters coxaLength_  = (Millimeters) 27.0f;    // Length of coxa segment
-   const Millimeters femurLength_ = (Millimeters) 85.1f;    // Length of femur segment
-   const Millimeters tibiaLength_ = (Millimeters)144.23f;   // Length of tibia segment
+   const Millimeters coxaLength_  = mm( 27.0f );   // Length of coxa segment
+   const Millimeters femurLength_ = mm( 85.1f );   // Length of femur segment
+   const Millimeters tibiaLength_ = mm(144.23f);   // Length of tibia segment
    Matrix4x4 _bodyToLeg, _legToBody;
 };

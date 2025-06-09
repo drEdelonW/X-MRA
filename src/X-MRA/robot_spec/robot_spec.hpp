@@ -1,13 +1,13 @@
 #pragma once
 
-// #include "ArachnidLeg.hpp"
-#include "ArachnidBody.hpp"
-
 #include "PA_PCA9685.hpp"
-#include "PS_MG996R.hpp"
-#include "pwmServoJoint.hpp"
-
 extern PCA9685 PWMarray[];
+
+// #include "PS_MG996R.hpp"
 // extern MG996R Servo[];
+
+// #include "ArachnidLeg.hpp"
 // extern ArachnidLeg leg[];
+
+#include "ArachnidBody.hpp"
 extern ArachnidBody XMRA;

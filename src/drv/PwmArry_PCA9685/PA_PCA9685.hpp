@@ -1,10 +1,11 @@
 #pragma once
 #include "PWMChannel.hpp"
+#define  PCA_Defined
 
 #define  PCA_Register uint8_t
 
 class PCA9685 : public ProtoPWMArray{
-public:
+  public:
     PCA9685(uint8_t bus, uint8_t address);
    ~PCA9685();
 
@@ -29,11 +30,12 @@ public:
 
     void printStatus();
 
-    private:
-    int         fd;
-    uint8_t     i2c_bus;
-    uint8_t     i2c_address;
-    bool        channelInversion_[16];
+  private:
+    bool        _initted;
+    int         _fd;
+    uint8_t     _i2c_bus;
+    uint8_t     _i2c_address;
+    bool        _channelInversion[16];
 
     Hertz       _freq;
     Hertz       _readFreq_Hz();
