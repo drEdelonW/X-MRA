@@ -76,7 +76,19 @@ R"HTML(
       const s5 = document.getElementById('s5');
       const s6 = document.getElementById('s6');
 
-      function sendRaw() {
+      let inFlight = false;
+      let lastSendTime = 0;
+      const MIN_SEND_INTERVAL_MS = 16;
+
+      function queueSend() {
+        const now = performance.now();
+        if (inFlight || (now - lastSendTime) < MIN_SEND_INTERVAL_MS) {
+          return;
+        }
+
+        inFlight = true;
+        lastSendTime = now;
+
         const buf = new ArrayBuffer(26);
         const dv = new DataView(buf);
         dv.setFloat32(0,  parseFloat(s1.value), true);
@@ -85,45 +97,93 @@ R"HTML(
         dv.setFloat32(12, parseFloat(s4.value), true);
         dv.setFloat32(16, parseFloat(s5.value), true);
         dv.setFloat32(20, parseFloat(s6.value), true);
+
         let flags = 0;
         for (let i = 0; i < 16; ++i)
           if (document.getElementById('cb' + i).checked)
             flags |= (1 << i);
         dv.setUint16(24, flags);
+
         fetch('/raw', {
           method: 'POST',
-          headers: {'Content-Type': 'application/octet-stream'},
+          headers: { 'Content-Type': 'application/octet-stream' },
           body: buf
+        }).finally(() => {
+          inFlight = false;
         });
       }
-
       s1.oninput = () => {
         document.getElementById('v1').textContent = s1.value;
-        sendRaw();
+        queueSend();
       };
       s2.oninput = () => {
         document.getElementById('v2').textContent = s2.value;
-        sendRaw();
+        queueSend();
       };
       s3.oninput = () => {
         document.getElementById('v3').textContent = s3.value;
-        sendRaw();
+        queueSend();
       };
       s4.oninput = () => {
         document.getElementById('v4').textContent = s4.value;
-        sendRaw();
+        queueSend();
       };
       s5.oninput = () => {
         document.getElementById('v5').textContent = s5.value;
-        sendRaw();
+        queueSend();
       };
       s6.oninput = () => {
         document.getElementById('v6').textContent = s6.value;
-        sendRaw();
+        queueSend();
       };
       document.querySelectorAll('.cb').forEach(cb => {
-        cb.onchange = sendRaw;
+        cb.onchange = queueSend;
       });
+      let gamepadIndex = null;
+
+      function pollGamepad() {
+        const gamepads = navigator.getGamepads();
+        const gp = gamepads[gamepadIndex];
+        if (!gp) return;
+
+        s1.value = (gp.axes[0] + 1) / 2;
+        s2.value = (gp.axes[1] + 1) / 2;
+        s3.value = (gp.axes[2] + 1) / 2;
+        s4.value = (gp.axes[3] + 1) / 2;
+        s5.value = (gp.axes[4] + 1) / 2;
+        s6.value = (gp.axes[5] + 1) / 2;
+
+        document.getElementById('v1').textContent = s1.value;
+        document.getElementById('v2').textContent = s2.value;
+        document.getElementById('v3').textContent = s3.value;
+        document.getElementById('v4').textContent = s4.value;
+        document.getElementById('v5').textContent = s5.value;
+        document.getElementById('v6').textContent = s6.value;
+
+        for (let i = 0; i < 16; ++i) {
+          const cb = document.getElementById('cb' + i);
+          if (cb) cb.checked = gp.buttons[i]?.pressed;
+        }
+
+        queueSend();
+      }
+
+      function gamepadLoop() {
+        if (gamepadIndex !== null) pollGamepad();
+        requestAnimationFrame(gamepadLoop);
+      }
+
+      window.addEventListener("gamepadconnected", (e) => {
+        gamepadIndex = e.gamepad.index;
+        console.log("Gamepad connected:", e.gamepad);
+      });
+
+      window.addEventListener("gamepaddisconnected", () => {
+        gamepadIndex = null;
+        console.log("Gamepad disconnected");
+      });
+
+      requestAnimationFrame(gamepadLoop);
     </script>
   </body>
 </html>
