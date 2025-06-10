@@ -38,6 +38,47 @@ R"HTML(
       .checkboxes label {
         width: 3.5rem;
       }
+
+      #touch-controls {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      .touch-stick {
+        position: absolute;
+        bottom: 15%;
+        width: 25vw;
+        height: 25vw;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: auto;
+        touch-action: none;
+      }
+
+      #touch-left { left: 5%; }
+      #touch-right { right: 5%; }
+
+      .touch-btn {
+        position: absolute;
+        bottom: 10%;
+        width: 10vw;
+        height: 10vw;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid white;
+        font-size: 1.5em;
+        color: white;
+        pointer-events: auto;
+        touch-action: manipulation;
+      }
+
+      #touch-A { right: 20%; }
+      #touch-B { right: 8%; }
+
     </style>
 
   </head>
@@ -319,6 +360,124 @@ R"HTML(
       }
 
       inputLoop();
+
+      function isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      }
+
+      function enableTouchUI() {
+        if (document.fullscreenEnabled && !document.fullscreenElement) {
+          document.body.requestFullscreen().catch(err => {
+            console.warn("Fullscreen failed:", err);
+          });
+        }
+
+        const overlay = document.createElement("div");
+        overlay.id = "touch-controls";
+        overlay.innerHTML = `
+          <div id="touch-left" class="touch-stick"></div>
+          <div id="touch-right" class="touch-stick"></div>
+          <button id="touch-A" class="touch-btn">A</button>
+          <button id="touch-B" class="touch-btn">B</button>
+        `;
+        document.body.appendChild(overlay);
+        setupTouchControls();
+        startNoSleep();
+      }
+
+      window.addEventListener("load", () => {
+        if (isTouchDevice() && !navigator.getGamepads()[0]) {
+          enableTouchUI();
+        }
+      });
+
+
+      function setupTouchControls() {
+        let lx = 0, ly = 0, rx = 0, ry = 0;
+        let aBtn = false, bBtn = false;
+
+        function updateTouchState() {
+          s1.value = ((lx / 50) + 1) / 2;
+          s2.value = ((ly / 50) + 1) / 2;
+          s3.value = ((rx / 50) + 1) / 2;
+          s4.value = ((ry / 50) + 1) / 2;
+          s5.value = aBtn ? 1.0 : 0.0;
+          s6.value = bBtn ? 1.0 : 0.0;
+
+          v1.textContent = s1.value;
+          v2.textContent = s2.value;
+          v3.textContent = s3.value;
+          v4.textContent = s4.value;
+          v5.textContent = s5.value;
+          v6.textContent = s6.value;
+
+          queueSend();
+        }
+
+        function stickListener(el, callback) {
+          let startX = 0, startY = 0;
+          el.addEventListener("touchstart", e => {
+            const t = e.touches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+            e.preventDefault();
+          });
+          el.addEventListener("touchmove", e => {
+            const t = e.touches[0];
+            const dx = t.clientX - startX;
+            const dy = t.clientY - startY;
+            callback(dx, dy);
+            e.preventDefault();
+          });
+          el.addEventListener("touchend", () => {
+            callback(0, 0);
+          });
+        }
+
+        stickListener(document.getElementById("touch-left"), (x, y) => {
+          lx = Math.max(-50, Math.min(50, x));
+          ly = Math.max(-50, Math.min(50, y));
+          updateTouchState();
+        });
+
+        stickListener(document.getElementById("touch-right"), (x, y) => {
+          rx = Math.max(-50, Math.min(50, x));
+          ry = Math.max(-50, Math.min(50, y));
+          updateTouchState();
+        });
+
+        document.getElementById("touch-A").addEventListener("touchstart", () => { aBtn = true; updateTouchState(); });
+        document.getElementById("touch-A").addEventListener("touchend", () => { aBtn = false; updateTouchState(); });
+        document.getElementById("touch-B").addEventListener("touchstart", () => { bBtn = true; updateTouchState(); });
+        document.getElementById("touch-B").addEventListener("touchend", () => { bBtn = false; updateTouchState(); });
+      }
+
+      function startNoSleep() {
+        let wakeLock = null;
+
+        async function requestWakeLock() {
+          try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            wakeLock.addEventListener('release', () => {
+              console.log('Screen Wake Lock released');
+            });
+          } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+          }
+        }
+
+        if ('wakeLock' in navigator) {
+          requestWakeLock();
+          document.addEventListener("visibilitychange", () => {
+            if (wakeLock !== null && document.visibilityState === 'visible') {
+              requestWakeLock();
+            }
+          });
+        } else {
+          console.warn("Wake Lock API not supported.");
+        }
+      }
+
     </script>
   </body>
 </html>
