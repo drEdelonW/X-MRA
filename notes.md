@@ -1,5 +1,7 @@
 # X-MRA как "eXperimental Modular Robotic Arachnid"
 
+http://10.0.3.12:8080
+
 # SSH key auth
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519_gitLab.txt

@@ -10,34 +10,34 @@ PCA9685 PWMarray[] = {
 #include "PS_MG996R.hpp"
 MG996R Servo[] = {
     //FrontLeft
-    { PWMarray[0].PWM[15], CFG_1, CW }, //Tibia
+    { PWMarray[0].PWM[13], CFG_1, CW }, //Tibia
     { PWMarray[0].PWM[14], CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[13], CFG_1, CCW}, //Coxa
+    { PWMarray[0].PWM[15], CFG_1, CCW}, //Coxa
 
     //FrontRight
-    { PWMarray[0].PWM[0],  CFG_1, CCW}, //Tibia
-    { PWMarray[0].PWM[1],  CFG_1, CCW}, //Femur
-    { PWMarray[0].PWM[2],  CFG_1, CCW}, //Coxa
-
-    //MidleLeft
-    { PWMarray[0].PWM[11], CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[10], CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[9],  CFG_1, CCW}, //Coxa
-
-    //MidleRight
-    { PWMarray[0].PWM[4],  CFG_1, CCW },//Tibia
-    { PWMarray[0].PWM[5],  CFG_1, CCW },//Femur
-    { PWMarray[0].PWM[6],  CFG_1, CCW },//Coxa
-
-    //BackLeft
-    { PWMarray[1].PWM[0],  CFG_1, CW }, //Tibia
-    { PWMarray[1].PWM[1],  CFG_1, CW }, //Femur
+    { PWMarray[1].PWM[0],  CFG_1, CCW}, //Tibia
+    { PWMarray[1].PWM[1],  CFG_1, CCW}, //Femur
     { PWMarray[1].PWM[2],  CFG_1, CCW}, //Coxa
 
+    //MidleLeft
+    { PWMarray[0].PWM[5], CFG_1, CW }, //Tibia
+    { PWMarray[0].PWM[6], CFG_1, CW }, //Femur
+    { PWMarray[0].PWM[7],  CFG_1, CCW}, //Coxa
+
+    //MidleRight
+    { PWMarray[1].PWM[8],  CFG_1, CCW },//Tibia
+    { PWMarray[1].PWM[9],  CFG_1, CCW },//Femur
+    { PWMarray[1].PWM[10],  CFG_1, CCW },//Coxa
+
+    //BackLeft
+    { PWMarray[0].PWM[0],  CFG_1, CW }, //Tibia
+    { PWMarray[0].PWM[1],  CFG_1, CW }, //Femur
+    { PWMarray[0].PWM[2],  CFG_1, CCW}, //Coxa
+
     //BackRight
-    { PWMarray[1].PWM[15],  CFG_1, CCW}, //Tibia
+    { PWMarray[1].PWM[13],  CFG_1, CCW}, //Tibia
     { PWMarray[1].PWM[14],  CFG_1, CCW}, //Femur
-    { PWMarray[1].PWM[13],  CFG_1, CCW}, //Coxa
+    { PWMarray[1].PWM[15],  CFG_1, CCW}, //Coxa
 };
 
 
