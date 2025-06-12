@@ -72,6 +72,7 @@ INCLUDE_PATHS += $(SRC_DIR)/drv/Servos/PwmServo_MG996R
 
 INCLUDE_PATHS += $(SRC_DIR)/X-MRA/robot_spec
          SRCS += $(SRC_DIR)/X-MRA/robot_spec/robot_spec.cpp
+         SRCS += $(SRC_DIR)/X-MRA/robot_spec/robot_spec_cwrap.cpp
          SRCS += $(SRC_DIR)/X-MRA/CLI_cmdList.c
         #  SRCS += $(SRC_DIR)/X-MRA/dpad_cmds_12servos.c
          SRCS += $(SRC_DIR)/X-MRA/dpad_cmds_leg.c
@@ -97,7 +98,7 @@ DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2
 DEFINE_LIST += DEBUG=2
 # DEFINE_LIST += CLI_AUTOEXEC_CMD=\"jpad\"
-DEFINE_LIST += CLI_AUTOEXEC_CMD=\"wpad\"
+# DEFINE_LIST += CLI_AUTOEXEC_CMD=\"wpad\"
 
 LDFLAGS += -lSDL2
 # LDFLAGS += -lX11

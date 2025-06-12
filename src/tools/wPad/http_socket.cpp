@@ -16,12 +16,7 @@
 
 #pragma pack(push, 1)
 struct RawPacket {
-    float slider1;
-    float slider2;
-    float slider3;
-    float slider4;
-    float slider5;
-    float slider6;
+    float slider[6];
     uint16_t flags;
 };
 #pragma pack(pop)
@@ -201,6 +196,7 @@ int sMain() {
                     rcvd += add;
                     buf[rcvd] = '\0';
                     body = find_body(buf);
+                    printf("head size %d\n", (int)(body - buf));
                     have = (buf + rcvd) - body;
                 }
 
@@ -210,12 +206,8 @@ int sMain() {
                     RawPacket pkt;
                     memcpy(&pkt, body, sizeof(pkt));
                     WARNING("[RAW] [%.3f][%.3f][%.3f][%.3f][%.3f][%.3f] [0x%04X]",
-                        pkt.slider1,
-                        pkt.slider2,
-                        pkt.slider3,
-                        pkt.slider4,
-                        pkt.slider5,
-                        pkt.slider6,
+                        pkt.slider[0], pkt.slider[1], pkt.slider[2],
+                        pkt.slider[3], pkt.slider[4], pkt.slider[5],
                         pkt.flags
                     );
                 } else {

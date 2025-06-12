@@ -1,6 +1,7 @@
 # X-MRA как "eXperimental Modular Robotic Arachnid"
 
-http://10.0.3.12:8080
+    http://10.0.3.12:8080
+    http://10.0.3.58
 
 # SSH key auth
     eval "$(ssh-agent -s)"

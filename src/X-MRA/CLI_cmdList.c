@@ -7,6 +7,8 @@
 #include "dpad.h"
 #include "jpad.hpp"
 #include "wpad.hpp"
+#include "robot_spec_cwrap.hpp"
+
 
 void busScan_() {
     busScan();
@@ -14,6 +16,11 @@ void busScan_() {
 
 void busD4_() {
     dumpAddr(0x40);
+}
+void ARM_() {
+    xarm();
+}void DISARM_() {
+    xdisarm();
 }
 
 void ver_info_() {
@@ -30,8 +37,8 @@ Command commands[] = {
     {.name = "jpad",    .function = jpad,       .description = "GamePad control Tool"},
     {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
 
-    // {.name = "arm",     .function = cwARM},
-    // {.name = "disarm",  .function = cwDISARM},
+    {.name = "arm",     .function = ARM_},
+    {.name = "disarm",  .function = DISARM_},
     // {.name = "imu",     .function = _IMU_Init,    .description = "init IMU"},
 
     {.name = "ver",     .function = ver_info_,  .description = "Show curent Version Information"},
