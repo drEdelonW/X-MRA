@@ -1,10 +1,10 @@
 #include <stdint.h>
 #include <stdlib.h>     // strtoul
-#include <string.h>     // strcasestr
-#include <unistd.h>     // geteuid
+#include <string.h>     // strcasestr, strstr
+#include <unistd.h>     // geteuid, close, ssize_t
 
-#include "socket_ctrl.hpp"
-#include "terminal_tools.h"   // WARNING/LOG
+#include "socket_ctrl.hpp"   // init_server(), waitConnection(), send_all()
+#include "terminal_tools.h"   // WARNING/LOG/ERROR macros
 
 #define NL  "\r\n"
 #define HEAD_END  NL NL
