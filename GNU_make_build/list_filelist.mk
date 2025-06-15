@@ -23,6 +23,7 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/Math
          SRCS += $(SRC_DIR)/tools/Math/Mach_Angle.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/tools/Phys
+INCLUDE_PATHS += $(SRC_DIR)/tools/shellProcGuard
 
 SRCS += $(SRC_DIR)/main.cpp
 
@@ -100,8 +101,8 @@ DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2
 DEFINE_LIST += DEBUG=2
 # DEFINE_LIST += CLI_AUTOEXEC_CMD=\"jpad\"
-# DEFINE_LIST += CLI_AUTOEXEC_CMD=\"wpad\"
-DEFINE_LIST += CLI_AUTOEXEC_CMD=\"test\"
+DEFINE_LIST += CLI_AUTOEXEC_CMD=\"wpad\"
+# DEFINE_LIST += CLI_AUTOEXEC_CMD=\"test\"
 
 LDFLAGS += -lSDL2
 # LDFLAGS += -lX11
