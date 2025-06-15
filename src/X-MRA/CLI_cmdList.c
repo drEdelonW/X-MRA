@@ -19,8 +19,14 @@ void busD4_() {
 }
 void ARM_() {
     xarm();
-}void DISARM_() {
+}
+void DISARM_() {
     xdisarm();
+}
+
+void test();
+void test_() {
+    test();
 }
 
 void ver_info_() {
@@ -39,6 +45,7 @@ Command commands[] = {
 
     {.name = "arm",     .function = ARM_},
     {.name = "disarm",  .function = DISARM_},
+    {.name = "test",    .function = test_},
     // {.name = "imu",     .function = _IMU_Init,    .description = "init IMU"},
 
     {.name = "ver",     .function = ver_info_,  .description = "Show curent Version Information"},
