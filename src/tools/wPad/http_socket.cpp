@@ -1,17 +1,15 @@
-#include <arpa/inet.h>
-#include <errno.h>
-#include <netinet/in.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <unistd.h>
+#include <stdlib.h>     // strtoul
+#include <string.h>     // strcasestr
+#include <unistd.h>     // geteuid
 
+#include "socket_ctrl.hpp"
 #include "terminal_tools.h"   // WARNING/LOG
 
 #define NL  "\r\n"
-#define BUF_SIZE 81920
+#define HEAD_END  NL NL
+// #define BUF_SIZE 81920
+#define BUF_SIZE 4096
 #define HTTP_PL(name) name, sizeof(name) - 1
 
 #pragma pack(push, 1)
@@ -27,56 +25,14 @@ static const char kHTML[] =
 #include "page.html"
 ;
 
-
 static const char k404[] = "Not Found\n";
 
-/*───────────────────────── send_all */
-static int send_all(int fd, const char *buf, size_t len) {
-    while (len) {
-        ssize_t sent = send(fd, buf, len, 0);
-        if (sent <= 0) {
-            perror("send"); return -1;
-        }
-        buf += sent;
-        len -= sent;
-    }
-    return 0;
-}
-
-/*───────────────────────── init listener */
-static int init_server(uint16_t port) {
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock < 0) {
-        perror("socket");
-        return -1;
-    }
-    int opt = 1;
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
-    sockaddr_in sa = {
-        .sin_family = AF_INET,
-        .sin_port   = htons(port),
-        .sin_addr   = {
-            .s_addr = INADDR_ANY
-        }
-    };
-    if (bind(sock, (sockaddr *)&sa, sizeof(sa))) {
-        perror("bind"); close(sock);
-        return -1;
-    }
-    if (listen(sock, 8)) {
-        perror("listen"); close(sock);
-        return -1;
-    }
-
-    WARNING("Listening on %d...\n", port);
-    return sock;
-}
-
 /*───────────────────────── compose & send response */
-static int reply(
-    int fd, const char *body, size_t blen,
-    const char *status, const char *ctype, bool keep
+int reply(int fd,
+    const char *body, size_t blen,
+    const char *status,
+    const char *ctype,
+    bool keep
 ) {
     char head[256];
     int hd_len = snprintf(head, sizeof(head),
@@ -105,8 +61,8 @@ static size_t get_content_length(const char *req) {
             strtoul(h + 15, nullptr, 10) : 0;
 }
 
-static const char *find_body(const char *req) {
-    const char *p = strstr(req, NL NL);
+static const char *find_payLoad(const char *req) {
+    const char *p = strstr(req, HEAD_END);
     return
         p ?
             p + 4 : nullptr;
@@ -114,34 +70,29 @@ static const char *find_body(const char *req) {
 
 /*───────────────────────── main loop */
 int sMain() {
-    uint16_t port =
-        (geteuid() == 0) ?
-            80 : 8080;
-    int srv_fd = init_server(port);
-    if (srv_fd < 0)
+    int srv_fd = -1;
+    if (
+            (srv_fd = init_server(
+                (geteuid() == 0) ? // is user root?
+                    80 : 8080
+            )) < 0
+        )
         return 1;
 
-    char buf[BUF_SIZE];
+        char buf[BUF_SIZE];
+        bool web_run = true;
 
-    for (;;) {
-        sockaddr_in cli{};
-        socklen_t l = sizeof(cli);
-        int cli_fd = accept(srv_fd, (sockaddr *)&cli, &l);
-        if (cli_fd < 0) {
-            perror("accept");
-            continue;
-        }
-        WARNING(
-            "Client %s:%d connected\n",
-            inet_ntoa(cli.sin_addr),
-            ntohs(cli.sin_port)
-        );
-
+        while (web_run) {
+            int cli_fd = -1;
+            if ( (cli_fd = waitConnection(srv_fd)) < 0 ) {
+                continue;
+            }
         bool keep = true;
+
         while (keep) {
             ssize_t rcvd = recv(cli_fd, buf, sizeof(buf) - 1, 0);
             if (rcvd <= 0) {
-                perror("recv");
+                ERROR("recv");
                 break;
             }
             buf[rcvd] = '\0';
@@ -152,7 +103,7 @@ int sMain() {
             /* -------- route -------- */
             if (!strncmp(buf, "POST /ping", 10)) {
                 size_t need = get_content_length(buf);
-                const char *body = find_body(buf);
+                const char *body = find_payLoad(buf);
                 size_t have =
                     body ?
                         ((buf + rcvd) - body) : 0;
@@ -162,12 +113,12 @@ int sMain() {
                 ) {
                     ssize_t add = recv(cli_fd, buf + rcvd, sizeof(buf) - 1 - rcvd, 0);
                     if (add <= 0) {
-                        perror("recv body");
+                        ERROR("recv body");
                         break;
                     }
                     rcvd += add;
                     buf[rcvd] = '\0';
-                    body = find_body(buf);
+                    body = find_payLoad(buf);
                     have = (buf + rcvd) - body;
                 }
 
@@ -180,7 +131,7 @@ int sMain() {
 
             } else if (!strncmp(buf, "POST /raw", 9)) {
                 size_t need = get_content_length(buf);
-                const char *body = find_body(buf);
+                const char *body = find_payLoad(buf);
                 size_t have =
                     body ?
                         (buf + rcvd) - body : 0;
@@ -190,12 +141,12 @@ int sMain() {
                 ) {
                     ssize_t add = recv(cli_fd, buf + rcvd, sizeof(buf) - 1 - rcvd, 0);
                     if (add <= 0) {
-                        perror("recv raw body");
+                        ERROR("recv raw body");
                         break;
                     }
                     rcvd += add;
                     buf[rcvd] = '\0';
-                    body = find_body(buf);
+                    body = find_payLoad(buf);
                     printf("head size %d\n", (int)(body - buf));
                     have = (buf + rcvd) - body;
                 }
