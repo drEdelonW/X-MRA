@@ -5,8 +5,7 @@
 #include "robot_spec.hpp"
 
 void jpad() {
-    GCInit();
-    bool _run = true;
+    bool _run = GCInit();;
 
     bool triAct = false;
     float scaleStep = 50.0f;

@@ -325,7 +325,7 @@ R"HTML(
         const axisLx = (moveX * scale + 1) / 2;
         const axisLy = (moveY * scale + 1) / 2;
 
-        const mouseScale = 0.002;
+        const mouseScale = 0.02;
         const axisRx = Math.max(0, Math.min(1, (mouseX * mouseScale + 1) / 2));
         const axisRy = Math.max(0, Math.min(1, (mouseY * mouseScale + 1) / 2));
 
@@ -397,10 +397,11 @@ R"HTML(
         let aBtn = false, bBtn = false;
 
         function updateTouchState() {
-          s1.value = ((lx / 50) + 1) / 2;
-          s2.value = ((ly / 50) + 1) / 2;
-          s3.value = ((rx / 50) + 1) / 2;
-          s4.value = ((ry / 50) + 1) / 2;
+          let scaleSt = 300;
+          s1.value = ((lx / scaleSt) + 1) / 2;
+          s2.value = ((ly / scaleSt) + 1) / 2;
+          s3.value = ((rx / scaleSt) + 1) / 2;
+          s4.value = ((ry / scaleSt) + 1) / 2;
           s5.value = aBtn ? 1.0 : 0.0;
           s6.value = bBtn ? 1.0 : 0.0;
 
@@ -414,25 +415,50 @@ R"HTML(
           queueSend();
         }
 
+        /* one-finger virtual stick: follows that finger everywhere,
+          resets to (0,0) as soon as it lifts or is cancelled          */
         function stickListener(el, callback) {
-          let startX = 0, startY = 0;
+          let id = null;              // active finger identifier
+          let startX = 0, startY = 0; // where the drag began
+
+          /* -------- touchstart on the stick circle ------------------ */
           el.addEventListener("touchstart", e => {
-            const t = e.touches[0];
-            startX = t.clientX;
-            startY = t.clientY;
+            const t = e.changedTouches[0];
+            id      = t.identifier;
+            startX  = t.clientX;
+            startY  = t.clientY;
+            callback(0, 0);           // stick centred at start
             e.preventDefault();
-          });
-          el.addEventListener("touchmove", e => {
-            const t = e.touches[0];
-            const dx = t.clientX - startX;
-            const dy = t.clientY - startY;
-            callback(dx, dy);
-            e.preventDefault();
-          });
-          el.addEventListener("touchend", () => {
-            callback(0, 0);
-          });
+          }, { passive:false });
+
+          /* -------- track that finger even outside the element ------ */
+          const move = e => {
+            if (id === null) return;
+            for (const t of e.changedTouches) if (t.identifier === id) {
+              const dx = t.clientX - startX;
+              const dy = t.clientY - startY;
+              callback(dx, dy);
+              e.preventDefault();
+              break;
+            }
+          };
+
+          /* -------- when finger lifts or is cancelled -------------- */
+          const end = e => {
+            if (id === null) return;
+            for (const t of e.changedTouches) if (t.identifier === id) {
+              id = null;
+              callback(0, 0);         // snap back to centre
+              e.preventDefault();
+              break;
+            }
+          };
+
+          window.addEventListener("touchmove",   move, { passive:false });
+          window.addEventListener("touchend",    end,  { passive:false });
+          window.addEventListener("touchcancel", end,  { passive:false });
         }
+
 
         stickListener(document.getElementById("touch-left"), (x, y) => {
           lx = Math.max(-50, Math.min(50, x));

@@ -40,17 +40,15 @@ INCLUDE_PATHS += $(SRC_DIR)/tools/dPad
 # SRCS += $(SRC_DIR)/sys_libs/joy/sdl_joystick.cpp
 INCLUDE_PATHS += $(SRC_DIR)/tools/jPad
          SRCS += $(SRC_DIR)/tools/jPad/jpad.cpp
+INCLUDE_PATHS += $(SRC_DIR)/tools/jPad/Joystick
+         SRCS += $(SRC_DIR)/tools/jPad/Joystick/joystick_sys.cpp
+         SRCS += $(SRC_DIR)/tools/jPad/Joystick/joystick_tools.cpp
 INCLUDE_PATHS += /usr/include/SDL2
-INCLUDE_PATHS += $(SRC_DIR)/sys_libs/Joystick
-         SRCS += $(SRC_DIR)/sys_libs/Joystick/sdl_joystick.cpp
-         SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick_sys.cpp
-         SRCS += $(SRC_DIR)/sys_libs/Joystick/joystick_tools.cpp
-
-INCLUDE_PATHS += $(SRC_DIR)/tools/wPad
-         SRCS += $(SRC_DIR)/tools/wPad/wpad.cpp
-         SRCS += $(SRC_DIR)/tools/wPad/webJoystick.cpp
-         SRCS += $(SRC_DIR)/tools/wPad/socket_ctrl.cpp
-         SRCS += $(SRC_DIR)/tools/wPad/http_socket.cpp
+         SRCS += $(SRC_DIR)/tools/jPad/Joystick/SDL/sdl_joystick.cpp
+INCLUDE_PATHS += $(SRC_DIR)/tools/jPad/Joystick/Web
+        #  SRCS += $(SRC_DIR)/tools/jPad/Joystick/Web/webJoystick.cpp
+         SRCS += $(SRC_DIR)/tools/jPad/Joystick/Web/socket_ctrl.cpp
+         SRCS += $(SRC_DIR)/tools/jPad/Joystick/Web/http_socket.cpp
 
 INCLUDE_PATHS += $(SRC_DIR)/drv
 

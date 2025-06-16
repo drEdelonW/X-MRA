@@ -3,9 +3,11 @@
 #include <string.h>     // strcasestr, strstr
 #include <unistd.h>     // geteuid, close, ssize_t
 
+#include "joystick.hpp"
 #include "socket_ctrl.hpp"   // init_server(), waitConnection(), send_all()
-#include "terminal_tools.h"   // WARNING/LOG/ERROR macros
+#include "common_tools.h"   // WARNING/LOG/ERROR macros
 #include "shellProcGuard.hpp"
+
 #define NL  "\r\n"
 #define HEAD_END  NL NL
 // #define BUF_SIZE 81920
@@ -26,6 +28,42 @@ static const char kHTML[] =
 ;
 
 static const char k404[] = "Not Found\n";
+
+static const uint8_t Net2Host[16] = {
+    BUTTON_CROSS,          /* 0  */
+    BUTTON_ROUND,          /* 1  */
+    BUTTON_SQUARE,         /* 2  */
+    BUTTON_TRIANGLE,       /* 3  */
+    BUTTON_L1,             /* 4  */
+    BUTTON_R1,             /* 5  */
+    BUTTON_MUTE,           /* 6  placeholder (L2)         */
+    BUTTON_MUTE,           /* 7  placeholder (R2)         */
+    BUTTON_SHARE,          /* 8  */
+    BUTTON_MENU,           /* 9  */
+    BUTTON_L3,             /* 10 */
+    BUTTON_R3,             /* 11 */
+    BUTTON_DPAD_UP,        /* 12 */
+    BUTTON_DPAD_DOWN,      /* 13 */
+    BUTTON_DPAD_LEFT,      /* 14 */
+    BUTTON_DPAD_RIGHT      /* 15 */
+};
+
+/* Convert network packet → host-side bitmask (enum positions)             */
+static inline uint16_t unpackButtons(uint16_t pkt)
+{
+    uint16_t netMask  = ntohs(pkt);
+    uint16_t hostMask = 0;
+    uint16_t m = netMask;
+
+    while (m)
+    {
+        uint8_t bit = __builtin_ctz(m);
+        m &= m - 1;
+
+        hostMask |= (uint16_t)(1u << Net2Host[bit]);
+    }
+    return hostMask;
+}
 
 /*───────────────────────── compose & send response */
 int reply(int fd,
@@ -54,14 +92,14 @@ int reply(int fd,
 }
 
 /*───────────────────────── helpers */
-static size_t get_content_length(const char *req) {
+size_t get_content_length(const char *req) {
     const char *h = strcasestr(req, "Content-Length:");
     return
         h ?
             strtoul(h + 15, nullptr, 10) : 0;
 }
 
-static const char *find_payLoad(const char *req) {
+const char *find_payLoad(const char *req) {
     const char *p = strstr(req, HEAD_END);
     return
         p ?
@@ -69,7 +107,7 @@ static const char *find_payLoad(const char *req) {
 }
 
 /*───────────────────────── main loop */
-int sMain() {
+void Web_GCHandler() {
 
     int srv_fd = -1;
     if (
@@ -78,12 +116,11 @@ int sMain() {
                     80 : 8080
             )) < 0
         )
-        return 1;
+        return;
 
     char buf[BUF_SIZE];
-    bool web_run = true;
 
-    while (web_run) {
+    while (!jQuit) {
         int cli_fd = -1;
         if ( (cli_fd = waitConnection(srv_fd)) >= 0 ) {
             // ShellProcessGuard cam("killall motion ; motion -c ./cam.conf");
@@ -93,7 +130,9 @@ int sMain() {
                 ssize_t rcvd = recv(cli_fd, buf, sizeof(buf) - 1, 0);
                 if (rcvd <= 0) {
                     ERROR("recv");
-                    break;
+                    close(cli_fd);
+                    while (!((cli_fd = waitConnection(srv_fd)) >= 0) ){}
+                    continue;
                 }
                 buf[rcvd] = '\0';
                 if (strcasestr(buf, "Connection: close"))
@@ -146,7 +185,7 @@ int sMain() {
                         rcvd += add;
                         buf[rcvd] = '\0';
                         body = find_payLoad(buf);
-                        printf("head size %d\n", (int)(body - buf));
+                        // printf("head size %d\n", (int)(body - buf));
                         have = (buf + rcvd) - body;
                     }
 
@@ -155,11 +194,23 @@ int sMain() {
                     ) {
                         RawPacket pkt;
                         memcpy(&pkt, body, sizeof(pkt));
-                        WARNING("[RAW] [%.3f][%.3f][%.3f][%.3f][%.3f][%.3f] [0x%04X]",
+                        // pkt.flags = ntohs(pkt.flags);
+                        WARNING(
+                            "[RAW] [%.3f][%.3f][%.3f][%.3f][%.3f][%.3f] ",
+                            // WORD_TO_BINARY_PATTERN,
                             pkt.slider[0], pkt.slider[1], pkt.slider[2],
-                            pkt.slider[3], pkt.slider[4], pkt.slider[5],
-                            pkt.flags
+                            pkt.slider[3], pkt.slider[4], pkt.slider[5]
+                            // pkt.flags
+                            // WORD_TO_BINARY(pkt.flags)
                         );
+                        gp.left.x = (pkt.slider[0] - 0.5f) * 2;
+                        gp.left.y = (pkt.slider[1] - 0.5f) * 2;
+                        gp.left.z = pkt.slider[4];
+                        gp.right.x = (pkt.slider[2] - 0.5f) * 2;
+                        gp.right.y = (pkt.slider[3] - 0.5f) * 2;
+                        gp.right.z = pkt.slider[5];
+                        gp.btns = unpackButtons(pkt.flags);
+
                     } else {
                         WARNING("[RAW] incomplete or missing payload\n");
                     }
@@ -176,9 +227,9 @@ int sMain() {
                 if (!keep) break;
             }
             close(cli_fd);
-            web_run = false;
+            jQuit = true;
         }
     }
     close(srv_fd);
-    return 0;
+    return;
 }

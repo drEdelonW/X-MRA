@@ -6,7 +6,6 @@
 #include "i2c.h"     // busScan() dumpAddr()
 #include "dpad.h"
 #include "jpad.hpp"
-#include "wpad.hpp"
 #include "robot_spec_cwrap.hpp"
 
 
@@ -41,7 +40,7 @@ Command commands[] = {
     {.name = "i2cD4",   .function = busD4_,     .description = "I2C Bus dump 0x40 device"},
     {.name = "dpad",    .function = dpad,       .description = "keyboard control Tool"},
     {.name = "jpad",    .function = jpad,       .description = "SDL GamePad control Tool"},
-    {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
+    // {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
 
     {.name = "arm",     .function = ARM_},
     {.name = "disarm",  .function = DISARM_},
