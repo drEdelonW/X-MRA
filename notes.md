@@ -3,6 +3,8 @@
     http://10.0.3.12:8080
     http://10.0.3.58
 
+/opt/hexafpv/HexaFPV_app.elf
+cd /opt/hexafpv/ && motion -c cam.conf
 # SSH key auth
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_ed25519_gitLab.txt
