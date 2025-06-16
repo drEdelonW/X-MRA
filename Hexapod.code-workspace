@@ -25,7 +25,8 @@
 			"semaphore": "cpp",
 			"shared_mutex": "cpp",
 			"ratio": "cpp",
-			"thread": "cpp"
+			"thread": "cpp",
+			"cstddef": "cpp"
 		}
 	}
 }

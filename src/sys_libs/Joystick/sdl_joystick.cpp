@@ -1,32 +1,63 @@
 #include "joystick.hpp"
+#include "common_tools.h"
+#include <SDL2/SDL.h>
 
 SDL_GameController *gPad = NULL;
+volatile bool joy_echo = true;
 
 #define J_SCALE_FACTOR  (0x7FFF)
 #define SCALE_VALUE(val) ((float)val/J_SCALE_FACTOR)
 
-volatile float x = 0.0f;
-volatile float y = 0.0f;
-volatile float lx = 0.0f;
-volatile float ly = 0.0f;
-volatile float lz = 0.0f;
-volatile float rx = 0.0f;
-volatile float ry = 0.0f;
-volatile float rz = 0.0f;
-volatile bool movement_allowed = false;
+volatile GamePad gp;
 
+// bool GCGetButton(GameControllerButton btn){
+//     return SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)btn);
+// }
 
-bool GCGetButton(GameControllerButton btn){
-    return SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)btn);
+void printAllButtons() {
+    if (!joy_echo) { return; }
+
+    for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++){
+        bool pressed = GCGetButton((GameControllerButton)i);
+        // bool pressed = SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)i);
+        printf((pressed)? "[%i]":" %i ", i);
+    }
+    printf("\n");
 }
 
-float GCgetAxis(SDL_GameControllerAxis axis) {
-    return SDL_GameControllerGetAxis(gPad, axis) / 32768.0f;
-}
+void SDL_GCHandler() {
+    if (SDL_Init( SDL_INIT_GAMECONTROLLER) < 0) {
+        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        return;
+    }
 
-volatile bool jQuit;
+    int numJoysticks = SDL_NumJoysticks();
+    printf("Number of joysticks: %d\n", numJoysticks);
 
-void GameControllerHandler() {
+    for (int i = 0; i < numJoysticks; i++) {
+        if (SDL_IsGameController(i)) {
+            gPad = SDL_GameControllerOpen(i);
+            if (gPad) {
+                printf("Game controller connected: %s\n", SDL_GameControllerName(gPad));
+                break;
+            } else {
+                printf("Could not open game controller %i: %s\n", i, SDL_GetError());
+            }
+        } else {
+            printf("Joystick %i is not a game controller.\n", i);
+        }
+    }
+
+    if (gPad == NULL) {
+        printf("No game controller found.\n");
+//        SDL_DestroyWindow(window);
+        // SDL_Quit();
+        return;
+    }
+    // joystickThread.detach();
+    jQuit = false;
+
+
     printf("GameController Started\n");
     SDL_Event event;
     while (!jQuit) {
@@ -53,63 +84,56 @@ void GameControllerHandler() {
                     gPad = nullptr;
                     printf("Game controller disconnected\n");
                 }
-            } else if (event.type == SDL_CONTROLLERBUTTONDOWN || event.type == SDL_CONTROLLERBUTTONUP) {
-                printAllButtons();
-                // printAllButtonState();
+            } else if (
+                    (event.type == SDL_CONTROLLERBUTTONDOWN) ||
+                    (event.type == SDL_CONTROLLERBUTTONUP)
+                ) {
+                    if (event.jbutton.button < 16) {
+                        if (event.type == SDL_CONTROLLERBUTTONDOWN) {
+                            gp.btns |= (  (uint16_t)1 << event.jbutton.button );
+                        } else if
+                           (event.type == SDL_CONTROLLERBUTTONUP) {
+                            gp.btns &= (~((uint16_t)1 << event.jbutton.button));
+                        }
+                        // LOG(WORD_TO_BINARY_PATTERN "\n", WORD_TO_BINARY(gp.btns));
+                        printAllButtons();
+                    }
+
             } else if (event.type == SDL_CONTROLLERAXISMOTION) {
                 switch (event.caxis.axis) {
                 case SDL_CONTROLLER_AXIS_RIGHTX: {
-                    rx = SCALE_VALUE(event.caxis.value);
-                    if (movement_allowed) {
-                        x = rx;
-                        // printf("Right Stick X: %+.3f Y: %+.3f\n", x, y);
-                    }
+                    gp.right.x = SCALE_VALUE(event.caxis.value);
                 } break;
                 case SDL_CONTROLLER_AXIS_RIGHTY: {
-                    ry = SCALE_VALUE(event.caxis.value);
-                    if (movement_allowed) {
-                        y = ry;
-                        // printf("Right Stick X: %+.3f Y: %+.3f\n", x, y);
-                    }
+                    gp.right.y = SCALE_VALUE(event.caxis.value);
                 } break;
                 case SDL_CONTROLLER_AXIS_LEFTX: {
-                    lx = SCALE_VALUE(event.caxis.value);
+                    gp.left.x = SCALE_VALUE(event.caxis.value);
                 } break;
                 case SDL_CONTROLLER_AXIS_LEFTY: {
-                    ly = SCALE_VALUE(event.caxis.value);
+                    gp.left.y = SCALE_VALUE(event.caxis.value);
                 } break;
                 case SDL_CONTROLLER_AXIS_TRIGGERLEFT: {
-                    lz = SCALE_VALUE(event.caxis.value);
-                    movement_allowed = lz > 0.5f;
+                    gp.left.z = SCALE_VALUE(event.caxis.value);
                 } break;
                 case SDL_CONTROLLER_AXIS_TRIGGERRIGHT: {
-                    rz = SCALE_VALUE(event.caxis.value);
+                    gp.right.z = SCALE_VALUE(event.caxis.value);
                 } break;
                 default:
                     printf("unhandled AXIS [0x%X]\n", event.caxis.axis);
                     break;
                 }
                 // if (event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX) {
-                //     // rx = SCALE_VALUE(event.caxis.value);
-                //     // if (movement_allowed) {
-                //     //     x = rx;
-                //     //     // printf("Right Stick X: %+.3f Y: %+.3f\n", x, y);
-                //     // }
+                //     // gp.right.x = SCALE_VALUE(event.caxis.value);
                 // } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY) {
-                //     // ry = SCALE_VALUE(event.caxis.value);
-                //     // if (movement_allowed) {
-                //     //     y = ry;
-                //     //     // printf("Right Stick X: %+.3f Y: %+.3f\n", x, y);
-                //     // }
+                //     // gp.right.y = SCALE_VALUE(event.caxis.value);
                 // } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
-                //     // lx = SCALE_VALUE(event.caxis.value);
+                //     // gp.left.x = SCALE_VALUE(event.caxis.value);
                 //     // printf("Left Stick X: %+.3f\n", SCALE_VALUE(event.caxis.value));
                 // } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
-                //     // ly = SCALE_VALUE(event.caxis.value);
+                //     // gp.left.y = SCALE_VALUE(event.caxis.value);
                 //     // printf("Left Stick Y: %+.3f\n", SCALE_VALUE(event.caxis.value));
                 // } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT) {
-                //     // movement_allowed = SCALE_VALUE(event.caxis.value) > 0.5f;
-                //     // printf("movment %s \n", movement_allowed? "allowed" : "disallowed");
                 //     // printf("Left Trigg: %+.3f\n", SCALE_VALUE(event.caxis.value));
                 // } else if (event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERRIGHT) {
                 //     // printf("Right Trigg: %+.3f\n", SCALE_VALUE(event.caxis.value));
@@ -119,5 +143,6 @@ void GameControllerHandler() {
         usleep(1000);
         //TODO: remove
     }
+    SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
     LOG("GameController ENDED\n");
 }

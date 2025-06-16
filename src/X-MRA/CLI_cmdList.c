@@ -40,7 +40,7 @@ Command commands[] = {
     {.name = "i2cScan", .function = busScan_,   .description = "I2C Bus scan Tool"},
     {.name = "i2cD4",   .function = busD4_,     .description = "I2C Bus dump 0x40 device"},
     {.name = "dpad",    .function = dpad,       .description = "keyboard control Tool"},
-    {.name = "jpad",    .function = jpad,       .description = "GamePad control Tool"},
+    {.name = "jpad",    .function = jpad,       .description = "SDL GamePad control Tool"},
     {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
 
     {.name = "arm",     .function = ARM_},
@@ -50,7 +50,7 @@ Command commands[] = {
 
     {.name = "ver",     .function = ver_info_,  .description = "Show curent Version Information"},
     // {.name = "reboot",  .function = reboot,     .description = "Reboot System"},
-    {.name = "exit",  .function = exit_,     .description = "Quit app"},
+    // {.name = "exit",  .function = exit_,     .description = "Quit app"},    // risk LOGOUT from ssh  =)
     {.name = "quit",  .function = exit_,     .description = "Quit app"},
 
     {.name = "help",    .function = cliHelp,    .description = "command list"},

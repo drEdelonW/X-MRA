@@ -5,9 +5,7 @@
 #include "robot_spec.hpp"
 
 void jpad() {
-    GameControllerInit();
-    LOG(TEXT_BOLD "Joy-Pad started\n\a" TEXT_RESET);
-    joy_echo = false;
+    GCInit();
     bool _run = true;
 
     bool triAct = false;
@@ -15,8 +13,8 @@ void jpad() {
 
     Matrix4x4 buMx;
     while(_run){
-        if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_PS)) &&
-            SDL_GameControllerGetButton(gPad, toPS(BUTTON_CROSS))
+        if (GCGetButton(BUTTON_PS) &&
+            GCGetButton(BUTTON_CROSS)
         ){
                 printf("pressed BUTTON_PS. exit\n");
                 _run = false;
@@ -43,25 +41,25 @@ void jpad() {
         if (triAct) { // Tripod mode
             float lStep = 0.0f;
             float rStep = 0.0f;
-            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_L3))) {
+            if (GCGetButton(BUTTON_L3)) {
                 lStep = 1.0f;
-            } else { lStep = lz; }
-            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_R3))) {
+            } else { lStep = gp.left.z; }
+            if (GCGetButton(BUTTON_R3)) {
                 rStep = 1.0f;
-            } else { rStep = rz; }
-            XMRA.trySetOffs(Vector3D{ly ,-lx, -lStep} * scaleStep, 0);
-            XMRA.trySetOffs(Vector3D{ry, -rx, -rStep} * scaleStep, 1);
+            } else { rStep = gp.right.z; }
+            XMRA.trySetOffs(Vector3D{gp.left.y ,-gp.left.x, -lStep} * scaleStep, 0);
+            XMRA.trySetOffs(Vector3D{gp.right.y, -gp.right.x, -rStep} * scaleStep, 1);
         } else {    // non Tripod mode
-            if (SDL_GameControllerGetButton(gPad, toPS(BUTTON_L3))){
-                // LOG("%f %f %f\n", lx, ly, lz);
+            if (GCGetButton(BUTTON_L3)){
+                // LOG("%f %f %f\n", gp.left.x, gp.left.y, gp.left.z);
                 XMRA.trySetOffs(Vector3D{0.0f, 0.0f, 0.0f});
             } else {
-                if ((fabsf(lx) > 0.038f) ||
-                    (fabsf(ly) > 0.038f) ||
-                    (fabsf(rz - lz) > 0.03f)) {
-                    // LOG("%f %f %f\n", lx, ly, lz);
+                if ((fabsf(gp.left.x) > 0.038f) ||
+                    (fabsf(gp.left.y) > 0.038f) ||
+                    (fabsf(gp.right.z - gp.left.z) > 0.03f)) {
+                    // LOG("%f %f %f\n", gp.left.x, gp.left.y, gp.left.z);
 
-                    XMRA.tryAddOffs(Vector3D{-ly, lx, rz - lz} * 3.0f);
+                    XMRA.tryAddOffs(Vector3D{-gp.left.y, gp.left.x, gp.right.z - gp.left.z} * 3.0f);
                 }
 #if 1
                 IF_BTN_HIT(BUTTON_R3,{
@@ -69,28 +67,28 @@ void jpad() {
                         XMRA.applyPose();
                     }
                 })
-                if ((fabsf(rx) > 0.038f) ||
-                    (fabsf(ry) > 0.038f)) {
-                    if (XMRA.AimAddAngle(deg(-rx), deg(-ry))) {
+                if ((fabsf(gp.right.x) > 0.038f) ||
+                    (fabsf(gp.right.y) > 0.038f)) {
+                    if (XMRA.AimAddAngle(deg(-gp.right.x), deg(-gp.right.y))) {
                         XMRA.applyPose();
                     }
                 }
 #else
                 Vector3D zOffs = {0.0, 0.0, 0.0};
-                if ((fabsf(rx) > 0.038f)) {
-                    // XMRA.tryAddRotationOZ(deg(-rx));
+                if ((fabsf(gp.right.x) > 0.038f)) {
+                    // XMRA.tryAddRotationOZ(deg(-gp.right.x));
                     XMRA.getMatrix(&buMx);
                     XMRA.addOffs(zOffs);
-                    XMRA.addRotationOX(deg(rx * 2.0f));
+                    XMRA.addRotationOX(deg(gp.right.x * 2.0f));
                     XMRA.addOffs(-zOffs);
                     if (!XMRA.applyPose()) {
                         XMRA.setMatrix(&buMx);
                     }
                 }
-                if ((fabsf(ry) > 0.038f)) {
+                if ((fabsf(gp.right.y) > 0.038f)) {
                     XMRA.getMatrix(&buMx);
                     XMRA.addOffs(zOffs);
-                    XMRA.addRotationOY(deg(-ry * 2.0f));
+                    XMRA.addRotationOY(deg(-gp.right.y * 2.0f));
                     XMRA.addOffs(-zOffs);
                     if (!XMRA.applyPose()) {
                         XMRA.setMatrix(&buMx);
@@ -101,6 +99,5 @@ void jpad() {
         }
     }
 
-    LOG(TEXT_BOLD "Joy-Pad END\n\a" TEXT_RESET);
-    GameControllerDeinit();
+    GCDeinit();
 }

@@ -1,70 +1,51 @@
-#include <stdlib.h>
-#include <SDL2/SDL.h>
+#include <stdint.h>
+#include "Vector3d.hpp"
 #include "terminal_tools.h"
-#include <thread>
 
-// extern std::thread joystickThread;
 extern volatile bool joy_echo;
 extern volatile bool jQuit;
 
 #define IF_BTN_HIT(btn, action) if \
-    (SDL_GameControllerGetButton(gPad, toPS(btn))) \
-    { while (SDL_GameControllerGetButton(gPad, toPS(btn))) {} \
+    (GCGetButton(btn)) \
+    { while (GCGetButton(btn)) {} \
         {action}; \
     };
 
-// typedef enum {
-//     SDL_CONTROLLER_AXIS_INVALID = -1,
-//     SDL_CONTROLLER_AXIS_LEFTX,
-//     SDL_CONTROLLER_AXIS_LEFTY,
-//     SDL_CONTROLLER_AXIS_RIGHTX,
-//     SDL_CONTROLLER_AXIS_RIGHTY,
-//     SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-//     SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-//     SDL_CONTROLLER_AXIS_MAX
-// } SDL_GameControllerAxis;
-
 typedef enum {
     BUTTON_CROSS = 0,
-    BUTTON_ROUND,
-    BUTTON_SQUARE,
-    BUTTON_TRIANGLE,
-    BUTTON_SHARE,
-    BUTTON_PS,
-    BUTTON_MENU,
-    BUTTON_L3,
-    BUTTON_R3,
-    BUTTON_L1,
-    BUTTON_R1,
-    BUTTON_DPAD_UP,
-    BUTTON_DPAD_DOWN,
-    BUTTON_DPAD_LEFT,
-    BUTTON_DPAD_RIGHT
+    BUTTON_ROUND,   //1
+    BUTTON_SQUARE,  //2
+    BUTTON_TRIANGLE,//3
+    BUTTON_SHARE,   //4
+
+    BUTTON_PS,  //5
+    BUTTON_MENU,//6
+    BUTTON_L3,  //7
+    BUTTON_R3,  //8
+    BUTTON_L1,  //9
+
+    BUTTON_R1,          //10
+    BUTTON_DPAD_UP,     //11
+    BUTTON_DPAD_DOWN,   //12
+    BUTTON_DPAD_LEFT,   //13
+    BUTTON_DPAD_RIGHT,  //14
+
+    BUTTON_MUTE     //15
 } GameControllerButton;
 
 
-static inline SDL_GameControllerButton toPS(GameControllerButton in) {
-    return (SDL_GameControllerButton)in;
-}
-
-extern volatile float x;
-extern volatile float y;
-extern volatile float lx;
-extern volatile float ly;
-extern volatile float lz;
-extern volatile float rx;
-extern volatile float ry;
-extern volatile float rz;
-extern volatile bool movement_allowed;
-extern SDL_GameController *gPad;
+typedef struct {
+    Vector3D left;
+    Vector3D right;
+    uint16_t btns;
+} GamePad;
+extern volatile GamePad gp;
 
 bool GCGetButton(GameControllerButton btn);
-float GCgetAxis(SDL_GameControllerAxis axis);
 
-void printButtonState(SDL_GameControllerButton button, const char* name, SDL_GameController *controller = gPad);
-void printAllButtonState();
+// void printAllButtonState();
 void printAllButtons();
 
-int GameControllerInit();
-int GameControllerDeinit();
-void GameControllerHandler();
+void GCInit();
+void GCDeinit();
+void SDL_GCHandler();
