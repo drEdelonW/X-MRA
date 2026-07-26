@@ -22,20 +22,22 @@ void handle_signal(int signal) {
     if ((signal == SIGINT) ||
         (signal == SIGTERM) ||
         (signal == SIGHUP)     // TODO: fix messages
-    ) {
+        ) {
         WARNING("Received SIGINT (Ctrl+C). Exiting...\n");
         sysDeinit();
         exit(0);
-    } else {
+    }
+    else {
         WARNING("Unhandled signal is[%d]\n", signal);
     }
 }
 
 static inline void sysInit() {
     // see [/usr/include/aarch64-linux-gnu/bits/signum-generic.h]
-    if (signal(SIGINT, handle_signal) == SIG_ERR &&
-        signal(SIGTERM, handle_signal) == SIG_ERR &&
-        signal(SIGHUP, handle_signal) == SIG_ERR ) {
+    if ((signal(SIGINT, handle_signal) == SIG_ERR) &&
+        (signal(SIGTERM, handle_signal) == SIG_ERR) &&
+        (signal(SIGHUP, handle_signal) == SIG_ERR)
+        ) {
         perror("Error registering signal handler");
         exit(1);
     }
@@ -48,9 +50,9 @@ static inline void sysInit() {
 #endif
 }
 
-int main(int argc, char *argv[]) {
-    sysInit();
+int main(int argc, char* argv[]) {
     ver_info();
+    sysInit();
     startCLI();  // main command processor
 
     return 0;

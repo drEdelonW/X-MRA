@@ -23,6 +23,22 @@
       "sourceFileMap": {
         "/home/edelon/Work/HexaFPV/src": "${workspaceFolder}/src"
       }
+    },{
+      "name": "Launch local X-MRA",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/GNU_make_build/OUTPUT/HexaFPV_app.elf",
+      "args": [],
+      "cwd": "${workspaceFolder}/GNU_make_build/OUTPUT",
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "stopAtEntry": false
+      // "environment": [
+      //   {
+      //     "name": "DISPLAY",
+      //     "value": ":1"
+      //   }
+      // ]
     },
     {
       "name": "Debug HexaFPV (remote)",

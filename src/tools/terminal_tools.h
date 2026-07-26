@@ -72,22 +72,23 @@
 
 
 #ifndef DEBUG
-    #warning DEBUG not defined!!!
-    #define DEBUG 2
+#   warning DEBUG not defined!!!
+#   define DEBUG 2
 #else
     // #warning DEBUG  defined V
 #endif
 
 
 #if DEBUG > 0
-    #include <stdio.h>
-    #define LLOG(...)    printf(__VA_ARGS__);                /* Lazy log */
-    #define LOG(...)     LLOG(__VA_ARGS__); fflush(stdout);  /* Strong log */
+#   include <stdio.h>
+#   define LLOG(...)    printf(__VA_ARGS__);                /* Lazy log */
+#   define LOG(...)     LLOG(__VA_ARGS__); fflush(stdout);  /* Strong log */
 #else
-    #define LLOG(...)
-    #define LOG(...)
+#   warning DEBUG not defined!!!
+#   define LLOG(...)
+#   define LOG(...)
 #endif
-    #define INFO(...)       LLOG(TEXT_GREEN __VA_ARGS__); LOG(TEXT_RESET "\n")
-    #define WARNING(...)    LLOG(TEXT_YELLOW __VA_ARGS__); LOG(TEXT_RESET "\n")
-    #define ERROR(...)      LLOG(TEXT_RED __VA_ARGS__);    LOG(TEXT_RESET "\n")
-    #define HALT(...)       ERROR(__VA_ARGS__);  while (1) {}
+#   define INFO(...)       LLOG(TEXT_GREEN __VA_ARGS__); LOG(TEXT_RESET "\n")
+#   define WARNING(...)    LLOG(TEXT_YELLOW __VA_ARGS__); LOG(TEXT_RESET "\n")
+#   define ERROR(...)      LLOG(TEXT_RED __VA_ARGS__);    LOG(TEXT_RESET "\n")
+#   define HALT(...)       ERROR(__VA_ARGS__);  while (1) {}

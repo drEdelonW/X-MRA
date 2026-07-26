@@ -5,15 +5,15 @@ PWMChannel::PWMChannel(ProtoPWMArray& ctrl, uint8_t ch)
 : controller(ctrl), channel(ch) {}
 
 
-void      PWMChannel::setDutyCycle(DutyCycle duty) {
+void        PWMChannel::setDutyCycle(DutyCycle_t duty) {
     controller.setDutyCycle(channel, duty);
 };
-DutyCycle PWMChannel::getDutyCycle() {
+DutyCycle_t PWMChannel::getDutyCycle() {
     return controller.getDutyCycle(channel);
 };
 
 // #include "terminal_tools.h"
-void      PWMChannel::setDuration(MicroSeconds duration) {
+void         PWMChannel::setDuration(MicroSeconds duration) {
     // LOG("setDur1 %d\n",duration);
     controller.setDuration(channel, duration);
 };

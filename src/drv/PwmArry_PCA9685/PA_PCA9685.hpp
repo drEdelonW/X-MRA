@@ -2,7 +2,7 @@
 #include "PWMChannel.hpp"
 #define  PCA_Defined
 
-#define  PCA_Register uint8_t
+#define  PCA_Register uint8_t   // TODO: make it enum
 
 class PCA9685 : public ProtoPWMArray{
   public:
@@ -19,8 +19,8 @@ class PCA9685 : public ProtoPWMArray{
 
     PWMChannel PWM[16];
 
-    void        setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phaseShift = 0)  override;
-    DutyCycle   getDutyCycle(uint8_t channel) override;
+    void        setDutyCycle(uint8_t channel, DutyCycle_t dutyCycle, DutyCycle_t phaseShift = 0)  override;
+    DutyCycle_t getDutyCycle(uint8_t channel) override;
 
     void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;
     MicroSeconds getDuration(uint8_t channel) override;

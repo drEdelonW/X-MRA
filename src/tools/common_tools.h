@@ -14,8 +14,8 @@
 
 #define BYTE_TO_BINARY_PATTERN \
         "[0b" \
-        "%c%c%c%c" \
-        "%c%c%c%c" \
+        TEXT_BOLD  "%c%c%c%c" \
+        TEXT_RESET "%c%c%c%c" \
         "]"
 #define BYTE_TO_BINARY(byte)  \
     ((byte) & 0x80 ? '1' : '0'), \
@@ -29,10 +29,10 @@
 
 #define WORD_TO_BINARY_PATTERN \
         "[0b" \
-        "%c%c%c%c" \
-        "%c%c%c%c" \
-        "%c%c%c%c" \
-        "%c%c%c%c" \
+        TEXT_BOLD  "%c%c%c%c" \
+        TEXT_RESET "%c%c%c%c" \
+        TEXT_BOLD  "%c%c%c%c" \
+        TEXT_RESET "%c%c%c%c" \
         "]"
 #define WORD_TO_BINARY(word)  \
     ((word) & 0x8000 ? '1' : '0'), \
@@ -58,11 +58,11 @@
 extern "C" {
 #endif
 
-inline void ver_info() {
-    printf("Branch: %s\n" TEXT_RESET, TEXT_BOLD GIT_BRANCH);
-    printf("Commit: %s\n" TEXT_RESET, TEXT_BOLD GIT_COMMIT_HASH);
-    printf("Compile date: %s  %s\n" TEXT_RESET, TEXT_BOLD __DATE__, __TIME__);
-}
+    inline void ver_info() {
+        LOG("Branch: %s\n" TEXT_RESET, TEXT_GREEN TEXT_BOLD GIT_BRANCH);
+        LOG("Commit: %s\n" TEXT_RESET, TEXT_BOLD GIT_COMMIT_HASH);
+        LOG("Compile date: %s  %s\n" TEXT_RESET, TEXT_BOLD __DATE__, __TIME__);
+    }
 
 #ifdef __cplusplus
 }
