@@ -5,20 +5,20 @@
 
 /*
       ^ Z (up)
-      │
-      │    ^ X (forward)
-      │   ╱
-      │  ╱
-      │ ╱
-      │╱
-      *─────────> Y (right)
+      |
+      |    7 X (forward)
+      |   /
+      |  /
+      | /
+      |/
+      *---------> Y (right)
 */
 
 /*  ArachnidLeg:
 
    [Body]
       |
-   [Coxa]──▶──[Femur]
+   [Coxa]-->--[Femur]
       |           |
    [Body]      [Tibia]
                   |
@@ -39,8 +39,8 @@ public:
       JointBase& coxaJn,
       JointBase& femurJn,
       JointBase& tibiaJn,
-      Millimeters offs = 0.0f,
-      Angle rotation = deg(0.0F)
+      Millimeters offs = 0.f,
+      Angle rotation = deg(0.f)
    );
 
    void configMount(Millimeters offset, Angle yaw);

@@ -8,8 +8,8 @@
 void PCA9685::setDutyCycle(uint8_t channel, DutyCycle dutyCycle, DutyCycle phaseShift) {
     // LOG("setDC %f\n", dutyCycle);
 
-    dutyCycle = clampDuty(dutyCycle);
-    phaseShift = clampDuty(phaseShift);
+    clampDuty(&dutyCycle);
+    clampDuty(&phaseShift);
 
     uint16_t on = MAX_VAL * phaseShift;
     uint16_t off = on + (MAX_VAL * dutyCycle);
