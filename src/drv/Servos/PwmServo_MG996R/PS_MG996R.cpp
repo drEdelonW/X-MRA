@@ -6,7 +6,8 @@ MG996R::MG996R(
     MicroSeconds maxPulse,
     Angle maxAngle,
     Angle offset,
-    bool reversed)
+    rotDir_t reversed
+)
     : _pwm(pwm),
       _minPulse(minPulse),
       _maxPulse(maxPulse),
@@ -39,12 +40,9 @@ void MG996R::setAngle(const Angle& angle) {
 }
 
 Angle MG996R::getAngle() const { return _currentAngle; }
-
 void  MG996R::setAngleOffset(const Angle& angle) { _offset = angle; }
 Angle MG996R::getAngleOffset() const { return _offset;}
-
-void MG996R::setReversion(const bool isReversed ){_reversed = isReversed; }
-
+void MG996R::setReversion(const rotDir_t isReversed ){_reversed = isReversed; }
 bool MG996R::isEnabled() const { return _enabled; }
 
 void MG996R::enable() {
@@ -54,5 +52,5 @@ void MG996R::enable() {
 
 void MG996R::disable() {
     _enabled = false;
-    _pwm.setDuration(0);
+    _pwm.setDuration(us(0));
 }

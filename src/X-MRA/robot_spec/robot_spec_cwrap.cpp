@@ -1,9 +1,5 @@
-#include "robot_spec_cwrap.hpp"
-#include "robot_spec.hpp"
+#include "robot_spec_cwrap.h"   // sync call prototype
+#include "robot_spec.hpp"       // XMRA
 
-void  xarm() {
-    XMRA.ARM();
-}
-void xdisarm() {
-    XMRA.DISARM();
-}
+void xArm() { XMRA.ARM(); }
+void xDisarm() { XMRA.DISARM(); }

@@ -1,13 +1,19 @@
 #include "robot_spec.hpp"
 
-#define CFG_1   TowerPro_MG996R_cfg
+// #include "PS_MG996R.hpp"
+// extern MG996R Servo[];
 
+// #include "ArachnidLeg.hpp"
+// extern ArachnidLeg leg[];
+
+#include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
     {1, 0x40},
     {1, 0x41}
 };
 
 #include "PS_MG996R.hpp"
+#define CFG_1 TowerPro_MG996R_cfg
 MG996R Servo[] = {
     //FrontLeft
     { PWMarray[0].PWM[13], CFG_1, CW }, //Tibia

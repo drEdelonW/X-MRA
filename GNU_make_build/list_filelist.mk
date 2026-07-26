@@ -75,22 +75,25 @@ $(eval DRV_DIR := $(SRC_DIR)/drv) $(eval INCLUDE_PATHS += $(DRV_DIR))
 
 $(eval XMRA_DIR := $(SRC_DIR)/X-MRA) $(eval INCLUDE_PATHS += $(XMRA_DIR))
     $(eval RSPEC_DIR := $(XMRA_DIR)/robot_spec) $(eval INCLUDE_PATHS += $(RSPEC_DIR))
-        SRCS += $(RSPEC_DIR)/robot_spec.cpp
+#         SRCS += $(RSPEC_DIR)/robot_spec_old_chassis.cpp
+        SRCS += $(RSPEC_DIR)/robot_spec_Freenove_chassis.cpp
+        
         SRCS += $(RSPEC_DIR)/robot_spec_cwrap.cpp
 
     $(eval JOINT_DIR := $(XMRA_DIR)/JointBase) $(eval INCLUDE_PATHS += $(JOINT_DIR))
 
-    $(eval AR_LEG_DIR := $(XMRA_DIR)/ArachnidLeg) $(eval INCLUDE_PATHS += $(AR_LEG_DIR))
-        SRCS += $(AR_LEG_DIR)/ArachnidLeg.cpp
-        SRCS += $(AR_LEG_DIR)/ArachnidLeg_wrap.cpp
-        SRCS += $(AR_LEG_DIR)/ArachnidLeg_FK_IK.cpp
+    $(eval AR_DIR := $(XMRA_DIR)/Arachnid) $(eval INCLUDE_PATHS += $(AR_DIR))
+        $(eval AR_LEG_DIR := $(AR_DIR)/Leg) $(eval INCLUDE_PATHS += $(AR_LEG_DIR))
+            SRCS += $(AR_LEG_DIR)/ArachnidLeg.cpp
+            SRCS += $(AR_LEG_DIR)/ArachnidLeg_wrap.cpp
+            SRCS += $(AR_LEG_DIR)/ArachnidLeg_FK_IK.cpp
 
-    $(eval AR_BODY_DIR := $(XMRA_DIR)/ArachnidBody) $(eval INCLUDE_PATHS += $(AR_BODY_DIR))
-        SRCS += $(AR_BODY_DIR)/ArachnidBody.cpp
-        SRCS += $(AR_BODY_DIR)/ArachnidBody_activation.cpp
-        SRCS += $(AR_BODY_DIR)/ArachnidBody_coordinator.cpp
-        SRCS += $(AR_BODY_DIR)/ArachnidBody_choreographer.cpp
-        SRCS += $(AR_BODY_DIR)/ArachnidBody_Aim.cpp
+        $(eval AR_BODY_DIR := $(AR_DIR)/Body) $(eval INCLUDE_PATHS += $(AR_BODY_DIR))
+            SRCS += $(AR_BODY_DIR)/ArachnidBody.cpp
+            SRCS += $(AR_BODY_DIR)/ArachnidBody_activation.cpp
+            SRCS += $(AR_BODY_DIR)/ArachnidBody_coordinator.cpp
+            SRCS += $(AR_BODY_DIR)/ArachnidBody_choreographer.cpp
+            SRCS += $(AR_BODY_DIR)/ArachnidBody_Aim.cpp
 
     SRCS += $(XMRA_DIR)/CLI_cmdList.c
     SRCS += $(XMRA_DIR)/test.c

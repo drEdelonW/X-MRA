@@ -156,3 +156,7 @@ git pull                        # from gitlab
 git push                        # to gitlab
 git push github master --force  # mirror
 ```
+# push to both source
+```bash
+git push && git push github master --force 
+```

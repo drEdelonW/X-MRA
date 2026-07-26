@@ -22,7 +22,7 @@ MicroSeconds PWMChannel::getDuration() {
 };
 
 MicroSeconds PWMChannel::getPeriodUS() {
-    return 0;
+    return us(0);
 };
 
 void PWMChannel::disable() {};

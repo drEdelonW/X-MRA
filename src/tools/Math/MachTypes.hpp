@@ -8,11 +8,11 @@
 #endif
 
 struct Degrees {
-    explicit constexpr Degrees(float v) : value(v) {}
-    float value;
+    explicit constexpr Degrees(float v) : dValue(v) {}
+    float dValue;
 };
 
 struct Radians {
-    explicit constexpr Radians(float v) : value(v) {}
-    float value;
+    explicit constexpr Radians(float v) : rValue(v) {}
+    float rValue;
 };

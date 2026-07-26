@@ -6,7 +6,7 @@
 #include "i2c.h"     // busScan() dumpAddr()
 #include "dpad.h"
 #include "jpad.hpp"
-#include "robot_spec_cwrap.hpp"
+#include "robot_spec_cwrap.h"
 
 
 void busScan_() {
@@ -17,10 +17,10 @@ void busD4_() {
     dumpAddr(0x40);
 }
 void ARM_() {
-    xarm();
+    xArm();
 }
 void DISARM_() {
-    xdisarm();
+    xDisarm();
 }
 
 void test();

@@ -11,7 +11,7 @@ public:
   virtual void  setAngleOffset(const Angle& angle) = 0; // Set the servo angle base Offset
   virtual Angle getAngleOffset() const = 0;             // Get the current servo angle base Offset
 
-  virtual void setReversion(const bool isReversed) = 0;
+  virtual void setReversion(const rotDir_t isReversed) = 0;
 
   virtual bool isEnabled() const = 0; // Check if servo is active (enabled)
   virtual void enable() = 0;          // Enable the servo (start sending PWM signal)

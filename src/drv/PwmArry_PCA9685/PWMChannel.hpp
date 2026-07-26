@@ -17,7 +17,7 @@ class ProtoPWMArray {
     virtual        void setDutyCycle(uint8_t channel, DutyCycle_t dutyCycle, DutyCycle_t phaseShift = 0) = 0;
     virtual DutyCycle_t getDutyCycle(uint8_t channel) = 0;
 
-    virtual         void setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0) = 0;    // Set the PWM duty cycle
+    virtual         void setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = us(0)) = 0;    // Set the PWM duty cycle
     virtual MicroSeconds getDuration(uint8_t channel) = 0; // Method to get the PWM duty cycle for a specific channel
 };
 

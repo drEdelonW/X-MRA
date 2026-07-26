@@ -4,6 +4,21 @@
 
 #define  PCA_Register uint8_t   // TODO: make it enum
 
+typedef enum : uint8_t {
+    PwmCh0, PwmCh1, PwmCh2, PwmCh3,
+    PwmCh4, PwmCh5, PwmCh6, PwmCh7,
+    PwmCh8, PwmCh9,
+
+    PwmCh10 = 10, PwmChA = 10,
+    PwmCh11 = 11, PwmChB = 11,
+    PwmCh12 = 12, PwmChC = 12,
+    PwmCh13 = 13, PwmChD = 13,
+    PwmCh14 = 14, PwmChE = 14,
+    PwmCh15 = 15, PwmChF = 15,
+
+    PwmChNum
+} PwmChannel;
+
 class PCA9685 : public ProtoPWMArray{
   public:
     PCA9685(uint8_t bus, uint8_t address, Hertz freq = (Hertz)300);
@@ -17,14 +32,15 @@ class PCA9685 : public ProtoPWMArray{
     void  setFreq_Hz(Hertz freq) override;
     Hertz getFreq_Hz() override;
 
-    PWMChannel PWM[16];
+    PWMChannel PWM[PwmChNum];
 
     void        setDutyCycle(uint8_t channel, DutyCycle_t dutyCycle, DutyCycle_t phaseShift = 0)  override;
     DutyCycle_t getDutyCycle(uint8_t channel) override;
 
-    void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = 0)  override;
+    void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = us(0))  override;
     MicroSeconds getDuration(uint8_t channel) override;
 
+    /* PCA speecific API*/
     void setInversion(uint8_t channel, bool inverted);
     bool getInversion(uint8_t channel);
 
@@ -35,7 +51,7 @@ class PCA9685 : public ProtoPWMArray{
     int         _fd;
     uint8_t     _i2c_bus;
     uint8_t     _i2c_address;
-    bool        _channelInversion[16];
+    bool        _channelInversion[PwmChNum];
 
     Hertz       _freq;
     Hertz       _readFreq_Hz();

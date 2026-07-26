@@ -12,7 +12,7 @@ float fSafe = -90.0;
 float tPark = -80.0;
 float tSafe = -30.0;
 
-#define PHASE_DUR  (1000000)
+#define PHASE_DUR  us(1000000)
 
 Vector3D ArmSQNC [] = {
     {cPark, fPark, tPark},
@@ -29,13 +29,13 @@ bool ArachnidBody::animAngDeg(Vector3D from ,Vector3D to, MicroSeconds duration)
     int8_t pattern = 0;
     MicroSeconds tsStart = microsNow();
     MicroSeconds tsEnd = tsStart + duration;
-    MicroSeconds now ;
+    MicroSeconds now(0) ;
     Vector3D delta = to - from;
     setPatMask(pattern, LEGS_ALL);
     for (
         Vector3D curPose = from;
         (now = microsNow()) < tsEnd;
-        curPose = from + (delta * (now - tsStart) / (duration * 1.0f))
+        curPose = from + (delta * ((now - tsStart) / (duration * 1.0f)))
     ) {
         // curPose.print(); LOG("now[%lld]\n", now);
         PATTERN_LEG {

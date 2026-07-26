@@ -1,12 +1,12 @@
 #pragma once
 
 #ifdef __cplusplus
-  extern "C" {
+extern "C" {
 #endif
 
-void xarm();
-void xdisarm();
+  void xArm();
+  void xDisarm();
 
 #ifdef __cplusplus
-  }
+}
 #endif

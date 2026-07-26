@@ -14,16 +14,16 @@
 
 MicroSeconds PCA9685::_getDutyCyclePeriodUs(Hertz frequencyHz) {
     if (frequencyHz <= 0.0f)
-        return 0.0f;
-    return 1000000.0f / frequencyHz;
+        return us(0);
+    return us(1000000.0f / frequencyHz);
 }
 
 void PCA9685::setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift){
     // LOG("setDur frq[%f]Hz dur[%ld]us per[%ld]us\n", _freq, duration, _periodUs);
-    setDutyCycle(channel, (1.0f * duration) / _periodUs );
+    setDutyCycle(channel, (1.f * duration) / _periodUs );
     // setDutyCycle(channel, /*(1.0f * duration) / _periodUs*/0.1 );
     // setDutyCycle(channel, /*(1.0f * duration) / _periodUs*/0.05 );
 }
 
-MicroSeconds PCA9685::getDuration(uint8_t channel){ return 0;}
+MicroSeconds PCA9685::getDuration(uint8_t channel){ return us(0);}
 

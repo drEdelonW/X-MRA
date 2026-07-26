@@ -2,23 +2,20 @@
 #include "proto_pwmServo.hpp"
 #include "proto_PWM.hpp"
 
-#define TowerPro_MG996R_cfg     400, 2600, deg(210), deg(102)
-#define TowerPro_MG90S_cfg      650, 2400, deg(185), deg(92)
+#define TowerPro_MG996R_cfg     us(400), us(2600), deg(210), deg(102)
+#define TowerPro_MG90S_cfg      us(650), us(2400), deg(185), deg(92)
 
-#define HailangNiao_MG996R_cfg  525, 2500, deg(220), deg(115)
-
-#define CW  true
-#define CCW false
+#define HailangNiao_MG996R_cfg  us(525), us(2500), deg(220), deg(115)
 
 class MG996R : public ProtoServo {
 public:
     MG996R(
         ProtoPWM& pwm,
-        MicroSeconds minPulse   = 650,
-        MicroSeconds maxPulse   = 2400,
+        MicroSeconds minPulse   = us(650),
+        MicroSeconds maxPulse   = us(2400),
         Angle maxAngle          = deg(180.0f),
         Angle offset            = deg(90.0f),
-        bool reversed           = CW
+        rotDir_t reversed       = CW
     );
 
     void  setAngle(const Angle& angle) override;
@@ -27,7 +24,7 @@ public:
     void  setAngleOffset(const Angle& angle) override;
     Angle getAngleOffset() const override;
 
-    void setReversion(const bool isReversed) override;
+    void setReversion(const rotDir_t isReversed) override;
 
     void enable() override;
     void disable() override;
@@ -41,7 +38,7 @@ private:
     Angle _maxAngle;
     Angle _offset;
 
-    bool  _reversed;
+    rotDir_t _reversed;
     Angle _currentAngle;
     bool  _enabled;
 };

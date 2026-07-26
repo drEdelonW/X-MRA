@@ -5,6 +5,10 @@
 #include "robot_spec.hpp"
 #include "Vector3d.hpp"
 
+#include "PA_PCA9685.hpp"
+extern PCA9685 PWMarray[];
+
+
 static float _curAngle = 0;
 
 #define NUM_LEGS    (6)

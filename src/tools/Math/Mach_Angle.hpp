@@ -3,8 +3,13 @@
 #include <stdint.h>
 #include "MachTypes.hpp"
 
-#define deg(v)  Angle::fromDegrees(v)
-#define rad(v)  Angle::fromRadians(v)
+typedef enum : bool {
+    CCW = false,    // CounterClockWise
+    CW  = true      // ClockWise
+} rotDir_t;
+
+#define deg(v)  Angle::fromDegrees(v) /* set float as Degrees */
+#define rad(v)  Angle::fromRadians(v) /* set float as Radians */
 
 // Local fallback clamp
 inline float clamp(float val, float minVal, float maxVal) {
@@ -57,9 +62,9 @@ public:
     // static Angle min(const Angle& a, const Angle& b);
     // static Angle max(const Angle& a, const Angle& b);
 
-    // static const Angle Zero;
+    // static const Angle aZero;
     // static const Angle Pi;
     // static const Angle TwoPi;
 private:
-    float radians_;
+    float _aRadians;
 };
