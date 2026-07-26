@@ -1,5 +1,6 @@
 #pragma once
 
+#if 0
 #define ASCII_NULL        (0x00)  /* Null terminator (end of the string) */
 #define ASCII_NEWLINE     (0x0A)  /* Line Feed (LF) (\n) */
 #define ASCII_CARRIAGE    (0x0D)  /* Carriage Return (CR) (\r) */
@@ -7,6 +8,18 @@
 #define ASCII_BACKSPACE   (0x08)  /* Backspace */
 #define ASCII_BELL        (0x07)  /* Bell (sound signal) */
 #define ASCII_ESCAPE      (0x1B)  /* Escape (ESC) */
+#else
+typedef enum {
+    ASCII_NULL        = 0x00,  /* Null terminator (end of the string) */
+    ASCII_NEWLINE     = 0x0A,  /* Line Feed (LF) (\n) */
+    ASCII_CARRIAGE    = 0x0D,  /* Carriage Return (CR) (\r) */
+    ASCII_TAB         = 0x09,  /* Horizontal Tab (\t) */
+    ASCII_BACKSPACE   = 0x08,  /* Backspace */
+    ASCII_BELL        = 0x07,  /* Bell (sound signal) */
+    ASCII_ESCAPE      = 0x1B,  /* Escape (ESC) */
+} ASCII_t; // TODO: should be uint8_t
+#endif
+
 #define STAB              "  "
 
 #define ESC     "\x1B["

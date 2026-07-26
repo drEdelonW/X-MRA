@@ -45,22 +45,22 @@ no need to think in robot coordinates.
 
 ```
 ┌─────────────────────────────────────┐
-│           ArachnidBody              │  ← Choreographer / mission logic
+│           ArachnidBody              │  <- Choreographer / mission logic
 │  ┌─────────────┐  ┌──────────────┐  │
 │  │ Coordinator │  │Choreographer │  │
 │  │ (pose math) │  │ (gait/anim)  │  │
 │  └─────────────┘  └──────────────┘  │
-│         │ tip position commands      │
+│         │ tip position commands     │
 └─────────┼───────────────────────────┘
           │  (shared bus — CAN / RS-485, TBD)
     ┌─────┴──────────────────────────────┐
-    │  Leg Ganglion × 6  (STM32F4xx)    │
-    │  ┌──────────┐  ┌────────────────┐ │
-    │  │  FK / IK │  │ Joint drivers  │ │
-    │  └──────────┘  └────────────────┘ │
-    │  ┌──────────┐  ┌────────────────┐ │
-    │  │ToF sensor│  │  Local battery │ │
-    │  └──────────┘  └────────────────┘ │
+    │  Leg Ganglion x 6  (STM32F4xx)     │
+    │  ┌──────────┐  ┌────────────────┐  │
+    │  │  FK / IK │  │ Joint drivers  │  │
+    │  └──────────┘  └────────────────┘  │
+    │  ┌──────────┐  ┌────────────────┐  │
+    │  │ToF sensor│  │  Local battery │  │
+    │  └──────────┘  └────────────────┘  │
     └────────────────────────────────────┘
 ```
 
@@ -102,9 +102,9 @@ joint angles directly. It sets tip positions; legs solve the IK internally.
 |---|---|
 | SBC | Raspberry Pi Zero 2W |
 | PWM array | PCA9685 (16-ch, I2C) |
-| Servos | MG996R (×18, 3 per leg) |
+| Servos | MG996R (x18, 3 per leg) |
 | Frame | Aluminium kit (AliExpress) |
-| Power | Lab PSU → DC-DC buck (servo rail) + separate digital rail |
+| Power | Lab PSU -> DC-DC buck (servo rail) + separate digital rail |
 
 **Planned / next iteration:**
 
@@ -119,11 +119,11 @@ joint angles directly. It sets tip positions; legs solve the IK internally.
 
 ## Kinematics
 
-Three-segment leg: **coxa → femur → tibia**
+Three-segment leg: **coxa -> femur -> tibia**
 
 ```
-FK:  joint angles  →  tip position (Cartesian)
-IK:  tip position  →  joint angles (analytical, closed-form)
+FK:  joint angles  ->  tip position (Cartesian)
+IK:  tip position  ->  joint angles (analytical, closed-form)
 ```
 
 Coordinate frames:

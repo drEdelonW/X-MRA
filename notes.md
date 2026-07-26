@@ -1,5 +1,4 @@
 # X-MRA как "eXperimental Modular Robotic Arachnid"
-
     http://10.0.3.12:8080
     http://10.0.3.58
 
@@ -38,9 +37,11 @@ cd /opt/hexafpv/ && motion -c cam.conf
     0x68 DS RTC clock
 
 # BlueTooth joystick
-    sudo apt-get update
-    sudo apt-get install bluez bluez-tools
-    sudo apt-get install bluez libbluetooth-dev
+```bash
+sudo apt-get update
+sudo apt-get install bluez bluez-tools
+sudo apt-get install bluez libbluetooth-dev
+```
 
     [10:18:49:62:5C:3C] hacky DS
     [AC:36:1B:5C:14:6E] black DS
@@ -64,62 +65,66 @@ cd /opt/hexafpv/ && motion -c cam.conf
     exit
 
 # Joystick test
-    sudo apt install joystick
-    jstest /dev/input/js0
+```bash
+sudo apt install joystick
+jstest /dev/input/js0
 
-    #sudo apt install evtest
-    #sudo evtest
+#sudo apt install evtest
+#sudo evtest
+```
 
 # SDL2 dev
-    sudo apt-get update
-    sudo apt-get install libsdl2-dev
-
+```bash
+sudo apt-get update
+sudo apt-get install libsdl2-dev
+```
 
 
     Да, Raspberry Pi может обрабатывать прерывания от GPIO (General Purpose Input/Output) в операционной системе, основанной на Debian (например, Raspberry Pi OS), с использованием языка программирования C. Обработка прерываний GPIO позволяет Raspberry Pi реагировать на изменения состояния на GPIO пинах в реальном времени, что полезно для различных приложений, таких как обработка сигналов от датчиков, кнопок и других устройств.
 
     Вот базовый пример того, как можно обработать прерывание GPIO на Raspberry Pi с использованием библиотеки WiringPi в языке C:
 
-    Шаг 1: Установка WiringPi
+# Шаг 1: Установка WiringPi
     Для начала убедитесь, что у вас установлена библиотека WiringPi. Эта библиотека предоставляет функции для работы с GPIO на Raspberry Pi. Установить её можно следующей командой:
 
-    bash
-    Copy code
+```bash
     sudo apt-get install wiringpi
-    Шаг 2: Пример кода на C для обработки прерываний GPIO
-    c
-    Copy code
-    #include <wiringPi.h>
-    #include <stdio.h>
+```
 
-    // Функция обратного вызова, вызываемая при срабатывании прерывания
-    void interruptHandler(void) {
-        printf("Прерывание обнаружено!\n");
+# Шаг 2: Пример кода на C для обработки прерываний GPIO
+```c
+#include <wiringPi.h>
+#include <stdio.h>
+
+// Функция обратного вызова, вызываемая при срабатывании прерывания
+void interruptHandler(void) {
+    printf("Прерывание обнаружено!\n");
+}
+
+int main(void) {
+    // Инициализация WiringPi
+    wiringPiSetup();
+
+    // Номер GPIO пина (например, GPIO 17 как 0 в WiringPi)
+    int pin = 0;
+
+    // Установка режима пина на вход
+    pinMode(pin, INPUT);
+
+    // Включение подтягивающего резистора
+    pullUpDnControl(pin, PUD_UP);
+
+    // Установка прерывания на падающий фронт сигнала
+    wiringPiISR(pin, INT_EDGE_FALLING, &interruptHandler);
+
+    // Бесконечный цикл, чтобы программа продолжала работать
+    while(1) {
+        delay(1000); // Задержка в 1 секунду
     }
 
-    int main(void) {
-        // Инициализация WiringPi
-        wiringPiSetup();
-
-        // Номер GPIO пина (например, GPIO 17 как 0 в WiringPi)
-        int pin = 0;
-
-        // Установка режима пина на вход
-        pinMode(pin, INPUT);
-
-        // Включение подтягивающего резистора
-        pullUpDnControl(pin, PUD_UP);
-
-        // Установка прерывания на падающий фронт сигнала
-        wiringPiISR(pin, INT_EDGE_FALLING, &interruptHandler);
-
-        // Бесконечный цикл, чтобы программа продолжала работать
-        while(1) {
-            delay(1000); // Задержка в 1 секунду
-        }
-
-        return 0;
-    }
+    return 0;
+}
+```
     В этом примере кода используется библиотека WiringPi для установки прерывания на GPIO пине. Когда на пине обнаруживается изменение состояния (например, от HIGH до LOW), вызывается функция interruptHandler.
 
     Шаг 3: Компиляция и запуск
@@ -144,3 +149,10 @@ origin  gituser@KnowBase.local:/repos/HexaFPV.git (push)
 
 remote set-url origin http://GitLab.local/child_edu/HexaFPV.git
 
+# edits, commits
+```bash
+git pull                        # from gitlab
+# edits, commits
+git push                        # to gitlab
+git push github master --force  # mirror
+```
