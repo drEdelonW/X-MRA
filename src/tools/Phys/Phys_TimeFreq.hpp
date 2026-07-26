@@ -1,5 +1,4 @@
 #pragma once
-using Hertz = float;
 
 #include <stdint.h>
 #include <time.h>
@@ -69,3 +68,45 @@ inline MilliSeconds millisNow() {
 // cross-type conversion — free functions, both structs already complete here
 constexpr MicroSeconds MsToUs(MilliSeconds ms) { return MicroSeconds(ms.msValue * 1000ULL); }
 constexpr MilliSeconds UsToMs(MicroSeconds us) { return MilliSeconds(us.usValue / 1000ULL); }
+
+#if 0
+using Hertz = float;
+#else
+#define Hz(v)   Hertz(v)     /* Hertz shortcut */
+struct Hertz {  /* Frequency in cycles per second */
+    explicit constexpr Hertz(float v) : hzValue(v) {}
+    float hzValue;
+
+    constexpr Hertz operator+(Hertz o) const { return Hertz(hzValue + o.hzValue); }
+    constexpr Hertz operator-(Hertz o) const { return Hertz(hzValue - o.hzValue); }
+    constexpr Hertz operator*(float scale) const { return Hertz(hzValue * scale); }
+    constexpr Hertz operator/(float scale) const { return Hertz(hzValue / scale); }
+
+    constexpr bool operator< (Hertz o) const { return hzValue <  o.hzValue; }
+    constexpr bool operator<=(Hertz o) const { return hzValue <= o.hzValue; }
+    constexpr bool operator> (Hertz o) const { return hzValue >  o.hzValue; }
+    constexpr bool operator>=(Hertz o) const { return hzValue >= o.hzValue; }
+    constexpr bool operator==(Hertz o) const { return hzValue == o.hzValue; }
+    constexpr bool operator!=(Hertz o) const { return hzValue != o.hzValue; }
+};
+constexpr Hertz operator*(float scale, Hertz v) { return v * scale; }
+
+// operator/(Hertz, Hertz) -> float, ratio of two frequencies, dimensionless
+constexpr float operator/(Hertz a, Hertz b) { return a.hzValue / b.hzValue; }
+
+// operator/(Hertz, int) -> Hertz, divide frequency by integer divisor (prescaler etc.)
+constexpr Hertz operator/(Hertz a, int scale) { return Hertz(a.hzValue / static_cast<float>(scale)); }
+
+// operators with a bare number (0.5, 1, etc.) — explicit overload with float
+constexpr Hertz operator+(Hertz a, float v) { return Hertz(a.hzValue + v); }
+constexpr Hertz operator-(Hertz a, float v) { return Hertz(a.hzValue - v); }
+
+// period is the reciprocal of frequency: T = 1/f
+constexpr MicroSeconds periodUsOf(Hertz freq)         { return MicroSeconds(static_cast<uint64_t>(1000000.0f / freq.hzValue)); }
+constexpr Hertz frequencyOfUs(MicroSeconds period)    { return Hertz(1000000.0f / static_cast<float>(period.usValue)); }
+
+constexpr MilliSeconds periodMsOf(Hertz freq)         { return MilliSeconds(static_cast<uint64_t>(1000.0f    / freq.hzValue)); }
+constexpr Hertz frequencyOfMs(MilliSeconds period)    { return Hertz(1000.0f    / static_cast<float>(period.msValue)); }
+
+
+#endif

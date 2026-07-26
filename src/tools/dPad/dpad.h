@@ -16,19 +16,19 @@
 extern uint64_t _keyBuff;
 
 extern struct termios orig;
+typedef void (*KeyFunction)(void);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void dpad();
+    void dpad();
 
-void enableRawMode(struct termios* orig);
-void restoreTerminal(const struct termios* orig);
+    void enableRawMode(struct termios* orig);
+    void restoreTerminal(const struct termios* orig);
 
-typedef void (*KeyFunction)(void);
 
-extern KeyFunction fArray[KEY_COUNT];
+    extern KeyFunction fArray[KEY_COUNT];
 
 #ifdef __cplusplus
 }

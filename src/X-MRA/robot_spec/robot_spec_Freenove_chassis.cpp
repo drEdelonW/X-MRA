@@ -1,10 +1,5 @@
 #include "robot_spec.hpp"
 
-// #include "PS_MG996R.hpp"
-// extern MG996R Servo[];
-
-// #include "ArachnidLeg.hpp"
-// extern ArachnidLeg leg[];
 
 #include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
@@ -31,9 +26,9 @@ MG996R Servo[] = {
     { PWMarray[0].PWM[PwmCh7],  CFG_1, CCW}, //Coxa
 
     //MidleRight
-    { PWMarray[1].PWM[PwmCh8],  CFG_1, CCW },//Tibia
-    { PWMarray[1].PWM[PwmCh9],  CFG_1, CCW },//Femur
-    { PWMarray[1].PWM[PwmChA],  CFG_1, CCW },//Coxa
+    { PWMarray[1].PWM[PwmCh8],  CFG_1, CCW}, //Tibia
+    { PWMarray[1].PWM[PwmCh9],  CFG_1, CCW}, //Femur
+    { PWMarray[1].PWM[PwmChA],  CFG_1, CCW}, //Coxa
 
     //BackLeft
     { PWMarray[0].PWM[PwmCh0],  CFG_1, CW }, //Tibia

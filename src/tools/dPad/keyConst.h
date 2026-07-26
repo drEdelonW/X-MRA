@@ -23,6 +23,7 @@ typedef enum {
     KEY_PAGE_DOWN,
     KEY_HOME,
     KEY_END,
+
     KEY_BACKSPACE,
     KEY_ENTER,
     KEY_SPACE,

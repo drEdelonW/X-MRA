@@ -7,12 +7,12 @@
 
 
 Hertz PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
-    float oscFreq = OSC_FREQ_HZ;
+    Hertz oscFreq = Hz(OSC_FREQ_HZ);
     float prescaleVal = oscFreq / (MAX_VAL * desiredFreq) - 1;
     int prescale = std::round(prescaleVal); // Округляем до ближайшего целого
 
     // Обратное преобразование для получения реальной частоты
-    float realFreq = oscFreq / (MAX_VAL * (prescale + 1));
+    Hertz realFreq = oscFreq / (MAX_VAL * (prescale + 1));
 
     return realFreq;
 }
@@ -20,12 +20,12 @@ Hertz PCA9685::getRealFrequencyHz(Hertz desiredFreq) {
 void PCA9685::setFreq_Hz(Hertz freq) {
     _freq = getRealFrequencyHz(freq);
     _periodUs = _getDutyCyclePeriodUs(_freq);
-    Hertz prescale_val = (
+    Hertz prescale_val = Hz((
         (OSC_FREQ_HZ / MAX_VAL) /
-        float(freq)
-    ) - 1.0 ;
+        freq.hzValue
+    ) - 1.0) ;
 
-    PCA_Register prescale = floor(prescale_val + 0.5);
+    PCA_Register prescale = floor(prescale_val.hzValue + 0.5);
 
     PCA_Register old_mode = _readRegister(MODE1);
     // Enter sleep
@@ -49,7 +49,8 @@ Hertz PCA9685::getFreq_Hz() {
 }
 
 Hertz PCA9685::_readFreq_Hz() {
-    return
+    return Hz(
         (OSC_FREQ_HZ / MAX_VAL) /
-        (_readRegister(PRE_SCALE) + 1);
+        (_readRegister(PRE_SCALE) + 1)
+    );
 }

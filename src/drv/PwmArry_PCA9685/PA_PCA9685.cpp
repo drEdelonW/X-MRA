@@ -11,6 +11,7 @@ PCA9685::PCA9685(uint8_t bus, uint8_t address, Hertz freq) :
         PWMChannel(*this, PwmChC),  PWMChannel(*this, PwmChD),  PWMChannel(*this, PwmChE),  PWMChannel(*this, PwmChF)
     },
     _channelInversion{false},
+    _freq(Hz(0.f)),
     _periodUs(us(0))
 {
     _busInit();

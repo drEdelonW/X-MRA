@@ -13,9 +13,9 @@
 
 
 MicroSeconds PCA9685::_getDutyCyclePeriodUs(Hertz frequencyHz) {
-    if (frequencyHz <= 0.0f)
+    if (frequencyHz <= Hz(0.f))
         return us(0);
-    return us(1000000.0f / frequencyHz);
+    return periodUsOf(frequencyHz);
 }
 
 void PCA9685::setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift){
