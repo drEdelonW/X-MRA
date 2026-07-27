@@ -5,9 +5,30 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 
+typedef enum {
+    I2C_DEV_UNKNOWN,
+
+    I2C_DEV_0x40 = 0x40,
+    I2C_DEV_0x41 = 0x41,
+    I2C_DEV_0x48 = 0x48,
+    I2C_DEV_0x68 = 0x68,
+    I2C_DEV_0x70 = 0x70,
+
+    I2C_DEV_COUNT
+} I2cDevice_t;
+
+static cStringRO i2cDeviceName[I2C_DEV_COUNT] = {
+    [I2C_DEV_UNKNOWN] = "Unknown",
+    [I2C_DEV_0x40]    = "PCA9685-A0 [0x40]",
+    [I2C_DEV_0x41]    = "PCA9685-A1 [0x41]",
+    [I2C_DEV_0x48]    = "ADS7830-A0 [0x48]",
+    [I2C_DEV_0x68]    = "MPU6050-A0 [0x68]",
+    [I2C_DEV_0x70]    = "PCA9685 All-Call [0x70]",
+};
+
+static cStringRO device = "/dev/i2c-1"; // Change to "/dev/i2c-0" if needed
 // Scan all I2C addresses on the bus
 int busScan() {
-    const char *device = "/dev/i2c-1"; // Change to "/dev/i2c-0" if needed
     int file;
 
     if ((file = open(device, O_RDWR)) < 0) {
@@ -22,9 +43,12 @@ int busScan() {
         }
 
         // Use a simple read operation to check for device presence
-        char buf;
+        int8_t buf;
         if (read(file, &buf, 1) == 1) {
-            printf("Found device at address 0x%02x\n", addr);
+            if (i2cDeviceName[addr]) 
+                printf("Found device \"%s\"\n", i2cDeviceName[addr]);
+            else
+                printf("Found device at address 0x%02x\n", addr);
         }
     }
 
@@ -38,11 +62,10 @@ int busScan() {
 #define NUM_REGS 0x45 // Number of registers to read
 
 // Dump register contents of a specific I2C device
-int dumpAddr(char addr) {
+int dumpAddr(uint8_t addr) {
     int file;
-    const char *device = "/dev/i2c-1";
-    unsigned char buffer[128] = {0};
-    unsigned char reg[3];
+    uint8_t buffer[128] = {0};
+    uint8_t reg[3];
     reg[0] = REG_ADDR;
 
     // Open the I2C bus
@@ -84,7 +107,10 @@ int dumpAddr(char addr) {
     }
 
     // Print collected data
-    printf("Data from I2C device at address 0x%02x:\n", addr);
+    if (i2cDeviceName[addr]) 
+        printf("Data from I2C device \"%s\":\n", i2cDeviceName[addr]);
+    else
+        printf("Data from I2C device at address 0x%02x:\n", addr);
     for (int i = 0; i < sizeof(buffer); i++) {
         printf("0x%02x ", buffer[i]);
         if ((i + 1) % 16 == 0)

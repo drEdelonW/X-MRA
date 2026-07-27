@@ -8,42 +8,42 @@
 
 #include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
-    {1, 0x40},
-    {1, 0x41}
+    {1, PCAaddr_0},
+    {1, PCAaddr_1}
 };
 
 #include "PS_MG996R.hpp"
 #define CFG_1 TowerPro_MG996R_cfg
 MG996R Servo[] = {
     //FrontLeft
-    { PWMarray[0].PWM[13], CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[14], CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[15], CFG_1, CCW}, //Coxa
+    { PWMarray[0].PWM[PwmChD], CFG_1, CW }, //Tibia
+    { PWMarray[0].PWM[PwmChE], CFG_1, CW }, //Femur
+    { PWMarray[0].PWM[PwmChF], CFG_1, CCW}, //Coxa
 
     //FrontRight
-    { PWMarray[1].PWM[0],  CFG_1, CCW}, //Tibia
-    { PWMarray[1].PWM[1],  CFG_1, CCW}, //Femur
-    { PWMarray[1].PWM[2],  CFG_1, CCW}, //Coxa
+    { PWMarray[1].PWM[PwmCh0], CFG_1, CCW}, //Tibia
+    { PWMarray[1].PWM[PwmCh1], CFG_1, CCW}, //Femur
+    { PWMarray[1].PWM[PwmCh2], CFG_1, CCW}, //Coxa
 
     //MidleLeft
-    { PWMarray[0].PWM[5], CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[6], CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[7],  CFG_1, CCW}, //Coxa
+    { PWMarray[0].PWM[PwmCh5], CFG_1, CW }, //Tibia
+    { PWMarray[0].PWM[PwmCh6], CFG_1, CW }, //Femur
+    { PWMarray[0].PWM[PwmCh7], CFG_1, CCW}, //Coxa
 
     //MidleRight
-    { PWMarray[1].PWM[8],  CFG_1, CCW },//Tibia
-    { PWMarray[1].PWM[9],  CFG_1, CCW },//Femur
-    { PWMarray[1].PWM[10],  CFG_1, CCW },//Coxa
+    { PWMarray[1].PWM[PwmCh8], CFG_1, CCW}, //Tibia
+    { PWMarray[1].PWM[PwmCh9], CFG_1, CCW}, //Femur
+    { PWMarray[1].PWM[PwmChA], CFG_1, CCW}, //Coxa
 
     //BackLeft
-    { PWMarray[0].PWM[0],  CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[1],  CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[2],  CFG_1, CCW}, //Coxa
+    { PWMarray[0].PWM[PwmCh0], CFG_1, CW }, //Tibia
+    { PWMarray[0].PWM[PwmCh1], CFG_1, CW }, //Femur
+    { PWMarray[0].PWM[PwmCh2], CFG_1, CCW}, //Coxa
 
     //BackRight
-    { PWMarray[1].PWM[13],  CFG_1, CCW}, //Tibia
-    { PWMarray[1].PWM[14],  CFG_1, CCW}, //Femur
-    { PWMarray[1].PWM[15],  CFG_1, CCW}, //Coxa
+    { PWMarray[1].PWM[PwmChD], CFG_1, CCW}, //Tibia
+    { PWMarray[1].PWM[PwmChE], CFG_1, CCW}, //Femur
+    { PWMarray[1].PWM[PwmChF], CFG_1, CCW}, //Coxa
 };
 
 

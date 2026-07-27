@@ -7,6 +7,9 @@
 
 #define HailangNiao_MG996R_cfg  us(525), us(2500), deg(220), deg(115)
 
+#define FreeNove_noname_cfg     us(650), us(2400), deg(185), deg(92)
+
+
 class MG996R : public ProtoServo {
 public:
     MG996R(

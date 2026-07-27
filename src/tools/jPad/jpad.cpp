@@ -2,7 +2,7 @@
 #include "terminal_tools.h"
 #include "joystick.hpp"
 #include <unistd.h>  //usleep
-#include "robot_spec.hpp"
+#include "X-MRA.hpp"
 
 void jpad() {
     bool _run = GCInit();;

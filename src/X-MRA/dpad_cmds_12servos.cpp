@@ -1,7 +1,7 @@
 #include "dpad.h"
 #include "common_tools.h"
 
-#include "robot_spec.hpp"
+#include "X-MRA.hpp"
 
 #include "PA_PCA9685.hpp"   // PCA9685
 extern PCA9685 PWMarray[];
@@ -9,11 +9,17 @@ extern PCA9685 PWMarray[];
 #include "PS_MG996R.hpp"    // MG996R
 extern MG996R Servo[];
 
+#if 0
+#   define servoNum DIMOF(Servo) 
+#else
+#   define servoNum 18
+#endif
+
 static float _curAngle = 0;
 #define SV_ALL(v)  \
     LOG("[%.2f]\n", (v)); \
     _curAngle = (v); \
-    for(int i = 0; i < DIMOF(Servo); i++) {\
+    for(int i = 0; i < servoNum; i++) {\
         Servo[i].setAngle(deg(v));\
     }
 
@@ -21,18 +27,18 @@ void _on()  {
     LOG("ON\n");
     PWMarray[0].wakeUp();
     PWMarray[1].wakeUp();
-    PWMarray[0].setFreq_Hz((Hertz)50);
-    PWMarray[1].setFreq_Hz((Hertz)50);
+    PWMarray[0].setFreq_Hz(Hz(50));
+    PWMarray[1].setFreq_Hz(Hz(50));
 }
 void _off() {
     LOG("OFF\n");
     PWMarray[0].sleepMode();
     PWMarray[1].sleepMode();
 }
-void _1()  { SV_ALL(  0.0f) }
+void _1()  { LOG("1\n"); SV_ALL(  0.0f) }
 void _2()  { SV_ALL(-10.0f) }
 void _3()  { SV_ALL(-20.0f) }
-void _4()  { SV_ALL(-30.0f) }
+void _4()  {  LOG("4\n"); SV_ALL(-30.0f) }
 void _5()  { SV_ALL(-40.0f) }
 void _6()  { SV_ALL(-50.0f) }
 void _7()  { SV_ALL(-60.0f) }
@@ -53,8 +59,8 @@ void _right() { SV_ALL(_curAngle + 1) }
 KeyFunction fArray[KEY_COUNT] = {
     [KEY_UNKNOWN] = 0,
 
-    [KEY_LEFT] = _left,
-    [KEY_RIGHT] = _right,
+    [KEY_LEFT]          = _left,
+    [KEY_RIGHT]         = _right,
     [KEY_UP] = 0,
     [KEY_DOWN] = 0,
 
@@ -90,24 +96,24 @@ KeyFunction fArray[KEY_COUNT] = {
     [KEY_F11] = 0,
     [KEY_F12] = 0,
 
-    [KEY_0] = _10,
-    [KEY_1] = _1,
-    [KEY_2] = _2,
-    [KEY_3] = _3,
-    [KEY_4] = _4,
-    [KEY_5] = _5,
-    [KEY_6] = _6,
-    [KEY_7] = _7,
-    [KEY_8] = _8,
-    [KEY_9] = _9,
+    [KEY_0]     = _10,
+    [KEY_1]     = _1,
+    [KEY_2]     = _2,
+    [KEY_3]     = _3,
+    [KEY_4]     = _4,
+    [KEY_5]     = _5,
+    [KEY_6]     = _6,
+    [KEY_7]     = _7,
+    [KEY_8]     = _8,
+    [KEY_9]     = _9,
 
     [KEY__0] = 0,
-    [KEY__1] = _on,
-    [KEY__2] = _off,
-    [KEY__3] = _1on,
-    [KEY__4] = _1off,
-    [KEY__5] = _2on,
-    [KEY__6] = _2off,
+    [KEY__1]    = _on,
+    [KEY__2]    = _off,
+    [KEY__3]    = _1on,
+    [KEY__4]    = _1off,
+    [KEY__5]    = _2on,
+    [KEY__6]    = _2off,
     [KEY__7] = 0,
     [KEY__8] = 0,
     [KEY__9] = 0,

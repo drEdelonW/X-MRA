@@ -34,6 +34,8 @@ void dpad() {
                 default:
                     if (fArray[lastKey] != NULL) {
                         fArray[lastKey]();
+                    } else {
+                        LOG("[%s]\t", getKeyName(lastKey));
                     }
                     break;
             }

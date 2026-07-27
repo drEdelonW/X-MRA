@@ -41,11 +41,19 @@ void PCA9685::_busInit() {
         (read(_fd, &value, 1) != 1)
     ) {
         fprintf(stderr,
-            "[ERROR] %s: Device not responding at I2C address 0x%02X on bus %d. errno=%d (%s)\n",
-            __func__, _i2c_address, _i2c_bus, errno, strerror(errno)
+            "[ERROR] %s: Device not responding at "
+            "I2C address [0x%02X] on bus %d. "
+            "errno=%d (%s)\n",
+            __func__,
+            _i2c_address, _i2c_bus,
+            errno, strerror(errno)
         );
         close(_fd); _fd = -1;
+#if 0
+        exit(-1); 
+#else
         return;
+#endif
     }
 
     // Success

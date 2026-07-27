@@ -1,9 +1,5 @@
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef enum {
     KEY_UNKNOWN,
 
@@ -130,16 +126,20 @@ typedef enum {
     KEY_COUNT
 } Key;
 
+#include "types.h"
 typedef struct {
-    Key key;
-    const char* name;
+    // Key key;
+    cStringRO name;
 } KeyInfo;
 
 extern const KeyInfo keyInfos[KEY_COUNT];
 
-const char* getKeyName(Key key);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-void dpad();
+    cStringRO getKeyName(Key key);
+    void dpad();
 
 #ifdef __cplusplus
 }

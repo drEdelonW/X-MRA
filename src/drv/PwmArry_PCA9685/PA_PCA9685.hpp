@@ -5,9 +5,8 @@
 #define  PCA_Register uint8_t   // TODO: make it enum
 
 typedef enum : uint8_t {
-    PwmCh0, PwmCh1, PwmCh2, PwmCh3,
-    PwmCh4, PwmCh5, PwmCh6, PwmCh7,
-    PwmCh8, PwmCh9,
+    PwmCh0, PwmCh1, PwmCh2, PwmCh3, PwmCh4,
+    PwmCh5, PwmCh6, PwmCh7, PwmCh8, PwmCh9,
 
     PwmCh10 = 10, PwmChA = 10,
     PwmCh11 = 11, PwmChB = 11,
@@ -19,9 +18,15 @@ typedef enum : uint8_t {
     PwmChNum
 } PwmChannel;
 
+// #define PCA_Addr uint8_t   // TODO: make it enum
+typedef enum : uint8_t {
+  PCAaddr_0 = 0x40,
+  PCAaddr_1 = 0x41 // TODO: fill according to datasheet
+} PCA_Addr;
+
 class PCA9685 : public ProtoPWMArray{
   public:
-    PCA9685(uint8_t bus, uint8_t address, Hertz freq = Hz(300.f));
+    PCA9685(uint8_t bus, PCA_Addr address, Hertz freq = Hz(300.f));
    ~PCA9685();
 
     void wakeUp() override;

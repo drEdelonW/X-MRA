@@ -1,14 +1,14 @@
-#include "robot_spec.hpp"
-
+#include "X-MRA.hpp"
 
 #include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
-    {1, 0x40},
-    {1, 0x41}
+    {1, PCAaddr_0},
+    {1, PCAaddr_1}
 };
 
 #include "PS_MG996R.hpp"
-#define CFG_1 TowerPro_MG996R_cfg
+// #define CFG_1 TowerPro_MG996R_cfg
+#define CFG_1 FreeNove_noname_cfg
 MG996R Servo[] = {
     //FrontLeft
     { PWMarray[0].PWM[PwmChD],  CFG_1, CW }, //Tibia

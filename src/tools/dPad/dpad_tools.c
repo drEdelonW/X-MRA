@@ -19,7 +19,7 @@ void restoreTerminal(const struct termios* orig) {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, orig);
 }
 
-bool isKeyPressed(void) {
+bool isKeyPressed() {
 uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
     uint8_t *ptr = base;
     uint8_t *end = base + sizeof(_keyBuff);
@@ -61,75 +61,97 @@ uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
 
 /* ───── lookup table exactly in enum order ───── */
 static const uint64_t keyTable[KEY_COUNT] = {
-/*  0 KEY_UNKNOWN  */ SEQ8(0,0,0,0,0,0,0,0),
+    [KEY_UNKNOWN] = SEQ8(0,0,0,0,0,0,0,0),
 
-/*  1 KEY_LEFT     */ SEQ3(0x1B,0x5B,0x44),          /* ESC [ D */
-/*  2 KEY_RIGHT    */ SEQ3(0x1B,0x5B,0x43),          /* ESC [ C */
-/*  3 KEY_UP       */ SEQ3(0x1B,0x5B,0x41),          /* ESC [ A */
-/*  4 KEY_DOWN     */ SEQ3(0x1B,0x5B,0x42),          /* ESC [ B */
+    [KEY_LEFT] =    SEQ3(0x1B,0x5B,0x44),          /* ESC [ D */
+    [KEY_RIGHT] =   SEQ3(0x1B,0x5B,0x43),          /* ESC [ C */
+    [KEY_UP] =      SEQ3(0x1B,0x5B,0x41),          /* ESC [ A */
+    [KEY_DOWN] =    SEQ3(0x1B,0x5B,0x42),          /* ESC [ B */
 
-/*  75 KEY__LEFT     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x44),
-/*  76 KEY__RIGHT    */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x43),
-/*  77 KEY__UP       */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x41),
-/*  78 KEY__DOWN     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x42),
+    [KEY__LEFT] =   SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x44),
+    [KEY__RIGHT] =  SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x43),
+    [KEY__UP] =     SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x41),
+    [KEY__DOWN] =   SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x42),
 
-/*  5 KEY_INSERT   */ SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
-/*  6 KEY_DELETE   */ SEQ4(0x1B,0x5B,0x33,0x7E),     /* ESC [ 3 ~ */
-/*  7 KEY_PAGE_UP  */ SEQ4(0x1B,0x5B,0x35,0x7E),     /* ESC [ 5 ~ */
-/*  8 KEY_PAGE_DOWN*/ SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
-/*  9 KEY_HOME     */ SEQ3(0x1B,0x5B,0x48),          /* ESC [ H */
-/* 10 KEY_END      */ SEQ3(0x1B,0x5B,0x46),          /* ESC [ F */
+    [KEY_INSERT] =      SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
+    [KEY_DELETE] =      SEQ4(0x1B,0x5B,0x33,0x7E),     /* ESC [ 3 ~ */
+    [KEY_PAGE_UP] =     SEQ4(0x1B,0x5B,0x35,0x7E),     /* ESC [ 5 ~ */
+    [KEY_PAGE_DOWN] =   SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
+    [KEY_HOME] =        SEQ3(0x1B,0x5B,0x48),          /* ESC [ H */
+    [KEY_END] =         SEQ3(0x1B,0x5B,0x46),          /* ESC [ F */
 
-/*  79 KEY__INSERT   */ SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
-/*  80 KEY__DELETE   */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x1B),
-/*  81 KEY__PAGE_UP  */ SEQ4(0x1B,0x5B,0x35,0x7E),     /* ESC [ 5 ~ */
-/*  82 KEY__PAGE_DOWN*/ SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
-/*  83 KEY__HOME     */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x48),
-/*  84 KEY__END      */ SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x46),
+    [KEY_BACKSPACE] =   SEQ1(0x7F),
+    [KEY_ENTER] =       SEQ1(0x0A),
+    [KEY_SPACE] =       SEQ1(0x20),
+    [KEY_TAB] =         SEQ1(0x09),
+    [KEY_ESCAPE] =      SEQ1(0x1B),
+    [KEY_TILDA] =       SEQ1(0x60),                    /* `  */
 
-/* 11 KEY_BACKSPACE*/ SEQ1(0x7F),
-/* 12 KEY_ENTER    */ SEQ1(0x0A),
-/* 13 KEY_SPACE    */ SEQ1(0x20),
-/* 14 KEY_TAB      */ SEQ1(0x09),
-/* 15 KEY_ESCAPE   */ SEQ1(0x1B),
-/* 16 KEY_TILDA    */ SEQ1(0x60),                    /* `  */
-
-/* 17 KEY_F1       */ SEQ5(0x1B,0x5B,0x31,0x31,0x7E),/* ESC [ 11 ~ */
-/* 18 KEY_F2       */ SEQ3(0x1B,0x4F,0x51),/* ESC [ 13 ~ */
-/* 19 KEY_F3       */ SEQ5(0x1B,0x5B,0x31,0x34,0x7E),/* ESC [ 14 ~ */
-/* 20 KEY_F4       */ SEQ5(0x1B,0x5B,0x31,0x35,0x7E),/* ESC [ 15 ~ */
-/* 21 KEY_F5       */ SEQ5(0x1B,0x5B,0x31,0x36,0x7E),/* ESC [ 16 ~ */
-/* 22 KEY_F6       */ SEQ5(0x1B,0x5B,0x31,0x37,0x7E),/* ESC [ 17 ~ */
-/* 23 KEY_F7       */ SEQ5(0x1B,0x5B,0x31,0x38,0x7E),/* ESC [ 18 ~ */
-/* 24 KEY_F8       */ SEQ5(0x1B,0x5B,0x31,0x39,0x7E),/* ESC [ 19 ~ */
-/* 25 KEY_F9       */ SEQ5(0x1B,0x5B,0x32,0x30,0x7E),/* ESC [ 20 ~ */
-/* 26 KEY_F10      */ SEQ5(0x1B,0x5B,0x32,0x31,0x7E),/* ESC [ 21 ~ */
-/* 27 KEY_F11      */ SEQ5(0x1B,0x5B,0x32,0x32,0x7E),/* ESC [ 22 ~ */
-/* 28 KEY_F12      */ SEQ5(0x1B,0x5B,0x32,0x33,0x7E),/* ESC [ 23 ~ */
+    [KEY_F1] =  SEQ5(0x1B,0x5B,0x31,0x31,0x7E),/* ESC [ 11 ~ */
+    // [KEY_F2] =  SEQ3(0x1B,0x4F,0x51),/* ESC [ 13 ~ */
+    [KEY_F2] =  SEQ5(0x1B,0x5B,0x31,0x32,0x7E),
+    [KEY_F3] =  SEQ5(0x1B,0x5B,0x31,0x33,0x7E),/* ESC [ 14 ~ */
+    [KEY_F4] =  SEQ5(0x1B,0x5B,0x31,0x34,0x7E),/* ESC [ 15 ~ */
+    // [KEY_F4] =  SEQ3(0x1B,0x4F,0x53),
+    [KEY_F5] =  SEQ5(0x1B,0x5B,0x31,0x35,0x7E),/* ESC [ 16 ~ */
+    [KEY_F6] =  SEQ5(0x1B,0x5B,0x31,0x37,0x7E),/* ESC [ 17 ~ */
+    [KEY_F7] =  SEQ5(0x1B,0x5B,0x31,0x38,0x7E),/* ESC [ 18 ~ */
+    [KEY_F8] =  SEQ5(0x1B,0x5B,0x31,0x39,0x7E),/* ESC [ 19 ~ */
+    [KEY_F9] =  SEQ5(0x1B,0x5B,0x32,0x30,0x7E),/* ESC [ 20 ~ */
+    [KEY_F10] = SEQ5(0x1B,0x5B,0x32,0x31,0x7E),/* ESC [ 21 ~ */
+    [KEY_F11] = SEQ5(0x1B,0x5B,0x32,0x33,0x7E),/* ESC [ 22 ~ */
+    [KEY_F12] = SEQ5(0x1B,0x5B,0x32,0x34,0x7E),/* ESC [ 23 ~ */
 
 /* 29‒38  digits '0'..'9' */
-    SEQ1('0'), SEQ1('1'), SEQ1('2'), SEQ1('3'), SEQ1('4'),
-    SEQ1('5'), SEQ1('6'), SEQ1('7'), SEQ1('8'), SEQ1('9'),
+    [KEY_0] = SEQ1('0'), [KEY_1] = SEQ1('1'),
+    [KEY_2] = SEQ1('2'), [KEY_3] = SEQ1('3'),
+    [KEY_4] = SEQ1('4'), [KEY_5] = SEQ1('5'),
+    [KEY_6] = SEQ1('6'), [KEY_7] = SEQ1('7'),
+    [KEY_8] = SEQ1('8'), [KEY_9] = SEQ1('9'),
 
 /* 39‒48  shifted digits ")!@#$%^&*(" */
-    SEQ1(')'), SEQ1('!'), SEQ1('@'), SEQ1('#'), SEQ1('$'),
-    SEQ1('%'), SEQ1('^'), SEQ1('&'), SEQ1('*'), SEQ1('('),
+    [KEY__0] = SEQ1(')'), [KEY__1] = SEQ1('!'),
+    [KEY__2] = SEQ1('@'), [KEY__3] = SEQ1('#'),
+    [KEY__4] = SEQ1('$'), [KEY__5] = SEQ1('%'),
+    [KEY__6] = SEQ1('^'), [KEY__7] = SEQ1('&'),
+    [KEY__8] = SEQ1('*'), [KEY__9] = SEQ1('('),
 
 /* 49‒74  letters a..z (lower-case chosen as базовый) */
-    SEQ1('a'), SEQ1('b'), SEQ1('c'), SEQ1('d'), SEQ1('e'),
-    SEQ1('f'), SEQ1('g'), SEQ1('h'), SEQ1('i'), SEQ1('j'),
-    SEQ1('k'), SEQ1('l'), SEQ1('m'), SEQ1('n'), SEQ1('o'),
-    SEQ1('p'), SEQ1('q'), SEQ1('r'), SEQ1('s'), SEQ1('t'),
-    SEQ1('u'), SEQ1('v'), SEQ1('w'), SEQ1('x'), SEQ1('y'),
-    SEQ1('z'),
+    [KEY_A] = SEQ1('a'), [KEY_B] = SEQ1('b'),
+    [KEY_C] = SEQ1('c'), [KEY_D] = SEQ1('d'),
+    [KEY_E] = SEQ1('e'), [KEY_F] = SEQ1('f'),
+    [KEY_G] = SEQ1('g'), [KEY_H] = SEQ1('h'),
+    [KEY_I] = SEQ1('i'), [KEY_J] = SEQ1('j'),
+    [KEY_K] = SEQ1('k'), [KEY_I] = SEQ1('l'),
+    [KEY_M] = SEQ1('m'), [KEY_N] = SEQ1('n'),
+    [KEY_O] = SEQ1('o'), [KEY_P] = SEQ1('p'),
+    [KEY_Q] = SEQ1('q'), [KEY_R] = SEQ1('r'),
+    [KEY_S] = SEQ1('s'), [KEY_T] = SEQ1('t'),
+    [KEY_U] = SEQ1('u'), [KEY_V] = SEQ1('v'),
+    [KEY_W] = SEQ1('w'), [KEY_X] = SEQ1('x'),
+    [KEY_Y] = SEQ1('y'), [KEY_Z] = SEQ1('z'),
+
+    [KEY__INSERT] =     SEQ4(0x1B,0x5B,0x32,0x7E),     /* ESC [ 2 ~ */
+    [KEY__DELETE] =     SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x1B),
+    [KEY__PAGE_UP] =    SEQ4(0x1B,0x5B,0x35,0x7E),     /* ESC [ 5 ~ */
+    [KEY__PAGE_DOWN] =  SEQ4(0x1B,0x5B,0x36,0x7E),     /* ESC [ 6 ~ */
+    [KEY__HOME] =       SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x48),
+    [KEY__END] =        SEQ6(0x1B,0x5B,0x31,0x3B,0x32,0x46),
 
 /* 49‒74  letters a..z (lower-case chosen as базовый) */
-    SEQ1('A'), SEQ1('B'), SEQ1('C'), SEQ1('D'), SEQ1('E'),
-    SEQ1('F'), SEQ1('G'), SEQ1('H'), SEQ1('I'), SEQ1('J'),
-    SEQ1('K'), SEQ1('L'), SEQ1('M'), SEQ1('N'), SEQ1('O'),
-    SEQ1('P'), SEQ1('Q'), SEQ1('R'), SEQ1('S'), SEQ1('T'),
-    SEQ1('U'), SEQ1('V'), SEQ1('W'), SEQ1('X'), SEQ1('Y'),
-    SEQ1('Z'),
+    [KEY__A] = SEQ1('A'), [KEY__B] = SEQ1('B'),
+    [KEY__C] = SEQ1('C'), [KEY__D] = SEQ1('D'),
+    [KEY__E] = SEQ1('E'), [KEY__F] = SEQ1('F'),
+    [KEY__G] = SEQ1('G'), [KEY__H] = SEQ1('H'),
+    [KEY__I] = SEQ1('I'), [KEY__J] = SEQ1('J'),
+    [KEY__K] = SEQ1('K'), [KEY__L] = SEQ1('L'),
+    [KEY__M] = SEQ1('M'), [KEY__N] = SEQ1('N'),
+    [KEY__O] = SEQ1('O'), [KEY__P] = SEQ1('P'),
+    [KEY__Q] = SEQ1('Q'), [KEY__R] = SEQ1('R'),
+    [KEY__S] = SEQ1('S'), [KEY__T] = SEQ1('T'),
+    [KEY__U] = SEQ1('U'), [KEY__V] = SEQ1('V'),
+    [KEY__W] = SEQ1('W'), [KEY__X] = SEQ1('X'),
+    [KEY__Y] = SEQ1('Y'), [KEY__Z] = SEQ1('Z'),
 
 };
 

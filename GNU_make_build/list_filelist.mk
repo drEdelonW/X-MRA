@@ -77,8 +77,6 @@ $(eval XMRA_DIR := $(SRC_DIR)/X-MRA) $(eval INCLUDE_PATHS += $(XMRA_DIR))
     $(eval RSPEC_DIR := $(XMRA_DIR)/robot_spec) $(eval INCLUDE_PATHS += $(RSPEC_DIR))
 #         SRCS += $(RSPEC_DIR)/robot_spec_old_chassis.cpp
         SRCS += $(RSPEC_DIR)/robot_spec_Freenove_chassis.cpp
-        
-        SRCS += $(RSPEC_DIR)/robot_spec_cwrap.cpp
 
     $(eval JOINT_DIR := $(XMRA_DIR)/JointBase) $(eval INCLUDE_PATHS += $(JOINT_DIR))
 
@@ -97,8 +95,10 @@ $(eval XMRA_DIR := $(SRC_DIR)/X-MRA) $(eval INCLUDE_PATHS += $(XMRA_DIR))
 
     SRCS += $(XMRA_DIR)/CLI_cmdList.c
     SRCS += $(XMRA_DIR)/test.c
-    SRCS += $(XMRA_DIR)/dpad_cmds_leg.c
-#     SRCS += $(XMRA_DIR)/dpad_cmds_12servos.c
+#     SRCS += $(XMRA_DIR)/dpad_cmds_leg.c
+    SRCS += $(XMRA_DIR)/dpad_cmds_12servos.c
+
+    SRCS += $(XMRA_DIR)/X-MRA_cWrap.cpp
 
 SRCS += $(SRC_DIR)/main.cpp
 INCLUDE_PATHS += /usr/include/SDL2
@@ -106,7 +106,9 @@ INCLUDE_PATHS += /usr/include/SDL2
 DEFINE_LIST=
 # DEFINE_LIST += DEBUD=2
 DEFINE_LIST += DEBUG=2
-DEFINE_LIST += CLI_AUTOEXEC_CMD=\"jpad\"
+# DEFINE_LIST += CLI_AUTOEXEC_CMD=\"i2cScan\"
+DEFINE_LIST += CLI_AUTOEXEC_CMD=\"dpad\"
+# DEFINE_LIST += CLI_AUTOEXEC_CMD=\"jpad\"
 # DEFINE_LIST += CLI_AUTOEXEC_CMD=\"wpad\"
 # DEFINE_LIST += CLI_AUTOEXEC_CMD=\"test\"
 
