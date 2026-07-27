@@ -2,43 +2,47 @@
 
 #include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
-    {1, PCAaddr_0},
-    {1, PCAaddr_1}
+    {1, PCAaddr_1},
+    {1, PCAaddr_0}
 };
+
+#define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
+
+#define PwCh(n)  PWMarray[n >> 4].PWM[n & 0xF]
 
 #include "PS_MG996R.hpp"
 // #define CFG_1 TowerPro_MG996R_cfg
 #define CFG_1 FreeNove_noname_cfg
 MG996R Servo[] = {
     //FrontLeft
-    { PWMarray[0].PWM[PwmChD],  CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[PwmChE],  CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[PwmChF],  CFG_1, CCW}, //Coxa
+    { PwCh(16),  CFG_1, CW }, //Tibia
+    { PwCh(17),  CFG_1, CW }, //Femur
+    { PwCh(18),  CFG_1, CCW}, //Coxa
 
     //FrontRight
-    { PWMarray[1].PWM[PwmCh0],  CFG_1, CCW}, //Tibia
-    { PWMarray[1].PWM[PwmCh1],  CFG_1, CCW}, //Femur
-    { PWMarray[1].PWM[PwmCh2],  CFG_1, CCW}, //Coxa
+    { PwCh(15),  CFG_1, CCW}, //Tibia
+    { PwCh(14),  CFG_1, CCW}, //Femur
+    { PwCh(13),  CFG_1, CW }, //Coxa
 
     //MidleLeft
-    { PWMarray[0].PWM[PwmCh5],  CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[PwmCh6],  CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[PwmCh7],  CFG_1, CCW}, //Coxa
+    { PwCh(19),  CFG_1, CW }, //Tibia
+    { PwCh(20),  CFG_1, CW }, //Femur
+    { PwCh(21),  CFG_1, CCW}, //Coxa
 
     //MidleRight
-    { PWMarray[1].PWM[PwmCh8],  CFG_1, CCW}, //Tibia
-    { PWMarray[1].PWM[PwmCh9],  CFG_1, CCW}, //Femur
-    { PWMarray[1].PWM[PwmChA],  CFG_1, CCW}, //Coxa
+    { PwCh(12),  CFG_1, CCW}, //Tibia
+    { PwCh(11),  CFG_1, CCW}, //Femur
+    { PwCh(10),  CFG_1, CW }, //Coxa
 
     //BackLeft
-    { PWMarray[0].PWM[PwmCh0],  CFG_1, CW }, //Tibia
-    { PWMarray[0].PWM[PwmCh1],  CFG_1, CW }, //Femur
-    { PWMarray[0].PWM[PwmCh2],  CFG_1, CCW}, //Coxa
+    { PwCh(22),  CFG_1, CW }, //Tibia
+    { PwCh(23),  CFG_1, CW }, //Femur
+    { PwCh(27),  CFG_1, CCW}, //Coxa
 
     //BackRight
-    { PWMarray[1].PWM[PwmChD],  CFG_1, CCW}, //Tibia
-    { PWMarray[1].PWM[PwmChE],  CFG_1, CCW}, //Femur
-    { PWMarray[1].PWM[PwmChF],  CFG_1, CCW}, //Coxa
+    { PwCh(9),  CFG_1, CCW}, //Tibia
+    { PwCh(8),  CFG_1, CCW}, //Femur
+    { PwCh(31), CFG_1, CW}, //Coxa
 };
 
 

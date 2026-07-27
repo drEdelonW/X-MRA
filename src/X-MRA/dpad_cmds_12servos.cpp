@@ -27,18 +27,23 @@ void _on()  {
     LOG("ON\n");
     PWMarray[0].wakeUp();
     PWMarray[1].wakeUp();
+#if 1
     PWMarray[0].setFreq_Hz(Hz(50));
     PWMarray[1].setFreq_Hz(Hz(50));
+#else
+    PWMarray[0].setFreq_Hz(Hz(300));
+    PWMarray[1].setFreq_Hz(Hz(300));
+#endif
 }
 void _off() {
     LOG("OFF\n");
     PWMarray[0].sleepMode();
     PWMarray[1].sleepMode();
 }
-void _1()  { LOG("1\n"); SV_ALL(  0.0f) }
+void _1()  { SV_ALL(  0.0f) }
 void _2()  { SV_ALL(-10.0f) }
 void _3()  { SV_ALL(-20.0f) }
-void _4()  {  LOG("4\n"); SV_ALL(-30.0f) }
+void _4()  { SV_ALL(-30.0f) }
 void _5()  { SV_ALL(-40.0f) }
 void _6()  { SV_ALL(-50.0f) }
 void _7()  { SV_ALL(-60.0f) }
