@@ -10,8 +10,8 @@
 class Mesh {
 private:
     const IDX_t     _vertCnt;
-    const Vector3D* _origVertices;
-          Vector3D*   _trVertices;
+    const Vector3D_p _origVertices;
+          Vector3D_p   _trVertices;
     const IDX_t     _triCnt;
     const IDX_t   (*_triangles)[3];
 
@@ -20,14 +20,14 @@ public:
 
     Mesh(
         const IDX_t vertexCount,
-        const Vector3D* vertices,
-              Vector3D* verticesTrBuf,
+        const Vector3D_p vertices,
+              Vector3D_p verticesTrBuf,
         const IDX_t triangleCount,
         const IDX_t (*triangles)[3]
     );
     Mesh(
         const IDX_t vertexCount,
-        const Vector3D* vertices,
+        const Vector3D_p vertices,
         const IDX_t triangleCount,
         const IDX_t (*triangles)[3]
     );

@@ -55,16 +55,20 @@ public:
     bool operator<=(const Angle& o) const;
     bool operator>=(const Angle& o) const;
 
-    // Angle  normalized() const;
-    // Angle& normalize();
+#if 0
+    Angle  normalized() const;
+    Angle& normalize();
 
-    // static Angle clamp(const Angle& a, const Angle& min, const Angle& max);
-    // static Angle min(const Angle& a, const Angle& b);
-    // static Angle max(const Angle& a, const Angle& b);
+    static Angle clamp(const Angle& a, const Angle& min, const Angle& max);
+    static Angle min(const Angle& a, const Angle& b);
+    static Angle max(const Angle& a, const Angle& b);
 
-    // static const Angle aZero;
-    // static const Angle Pi;
-    // static const Angle TwoPi;
+    static const Angle aZero;
+    static const Angle Pi;
+    static const Angle TwoPi;
+#endif
 private:
     float _aRadians;
 };
+
+typedef Angle* Angle_p;

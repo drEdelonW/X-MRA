@@ -3,8 +3,8 @@
 
 Mesh::Mesh(
     IDX_t vertexCount,
-    const Vector3D* verticesArray,
-          Vector3D* verticesCashArray,
+    const Vector3D_p verticesArray,
+          Vector3D_p verticesCashArray,
     IDX_t triangleCount,
     const IDX_t (*trianglesArray)[3]
 ) :
@@ -30,7 +30,7 @@ Mesh::Mesh(
 
 Mesh::Mesh(
     IDX_t vertexCount,
-    const Vector3D* verticesArray,
+    const Vector3D_p verticesArray,
     IDX_t triangleCount,
     const IDX_t (*trianglesArray)[3]
 ) : Mesh(

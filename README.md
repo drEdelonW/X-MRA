@@ -44,24 +44,24 @@ no need to think in robot coordinates.
 ## Architecture
 
 ```
-┌─────────────────────────────────────┐
-│           ArachnidBody              │  <- Choreographer / mission logic
-│  ┌─────────────┐  ┌──────────────┐  │
-│  │ Coordinator │  │Choreographer │  │
-│  │ (pose math) │  │ (gait/anim)  │  │
-│  └─────────────┘  └──────────────┘  │
-│         │ tip position commands     │
-└─────────┼───────────────────────────┘
-          │  (shared bus — CAN / RS-485, TBD)
-    ┌─────┴──────────────────────────────┐
-    │  Leg Ganglion x 6  (STM32F4xx)     │
-    │  ┌──────────┐  ┌────────────────┐  │
-    │  │  FK / IK │  │ Joint drivers  │  │
-    │  └──────────┘  └────────────────┘  │
-    │  ┌──────────┐  ┌────────────────┐  │
-    │  │ToF sensor│  │  Local battery │  │
-    │  └──────────┘  └────────────────┘  │
-    └────────────────────────────────────┘
+┌-------------------------------------┐
+|           ArachnidBody              |  <- Choreographer / mission logic
+|  ┌-------------┐  ┌--------------┐  |
+|  | Coordinator |  |Choreographer |  |
+|  | (pose math) |  | (gait/anim)  |  |
+|  └-------------┘  └--------------┘  |
+|         | tip position commands     |
+└---------+---------------------------┘
+          |  (shared bus — CAN / RS-485, TBD)
+    ┌-----┴------------------------------┐
+    |  Leg Ganglion x 6  (STM32F4xx)     |
+    |  ┌----------┐  ┌----------------┐  |
+    |  |  FK / IK |  | Joint drivers  |  |
+    |  └----------┘  └----------------┘  |
+    |  ┌----------┐  ┌----------------┐  |
+    |  |ToF sensor|  |  Local battery |  |
+    |  └----------┘  └----------------┘  |
+    └------------------------------------┘
 ```
 
 ### Layer breakdown

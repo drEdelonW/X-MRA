@@ -94,8 +94,8 @@ typedef enum {
 
 #if DEBUG > 0
 #   include <stdio.h>
-#   define LLOG(...)    printf(__VA_ARGS__);                /* Lazy log */
-#   define LOG(...)     LLOG(__VA_ARGS__); fflush(stdout);  /* Strong log */
+#   define LLOG(...)    printf(__VA_ARGS__);                                /* Lazy log */
+#   define LOG(...)     do {LLOG(__VA_ARGS__); fflush(stdout);} while (0)   /* Strong log */
 #else
 #   warning DEBUG not defined!!!
 #   define LLOG(...)

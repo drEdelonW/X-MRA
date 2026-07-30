@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[]) {
     ver_info(); // print git info
-    sysInit();  // registrate sys signal hndle
+    sysInit();  // sys signal handle
     startCLI(); // main command processor
 
     return 0;

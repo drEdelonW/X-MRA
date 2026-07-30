@@ -45,7 +45,9 @@ typedef struct {
     Vector3D right;
     uint16_t btns;
 } GamePad;
-extern volatile GamePad gp;
+extern
+//  volatile 
+ GamePad gp;
 
 bool GCGetButton(GameControllerButton btn);
 

@@ -48,7 +48,7 @@ uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
     return bCnt > 0;
 }
 
-/* ───── helpers ───── */
+/* ----- helpers ----- */
 #define SEQ8(b0,b1,b2,b3,b4,b5,b6,b7) \
     ((uint64_t)(b0)       | ((uint64_t)(b1)<< 8) | ((uint64_t)(b2)<<16) | ((uint64_t)(b3)<<24) | \
      ((uint64_t)(b4)<<32) | ((uint64_t)(b5)<<40) | ((uint64_t)(b6)<<48) | ((uint64_t)(b7)<<56))
@@ -59,7 +59,7 @@ uint8_t *base = (uint8_t *)&_keyBuff;   /* first byte of the word */
 #define SEQ5(b0,b1,b2,b3,b4)            SEQ8(b0,b1,b2,b3,b4,0,0,0)
 #define SEQ6(b0,b1,b2,b3,b4,b5)         SEQ8(b0,b1,b2,b3,b4,b5,0,0)
 
-/* ───── lookup table exactly in enum order ───── */
+/* ----- lookup table exactly in enum order ----- */
 static const uint64_t keyTable[KEY_COUNT] = {
     [KEY_UNKNOWN] = SEQ8(0,0,0,0,0,0,0,0),
 

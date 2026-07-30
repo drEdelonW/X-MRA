@@ -3,26 +3,29 @@
 #include <string.h>
 #include <stdbool.h>
 #include "terminal_tools.h"
+#include "types.h"
 
+extern bool fGetEcho;
+
+#define EndOfCmds { .name = NULL, .function = NULL }
+
+typedef void (*Func_p)();
+typedef struct {
+    cStringRO   name;
+    Func_p      function;
+    cStringRO   description;
+} CommandCLI;
+
+extern const CommandCLI Cmds[];
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern bool fGetEcho;
-
-typedef struct {
-    const char *name;
-    void (*function)();
-    const char *description;
-} Command;
-
-extern Command commands[];
-
-void executeCommand(char *input);
-void trimNewline(char* str);
-void hexDump(const char* label, const void* data, size_t size);
-void cliHelp();
+    void executeCommand(cStr_p input);
+    void trimNewline(cStr_p str);
+    void hexDump(cStringRO label, const Any_p data, size_t size);
+    void cliHelp();
 
 #ifdef __cplusplus
 }

@@ -9,43 +9,32 @@
 extern PCA9685 PWMarray[];
 
 
-static float _curAngle = 0;
-
-#define NUM_LEGS    (6)
 
 #if 0
-#define SV_ALL(v)  \
-    LOG("[%.2f]\n", (v)); \
-    _curAngle = (v); \
-    for(int i = 0; i < DIMOF(Servo); i++) {\
-        Servo[i].setAngle(deg(v));\
-    }
-#endif
-
+#define NUM_LEGS    (6)
 #define LEG_J_ALL(v1, v2, v3)  \
     for(int i = 0; i < NUM_LEGS; i++) { \
         if (XMRA._legs[i].checkJointAngles(deg(v1),deg(v2),deg(v3))) \
             XMRA._legs[i].applyPose(); \
     }
 
-#if 0
 #define LEG_P_ALL(v1, v2, v3)  \
     for(int i = 0; i < NUM_LEGS; i++) { \
         if (XMRA._legs[i].checkTipPosition(v1,v2,v3)) \
             XMRA._legs[i].applyPose(); \
     }
-#endif
 
 #define LEG_PV_ALL(v)  \
     for(int i = 0; i < NUM_LEGS; i++) { \
         if (XMRA._legs[i].checkTipPosition(v)) \
             XMRA._legs[i].applyPose(); \
     }
-#define MRA_PV_ALL(v)  \
-    XMRA.trySetOffs(v);
 
-// #define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].engage(); }}
-// #define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].release(); }}
+#define LEG_PON_ALL()  {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].engage(); }}
+#define LEG_POFF_ALL() {for(int i = 0; i < NUM_LEGS; i++) { XMRA._legs[i].release(); }}
+#endif
+
+#define MRA_PV_ALL(v)  XMRA.trySetOffs(v);
 
 void _on()  {
     if (XMRA.isArmed()) return;
@@ -78,38 +67,39 @@ const Millimeters tibiaLength = mm(144.23f);
 const Millimeters tibiaX      = mm( 27.33f);
 const Millimeters tibiaZ      = mm(141.6f);
 
-// #define DSTx    (coxaLength + femurLength + tibiaX)
-// #define DSTy    (0.0f)
-// #define DSTz    (-tibiaZ)
-
-#define DSTx    (0.0f)
-#define DSTy    (0.0f)
-#define DSTz    (0.0f)
+#if 0
+#   define DSTx    (coxaLength + femurLength + tibiaX)
+#   define DSTy    (0.0f)
+#   define DSTz    (-tibiaZ)
+#else
+#   define DSTx    (0.0f)
+#   define DSTy    (0.0f)
+#   define DSTz    (0.0f)
+#endif
 
 Vector3D _curPose = {DSTx, DSTy, DSTz};
 
-void _xPos() { _curPose.x += mStep; MRA_PV_ALL(_curPose); }
-void _xNeg() { _curPose.x -= mStep; MRA_PV_ALL(_curPose); }
+void _xPos() { _curPose.x += mStep;     MRA_PV_ALL(_curPose); }
+void _xNeg() { _curPose.x -= mStep;     MRA_PV_ALL(_curPose); }
 
-void _yPos() { _curPose.y -= mStep; MRA_PV_ALL(_curPose); }
-void _yNeg() { _curPose.y += mStep; MRA_PV_ALL(_curPose); }
+void _yPos() { _curPose.y -= mStep;     MRA_PV_ALL(_curPose); }
+void _yNeg() { _curPose.y += mStep;     MRA_PV_ALL(_curPose); }
 
-void _zPos() { _curPose.z += mStep; MRA_PV_ALL(_curPose); }
-void _zNeg() { _curPose.z -= mStep; MRA_PV_ALL(_curPose); }
+void _zPos() { _curPose.z += mStep;     MRA_PV_ALL(_curPose); }
+void _zNeg() { _curPose.z -= mStep;     MRA_PV_ALL(_curPose); }
 
-void _goGome()  { _curPose = {DSTx, DSTy, DSTz}; MRA_PV_ALL(_curPose); }
+void _goGome()  { _curPose = {DSTx, DSTy, DSTz};    MRA_PV_ALL(_curPose); }
 
 void _info() {
     for (int i = 0; i < 6; i++){
-        LOG("[%d] legSpace:", i);
-        XMRA._legs[i].tipPosLegSpace(deg(0), deg(0), deg(0)).print();
-        LOG("\t bodySpace:");
-        XMRA._legs[i].tipPosBodySpace(deg(0), deg(0), deg(0)).print();
+        LOG("[%d] ", i);
+        LOG("legSpace:");       XMRA._legs[i].tipPosLegSpace(deg(0), deg(0), deg(0)).print();
+        LOG("\t bodySpace:");   XMRA._legs[i].tipPosBodySpace(deg(0), deg(0), deg(0)).print();
         LOG("\n");
     }
 }
 
-KeyFunction fArray[KEY_COUNT] = {
+const KeyFunction fArray[KEY_COUNT] = {
     [KEY_UNKNOWN] = 0,
 
     [KEY_LEFT]      = _yPos,

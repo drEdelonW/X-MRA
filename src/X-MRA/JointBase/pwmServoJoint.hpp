@@ -5,44 +5,44 @@
 
 class ServoJoint : public JointBase {
 public:
-  ServoJoint(
-    ProtoServo& servo,
-    Angle minLim = deg(-90),
-    Angle maxLim = deg( 90),
-    Angle offset = deg(  0)
-  ):
-    _servo(servo),
-    _min(minLim),
-    _max(maxLim),
-    _offset(offset),
-    _plan(deg(NAN)),
-    _valid(false),
-    _skip(false) {}
+    ServoJoint(
+        ProtoServo& servo,
+        Angle minLim = deg(-90.f),
+        Angle maxLim = deg( 90.f),
+        Angle offset = deg(  0.f)
+    ):
+        _servo(servo),
+        _min(minLim),
+        _max(maxLim),
+        _offset(offset),
+        _plan(deg(NAN)),
+        _valid(false),
+        _skip(false)
+    {}
 
     bool checkPose(const Angle& logical) override {
-        if (std::isnan(logical.asRadians())) {  // NaN → skip on apply
+        if (std::isnan(logical.asRadians()))  // NaN -> skip on apply
             return _skip = true;
-        }
 
         _skip = false;
 
         Angle phys = logical + _offset;
         if ((phys < _min) ||
-            (phys > _max)) {
-            return _valid = false;
-        }
+            (phys > _max)
+        )   return _valid = false;
+
         _plan = phys;
 
         return _valid = true;
     }
 
     bool applyPose() override {
-        if (_skip) {      // NaN → skip on apply
+        if (_skip)      // NaN -> skip on apply
             return true;
-        }
-        if (!_valid){
+
+        if (!_valid)
             return false;
-        }
+
         _servo.setAngle(_plan);
 
         return true;

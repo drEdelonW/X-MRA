@@ -16,9 +16,7 @@
  */
 class ShellProcessGuard {
 public:
-    explicit ShellProcessGuard(const char *cmd)
-        : pid_(-1), pgid_(-1)
-    {
+    explicit ShellProcessGuard(cStringRO cmd) : pid_(-1), pgid_(-1) {
         pid_ = fork();
         if (pid_ < 0) {                 /* fork failed */
             perror("fork");
@@ -27,7 +25,7 @@ public:
 
         if (pid_ == 0) {                /* child */
             setsid();                   /* new session; pgid == pid */
-            execl("/bin/sh", "sh", "-c", cmd, (char *)0);
+            execl("/bin/sh", "sh", "-c", cmd, (cStr_p)0);
             perror("exec");
             _exit(127);                 /* exec unreachable => error */
         }
@@ -35,26 +33,31 @@ public:
         /* parent */
         pgid_ = pid_;                   /* store process-group id */
         fprintf(stderr,
-                "[PG] started PID %d (PGID %d)\n",
-                pid_, pgid_);
+            "[PG] started PID %d (PGID %d)\n",
+            pid_, pgid_
+        );
     }
 
     /* non-copyable, movable */
-    ShellProcessGuard(const ShellProcessGuard&)            = delete;
+    ShellProcessGuard(const ShellProcessGuard&) = delete;
     ShellProcessGuard& operator=(const ShellProcessGuard&) = delete;
     ShellProcessGuard(ShellProcessGuard&& o) noexcept
-        : pid_(o.pid_), pgid_(o.pgid_) { o.pid_ = o.pgid_ = -1; }
+        : pid_(o.pid_), pgid_(o.pgid_) {
+        o.pid_ = o.pgid_ = -1;
+    }
     ShellProcessGuard& operator=(ShellProcessGuard&& o) noexcept {
         if (this != &o) {
             terminate();
-            pid_  = o.pid_;
+            pid_ = o.pid_;
             pgid_ = o.pgid_;
             o.pid_ = o.pgid_ = -1;
         }
         return *this;
     }
 
-    ~ShellProcessGuard() { terminate(); }
+    ~ShellProcessGuard() {
+        terminate();
+    }
 
 private:
     pid_t pid_;
@@ -75,12 +78,14 @@ private:
         while (waitpid(-pgid_, &status, 0) > 0) {
             if (WIFEXITED(status))
                 fprintf(stderr,
-                        "[PG] member exited code %d\n",
-                        WEXITSTATUS(status));
+                    "[PG] member exited code %d\n",
+                    WEXITSTATUS(status)
+                );
             else if (WIFSIGNALED(status))
                 fprintf(stderr,
-                        "[PG] member killed by sig %d\n",
-                        WTERMSIG(status));
+                    "[PG] member killed by sig %d\n",
+                    WTERMSIG(status)
+                );
         }
         pgid_ = pid_ = -1;
     }

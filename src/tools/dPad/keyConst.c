@@ -127,9 +127,10 @@ const KeyInfo keyInfos[KEY_COUNT] = {
 
 #include "common_tools.h"
 
-const char* getKeyName(Key key) {
-    if ((key >= 0) && (key < KEY_COUNT)) {
-        return keyInfos[key].name;
-    }
+cStringRO getKeyName(Key key) {
+    if ((key >= 0) &&
+        (key < KEY_COUNT)
+        )   return keyInfos[key].name;
+
     return "Unknown";
 }

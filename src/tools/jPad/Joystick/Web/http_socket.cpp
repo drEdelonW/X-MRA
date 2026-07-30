@@ -16,8 +16,8 @@
 
 #pragma pack(push, 1)
 struct RawPacket {
-    float slider[6];
-    uint16_t flags;
+    float       slider[6];
+    uint16_t    flags;
 };
 #pragma pack(pop)
 
@@ -48,17 +48,14 @@ static const uint8_t Net2Host[16] = {
     BUTTON_DPAD_RIGHT      /* 15 */
 };
 
-/* Convert network packet → host-side bitmask (enum positions)             */
-static inline uint16_t unpackButtons(uint16_t pkt)
-{
-    uint16_t netMask  = ntohs(pkt);
-    uint16_t hostMask = 0;
-    uint16_t m = netMask;
+/* Convert network packet -> host-side bitmask (enum positions)             */
+static inline uint16_t unpackButtons(uint16_t pkt) {
+    uint16_t hostMask = 0x0000;
+    uint16_t netMask = ntohs(pkt);
 
-    while (m)
-    {
-        uint8_t bit = __builtin_ctz(m);
-        m &= m - 1;
+    while (netMask) {
+        uint8_t bit = __builtin_ctz(netMask);
+        netMask &= netMask - 1;
 
         hostMask |= (uint16_t)(1u << Net2Host[bit]);
     }
@@ -67,43 +64,48 @@ static inline uint16_t unpackButtons(uint16_t pkt)
 
 /*───────────────────────── compose & send response */
 int reply(int fd,
-    const char *body, size_t blen,
-    const char *status,
-    const char *ctype,
+    cStringRO body, size_t blen,
+    cStringRO status,
+    cStringRO ctype,
     bool keep
 ) {
     char head[256];
-    int hd_len = snprintf(head, sizeof(head),
+    int hd_len = snprintf(
+        head, sizeof(head),
         "HTTP/1.1 %s" NL
         "Content-Type: %s" NL
         "Content-Length: %zu" NL
         "Connection: %s" NL
         "%s" NL NL,
-        status, ctype, blen,
-        keep ? "keep-alive" : "close",
-        keep ? "Keep-Alive: timeout=5, max=50" : "");
+        status,
+        ctype,
+        blen,
+        (keep ?
+            "keep-alive" : "close"),
+        (keep ?
+            "Keep-Alive: timeout=5, max=50" : "")
+    );
 
     return (
         send_all(fd, head, hd_len) ||
         (blen ?
-            send_all(fd, body, blen) : 0
-        )
-    );
+            send_all(fd, body, blen) : 0)
+        );
 }
 
 /*───────────────────────── helpers */
-size_t get_content_length(const char *req) {
-    const char *h = strcasestr(req, "Content-Length:");
+size_t get_content_length(cStringRO req) {
+    cStringRO h = strcasestr(req, "Content-Length:");
     return
-        h ?
-            strtoul(h + 15, nullptr, 10) : 0;
+        (h ?
+            strtoul(h + 15, nullptr, 10) : 0);
 }
 
-const char *find_payLoad(const char *req) {
-    const char *p = strstr(req, HEAD_END);
+cStringRO find_payLoad(cStringRO req) {
+    cStringRO p = strstr(req, HEAD_END);
     return
-        p ?
-            p + 4 : nullptr;
+        (p ?
+            p + 4 : nullptr);
 }
 
 /*───────────────────────── main loop */
@@ -111,18 +113,17 @@ void Web_GCHandler() {
 
     int srv_fd = -1;
     if (
-            (srv_fd = init_server(
-                (geteuid() == 0) ? // is user root?
-                    80 : 8080
-            )) < 0
-        )
-        return;
+        (srv_fd = init_server(
+            ((geteuid() == 0) ? // is user root?
+                80 : 8080)
+        )) < 0
+        )   return;
 
     char buf[BUF_SIZE];
 
     while (!jQuit) {
         int cli_fd = -1;
-        if ( (cli_fd = waitConnection(srv_fd)) >= 0 ) {
+        if ((cli_fd = waitConnection(srv_fd)) >= 0) {
             // ShellProcessGuard cam("killall motion ; motion -c ./cam.conf");
             sleep(3);
             bool keep = true;
@@ -131,7 +132,7 @@ void Web_GCHandler() {
                 if (rcvd <= 0) {
                     ERROR("recv");
                     close(cli_fd);
-                    while (!((cli_fd = waitConnection(srv_fd)) >= 0) ){}
+                    while (!((cli_fd = waitConnection(srv_fd)) >= 0)) {}
                     continue;
                 }
                 buf[rcvd] = '\0';
@@ -141,14 +142,14 @@ void Web_GCHandler() {
                 /* -------- route -------- */
                 if (!strncmp(buf, "POST /ping", 10)) {
                     size_t need = get_content_length(buf);
-                    const char *body = find_payLoad(buf);
+                    cStringRO body = find_payLoad(buf);
                     size_t have =
-                        body ?
-                            ((buf + rcvd) - body) : 0;
+                        (body ?
+                            ((buf + rcvd) - body) : 0);
                     while (
                         (have < need) &&
                         (need < BUF_SIZE)
-                    ) {
+                        ) {
                         ssize_t add = recv(cli_fd, buf + rcvd, sizeof(buf) - 1 - rcvd, 0);
                         if (add <= 0) {
                             ERROR("recv body");
@@ -161,22 +162,23 @@ void Web_GCHandler() {
                     }
 
                     uint32_t val =
-                        body ?
-                            strtoul(body, nullptr, 10) : 0;
+                        (body ?
+                            strtoul(body, nullptr, 10) : 0);
                     WARNING("[PING] value from client = %u\n", val);
 
                     reply(cli_fd, "", 0, "200 OK", "text/plain", keep);
 
-                } else if (!strncmp(buf, "POST /raw", 9)) {
+                }
+                else if (!strncmp(buf, "POST /raw", 9)) {
                     size_t need = get_content_length(buf);
-                    const char *body = find_payLoad(buf);
+                    cStringRO body = find_payLoad(buf);
                     size_t have =
                         body ?
-                            (buf + rcvd) - body : 0;
+                        (buf + rcvd) - body : 0;
                     while (
                         (have < need) &&
                         (need < BUF_SIZE)
-                    ) {
+                        ) {
                         ssize_t add = recv(cli_fd, buf + rcvd, sizeof(buf) - 1 - rcvd, 0);
                         if (add <= 0) {
                             ERROR("recv raw body");
@@ -191,7 +193,7 @@ void Web_GCHandler() {
 
                     if (body &&
                         (have >= sizeof(RawPacket))
-                    ) {
+                        ) {
                         RawPacket pkt;
                         memcpy(&pkt, body, sizeof(pkt));
                         // pkt.flags = ntohs(pkt.flags);
@@ -203,6 +205,7 @@ void Web_GCHandler() {
                             // pkt.flags
                             // WORD_TO_BINARY(pkt.flags)
                         );
+#if 0
                         gp.left.x = (pkt.slider[0] - 0.5f) * 2;
                         gp.left.y = (pkt.slider[1] - 0.5f) * 2;
                         gp.left.z = pkt.slider[4];
@@ -210,20 +213,32 @@ void Web_GCHandler() {
                         gp.right.y = (pkt.slider[3] - 0.5f) * 2;
                         gp.right.z = pkt.slider[5];
                         gp.btns = unpackButtons(pkt.flags);
-
-                    } else {
-                        WARNING("[RAW] incomplete or missing payload\n");
+#else
+                        GamePad tgp = {
+                            .left = {
+                                (pkt.slider[0] - 0.5f) * 2,
+                                (pkt.slider[1] - 0.5f) * 2,
+                                pkt.slider[4]
+                            },
+                            .right = {
+                                (pkt.slider[2] - 0.5f) * 2,
+                                (pkt.slider[3] - 0.5f) * 2,
+                                pkt.slider[5]
+                            },
+                            .btns = unpackButtons(pkt.flags)
+                        };
+                        gp = tgp;
+#endif
                     }
+                    else    WARNING("[RAW] incomplete or missing payload\n");
 
                     reply(cli_fd, "", 0, "200 OK", "text/plain", keep);
 
-                } else if (!strncmp(buf, "GET /favicon", 12)) {
-                    reply(cli_fd, HTTP_PL(k404), "404 Not Found", "text/plain", keep);
-                } else if (!strncmp(buf, "GET /", 5)) {
-                    reply(cli_fd, HTTP_PL(kHTML), "200 OK", "text/html", keep);
-                } else {
-                    reply(cli_fd, HTTP_PL(k404), "404 Not Found", "text/plain", keep);
                 }
+                else if (!strncmp(buf, "GET /favicon", 12)) reply(cli_fd, HTTP_PL(k404), "404 Not Found", "text/plain", keep);
+                else if (!strncmp(buf, "GET /", 5))         reply(cli_fd, HTTP_PL(kHTML), "200 OK", "text/html", keep);
+                else                                        reply(cli_fd, HTTP_PL(k404), "404 Not Found", "text/plain", keep);
+
                 if (!keep) break;
             }
             close(cli_fd);

@@ -15,6 +15,7 @@ extern MG996R Servo[];
 #   define servoNum 18
 #endif
 
+#if 1
 static float _curAngle = 0;
 #define SV_ALL(v)  \
     LOG("[%.2f]\n", (v)); \
@@ -22,6 +23,7 @@ static float _curAngle = 0;
     for(int i = 0; i < servoNum; i++) {\
         Servo[i].setAngle(deg(v));\
     }
+#endif
 
 void _on()  {
     LOG("ON\n");
@@ -61,7 +63,7 @@ void _left() { SV_ALL(_curAngle - 1) }
 void _right() { SV_ALL(_curAngle + 1) }
 
 
-KeyFunction fArray[KEY_COUNT] = {
+const KeyFunction fArray[KEY_COUNT] = {
     [KEY_UNKNOWN] = 0,
 
     [KEY_LEFT]          = _left,

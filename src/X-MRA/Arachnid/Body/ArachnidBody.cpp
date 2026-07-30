@@ -4,7 +4,7 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
     _legs(legs),
     _legCount(legCount),
     _isArmed(false),
-    _legMaskLimit(0xFF >> (MAX_LEGS - _legCount)), //mask for legGroup limits
+    _legMaskLimit((LegMask)(0xFF >> (MAX_LEGS - _legCount))), //mask for legGroup limits
     _lastLegError(MAX_LEGS),
     _azimuth(deg(0)),
     _elevation(deg(0))

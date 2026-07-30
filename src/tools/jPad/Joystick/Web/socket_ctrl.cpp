@@ -52,7 +52,7 @@ int waitConnection(int srv_fd) {
 }
 
 /*───────────────────────── send_all */
-int send_all(int fd, const char *buf, size_t len) {
+int send_all(int fd, cStringRO buf, size_t len) {
     while (len) {
         ssize_t sent = send(fd, buf, len, 0);
         if (sent <= 0) {

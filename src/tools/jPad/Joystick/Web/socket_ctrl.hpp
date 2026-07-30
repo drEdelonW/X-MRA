@@ -9,7 +9,8 @@
 // #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "types.h"
 
 int init_server(uint16_t port);
 int waitConnection(int srv_fd);
-int send_all(int fd, const char *buf, size_t len) ;
+int send_all(int fd, cStringRO buf, size_t len) ;

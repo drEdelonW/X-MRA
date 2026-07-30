@@ -18,33 +18,43 @@ void dpad() {
             Key lastKey = getKeyFromBuffer();
             // LOG("%s\n", getKeyName(lastKey));
             switch (lastKey) {
-                case KEY_ESCAPE:
                 // case KEY_Q:
+                case KEY_ESCAPE: {
                     LOG("exit\n");
                     restoreTerminal(&orig);
                     return;
+                }
 
-                case KEY_UNKNOWN:
-                    // for (int i = 0; _keyBuff[i]; i++)
-                    //     LOG("0x%.2X ", _keyBuff[i]);
-                    // LOG("\n");
-                    LOG("KEY_UNKNOWN: 0x%016llX\n", (unsigned long long)_keyBuff); /* → 0xDEADBEEFCAFEBAB */
-                    break;
+                case KEY_UNKNOWN: {
+#if 0
+                    for (int i = 0; _keyBuff[i]; i++)
+                        LOG("0x%.2X ", _keyBuff[i]);
+                    LOG("\n");
+#endif
+                    LOG("KEY_UNKNOWN: 0x%016llX\n",
+                        (unsigned long long)_keyBuff
+                    ); /* -> 0xDEADBEEFCAFEBAB */
+                } break;
 
                 default:
-                    if (fArray[lastKey] != NULL) {
+                    if (fArray[lastKey] != NULL)
                         fArray[lastKey]();
-                    } else {
+                    else
                         LOG("[%s]\n", getKeyName(lastKey));
-                    }
+
                     break;
             }
         }
-        // else{LOG("not\n")}
+#if 0
+        else
+            LOG("not\n")
 
-        // if ((isPressed_ == true) && (isPressed == false)) {
-        //     // Optionally: _doStop();
-        // }
-        // isPressed_ = isPressed;
+        if ((isPressed_ == true) &&
+            (isPressed == false)
+            ) {
+                // Optionally: _doStop();
+            }
+        isPressed_ = isPressed;
+#endif
     }
 }

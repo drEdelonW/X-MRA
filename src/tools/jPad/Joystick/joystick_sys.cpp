@@ -1,7 +1,8 @@
 #include "joystick.hpp"
 #include <thread>
 
-volatile GamePad gp;
+// volatile 
+GamePad gp;
 std::thread jThread;
 volatile bool jQuit;
 volatile bool joy_echo = false;

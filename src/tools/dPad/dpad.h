@@ -28,7 +28,7 @@ extern "C" {
     void restoreTerminal(const struct termios* orig);
 
 
-    extern KeyFunction fArray[KEY_COUNT];
+    extern const KeyFunction fArray[KEY_COUNT];
 
 #ifdef __cplusplus
 }

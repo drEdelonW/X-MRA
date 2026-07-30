@@ -41,6 +41,7 @@ MidleLeft           \ | /            MidleRight
              (X - forward, Y - right, Z - up)
 */
 
+#if 0
 #define LEG_FL   (1 << 0)  // FrontLeft
 #define LEG_FR   (1 << 1)  // FrontRight
 #define LEG_ML   (1 << 2)  // MidleLeft
@@ -51,19 +52,45 @@ MidleLeft           \ | /            MidleRight
 #define LEGS_FRONT  (LEG_FL | LEG_FR)
 #define LEGS_MID    (LEG_ML | LEG_MR)
 #define LEGS_BACK   (LEG_BL | LEG_BR)
+
 #define LEGS_LEFT   (LEG_FL | LEG_ML | LEG_BL)
 #define LEGS_RIGHT  (LEG_FR | LEG_MR | LEG_BR)
+
 #define LEGS_ALL    (LEG_FL | LEG_FR | LEG_ML | LEG_MR | LEG_BL | LEG_BR)
 
 #define TRIPOD_A  (LEG_FL | LEG_MR | LEG_BL)  // [0, 3, 4]
 #define TRIPOD_B  (LEG_FR | LEG_ML | LEG_BR)  // [1, 2, 5]
+#else
+enum LegBit : uint8_t {
+    LEG_FL = (1 << 0), // FrontLeft
+    LEG_FR = (1 << 1), // FrontRight
+    LEG_ML = (1 << 2), // MidleLeft
+    LEG_MR = (1 << 3), // MidleRight
+    LEG_BL = (1 << 4), // BackLeft
+    LEG_BR = (1 << 5), // BackRight
+};
 
-#define MAX_LEGS  (8)
+enum LegMask : uint8_t {
+    LEGS_FRONT = LEG_FL | LEG_FR,
+    LEGS_MID   = LEG_ML | LEG_MR,
+    LEGS_BACK  = LEG_BL | LEG_BR,
 
-#define PATTERN_LEG  for (int i = 0; i < _legCount; i++) if (_maskCheck(pattern, i))
-#define LEG_ERROR_OK        _lastLegError = MAX_LEGS; return true;
-#define LEG_ERROR_DISARMED  _lastLegError = MAX_LEGS; return false;
-#define LEG_ERROR           _lastLegError = i;        return false;
+    LEGS_LEFT  = LEG_FL | LEG_ML | LEG_BL,
+    LEGS_RIGHT = LEG_FR | LEG_MR | LEG_BR,
+
+    LEGS_ALL   = LEG_FL | LEG_FR | LEG_ML | LEG_MR | LEG_BL | LEG_BR,
+
+    TRIPOD_A   = LEG_FL | LEG_MR | LEG_BL, // [0, 3, 4]
+    TRIPOD_B   = LEG_FR | LEG_ML | LEG_BR, // [1, 2, 5]
+};
+#endif
+
+#define MAX_LEGS (8)
+
+#define PATTERN_LEG         for (int i = 0; i < _legCount; i++) if (_maskCheck(pattern, i))
+#define LEG_ERROR_OK        do { _lastLegError = MAX_LEGS;  return true;    } while (0)
+#define LEG_ERROR_DISARMED  do { _lastLegError = MAX_LEGS;  return false;   } while (0)
+#define LEG_ERROR           do { _lastLegError = i;         return false;   } while (0)
 
 class ArachnidBody {
 public:
@@ -71,8 +98,8 @@ public:
     ~ArachnidBody();
 
     // mask (bitmask) see ArachnidBody scheme for accord bits with actual legs
-    void    setPatMask(int pattern, uint8_t mask);
-    uint8_t getPatMask(int pattern);
+    void    setPatMask(int pattern, LegMask mask);
+    LegMask getPatMask(int pattern);
 
     void setOffs(Vector3D offs, int pattern = 0);
     void addOffs(Vector3D offs, int pattern = 0);
@@ -90,15 +117,15 @@ public:
 
 
     bool applyPose(int pattern = 0);
-    void getMatrix(Matrix4x4* mx, int pattern = 0);
-    void setMatrix(Matrix4x4* mx, int pattern = 0);
+    void getMatrix(Matrix4x4_p mx, int pattern = 0);
+    void setMatrix(Matrix4x4_p mx, int pattern = 0);
 
     bool isArmed();
     bool ARM();
     void DISARM();
 
     bool AimSetAngle(Angle  azimuth, Angle  elevation);
-    void AimGetAngle(Angle* azimuth, Angle* elevation);
+    void AimGetAngle(Angle_p azimuth, Angle_p elevation);
     Angle AimGetAngleAzimuth();
     Angle AimGetAngleElevation();
 
@@ -116,8 +143,8 @@ private:
 
     bool    _isArmed;
 
-    uint8_t     _legMaskLimit;
-    uint8_t     _legPattMask[MAX_LEGS];
+    LegMask     _legMaskLimit;
+    LegMask     _legPattMask[MAX_LEGS];
     Matrix4x4   _legPattMatrix[MAX_LEGS];
     int8_t      _lastLegError;
 

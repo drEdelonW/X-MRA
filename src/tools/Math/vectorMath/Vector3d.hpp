@@ -3,8 +3,7 @@
 class Vector3D {
 public:
     float x, y, z;
-
-    Vector3D(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f);
+    Vector3D(float _x = 0.f, float _y = 0.f, float _z = 0.f);
 
     void print() const;
     void printXML() const;
@@ -16,10 +15,10 @@ public:
 
     Vector3D  operator*(float  scalar) const;
     Vector3D& operator*=(float scalar);
-    Vector3D  operator*(const  Vector3D& other) const;
     Vector3D  operator/(float  scalar) const;
     Vector3D& operator/=(float scalar);
 
+    Vector3D  operator*(const  Vector3D& other) const;
     float     dot(const   Vector3D& other) const;
     Vector3D  cross(const Vector3D& other) const;
 
@@ -27,10 +26,9 @@ public:
     Vector3D normalize() const;
     bool isZero() const;
 
-    Vector3D operator-() const {
-        return Vector3D(-x, -y, -z);
-    }
+    Vector3D operator-() const { return Vector3D(-x, -y, -z); }
 
     Vector3D toRad() const;
     Vector3D toDeg() const;
 };
+typedef Vector3D* Vector3D_p;
