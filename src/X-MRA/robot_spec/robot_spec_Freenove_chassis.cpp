@@ -1,5 +1,7 @@
 #include "X-MRA.hpp"
 
+// https://store.freenove.com/products/fnk0052
+
 #include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
     {1, PCAaddr_1},

@@ -1,5 +1,7 @@
 #include "robot_spec.hpp"
 
+// https://ca.robotshop.com/products/lynxmotion-phoenix-3dof-hexapod-black-no-servos-electronics
+
 // #include "PS_MG996R.hpp"
 // extern MG996R Servo[];
 
