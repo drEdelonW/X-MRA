@@ -1,16 +1,17 @@
 #include "ArachnidBody.hpp"
 #include <unistd.h>  //usleep
 #include "terminal_tools.h"
+#include "CLAMP.h"
 
-// Vector3D cPark = {0.0, 0.0, 0.0};
-float cPark = 85.0;
-float cSafe = 0.0;
+// Vector3D cPark = {0.f, 0.f, 0.f};
+float cPark = 85.f;
+float cSafe = 0.f;
 
-float fPark = -125.0;
-float fSafe = -90.0;
+float fPark = -125.f;
+float fSafe = -90.f;
 
-float tPark = -80.0;
-float tSafe = -30.0;
+float tPark = -80.f;
+float tSafe = -30.f;
 
 #define PHASE_DUR  us(1000000)
 
@@ -25,7 +26,11 @@ bool ArachnidBody::isArmed() {
     return _isArmed;
 }
 
-bool ArachnidBody::animAngDeg(Vector3D from, Vector3D to, MicroSeconds duration) {
+bool ArachnidBody::animAngDeg(
+    Vector3D from,
+    Vector3D to,
+    MicroSeconds duration
+) {
     int8_t pattern = 0;
     MicroSeconds tsStart = microsNow();
     MicroSeconds tsEnd = tsStart + duration;
@@ -35,27 +40,21 @@ bool ArachnidBody::animAngDeg(Vector3D from, Vector3D to, MicroSeconds duration)
     for (
         Vector3D curPose = from;
         (now = microsNow()) < tsEnd;
-        curPose = from + (delta * ((now - tsStart) / (duration * 1.0f)))
+        curPose += delta *
+            (
+                (now - tsStart) /
+                    duration
+            )
+
         ) {
         // curPose.print(); LOG("now[%lld]\n", now);
         PATTERN_LEG{
-            float coxa = curPose.x * (
-                (i % 2) ?
-                    1.0f : -1.0f
-                );
-
-            if ((i > 1) &&
-                (curPose.x > 60.0f)
-            )   coxa = (i % 2) ?
-                    60.0f : -60.0f;
-
-            if ((i > 3) &&
-                (curPose.x > 30.0f)
-            )   coxa = (i % 2) ?
-                    30.0f : -30.0f;
+            /**/ if (i > 3)     ClampMoreThen(&curPose.x, 30.f);
+            else if (i > 1)     ClampMoreThen(&curPose.x, 60.f);
 
             if (!_legs[i].tryJointAngles(
-                    deg(coxa),
+                    (i % 2) ?
+                        deg(curPose.x) : -deg(curPose.x),
                     deg(curPose.y),
                     deg(curPose.z)
                 )
@@ -94,7 +93,7 @@ bool ArachnidBody::ARM() {
     animAngDeg(ArmSQNC[3], ArmSQNC[4], PHASE_DUR);
 
     AimSetAngle(deg(0), deg(0));
-    trySetOffs(Vector3D{ 0.0f, 0.0f, 0.0f });
+    trySetOffs(Vector3D{});
 
     LOG("DONE\n");
     return _isArmed = true;
@@ -129,7 +128,7 @@ void ArachnidBody::DISARM() {
 #endif
     AimSetAngle(deg(0), deg(0));
 
-    trySetOffs(Vector3D{ 0.0f, 0.0f, 0.0f });
+    trySetOffs(Vector3D{});
     usleep(1000000);
     animAngDeg(ArmSQNC[4], ArmSQNC[3], PHASE_DUR);
     animAngDeg(ArmSQNC[3], ArmSQNC[2], PHASE_DUR);

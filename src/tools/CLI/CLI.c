@@ -7,29 +7,26 @@
 // add to makefile [DEFINE_LIST += CLI_AUTOEXEC_CMD=\"dpad\"]
 // #define CLI_AUTOEXEC_CMD "dpad"
 
-
-void startCLI(){
+void startCLI() {
 #if DEBUG > 0
     LOG(TEXT_BOLD TEXT_GREEN"CLI started:\n" TEXT_RESET);
 
-#ifdef CLI_AUTOEXEC_CMD
+# ifdef CLI_AUTOEXEC_CMD
     LOG("autorun \"%s\"\n", CLI_AUTOEXEC_CMD);
     executeCommand(CLI_AUTOEXEC_CMD);
-#endif
+# endif
 
-    for(;;) {
+    for (;;) {
         char cli_buffer[128] = {0};
         LOG(TEXT_BRIGHT_GREEN "root" TEXT_RESET "@%s:/# ", HOSTNAME);
 
         if (fgets(BUFF_AND_SIZE(cli_buffer), stdin) != NULL) {
-            if (ferror(stdin)) {
-                clearerr(stdin);
-            } else {
+            if (ferror(stdin))      clearerr(stdin);
+            else {
                 // hexDump("cli_buffer", cli_buffer, strlen(cli_buffer));
                 trimNewline(cli_buffer);
-                if (cli_buffer[0]) {
+                if (cli_buffer[0])
                     executeCommand(cli_buffer);
-                }
             }
         }
     }

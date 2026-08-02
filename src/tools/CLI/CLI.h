@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void startCLI();
+    void startCLI();
 
 #ifdef __cplusplus
 }

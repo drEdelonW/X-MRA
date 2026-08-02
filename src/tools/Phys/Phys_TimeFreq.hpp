@@ -20,6 +20,8 @@ struct MicroSeconds { /* Duration/timestamp in microseconds */
     constexpr bool operator==(MicroSeconds o) const { return usValue == o.usValue; }
     constexpr bool operator!=(MicroSeconds o) const { return usValue != o.usValue; }
 };
+typedef MicroSeconds time_us;
+
 constexpr MicroSeconds  operator*(float scale, MicroSeconds v)      { return v * scale; }
 constexpr float         operator/(MicroSeconds a, MicroSeconds b)   { return static_cast<float>(a.usValue) / static_cast<float>(b.usValue); }
 constexpr MicroSeconds  operator/(MicroSeconds a, float scale)      { return MicroSeconds(static_cast<uint64_t>(a.usValue / scale)); }
@@ -51,6 +53,8 @@ struct MilliSeconds { /* Duration/timestamp in milliseconds */
     constexpr bool operator==(MilliSeconds o) const { return msValue == o.msValue; }
     constexpr bool operator!=(MilliSeconds o) const { return msValue != o.msValue; }
 };
+typedef MicroSeconds time_ms;
+
 constexpr MilliSeconds  operator*(float scale, MilliSeconds v)      { return v * scale; }
 constexpr float         operator/(MilliSeconds a, MilliSeconds b)   { return static_cast<float>(a.msValue) / static_cast<float>(b.msValue); }
 constexpr MilliSeconds  operator/(MilliSeconds a, float scale)      { return MilliSeconds(static_cast<uint64_t>(a.msValue / scale)); }

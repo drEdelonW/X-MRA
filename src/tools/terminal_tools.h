@@ -1,14 +1,6 @@
 #pragma once
 
-#if 0
-#define ASCII_NULL        (0x00)  /* Null terminator (end of the string) */
-#define ASCII_NEWLINE     (0x0A)  /* Line Feed (LF) (\n) */
-#define ASCII_CARRIAGE    (0x0D)  /* Carriage Return (CR) (\r) */
-#define ASCII_TAB         (0x09)  /* Horizontal Tab (\t) */
-#define ASCII_BACKSPACE   (0x08)  /* Backspace */
-#define ASCII_BELL        (0x07)  /* Bell (sound signal) */
-#define ASCII_ESCAPE      (0x1B)  /* Escape (ESC) */
-#else
+
 typedef enum {
     ASCII_NULL        = 0x00,  /* Null terminator (end of the string) */
     ASCII_NEWLINE     = 0x0A,  /* Line Feed (LF) (\n) */
@@ -17,12 +9,33 @@ typedef enum {
     ASCII_BACKSPACE   = 0x08,  /* Backspace */
     ASCII_BELL        = 0x07,  /* Bell (sound signal) */
     ASCII_ESCAPE      = 0x1B,  /* Escape (ESC) */
+
+    ASCII_SPACE       = 0x20,  /* ' ' First printable Symbol */
+    ASCII_0           = 0x30,  /* '0' Symbol */
+    ASCII_9           = 0x39,  /* '9' Symbol */
+    ASCII_A           = 0x41,  /* 'A' Symbol */
+    ASCII_Z           = 0x5A,  /* 'Z' Symbol */
+    ASCII_a           = 0x61,  /* 'a' Symbol */
+    ASCII_z           = 0x7A,  /* 'a' Symbol */
+    ASCII_TILDA       = 0x7E   /* '~' Last printable Symbol */
 } ASCII_t; // TODO: should be uint8_t
-#endif
 
-#define STAB              "  "
+static inline bool isPrintable(char chr) {
+    return (
+        (chr >= ASCII_SPACE) &&
+        (chr <= ASCII_TILDA)
+    );
+}
+static inline bool isLineEnd(char chr) {
+        return (
+        (chr == ASCII_NEWLINE) ||
+        (chr == ASCII_CARRIAGE)
+    );
+}
 
-#define ESC     "\x1B["
+#define STAB    "  "
+
+#define ESC     "\x1B""["
 
 #define CLEAR_SCREEN        ESC "2J"
 #define CLEAR_LINE          ESC "2K"
@@ -41,47 +54,49 @@ typedef enum {
 
 #define SOUND_BEEP          "\a"
 
-#define TEXT_RESET      ESC "0m"
-#define TEXT_BOLD       ESC "1m"
-#define TEXT_UNDERLINE  ESC "4m"
-#define TEXT_BLINK      ESC "5m"
-#define TEXT_REVERSE    ESC "7m"
+// text features
+#define _TA(n)          ESC #n "m"
+#define TEXT_RESET      _TA(0)
+#define TEXT_BOLD       _TA(1)
+#define TEXT_UNDERLINE  _TA(4)
+#define TEXT_BLINK      _TA(5)
+#define TEXT_REVERSE    _TA(7)
 
-#define TEXT_BLACK   ESC "30m"
-#define TEXT_RED     ESC "31m"
-#define TEXT_GREEN   ESC "32m"
-#define TEXT_YELLOW  ESC "33m"
-#define TEXT_BLUE    ESC "34m"
-#define TEXT_MAGENTA ESC "35m"
-#define TEXT_CYAN    ESC "36m"
-#define TEXT_WHITE   ESC "37m"
+#define TEXT_BLACK   _TA(30)
+#define TEXT_RED     _TA(31)
+#define TEXT_GREEN   _TA(32)
+#define TEXT_YELLOW  _TA(33)
+#define TEXT_BLUE    _TA(34)
+#define TEXT_MAGENTA _TA(35)
+#define TEXT_CYAN    _TA(36)
+#define TEXT_WHITE   _TA(37)
 
-#define BG_BLACK   ESC "40m"
-#define BG_RED     ESC "41m"
-#define BG_GREEN   ESC "42m"
-#define BG_YELLOW  ESC "43m"
-#define BG_BLUE    ESC "44m"
-#define BG_MAGENTA ESC "45m"
-#define BG_CYAN    ESC "46m"
-#define BG_WHITE   ESC "47m"
+#define BG_BLACK   _TA(40)
+#define BG_RED     _TA(41)
+#define BG_GREEN   _TA(42)
+#define BG_YELLOW  _TA(43)
+#define BG_BLUE    _TA(44)
+#define BG_MAGENTA _TA(45)
+#define BG_CYAN    _TA(46)
+#define BG_WHITE   _TA(47)
 
-#define TEXT_BRIGHT_BLACK   ESC "90m"
-#define TEXT_BRIGHT_RED     ESC "91m"
-#define TEXT_BRIGHT_GREEN   ESC "92m"
-#define TEXT_BRIGHT_YELLOW  ESC "93m"
-#define TEXT_BRIGHT_BLUE    ESC "94m"
-#define TEXT_BRIGHT_MAGENTA ESC "95m"
-#define TEXT_BRIGHT_CYAN    ESC "96m"
-#define TEXT_BRIGHT_WHITE   ESC "97m"
+#define TEXT_BRIGHT_BLACK   _TA(90)
+#define TEXT_BRIGHT_RED     _TA(91)
+#define TEXT_BRIGHT_GREEN   _TA(92)
+#define TEXT_BRIGHT_YELLOW  _TA(93)
+#define TEXT_BRIGHT_BLUE    _TA(94)
+#define TEXT_BRIGHT_MAGENTA _TA(95)
+#define TEXT_BRIGHT_CYAN    _TA(96)
+#define TEXT_BRIGHT_WHITE   _TA(97)
 
-#define BG_BRIGHT_BLACK   ESC "100m"
-#define BG_BRIGHT_RED     ESC "101m"
-#define BG_BRIGHT_GREEN   ESC "102m"
-#define BG_BRIGHT_YELLOW  ESC "103m"
-#define BG_BRIGHT_BLUE    ESC "104m"
-#define BG_BRIGHT_MAGENTA ESC "105m"
-#define BG_BRIGHT_CYAN    ESC "106m"
-#define BG_BRIGHT_WHITE   ESC "107m"
+#define BG_BRIGHT_BLACK   _TA(100)
+#define BG_BRIGHT_RED     _TA(101)
+#define BG_BRIGHT_GREEN   _TA(102)
+#define BG_BRIGHT_YELLOW  _TA(103)
+#define BG_BRIGHT_BLUE    _TA(104)
+#define BG_BRIGHT_MAGENTA _TA(105)
+#define BG_BRIGHT_CYAN    _TA(106)
+#define BG_BRIGHT_WHITE   _TA(107)
 
 
 #ifndef DEBUG
