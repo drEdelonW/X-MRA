@@ -25,6 +25,7 @@ void PCA9685::_busInit() {
         );
         return;
     }
+    // i2c Bus Initted
 
     if (ioctl(_fd, I2C_SLAVE, _i2c_address) < 0) {
         fprintf(stderr,
@@ -38,7 +39,7 @@ void PCA9685::_busInit() {
     // Try to read MODE1 register (0x00) to check presence
     PCA_reg_t reg = 0x00;
     uint8_t value = 0;
-    if ((write(_fd, &reg, 1) != 1 ) ||
+    if ((write(_fd, &reg, 1) != 1) ||
         (read(_fd, &value, 1) != 1)
     ) {
         fprintf(stderr,
@@ -57,18 +58,19 @@ void PCA9685::_busInit() {
 #endif
     }
 
+#if 0
     // Success
-    // fprintf(stderr,
-    //     "[INFO] %s: PCA9685 found at I2C address 0x%02X on bus %d.\n",
-    //     __func__, _i2c_address, _i2c_bus
-    // );
+    fprintf(stderr,
+        "[INFO] %s: PCA9685 found at I2C address 0x%02X on bus %d.\n",
+        __func__, _i2c_address, _i2c_bus
+    );
+#endif
     _initted = true;
 }
 
 void PCA9685::_busDeinit() {
-    if (_fd != -1){
+    if (_fd != -1)
         close(_fd);
-    }
     _initted = false;
 }
 
