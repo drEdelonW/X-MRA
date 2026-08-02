@@ -20,8 +20,9 @@ void PCA9685::_busInit() {
     _fd = open(filename, O_RDWR);
     if (_fd < 0) {
         fprintf(stderr,
-                "[ERROR] %s: Failed to open I2C bus %d (%s). errno=%d\n",
-                __func__, _i2c_bus, filename, errno);
+            "[ERROR] %s: Failed to open I2C bus %d (%s). errno=%d\n",
+            __func__, _i2c_bus, filename, errno
+        );
         return;
     }
 
@@ -35,7 +36,7 @@ void PCA9685::_busInit() {
     }
 
     // Try to read MODE1 register (0x00) to check presence
-    PCA_Register reg = 0x00;
+    PCA_reg_t reg = 0x00;
     uint8_t value = 0;
     if ((write(_fd, &reg, 1) != 1 ) ||
         (read(_fd, &value, 1) != 1)
@@ -71,31 +72,34 @@ void PCA9685::_busDeinit() {
     _initted = false;
 }
 
-void PCA9685::_writeRegister(PCA_Register reg, uint8_t value) {
+void PCA9685::_writeRegister(uint8_t reg, PCA_reg_t value) {
     uint8_t buf[2] = {reg, value};
     if ((!_initted) ||
         (write(_fd, buf, 2) != 2)
     ) {
         fprintf(stderr,
             "[ERROR] %s: Failed to write to register 0x%02X (value 0x%02X) "
-            I2C_BUS_ID_PATTERN, __func__, reg, value, I2C_BUS_ID_ARGS);
+            I2C_BUS_ID_PATTERN, __func__, reg, value, I2C_BUS_ID_ARGS
+        );
     }
 }
 
-uint8_t PCA9685::_readRegister(PCA_Register reg) {
+PCA_reg_t PCA9685::_readRegister(uint8_t reg) {
     if ((!_initted) ||
         (write(_fd, &reg, 1) != 1)
     ) {
         fprintf(stderr,
             "[ERROR] %s: Failed to set register address 0x%02X for read "
-            I2C_BUS_ID_PATTERN, __func__, reg, I2C_BUS_ID_ARGS);
+            I2C_BUS_ID_PATTERN, __func__, reg, I2C_BUS_ID_ARGS
+        );
         return 0xFF; // error code or sentinel
     };
-    uint8_t value;
+    PCA_reg_t value;
     if (read(_fd, &value, 1) != 1) {
         fprintf(stderr,
             "[ERROR] %s: Failed to read from register 0x%02X "
-            I2C_BUS_ID_PATTERN, __func__, reg, I2C_BUS_ID_ARGS);
+            I2C_BUS_ID_PATTERN, __func__, reg, I2C_BUS_ID_ARGS
+        );
         return 0xFF; // error code or sentinel
      }
     return value;

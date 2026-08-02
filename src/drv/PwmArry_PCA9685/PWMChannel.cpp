@@ -1,8 +1,10 @@
 #include "PWMChannel.hpp"
 #include <stdio.h>
 
-PWMChannel::PWMChannel(ProtoPWMArray& ctrl, uint8_t ch)
-: controller(ctrl), channel(ch) {}
+PWMChannel::PWMChannel(ProtoPWMArray& ctrl, PwmChannel _channel) :
+    controller(ctrl),
+    channel(_channel) {
+}
 
 
 void        PWMChannel::setDutyCycle(DutyCycle_t duty) {

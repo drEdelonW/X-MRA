@@ -189,11 +189,11 @@ Vector3D& Triangle3D::operator[](int index) {
     return vertices[index % TRI_NUM];
 }
 
-void Triangle3D::toFloatArray(float* arr) const {
+void Triangle3D::toFloatArray(float_p arr) const {
     for (int idx = 0; idx < TRI_NUM; ++idx) {
-        arr[idx * TRI_NUM] = vertices[idx].x;
-        arr[idx * TRI_NUM + 1] = vertices[idx].y;
-        arr[idx * TRI_NUM + 2] = vertices[idx].z;
+        arr[(idx * TRI_NUM) + 0] = vertices[idx].x;
+        arr[(idx * TRI_NUM) + 1] = vertices[idx].y;
+        arr[(idx * TRI_NUM) + 2] = vertices[idx].z;
     }
 }
 
@@ -212,20 +212,20 @@ void Triangle3D::printVertices() const {
     }
 }
 
-// Определяем структуру для точки
+
 typedef struct {
     float x;
     float y;
 } Point;
 
-// Функция для вычисления знака площади треугольника
+
 float sign(Point p1, Point p2, Point p3) {
     return
         (p1.x - p3.x) * (p2.y - p3.y) -
         (p2.x - p3.x) * (p1.y - p3.y);
 }
 
-// Функция для проверки принадлежности точки треугольнику
+
 int is_point_in_triangle(Point pt, Point v1, Point v2, Point v3) {
     float d1 = sign(pt, v1, v2);
     float d2 = sign(pt, v2, v3);

@@ -2,21 +2,29 @@
 #include "PWMChannel.hpp"
 #define  PCA_Defined
 
-#define  PCA_Register uint8_t   // TODO: make it enum
+// #define  PCA_Register uint8_t   // TODO: make it enum
+typedef uint8_t PCA_reg_t;
+typedef enum:uint8_t {
+    MODE1         = 0x00, // Mode register 1
+    MODE2         = 0x01, // Mode register 2
 
-typedef enum : uint8_t {
-    PwmCh0, PwmCh1, PwmCh2, PwmCh3, PwmCh4,
-    PwmCh5, PwmCh6, PwmCh7, PwmCh8, PwmCh9,
+    LED0_ON_L     = 0x06, // LED0 ON low byte
+    LED0_ON_H     = 0x07, // LED0 ON high byte
+    LED0_OFF_L    = 0x08, // LED0 OFF low byte
+    LED0_OFF_H    = 0x09, // LED0 OFF high byte
 
-    PwmCh10 = 10, PwmChA = 10,
-    PwmCh11 = 11, PwmChB = 11,
-    PwmCh12 = 12, PwmChC = 12,
-    PwmCh13 = 13, PwmChD = 13,
-    PwmCh14 = 14, PwmChE = 14,
-    PwmCh15 = 15, PwmChF = 15,
+    LED1_ON_L     = 0x0A, // LED1 ON low byte
+    LED1_ON_H     = 0x0B, // LED1 ON high byte
+    LED1_OFF_L    = 0x0C, // LED1 OFF low byte
+    LED1_OFF_H    = 0x0D, // LED1 OFF high byte
 
-    PwmChNum
-} PwmChannel;
+    ALL_LED_ON_L  = 0xFA, // All LEDs ON low byte
+    ALL_LED_ON_H  = 0xFB, // All LEDs ON high byte
+    ALL_LED_OFF_L = 0xFC, // All LEDs OFF low byte
+    ALL_LED_OFF_H = 0xFD, // All LEDs OFF high byte
+
+    PRE_SCALE     = 0xFE  // Prescale register for frequency
+} PCA_Register;
 
 // #define PCA_Addr uint8_t   // TODO: make it enum
 typedef enum : uint8_t {
@@ -39,15 +47,15 @@ class PCA9685 : public ProtoPWMArray{
 
     PWMChannel PWM[PwmChNum];
 
-    void        setDutyCycle(uint8_t channel, DutyCycle_t dutyCycle, DutyCycle_t phaseShift = 0)  override;
-    DutyCycle_t getDutyCycle(uint8_t channel) override;
+    void        setDutyCycle(PwmChannel channel, DutyCycle_t dutyCycle, DutyCycle_t phaseShift = 0)  override;
+    DutyCycle_t getDutyCycle(PwmChannel channel) override;
 
-    void         setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift = us(0))  override;
-    MicroSeconds getDuration(uint8_t channel) override;
+    void         setDuration(PwmChannel channel, MicroSeconds duration, MicroSeconds phaseShift = us(0))  override;
+    MicroSeconds getDuration(PwmChannel channel) override;
 
-    /* PCA speecific API*/
-    void setInversion(uint8_t channel, bool inverted);
-    bool getInversion(uint8_t channel);
+    /* PCA specific API*/
+    void setInversion(PwmChannel channel, bool inverted);
+    bool getInversion(PwmChannel channel);
 
     void printStatus();
 
@@ -64,8 +72,8 @@ class PCA9685 : public ProtoPWMArray{
     MicroSeconds _periodUs;
     MicroSeconds _getDutyCyclePeriodUs(Hertz frequencyHz);
 
-    void         _busInit();
-    void         _busDeinit();
-    void         _writeRegister(PCA_Register reg, uint8_t value);    // Function to write to a register
-    uint8_t      _readRegister( PCA_Register reg);    // Function to read from a register
+    void        _busInit();
+    void        _busDeinit();
+    void        _writeRegister(uint8_t reg, PCA_reg_t value);    // Function to write to a register
+    PCA_reg_t   _readRegister( uint8_t reg);    // Function to read from a register
 };

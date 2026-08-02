@@ -4,26 +4,22 @@
 
 #include <cmath>     //round floor
 
-// MicroSeconds PCA9685::calcUnitDurationUs() {
-//     float period = 1 / getFreq_Hz(); // Период ШИМ в секундах
-//     float unitWeight = (period / MAX_VAL) * 1000000; // Вес единицы в микросекундах
-
-//     return static_cast<int>(std::round(unitWeight));    // Округляем результат до ближайшего целого числа
-// }
-
-
 MicroSeconds PCA9685::_getDutyCyclePeriodUs(Hertz frequencyHz) {
     if (frequencyHz <= Hz(0.f))
         return us(0);
     return periodUsOf(frequencyHz);
 }
 
-void PCA9685::setDuration(uint8_t channel, MicroSeconds duration, MicroSeconds phaseShift){
+void PCA9685::setDuration(
+    PwmChannel channel,
+    MicroSeconds duration,
+    MicroSeconds phaseShift
+) {
     // LOG("setDur frq[%f]Hz dur[%ld]us per[%ld]us\n", _freq, duration, _periodUs);
-    setDutyCycle(channel, (1.f * duration) / _periodUs );
-    // setDutyCycle(channel, /*(1.0f * duration) / _periodUs*/0.1 );
-    // setDutyCycle(channel, /*(1.0f * duration) / _periodUs*/0.05 );
+    setDutyCycle(channel, (1.f * duration) / _periodUs);
+    // setDutyCycle(channel, 0.1f );
+    // setDutyCycle(channel, 0.05f );
 }
 
-MicroSeconds PCA9685::getDuration(uint8_t channel){ return us(0);}
+MicroSeconds PCA9685::getDuration(PwmChannel channel) { return us(0); }
 

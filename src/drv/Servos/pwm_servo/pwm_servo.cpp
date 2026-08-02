@@ -6,14 +6,19 @@
 #include <cmath>
 #include <limits>
 
-Servo::Servo(PWM_ARRAY* pca, uint8_t pin, PWM_UNIT minPulseWidth, PWM_UNIT maxPulseWidth, float maxAngle)
-:   pca_(pca),
+Servo::Servo(
+    PWM_ARRAY* pca,
+    uint8_t pin,
+    PWM_UNIT minPulseWidth,
+    PWM_UNIT maxPulseWidth,
+    float maxAngle
+) :
+    pca_(pca),
     pin_(pin),
     minPulseWidth_(minPulseWidth),
     maxPulseWidth_(maxPulseWidth),
     maxAngle_(maxAngle),
-    maxValue_(pca_->getMaxValue())
-{
+    maxValue_(pca_->getMaxValue()) {
     // pca_->setFreq_Hz(100);
     deactivate();
 }
@@ -71,13 +76,17 @@ void Servo::_setAngle(float angle) {
     currentAngleDegrees_ = angle; // Cache the angle in degrees
     float pulseWidth = _map(
         angle,
-        0.0f,           maxAngle_,
-        minPulseWidth_, maxPulseWidth_
+        0.0f, maxAngle_,
+        minPulseWidth_,
+        maxPulseWidth_
     );
     PWM_UNIT duration = std::min(static_cast<PWM_UNIT>(pulseWidth), maxValue_);
     pca_->setDutyCycle(pin_, duration, phaseShift_);
 }
 
-float Servo::_map(float x, float in_min, float in_max, float out_min, float out_max) {
+float Servo::_map(float x,
+    float in_min, float in_max,
+    float out_min, float out_max
+) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }

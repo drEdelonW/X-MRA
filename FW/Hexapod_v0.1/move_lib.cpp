@@ -252,8 +252,11 @@ void wave_gait(v3i inp) {
 void ripple_gait(v3i inp) {
   commanded = inp;
     //if commands more than deadband then process
-  if ((abs(commanded.x) > 15) || (abs(commanded.y) > 15) ||
-      (abs(commanded.z) > 15) || (tick > 0)) {
+  if ((abs(commanded.x) > 15) ||
+      (abs(commanded.y) > 15) ||
+      (abs(commanded.z) > 15) ||
+      (tick > 0)
+      ) {
     compute_strides();
     numTicks = round(duration / FRAME_TIME_MS / 6.0); //total ticks divided into the six cases
     for (cur_leg = 0; cur_leg < LEG_NUM; cur_leg++) {
@@ -534,14 +537,10 @@ void  one_leg_lift(v3i inp, int ext) {
 // Leg IK Routine
 //***********************************************************************
 void leg_IK(int cur_legber, float X, float Y, float Z) {
-  Serial.print("leg_IK:536 ");
-  Serial.print(cur_legber);
-  Serial.print(" x:");
-  Serial.print(X);
-  Serial.print(" y:");
-  Serial.print(Y);
-  Serial.print(" z:");
-  Serial.print(Z);
+  Serial.print("leg_IK:536 ");  Serial.print(cur_legber);
+  Serial.print(" x:");  Serial.print(X);
+  Serial.print(" y:");  Serial.print(Y);
+  Serial.print(" z:");  Serial.print(Z);
   Serial.print("\r");
   //compute target femur-to-toe (L3) length
   L0 = sqrt(sq(X) + sq(Y)) - COXA_LENGTH;

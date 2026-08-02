@@ -2,17 +2,19 @@
 #include <stdint.h>
 #include "Triangle3d.hpp"
 #include "Matrix4x4.hpp"
+#include "types.h"
 
 
-#define IDX_t   uint32_t
+typedef uint32_t IDX_t;
+typedef uint32_p IDX_p;
 #define DIMOF(original) (sizeof(original) / sizeof(original[0]))
 
 class Mesh {
 private:
-    const IDX_t     _vertCnt;
-    const Vector3D_p _origVertices;
-          Vector3D_p   _trVertices;
-    const IDX_t     _triCnt;
+    const IDX_t         _vertCnt;
+    const Vector3D_p    _origVertices;
+          Vector3D_p    _trVertices;
+    const IDX_t         _triCnt;
     const IDX_t   (*_triangles)[3];
 
 public:

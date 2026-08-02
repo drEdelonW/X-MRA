@@ -26,7 +26,7 @@ public:
     static Matrix4x4 createRotationZDegrees(float angleDegrees);
     static float degreesToRadians(float degrees);
 
-    Matrix4x4 operator*(const Matrix4x4& other) const;
+    Matrix4x4  operator*( const Matrix4x4& other) const;
     Matrix4x4& operator*=(const Matrix4x4& other);
     Vector3D applyTransform(Vector3D& vec) const;
     Vector3D applyTransform(const Vector3D& vec) const;

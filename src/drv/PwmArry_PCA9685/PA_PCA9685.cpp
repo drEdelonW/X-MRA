@@ -26,27 +26,26 @@ PCA9685::PCA9685(uint8_t bus, PCA_Addr address, Hertz freq) :
         _periodUs = _getDutyCyclePeriodUs(_freq);
         wakeUp();
         // printStatus();
-    } else {
+    } else
         _busDeinit();
-    }
 }
 
 PCA9685::~PCA9685() {
-    if (_initted) {
+    if (_initted)
         sleepMode();
-    }
+
     _busDeinit();
 }
 
 
-void PCA9685::setInversion(uint8_t channel, bool inverted) {
-    if (channel < LED_NUM) {
+void PCA9685::setInversion(PwmChannel channel, bool inverted) {
+    if (channel < PwmChNum) {
         _channelInversion[channel] = inverted;
     }
 }
 
-bool PCA9685::getInversion(uint8_t channel) {
-    if (channel < LED_NUM) {
+bool PCA9685::getInversion(PwmChannel channel) {
+    if (channel < PwmChNum) {
         return _channelInversion[channel];
     }
     return false;

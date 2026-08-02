@@ -6,7 +6,7 @@
 #include "terminal_tools.h"
 
 void PCA9685::setDutyCycle(
-    uint8_t channel,
+    PwmChannel channel,
     DutyCycle_t dutyCycle,
     DutyCycle_t phaseShift
 ) {
@@ -15,37 +15,40 @@ void PCA9685::setDutyCycle(
     clampDuty(&dutyCycle);
     clampDuty(&phaseShift);
 
-    uint16_t on = MAX_VAL * phaseShift;
-    uint16_t off = on + (MAX_VAL * dutyCycle);
+    uint16_t on = (MAX_VAL * phaseShift);
+    uint16_t off = (MAX_VAL * dutyCycle) + on;
     off %= MAX_VAL;
 
-    if (_channelInversion[channel]) {
+    if (_channelInversion[channel])
         std::swap(on, off);
-    }
 
-    if (channel < LED_NUM) {
-        _writeRegister(LED0_ON_L  + (4 * channel), on & 0xFF);
-        _writeRegister(LED0_ON_H  + (4 * channel), on >> 8);
-        _writeRegister(LED0_OFF_L + (4 * channel), off & 0xFF);
-        _writeRegister(LED0_OFF_H + (4 * channel), off >> 8);
+    if (channel < PwmChNum) {
+        int rOffs = channel * 4;
+        _writeRegister(LED0_ON_L + rOffs, on & 0xFF);
+        _writeRegister(LED0_ON_H + rOffs, on >> 8);
+
+        _writeRegister(LED0_OFF_L + rOffs, off & 0xFF);
+        _writeRegister(LED0_OFF_H + rOffs, off >> 8);
     }
 }
 
-DutyCycle_t PCA9685::getDutyCycle(uint8_t channel) {
-    if (!(channel < LED_NUM)) {
+DutyCycle_t PCA9685::getDutyCycle(PwmChannel channel) {
+    if (!(channel < PwmChNum)) {
         printf("Error: Channel number out of range (0-15).\n");
         return -1;
     }
-
-    int onValue     = _readRegister(LED0_ON_L  + (4 * channel)) |
-                     (_readRegister(LED0_ON_H  + (4 * channel)) << 8);
-    int offValue    = _readRegister(LED0_OFF_L + (4 * channel)) |
-                     (_readRegister(LED0_OFF_H + (4 * channel)) << 8);
+    int rOffs = channel * 4;
+    uint16_t onValue =
+        (_readRegister(LED0_ON_L + rOffs)) |
+        (_readRegister(LED0_ON_H + rOffs) << 8);
+    uint16_t offValue =
+        (_readRegister(LED0_OFF_L + rOffs)) |
+        (_readRegister(LED0_OFF_H + rOffs) << 8);
 
     return
-        (offValue - onValue + (
-            (offValue >= onValue) ?   // TODO: make it crear
-             0.f : 1.f
-        ) * 1.f) /
+        (offValue - onValue +
+            ((offValue >= onValue) ?   // TODO: make it clear
+                0.f : 1.f) *
+            1.f) /
         MAX_VAL;
 }
