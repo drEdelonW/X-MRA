@@ -1,11 +1,13 @@
 #include "X-MRA.hpp"
 
 // https://store.freenove.com/products/fnk0052
+#include "i2cBus.hpp"
+i2cBus iBus(1, true);
 
 #include "PA_PCA9685.hpp"
 PCA9685 PWMarray[] = {
-    {1, PCAaddr_1},
-    {1, PCAaddr_0}
+    {iBus, PCAaddr_1},
+    {iBus, PCAaddr_0}
 };
 #define PwCh(n)  PWMarray[n >> 4].PWM[n & 0xF]
 

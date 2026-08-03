@@ -1,10 +1,16 @@
 #include "PA_PCA9685.hpp"
 #include "PA_PCA9685_private.hpp"
+#include "terminal_tools.h"
 
-PCA9685::PCA9685(uint8_t bus, PCA_Addr address, Hertz freq) :
+PCA9685::PCA9685(i2cBus& bus, PCA_Addr address, Hertz freq) :
+#if 0
     _initted(false),
     _i2c_bus(bus),
     _i2c_address(address),
+#else
+    // _bus(bus),
+    _iEP(bus, (i2cAddr_t)address),
+#endif
     PWM{
         PWMChannel(*this, PwmCh0),  PWMChannel(*this, PwmCh1),
         PWMChannel(*this, PwmCh2),  PWMChannel(*this, PwmCh3),
@@ -19,22 +25,20 @@ PCA9685::PCA9685(uint8_t bus, PCA_Addr address, Hertz freq) :
     _freq(Hz(0.f)),
     _periodUs(us(0))
 {
-    _busInit();
-    if (_initted) {
+    if (_iEP.isInited()) {
         setFreq_Hz(freq);
         _freq = _readFreq_Hz();
         _periodUs = _getDutyCyclePeriodUs(_freq);
         wakeUp();
         // printStatus();
-    } else
-        _busDeinit();
+    } else {
+        LOG("Bus NOT INITED\n");
+    }
 }
 
 PCA9685::~PCA9685() {
-    if (_initted)
+    if (_iEP.isInited())
         sleepMode();
-
-    _busDeinit();
 }
 
 

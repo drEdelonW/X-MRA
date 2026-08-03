@@ -11,7 +11,7 @@ void PCA9685::printStatus() {
     Hertz pwmFreq = Hz(OSC_FREQ_HZ /
         (MAX_VAL * (prescale + 1)));
 
-    printf("Extended state of PCA9685[%X]:\n", _i2c_address);
+    // printf("Extended state of PCA9685[%X]:\n", _i2c_address);
     printf(
         "MODE1: " BYTE_TO_BINARY_PATTERN " (sleep mode: %s)\n",
         BYTE_TO_BINARY(mode1),

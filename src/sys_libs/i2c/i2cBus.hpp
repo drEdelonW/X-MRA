@@ -28,6 +28,7 @@ typedef enum:int8_t {   // negative not allowed - upper bit is data direction st
     I2C_RESERVED_FUTURE_HIGH_4 = 0x7F,
 } i2cAddr_t;
 
+class i2cEndPoint; // fwd decl
 
 class i2cBus {
   public:
@@ -37,12 +38,15 @@ class i2cBus {
     void Deinit();// closeBus()
     bool isInited() { return _isInited; }
 
-    bool setAddr(i2cAddr_t adr);
     bool ProbeDevice(i2cAddr_t adr);
+
+  private:
+    friend class i2cEndPoint;          // only endpoints get to switch addr / do raw IO
+
+    bool setAddr(i2cAddr_t adr);
     bool RegRead(uint8_t RegNum, uint8_p pByte);
     bool RegWrite(uint8_t RegNum, uint8_t pByte);
 
-  private:
     bool      _isInited;
     uint8_t   _bus;
     i2cAddr_t _lastAddr;

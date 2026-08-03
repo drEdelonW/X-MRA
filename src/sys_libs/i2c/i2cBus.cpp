@@ -1,4 +1,4 @@
-#include "i2c.hpp"
+#include "i2cBus.hpp"
 #include <stdio.h>          // snprintf
 
 #include <cerrno>           // errno
@@ -101,7 +101,6 @@ bool i2cBus::RegRead(uint8_t RegNum, uint8_p pByte) {
         _Read(pByte);
 }
 bool i2cBus::RegWrite(uint8_t RegNum, uint8_t pByte) {
-    return
-        _setRegNum(RegNum) &&
-        _Write(pByte);
+    uint8_t buf[2] = {RegNum, pByte};
+    return write(_fd, buf, sizeof(buf)) == sizeof(buf);  // must be one I2C transaction: separate write()s would send reg and value as two unrelated START/STOP packets
 }
