@@ -61,6 +61,7 @@ MidleLeft           \ | /            MidleRight
 #define TRIPOD_A  (LEG_FL | LEG_MR | LEG_BL)  // [0, 3, 4]
 #define TRIPOD_B  (LEG_FR | LEG_ML | LEG_BR)  // [1, 2, 5]
 #else
+
 enum LegBit : uint8_t {
     LEG_FL = (1 << 0), // FrontLeft
     LEG_FR = (1 << 1), // FrontRight
@@ -86,11 +87,12 @@ enum LegMask : uint8_t {
 #endif
 
 #define MAX_LEGS (8)
+typedef int LegIdx_t;
 
-#define PATTERN_LEG         for (int i = 0; i < _legCount; i++) if (_maskCheck(pattern, i))
+#define PATTERN_LEG         for (LegIdx_t legIdx = 0; legIdx < _legCount; legIdx++) if (_maskCheck(pattern, legIdx))
 #define LEG_ERROR_OK        do { _lastLegError = MAX_LEGS;  return true;    } while (0)
 #define LEG_ERROR_DISARMED  do { _lastLegError = MAX_LEGS;  return false;   } while (0)
-#define LEG_ERROR           do { _lastLegError = i;         return false;   } while (0)
+#define LEG_ERROR           do { _lastLegError = legIdx;    return false;   } while (0)
 
 class ArachnidBody {
 public:

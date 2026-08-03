@@ -7,21 +7,19 @@ PCA9685 PWMarray[] = {
     {1, PCAaddr_1},
     {1, PCAaddr_0}
 };
-
-#define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
-
 #define PwCh(n)  PWMarray[n >> 4].PWM[n & 0xF]
 
-#include "PS_MG996R.hpp"
-// #define CFG_1 TowerPro_MG996R_cfg
+#define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
 #define CFG_1 FreeNove_noname_cfg
+
+#include "PS_MG996R.hpp"
 MG996R Servo[] = {
     //FrontLeft
     { PwCh(9),  CFG_1, CW }, //Tibia
     { PwCh(8),  CFG_1, CW }, //Femur
     { PwCh(31), CFG_1, CCW}, //Coxa
 
-    //FrontRight V
+    //FrontRight
     { PwCh(22),  CFG_1, CCW}, //Tibia
     { PwCh(23),  CFG_1, CCW}, //Femur
     { PwCh(27),  CFG_1, CCW}, //Coxa

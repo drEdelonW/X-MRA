@@ -3,7 +3,7 @@
 #include "common_tools.h"
 #include <stdlib.h>
 
-#include "i2c.h"            // busScan() dumpAddr()
+#include "i2c_cWrap.h"      // busScan() dumpAddr()
 #include "dpad.h"           // dpad()
 #include "jpad.hpp"         // jpad()
 #include "X-MRA_cWrap.h"    // xArm() xDisarm()
@@ -13,9 +13,9 @@ static void _busScan() { busScan(); }
 static void _busD4() {
     dumpAddr(0x40);
     dumpAddr(0x41);
+    dumpAddr(0x70);
     dumpAddr(0x48);
     dumpAddr(0x68);
-    dumpAddr(0x70);
 }
 static void _ARM() { xArm(); }
 static void _DISARM() { xDisarm(); }

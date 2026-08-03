@@ -12,7 +12,7 @@
 i2cBus::i2cBus(uint8_t bus, bool initOnConstruct):
     _isInited(false),
     _bus(bus),
-    _lastAddr(-1)
+    _lastAddr(I2C_INVALID_ADDR)
 {
     snprintf(_fileName, sizeof(_fileName),
         "/dev/i2c-%d", _bus
@@ -21,9 +21,12 @@ i2cBus::i2cBus(uint8_t bus, bool initOnConstruct):
         Init();
 }
 
+i2cBus::~i2cBus() {
+    Deinit();
+}
 bool i2cBus::Init() {
-    _fd = open(_fileName, O_RDWR);
-    if (_fd < 0) {
+    _isInited = (_fd = open(_fileName, O_RDWR)) >= 0;
+    if (!_isInited) {
         fprintf(stderr,
             "[ERROR] %s: "
             "Failed to open I2C bus %d (%s). "
@@ -32,39 +35,73 @@ bool i2cBus::Init() {
             _bus, _fileName,
             errno
         );
-        return false;
     }
-    return _isInited = true;
+    return _isInited;
 }
 
 void i2cBus::Deinit() {
-    if (_fd != -1)
+    if (_fd != -1) {
         close(_fd);
+        _fd = -1;
+    }
     _isInited = false;
 }
 
 bool i2cBus::_setAddres(i2cAddr_t addr) {
     if ((!_isInited) ||
-        (addr <= 0)
+        (addr < 0)
     )   return false;
 
-    _lastAddr = addr;
-
-    if (ioctl(_fd, I2C_SLAVE, addr) < 0) {
-        fprintf(stderr,
-            "[ERROR] %s: "
-            "Failed to set I2C address 0x%02X "
-            "on bus %d (%s). "
-            "errno=%d\n",
-            __func__,
-            addr,
-            _bus, _fileName,
-            errno
-        );
-        close(_fd); _fd = -1;
-        return false;
-    }
-
-    return false;
+    if (_lastAddr != addr) {
+        _lastAddr = addr;
+        bool ret = ioctl(_fd, I2C_SLAVE, addr) >= 0;
+#if 0
+        if (!ret) {
+            fprintf(stderr,
+                "[ERROR] %s: "
+                "Failed to set I2C address 0x%02X "
+                "on bus %d (%s). "
+                "errno=%d\n",
+                __func__,
+                addr,
+                _bus, _fileName,
+                errno
+            );
+        }
+#endif
+        return ret;
+    } else
+        return true;
 }
 
+bool i2cBus::_Read(uint8_p pByte) {  return ( read(_fd,  pByte, 1) == 1); }
+bool i2cBus::_Write(uint8_t pByte) { return (write(_fd, &pByte, 1) == 1); }
+
+bool i2cBus::_setRegNum(uint8_t RegNum) {
+    bool ret = _Write(RegNum);
+#if 0
+    if (!ret)
+        printf("Failed to write register address 0x%x\n", RegNum);
+#endif
+    return ret;
+}
+
+bool i2cBus::setAddr(i2cAddr_t adr) { return ioctl(_fd, I2C_SLAVE, adr) >= 0; }
+
+bool i2cBus::ProbeDevice(i2cAddr_t adr) {
+    uint8_t buf;
+    return
+        setAddr(adr) &&
+        _Read(&buf);
+}
+
+bool i2cBus::RegRead(uint8_t RegNum, uint8_p pByte) {
+    return
+        _setRegNum(RegNum) &&
+        _Read(pByte);
+}
+bool i2cBus::RegWrite(uint8_t RegNum, uint8_t pByte) {
+    return
+        _setRegNum(RegNum) &&
+        _Write(pByte);
+}

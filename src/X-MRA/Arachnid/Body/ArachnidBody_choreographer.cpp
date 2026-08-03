@@ -15,19 +15,19 @@ bool ArachnidBody::applyPose(int pattern) {
     }
 
     PATTERN_LEG{
-        _legExtras[i].currentPose =
+        _legExtras[legIdx].currentPose =
             (_legPattMatrix[pattern] * _ctrlMatrix).applyTransform(
-                _legExtras[i].defaultPose
+                _legExtras[legIdx].defaultPose
             );
     };
 
     PATTERN_LEG{
-        if (!_legs[i].checkTipPosBodySpace(_legExtras[i].currentPose))
+        if (!_legs[legIdx].checkTipPosBodySpace(_legExtras[legIdx].currentPose))
             LEG_ERROR;
     };
 
     PATTERN_LEG{
-        if (!_legs[i].applyPose())
+        if (!_legs[legIdx].applyPose())
             LEG_ERROR;
     };
     LEG_ERROR_OK;

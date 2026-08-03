@@ -12,8 +12,10 @@ ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
     int8_t pattern = 0;
     setPatMask(pattern, LEGS_ALL);
     PATTERN_LEG {
-        _legExtras[i].defaultPose =
-            _legs[i].tipPosBodySpace( deg(0.f), deg(0.f), deg(0.f));
+        _legExtras[legIdx].defaultPose =
+            _legs[legIdx].tipPosBodySpace(
+                deg(0.f), deg(0.f), deg(0.f)
+            );
     }
 }
 

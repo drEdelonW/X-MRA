@@ -17,8 +17,9 @@ $(eval SYSLIB_DIR := $(SRC_DIR)/sys_libs) $(eval INCLUDE_PATHS += $(SYSLIB_DIR))
         SRCS += $(POSIX_DIR)/signal_tools.cpp
 
     $(eval I2C_DIR := $(SYSLIB_DIR)/i2c) $(eval INCLUDE_PATHS += $(I2C_DIR))
+        SRCS += $(I2C_DIR)/i2c_knownDevs.c
         SRCS += $(I2C_DIR)/i2c.cpp
-        SRCS += $(I2C_DIR)/i2c_tools.c
+        SRCS += $(I2C_DIR)/i2c_tools.cpp
     #     SRCS += $(I2C_DIR)/joy/sdl_joystick.cpp
     #     SRCS += $(I2C_DIR)/X11_lib/x11.c
 

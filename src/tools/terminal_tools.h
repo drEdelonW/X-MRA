@@ -13,8 +13,10 @@ typedef enum {
     ASCII_SPACE       = 0x20,  /* ' ' First printable Symbol */
     ASCII_0           = 0x30,  /* '0' Symbol */
     ASCII_9           = 0x39,  /* '9' Symbol */
+
     ASCII_A           = 0x41,  /* 'A' Symbol */
     ASCII_Z           = 0x5A,  /* 'Z' Symbol */
+
     ASCII_a           = 0x61,  /* 'a' Symbol */
     ASCII_z           = 0x7A,  /* 'a' Symbol */
     ASCII_TILDA       = 0x7E   /* '~' Last printable Symbol */

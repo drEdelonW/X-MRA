@@ -13,7 +13,7 @@ float fSafe = -90.f;
 float tPark = -80.f;
 float tSafe = -30.f;
 
-#define PHASE_DUR  us(1000000)
+#define PHASE_DUR  us(1000000) /* 1 sec duration */
 
 Vector3D ArmSQNC[] = {
     {cPark, fPark, tPark},
@@ -32,9 +32,9 @@ bool ArachnidBody::animAngDeg(
     MicroSeconds duration
 ) {
     int8_t pattern = 0;
-    MicroSeconds tsStart = microsNow();
-    MicroSeconds tsEnd = tsStart + duration;
-    MicroSeconds now(0);
+    MicroSeconds now = microsNow();
+    MicroSeconds tsStart = now;
+    MicroSeconds tsEnd = now + duration;
     Vector3D delta = to - from;
     setPatMask(pattern, LEGS_ALL);
     for (
@@ -49,11 +49,11 @@ bool ArachnidBody::animAngDeg(
         ) {
         // curPose.print(); LOG("now[%lld]\n", now);
         PATTERN_LEG{
-            /**/ if (i > 3)     ClampMoreThen(&curPose.x, 30.f);
-            else if (i > 1)     ClampMoreThen(&curPose.x, 60.f);
+            /**/ if (legIdx >= 4)     ClampMoreThen(&curPose.x, 30.f);
+            else if (legIdx >= 2)     ClampMoreThen(&curPose.x, 60.f);
 
-            if (!_legs[i].tryJointAngles(
-                    (i % 2) ?
+            if (!_legs[legIdx].tryJointAngles(
+                    (legIdx % 2) ?
                         deg(curPose.x) : -deg(curPose.x),
                     deg(curPose.y),
                     deg(curPose.z)
@@ -84,7 +84,7 @@ bool ArachnidBody::ARM() {
     int8_t pattern = 0;
     setPatMask(pattern, LEGS_ALL);
     PATTERN_LEG{   // First action
-        _legs[i].engage();
+        _legs[legIdx].engage();
     }
 
     animAngDeg(ArmSQNC[0], ArmSQNC[1], PHASE_DUR);
@@ -116,17 +116,21 @@ void ArachnidBody::DISARM() {
     setPatMask(pattern, LEGS_ALL);
 #if 0
     PATTERN_LEG{
-        _legs[i].tryJointAngles(deg(0), JFREEZE, JFREEZE);
+        _legs[legIdx].tryJointAngles(
+            deg(0), JFREEZE, JFREEZE
+        );
     }
 
     for (int ang = 0; ang < 90; ang++) {
         PATTERN_LEG{
-            _legs[i].tryJointAngles(JFREEZE, deg(-ang), deg(-(ang * 0.8f)));
+            _legs[legIdx].tryJointAngles(
+                JFREEZE, deg(-ang), deg(-(ang * 0.8f))
+            );
         }
         usleep(1000);
     }
 #endif
-    AimSetAngle(deg(0), deg(0));
+    AimSetAngle(deg(0.f), deg(0.f));
 
     trySetOffs(Vector3D{});
     usleep(1000000);
@@ -137,7 +141,7 @@ void ArachnidBody::DISARM() {
     usleep(1000000);
 
     PATTERN_LEG{   // Last action
-        _legs[i].release();
+        _legs[legIdx].release();
     }
     _isArmed = false;
     LOG("DONE\n");
