@@ -1,6 +1,6 @@
 #pragma once
 #include "PWMChannel.hpp"
-#include "i2cEndPoint.hpp"
+#include "i2cBus_EndPiont.hpp"
 #define  PCA_Defined
 
 // #define  PCA_Register uint8_t   // TODO: make it enum
@@ -79,9 +79,6 @@ class PCA9685 : public ProtoPWMArray{
     MicroSeconds _getDutyCyclePeriodUs(Hertz frequencyHz);
 
 #if 0
-    void        _busInit();
-    void        _busDeinit();
 #endif
-    void        _writeRegister(uint8_t reg, PCA_reg_t value);    // Function to write to a register
-    PCA_reg_t   _readRegister( uint8_t reg);    // Function to read from a register
+    PCA_reg_t _readRegister( uint8_t reg);    // Function to read from a register
 };

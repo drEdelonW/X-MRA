@@ -1,7 +1,7 @@
 #include "i2c_cWrap.h"
 #include <stdio.h>
 
-#include "i2cBus.hpp"
+#include "i2cBus_EndPiont.hpp"
 // Scan all I2C addresses on the bus
 int busScan() {
     i2cBus iBus(1, true);
@@ -18,7 +18,6 @@ int busScan() {
     return 0;
 }
 
-#include "i2cEndPoint.hpp"
 // Dump register contents of a specific I2C device
 int dumpAddr(uint8_t addr) {
     i2cBus iBus(1, true);

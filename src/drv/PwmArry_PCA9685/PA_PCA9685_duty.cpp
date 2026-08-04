@@ -1,8 +1,6 @@
 #include "PA_PCA9685.hpp"
 #include "PA_PCA9685_private.hpp"
 
-#include <iomanip>   //std::setfill
-#include <bitset>    //std::bitset
 #include "terminal_tools.h"
 
 void PCA9685::setDutyCycle(
@@ -15,20 +13,23 @@ void PCA9685::setDutyCycle(
     clampDuty(&dutyCycle);
     clampDuty(&phaseShift);
 
-    uint16_t on = (MAX_VAL * phaseShift);
+    uint16_t on  = (MAX_VAL * phaseShift);
     uint16_t off = (MAX_VAL * dutyCycle) + on;
     off %= MAX_VAL;
 
-    if (_channelInversion[channel])
-        std::swap(on, off);
+    if (_channelInversion[channel]) {
+        uint16_t t = on;
+        on = off;
+        off = t;
+    }
 
     if (channel < PwmChNum) {
         int rOffs = channel * 4;
-        _writeRegister(LED0_ON_L + rOffs, on & 0xFF);
-        _writeRegister(LED0_ON_H + rOffs, on >> 8);
+        _iEP.RegWrite(LED0_ON_L + rOffs, on & 0xFF);
+        _iEP.RegWrite(LED0_ON_H + rOffs, on >> 8);
 
-        _writeRegister(LED0_OFF_L + rOffs, off & 0xFF);
-        _writeRegister(LED0_OFF_H + rOffs, off >> 8);
+        _iEP.RegWrite(LED0_OFF_L + rOffs, off & 0xFF);
+        _iEP.RegWrite(LED0_OFF_H + rOffs, off >> 8);
     }
 }
 

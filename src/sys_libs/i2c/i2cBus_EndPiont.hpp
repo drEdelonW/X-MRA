@@ -1,7 +1,6 @@
 #pragma once
 #include "types.h"
 
-// typedef int8_t  i2cAddr_t;
 typedef enum:int8_t {   // negative not allowed - upper bit is data direction status
     I2C_INVALID_ADDR  = -1,   // sentinel: no device / lookup failed, not a wire value
     I2C_DEV_UNKNOWN   = 0x00,
@@ -29,7 +28,6 @@ typedef enum:int8_t {   // negative not allowed - upper bit is data direction st
 } i2cAddr_t;
 
 class i2cEndPoint; // fwd decl
-
 class i2cBus {
   public:
     i2cBus(uint8_t bus = 0, bool initOnConstruct = false);
@@ -57,4 +55,19 @@ class i2cBus {
     bool _Read(uint8_p pByte);
     bool _Write(uint8_t pByte);
     bool _setRegNum(uint8_t RegNum);
+};
+
+class i2cEndPoint {
+  public:
+    i2cEndPoint(i2cBus& bus, i2cAddr_t addr);
+
+    bool isInited();
+    bool RegRead(uint8_t RegNum, uint8_p pByte);
+    bool RegWrite(uint8_t RegNum, uint8_t pByte);
+
+    i2cAddr_t addr() const { return _addr; }
+
+  private:
+    i2cBus&   _bus;
+    i2cAddr_t _addr;
 };

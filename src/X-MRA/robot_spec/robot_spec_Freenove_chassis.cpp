@@ -1,7 +1,7 @@
 #include "X-MRA.hpp"
 
 // https://store.freenove.com/products/fnk0052
-#include "i2cBus.hpp"
+#include "i2cBus_EndPiont.hpp"
 i2cBus iBus(1, true);
 
 #include "PA_PCA9685.hpp"

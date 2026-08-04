@@ -4,9 +4,9 @@
 #include <unistd.h>  //usleep
 
 void PCA9685::wakeUp() {
-    _writeRegister(MODE1, _readRegister(MODE1) & ~SLEEP_BIT);       usleep(500);
+    _iEP.RegWrite(MODE1, _readRegister(MODE1) & ~SLEEP_BIT);       usleep(500);
 }
 
 void PCA9685::sleepMode() {
-    _writeRegister(MODE1, _readRegister(MODE1) | SLEEP_BIT);
+    _iEP.RegWrite(MODE1, _readRegister(MODE1) | SLEEP_BIT);
 }

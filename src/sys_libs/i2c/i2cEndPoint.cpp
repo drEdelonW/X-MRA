@@ -1,4 +1,4 @@
-#include "i2cEndPoint.hpp"
+#include "i2cBus_EndPiont.hpp"
 
 i2cEndPoint::i2cEndPoint(i2cBus& bus, i2cAddr_t addr):
     _bus(bus),
