@@ -27,6 +27,27 @@ typedef enum:int8_t {   // negative not allowed - upper bit is data direction st
     I2C_RESERVED_FUTURE_HIGH_4 = 0x7F,
 } i2cAddr_t;
 
+// Second byte sent after the General Call address (0x00, W).
+// Per NXP UM10204 I2C-bus specification, "General Call" section.
+typedef enum : uint8_t {
+    I2C_GC_INVALID              = 0x00, // not a legal second byte - would duplicate the general call address itself, must never be sent
+    I2C_GC_CBUS_ADDRESS         = 0x01, // reserved: marks following data as targeted at a legacy CBUS-compatible device, not a real I2C part; true I2C devices ignore this and the data that follows
+    I2C_GC_RESERVED_1           = 0x02, // reserved for future use by the I2C-bus committee
+    I2C_GC_RESERVED_2           = 0x03, // reserved for future use by the I2C-bus committee
+    I2C_GC_PROGRAM_ADDRESS      = 0x04, // devices with a hardware-latched programmable address load a new address; no state reset
+    I2C_GC_RESERVED_3           = 0x05, // reserved for future use by the I2C-bus committee
+    I2C_GC_RESET_AND_PROGRAM    = 0x06, // full reset to power-up defaults, then (if the device supports it) latch a new programmable address
+                                        // this is the SWRST byte PCA9685 (and most simple I2C peripherals) actually act on
+    I2C_GC_RESERVED_4           = 0x07, // reserved for future use by the I2C-bus committee
+
+    // 0x08-0xFE with bit0==0: "Hardware General Call" - a bus master with no
+    // fixed address of its own broadcasts ITS OWN 7-bit address in bits[7:1]
+    // to request service from another master; bit0=0 signals it will act as
+    // a slave on the immediately following transfer. Not a fixed enum value -
+    // decode with: (secondByte >= 0x08) && ((secondByte & 0x01) == 0)
+} i2cGeneralCallCmd_t;
+
+
 class i2cEndPoint; // fwd decl
 class i2cBus {
   public:
@@ -36,11 +57,11 @@ class i2cBus {
     void Deinit();// closeBus()
     bool isInited() { return _isInited; }
 
+    bool SoftResetAllDevices();
     bool ProbeDevice(i2cAddr_t adr);
 
   private:
     friend class i2cEndPoint;          // only endpoints get to switch addr / do raw IO
-
     bool setAddr(i2cAddr_t adr);
     bool RegRead(uint8_t RegNum, uint8_p pByte);
     bool RegWrite(uint8_t RegNum, uint8_t pByte);

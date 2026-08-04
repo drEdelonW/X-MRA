@@ -35,6 +35,8 @@ bool i2cBus::Init() {
             _bus, _fileName,
             errno
         );
+    } else {
+        SoftResetAllDevices();
     }
     return _isInited;
 }
@@ -48,30 +50,9 @@ void i2cBus::Deinit() {
 }
 
 bool i2cBus::_setAddres(i2cAddr_t addr) {
-    if ((!_isInited) ||
-        (addr < 0)
-    )   return false;
-
-    if (_lastAddr != addr) {
-        _lastAddr = addr;
-        bool ret = ioctl(_fd, I2C_SLAVE, addr) >= 0;
-#if 0
-        if (!ret) {
-            fprintf(stderr,
-                "[ERROR] %s: "
-                "Failed to set I2C address 0x%02X "
-                "on bus %d (%s). "
-                "errno=%d\n",
-                __func__,
-                addr,
-                _bus, _fileName,
-                errno
-            );
-        }
-#endif
-        return ret;
-    } else
-        return true;
+    return
+        _isInited &&
+        (ioctl(_fd, I2C_SLAVE, addr) >= 0);
 }
 
 bool i2cBus::_Read(uint8_p pByte) {  return ( read(_fd,  pByte, 1) == 1); }
@@ -86,7 +67,37 @@ bool i2cBus::_setRegNum(uint8_t RegNum) {
     return ret;
 }
 
-bool i2cBus::setAddr(i2cAddr_t adr) { return ioctl(_fd, I2C_SLAVE, adr) >= 0; }
+bool i2cBus::setAddr(i2cAddr_t adr) {
+    if (adr < 0)
+        return false;
+    if (_lastAddr == adr)
+        return true;
+
+    _lastAddr = adr;
+    bool ret = _setAddres(adr);
+#if 0
+    if (!ret) {
+        fprintf(stderr,
+            "[ERROR] %s: "
+            "Failed to set I2C address 0x%02X "
+            "on bus %d (%s). "
+            "errno=%d\n",
+            __func__,
+            adr,
+            _bus, _fileName,
+            errno
+        );
+    }
+#endif
+    return ret ;
+}
+
+
+bool i2cBus::SoftResetAllDevices() {
+    return
+        _setAddres(I2C_RESERVED_GENERAL_CALL) &&
+        _Write(I2C_GC_RESET_AND_PROGRAM); // SWRST command byte, per NXP general-call spec
+}
 
 bool i2cBus::ProbeDevice(i2cAddr_t adr) {
     uint8_t buf;
