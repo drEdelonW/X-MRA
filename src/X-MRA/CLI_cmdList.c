@@ -7,6 +7,7 @@
 #include "dpad.h"           // dpad()
 #include "jpad.hpp"         // jpad()
 #include "X-MRA_cWrap.h"    // xArm() xDisarm()
+#include "PA_ADS7830_cWrap.h" // adcReadAll()
 
 
 static void _busScan() { busScan(); }
@@ -19,6 +20,7 @@ static void _busD4() {
 }
 static void _ARM() { xArm(); }
 static void _DISARM() { xDisarm(); }
+static void _adc() { adcReadAll(); }
 
 void test();
 static void _test() { test(); }
@@ -29,6 +31,8 @@ static void _exit() { exit(0); }
 const CommandCLI Cmds[] = {
     {.name = "i2cScan", .function = _busScan,   .description = "I2C Bus scan Tool"},
     {.name = "i2cD4",   .function = _busD4,     .description = "I2C Bus dump 0x40 device"},
+
+    {.name = "adc",     .function = _adc,       .description = "Read ADS7830 ADC all channels"},
 
     {.name = "dpad",    .function = dpad,       .description = "keyboard control Tool"},
     {.name = "jpad",    .function = jpad,       .description = "SDL GamePad control Tool"},
