@@ -3,7 +3,7 @@
 #include "terminal_tools.h"
 #include "CLAMP.h"
 
-// Vector3D cPark = {0.f, 0.f, 0.f};
+// Vector3D cPark = V0;
 float cPark = 85.f;
 float cSafe = 0.f;
 

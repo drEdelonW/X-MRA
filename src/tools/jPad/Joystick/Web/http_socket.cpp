@@ -64,9 +64,9 @@ static inline uint16_t unpackButtons(uint16_t pkt) {
 
 /*───────────────────────── compose & send response */
 int reply(int fd,
-    cStringRO body, size_t blen,
-    cStringRO status,
-    cStringRO ctype,
+    cStrRO body, size_t blen,
+    cStrRO status,
+    cStrRO ctype,
     bool keep
 ) {
     char head[256];
@@ -94,15 +94,15 @@ int reply(int fd,
 }
 
 /*───────────────────────── helpers */
-size_t get_content_length(cStringRO req) {
-    cStringRO h = strcasestr(req, "Content-Length:");
+size_t get_content_length(cStrRO req) {
+    cStrRO h = strcasestr(req, "Content-Length:");
     return
         (h ?
             strtoul(h + 15, nullptr, 10) : 0);
 }
 
-cStringRO find_payLoad(cStringRO req) {
-    cStringRO p = strstr(req, HEAD_END);
+cStrRO find_payLoad(cStrRO req) {
+    cStrRO p = strstr(req, HEAD_END);
     return
         (p ?
             p + 4 : nullptr);
@@ -142,7 +142,7 @@ void Web_GCHandler() {
                 /* -------- route -------- */
                 if (!strncmp(buf, "POST /ping", 10)) {
                     size_t need = get_content_length(buf);
-                    cStringRO body = find_payLoad(buf);
+                    cStrRO body = find_payLoad(buf);
                     size_t have =
                         (body ?
                             ((buf + rcvd) - body) : 0);
@@ -171,7 +171,7 @@ void Web_GCHandler() {
                 }
                 else if (!strncmp(buf, "POST /raw", 9)) {
                     size_t need = get_content_length(buf);
-                    cStringRO body = find_payLoad(buf);
+                    cStrRO body = find_payLoad(buf);
                     size_t have =
                         body ?
                         (buf + rcvd) - body : 0;

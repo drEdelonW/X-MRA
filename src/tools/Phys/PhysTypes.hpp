@@ -4,7 +4,7 @@
 #include "Phys_Force.hpp"
 
 #include <math.h>
-using DutyCycle_t = float;    // Range: 0.0 to 1.0
+using DutyCycle_t = float;    // Range: 0.f to 1.f
 typedef DutyCycle_t* DutyCycle_p;
 
 inline DutyCycle_t GetClampDuty(DutyCycle_t dc) {

@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-void jpad();
+    void jpad();
 
 #ifdef __cplusplus
 }

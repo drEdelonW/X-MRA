@@ -1,32 +1,34 @@
 #include "joystick.hpp"
 #include <thread>
 
-// volatile 
 GamePad gp;
-std::thread jThread;
-volatile bool jQuit;
+static std::thread _joyThr;
+volatile bool jQuit = true;
 volatile bool joy_echo = false;
-// void (*thJoyFunc)() = NULL;
+
+void (*thJoyFunc)() = NULL;
 // void (*thJoyFunc)() = SDL_GCHandler;
-void (*thJoyFunc)() = Web_GCHandler;
+// void (*thJoyFunc)() = Web_GCHandler;
 
 bool GCInit() {
     if (thJoyFunc){
         jQuit = false;
-        jThread = std::thread(thJoyFunc);
+        _joyThr = std::thread(thJoyFunc);
+
         LOG(TEXT_BOLD "Joy-Pad started\n\a" TEXT_RESET);
         return true;
+    } else {
+        ERROR("thJoyFunc is empty!!\n");
+        return false;
     }
-    ERROR("thJoyFunc is empty!!\n");
-    return false;
 }
 
 
 void GCDeinit() {
     jQuit = true;
-    if (jThread.joinable()) {
-        jThread.join();
-    }
+    if (_joyThr.joinable())
+        _joyThr.join();
+
 
     LOG(TEXT_BOLD "Joy-Pad END\n\a" TEXT_RESET);
 }

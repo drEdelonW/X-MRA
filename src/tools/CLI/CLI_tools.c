@@ -11,7 +11,7 @@ void cliHelp() {
     }
 }
 
-void hexDump(cStringRO label, const Any_p data, size_t size) {
+void hexDump(cStrRO label, const Any_p data, size_t size) {
     const uint8_p bytes = data;
     LOG("%s (%zu bytes):\n", label, size);
     for (size_t i = 0; i < size; i += 16) {

@@ -53,7 +53,7 @@ typedef enum {
 #include "types.h"
 typedef struct {
     // Key key;
-    cStringRO name;
+    cStrRO name;
 } KeyInfo;
 
 extern const KeyInfo keyInfos[KEY_COUNT];
@@ -62,7 +62,7 @@ extern const KeyInfo keyInfos[KEY_COUNT];
 extern "C" {
 #endif
 
-    cStringRO getKeyName(Key key);
+    cStrRO getKeyName(Key key);
 
 #ifdef __cplusplus
 }

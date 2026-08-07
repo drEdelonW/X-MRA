@@ -3,27 +3,16 @@
 #include "PhysTypes.hpp"
 #include "JointBase.hpp"
 
-/*
-      ^ Z (up)
-      |
-      |    7 X (forward)
-      |   /
-      |  /
-      | /
-      |/
-      0---------> Y (right)
-*/
 
-/*  ArachnidLeg:
-
-   [Body]
-      |
-   [Coxa]-->--[Femur]
-      |           |
-   [Body]      [Tibia]
-                  |
+/*  ArachnidLeg:   /|
+                  / |
+   [Body]    [Femur]|
+      |        /    |
+      |-[Coxa]/     |
+      |          [Tibia]
+   [Body]           |
+                    |
 ==============={Ground}==============
-
 */
 
 #define JFREEZE    rad(NAN)
@@ -50,10 +39,10 @@ public:
 
    Angle getJointAngles(LegJoint jName);
 
-   Vector3D    tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);
+   Vector3D   tipPosLegSpace (Angle coxaAng, Angle femurAng, Angle tibiaAng);
    Vector3D   tipPosBodySpace(Angle coxaAng, Angle femurAng, Angle tibiaAng);
-   bool checkTipPosBodySpace(Vector3D bodyPos);
-   bool  checkTipPosLegSpace(Vector3D legPos);
+   bool  checkTipPosLegSpace (Vector3D legPos);
+   bool  checkTipPosBodySpace(Vector3D bodyPos);
 
    bool applyPose();
 
@@ -61,15 +50,15 @@ public:
    void release();
 
 private:
-
    Vector3D bodyToLeg(Vector3D bodyPos);
    Vector3D legToBody(Vector3D legPos);
 
    bool _checkTipPosLegSpace(float x, float y, float z);
+   bool _checkTipPosLegSpace(Vector3D pos);
 
-   JointBase& coxaJn_;
-   JointBase& femurJn_;
-   JointBase& tibiaJn_;
+   JointBase& _jnCoxa;
+   JointBase& _jnFemur;
+   JointBase& _jnTibia;
 
    const Millimeters coxaLength_  = mm( 27.0f );   // Length of coxa segment
    const Millimeters femurLength_ = mm( 85.1f );   // Length of femur segment

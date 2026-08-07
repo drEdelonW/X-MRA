@@ -1,5 +1,4 @@
 #include "ArachnidLeg.hpp"
-#include <cmath>
 
 void ArachnidLeg::configMount(Millimeters offset, Angle yaw) {
     _legToBody.reset();
@@ -13,10 +12,10 @@ void ArachnidLeg::configMount(Millimeters offset, Angle yaw) {
 bool ArachnidLeg::_checkTipPosLegSpace(Millimeters x, Millimeters y, Millimeters z) {
     float angleCoxa = atan2(y, x);
 
-    float planarX = sqrtf((x * x) + (y * y)) - coxaLength_;
+    float planarX = len2D(x, y) - coxaLength_;
     float planarZ = z;
 
-    float dist = sqrtf((planarX * planarX) + (planarZ * planarZ));
+    float dist = len2D(planarX, planarZ);
     float maxReach = femurLength_ + tibiaLength_;
     float minReach = fabsf(femurLength_ - tibiaLength_);
 
@@ -31,10 +30,16 @@ bool ArachnidLeg::_checkTipPosLegSpace(Millimeters x, Millimeters y, Millimeters
     float c = dist;
 
     /* correct law-of-cosines */
-    float angleFemurRel = acosf(((a * a) + (c * c) - (b * b)) / (2.0f * a * c));
-    float angleKnee = acosf(((a * a) + (b * b) - (c * c)) / (2.0f * a * b));
-
+    float angleFemurRel = acosf(
+        ((a*a) + (c*c) - (b*b)) /
+        (2.0f * a*c)
+    );
     float angleFemur = angleToTarget + angleFemurRel;
+
+    float angleKnee = acosf(
+        ((a*a) + (b*b) - (c*c)) /
+        (2.0f * a*b)
+    );
     float angleTibia = M_PI - angleKnee;
 
     return
@@ -44,11 +49,17 @@ bool ArachnidLeg::_checkTipPosLegSpace(Millimeters x, Millimeters y, Millimeters
             rad(-angleTibia) + deg(90.f - 10.9f)
         );
 }
+bool ArachnidLeg::_checkTipPosLegSpace(Vector3D pos) {
+    return _checkTipPosLegSpace(pos.x, pos.y, pos.z);
+}
+
 
 Vector3D ArachnidLeg::tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaAng) {
     float aC = coxaAng.asRadians();
     float aF = femurAng.asRadians();
-    float aT = (tibiaAng - deg(90.f - 10.9f)).asRadians();
+    float aT = (
+        tibiaAng - deg(90.f - 10.9f)
+    ).asRadians();
 
     float knee = aF + aT;               // femur-tibia plane
 
@@ -63,5 +74,5 @@ Vector3D ArachnidLeg::tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaA
     float cx = cosf(aC);
     float sx = sinf(aC);
 
-    return { rx * cx, rx * sx, rz };
+    return { (rx * cx), (rx * sx), rz };
 }

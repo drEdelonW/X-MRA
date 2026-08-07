@@ -11,7 +11,7 @@
 
 #define BUFF_AND_SIZE(x)    x, sizeof(x)
 // #define TODO(x) _Pragma(TO_STRING(message("TODO: " x)));
-
+// TODO: rework patterns
 #define BYTE_TO_BINARY_PATTERN \
         "[0b" \
         TEXT_BOLD  "%c%c%c%c" \

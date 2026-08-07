@@ -7,8 +7,8 @@
 void jpad() {
     bool _run = GCInit();;
 
-    bool triAct = false;
-    float scaleStep = 50.0f;
+    bool  triAct = false;
+    float scaleStep = 50.f;
 
     Matrix4x4 buMx;
     while(_run){
@@ -20,13 +20,13 @@ void jpad() {
                 continue;
         }
 
-        IF_BTN_HIT(BUTTON_TRIANGLE,{
-            if (XMRA.isArmed()){ XMRA.DISARM(); }
-            else               { XMRA.ARM(); }
+        IF_BTN_HIT(BUTTON_TRIANGLE, {
+            if (XMRA.isArmed())     XMRA.DISARM();
+            else                    XMRA.ARM();
         } )
 
-        IF_BTN_HIT(BUTTON_R1,{
-            triAct = !triAct;
+        IF_BTN_HIT(BUTTON_R1, {
+            triAct != triAct;
             if (triAct) {
                 LOG("Tripod mode ON\n");
                 XMRA.setPatMask(0, TRIPOD_A);
@@ -38,60 +38,76 @@ void jpad() {
         })
 
         if (triAct) { // Tripod mode
-            float lStep = 0.0f;
-            float rStep = 0.0f;
-            if (GCGetButton(BUTTON_L3)) {
-                lStep = 1.0f;
-            } else { lStep = gp.left.z; }
-            if (GCGetButton(BUTTON_R3)) {
-                rStep = 1.0f;
-            } else { rStep = gp.right.z; }
-            XMRA.trySetOffs(Vector3D{gp.left.y ,-gp.left.x, -lStep} * scaleStep, 0);
-            XMRA.trySetOffs(Vector3D{gp.right.y, -gp.right.x, -rStep} * scaleStep, 1);
+            XMRA.trySetOffs(
+                Vector3D{
+                    gp.left.y,
+                   -gp.left.x,
+                   -((GCGetButton(BUTTON_L3)) ?
+                        1.0f : gp.left.z)
+                } *
+                scaleStep,
+                0
+            );
+            XMRA.trySetOffs(
+                Vector3D{
+                    gp.right.y,
+                   -gp.right.x,
+                   -((GCGetButton(BUTTON_R3)) ?
+                        1.0f : gp.right.z)
+                } *
+                scaleStep,
+                1
+            );
         } else {    // non Tripod mode
             if (GCGetButton(BUTTON_L3)){
                 // LOG("%f %f %f\n", gp.left.x, gp.left.y, gp.left.z);
-                XMRA.trySetOffs(Vector3D{0.0f, 0.0f, 0.0f});
+                XMRA.trySetOffs(V0);
             } else {
                 if ((fabsf(gp.left.x) > 0.038f) ||
                     (fabsf(gp.left.y) > 0.038f) ||
-                    (fabsf(gp.right.z - gp.left.z) > 0.03f)) {
+                    (fabsf(gp.right.z - gp.left.z) > 0.03f)
+                ) {
                     // LOG("%f %f %f\n", gp.left.x, gp.left.y, gp.left.z);
 
-                    XMRA.tryAddOffs(Vector3D{-gp.left.y, gp.left.x, gp.right.z - gp.left.z} * 3.0f);
+                    XMRA.tryAddOffs(
+                        Vector3D{
+                           -gp.left.y,
+                            gp.left.x,
+                            gp.right.z - gp.left.z
+                        } * 3.0f
+                    );
                 }
 #if 1
-                IF_BTN_HIT(BUTTON_R3,{
-                    if (XMRA.AimSetAngle(deg(0), deg(0))) {
+                IF_BTN_HIT(BUTTON_R3, {
+                    if (XMRA.AimSetAngle(deg(0), deg(0)))
                         XMRA.applyPose();
-                    }
                 })
                 if ((fabsf(gp.right.x) > 0.038f) ||
                     (fabsf(gp.right.y) > 0.038f)) {
-                    if (XMRA.AimAddAngle(deg(-gp.right.x), deg(-gp.right.y))) {
-                        XMRA.applyPose();
-                    }
+                    if (XMRA.AimAddAngle(
+                            deg(-gp.right.x),
+                            deg(-gp.right.y)
+                        )
+                    )   XMRA.applyPose();
                 }
 #else
-                Vector3D zOffs = {0.0, 0.0, 0.0};
+                Vector3D zOffs = V0;
                 if ((fabsf(gp.right.x) > 0.038f)) {
                     // XMRA.tryAddRotationOZ(deg(-gp.right.x));
                     XMRA.getMatrix(&buMx);
                     XMRA.addOffs(zOffs);
-                    XMRA.addRotationOX(deg(gp.right.x * 2.0f));
+                    XMRA.addRotationOX(deg(gp.right.x * 2.f));
                     XMRA.addOffs(-zOffs);
-                    if (!XMRA.applyPose()) {
+                    if (!XMRA.applyPose())
                         XMRA.setMatrix(&buMx);
-                    }
                 }
                 if ((fabsf(gp.right.y) > 0.038f)) {
                     XMRA.getMatrix(&buMx);
                     XMRA.addOffs(zOffs);
-                    XMRA.addRotationOY(deg(-gp.right.y * 2.0f));
+                    XMRA.addRotationOY(deg(-gp.right.y * 2.f));
                     XMRA.addOffs(-zOffs);
-                    if (!XMRA.applyPose()) {
+                    if (!XMRA.applyPose())
                         XMRA.setMatrix(&buMx);
-                    }
                 }
 #endif
             }

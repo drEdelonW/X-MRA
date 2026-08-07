@@ -127,7 +127,7 @@ const KeyInfo keyInfos[KEY_COUNT] = {
 
 #include "common_tools.h"
 
-cStringRO getKeyName(Key key) {
+cStrRO getKeyName(Key key) {
     if ((key >= 0) &&
         (key < KEY_COUNT)
         )   return keyInfos[key].name;

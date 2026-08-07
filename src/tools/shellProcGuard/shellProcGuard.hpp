@@ -16,7 +16,7 @@
  */
 class ShellProcessGuard {
 public:
-    explicit ShellProcessGuard(cStringRO cmd) : pid_(-1), pgid_(-1) {
+    explicit ShellProcessGuard(cStrRO cmd) : pid_(-1), pgid_(-1) {
         pid_ = fork();
         if (pid_ < 0) {                 /* fork failed */
             perror("fork");

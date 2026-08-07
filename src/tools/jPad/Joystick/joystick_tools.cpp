@@ -2,17 +2,18 @@
 #include "joystick.hpp"
 
 bool GCGetButton(GameControllerButton btn){
-    return gp.btns & (1<<btn);
-    // return SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)btn);
+#if 1
+    return gp.btns & (1 << btn);
+#else
+    return SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)btn);
+#endif
 }
 
 void printAllButtons() {
-    if (!joy_echo) { return; }
+    if (!joy_echo)
+        return;
 
-    for (int i = 0; i < BUTTON_MAX; i++){
-        bool pressed = GCGetButton((GameControllerButton)i);
-        // bool pressed = SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)i);
-        printf((pressed)? "[%i]":" %i ", i);
-    }
+    for (GameControllerButton i = BUTTON_CROSS; i < BUTTON_MAX; i = (GameControllerButton)(i + 1))
+        printf((GCGetButton(i)) ? "[%i]":" %i ", i);
     printf("\n");
 }

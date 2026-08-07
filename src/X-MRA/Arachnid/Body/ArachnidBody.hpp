@@ -2,15 +2,16 @@
 #include "ArachnidLeg.hpp"
 
 /*
-       ^ Z (up)
-       |
-       |    7 X (forward)
-       |   /
-       |  /
-       | /
-       |/
-       *---------> Y (right)
+      ^ Z (up)
+      |
+      |    7 X (forward)
+      |   /
+      |  /
+      | /
+      |/
+      0---------> Y (right)
 */
+
 /* ArachnidBody:
                       ^ X (forward)
                       |

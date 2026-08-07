@@ -46,7 +46,7 @@ typedef struct {
     uint16_t btns;
 } GamePad;
 extern
-//  volatile 
+//  volatile
  GamePad gp;
 
 bool GCGetButton(GameControllerButton btn);

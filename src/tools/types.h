@@ -3,48 +3,43 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-// #include "integer_tools.h"
-// #include "fixed.h"
 
 #if defined(__cplusplus)
-    #define Q_NORETURN [[noreturn]]
+#   define Q_NORETURN [[noreturn]]
 #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-    #define Q_NORETURN _Noreturn
+#   define Q_NORETURN _Noreturn
 #elif defined(__GNUC__) || defined(__clang__)
-    #define Q_NORETURN __attribute__((noreturn))
+#   define Q_NORETURN __attribute__((noreturn))
 #elif defined(_MSC_VER)
-    #define Q_NORETURN __declspec(noreturn)
+#   define Q_NORETURN __declspec(noreturn)
 #else
-    #define Q_NORETURN
+#   define Q_NORETURN
 #endif
 
 
-typedef uint8_t byte;
-// typedef bool qboolean;
-
-typedef char* cStr_p;
-typedef cStr_p cString; // deprecated
-typedef char** cStr_ar;
-typedef cStr_ar cStringArray; // deprecated
-typedef const char* cStringRO;  // read-only
-typedef const unsigned char* cStringGlRO;  // read-only
+typedef char*       cStr_p;
+// typedef cStr_p  cString; // deprecated
+typedef char**      cStr_ar;
+// typedef cStr_ar cStringArray; // deprecated
+typedef const char* cStrRO;    // read-only
+// typedef const char* cStringRO; // read-only // deprecated
 typedef void* Any_p;
 typedef void* Raw_p;
 typedef Any_p TypeLess_ptr; // deprecated
 // Pointers to standard integer types
 // (ptrdiff_t) - pointer diff type
-typedef int8_t* int8_p;
-typedef uint8_t* uint8_p;
-typedef uint8_p* uint8_ar;
-typedef int16_t* int16_p;
-typedef uint16_t* uint16_p;
-typedef int32_t* int32_p;
-typedef uint32_t* uint32_p;
-typedef int64_t* int64_p;
-typedef uint64_t* uint64_p;
+typedef int8_t*     int8_p;
+typedef uint8_t*    uint8_p;
+typedef uint8_p*    uint8_ar;
+typedef int16_t*    int16_p;
+typedef uint16_t*   uint16_p;
+typedef int32_t*    int32_p;
+typedef uint32_t*   uint32_p;
+typedef int64_t*    int64_p;
+typedef uint64_t*   uint64_p;
 
 // Pointers to other common types
-typedef float* float_p;
+typedef float*  float_p;
 typedef double* double_p;
 
 #ifndef NULL

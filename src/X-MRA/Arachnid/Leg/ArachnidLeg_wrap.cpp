@@ -8,12 +8,11 @@ bool ArachnidLeg::tryJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng) 
 
 
 bool ArachnidLeg::checkTipPosLegSpace(Vector3D pos) {
-    return _checkTipPosLegSpace(pos.x, pos.y, pos.z);
+    return _checkTipPosLegSpace(pos);
 }
 
 bool ArachnidLeg::checkTipPosBodySpace(Vector3D bodyPos) {
-    Vector3D legPos = bodyToLeg(bodyPos);
-    return _checkTipPosLegSpace(legPos.x, legPos.y, legPos.z);
+    return _checkTipPosLegSpace(bodyToLeg(bodyPos));
 }
 
 Vector3D ArachnidLeg::tipPosBodySpace(Angle coxaAng, Angle femurAng, Angle tibiaAng) {

@@ -6,44 +6,44 @@ ArachnidLeg::ArachnidLeg(
     JointBase& tibiaJn,
     Millimeters offs,
     Angle rotation
-):  coxaJn_(coxaJn),
-    femurJn_(femurJn),
-    tibiaJn_(tibiaJn) {
+):  _jnCoxa(coxaJn),
+    _jnFemur(femurJn),
+    _jnTibia(tibiaJn) {
     configMount(offs, rotation);
 }
 
 bool ArachnidLeg::checkJointAngles(Angle coxaAngle, Angle femurAngle, Angle tibiaAngle) {
     return
-        coxaJn_.checkPose(coxaAngle) &&
-        femurJn_.checkPose(femurAngle) &&
-        tibiaJn_.checkPose(tibiaAngle);
+        _jnCoxa.checkPose(coxaAngle) &&
+        _jnFemur.checkPose(femurAngle) &&
+        _jnTibia.checkPose(tibiaAngle);
 }
 
 Angle ArachnidLeg::getJointAngles(LegJoint jName){
     switch (jName) {
-      case COXA:  return coxaJn_.getAngle();
-      case FEMUR: return femurJn_.getAngle();
-      case TIBIA: return tibiaJn_.getAngle();
+      case COXA:  return _jnCoxa.getAngle();
+      case FEMUR: return _jnFemur.getAngle();
+      case TIBIA: return _jnTibia.getAngle();
       default:    return rad(NAN);
    }
 }
 
 bool ArachnidLeg::applyPose() {
     return
-        tibiaJn_.applyPose() &&
-        femurJn_.applyPose() &&
-        coxaJn_.applyPose();
+        _jnTibia.applyPose() &&
+        _jnFemur.applyPose() &&
+        _jnCoxa.applyPose();
 }
 
 void ArachnidLeg::engage() {
-    coxaJn_.engage();
-    femurJn_.engage();
-    tibiaJn_.engage();
+    _jnCoxa.engage();
+    _jnFemur.engage();
+    _jnTibia.engage();
 }
 
 void ArachnidLeg::release() {
-    coxaJn_.release();
-    femurJn_.release();
-    tibiaJn_.release();
+    _jnCoxa.release();
+    _jnFemur.release();
+    _jnTibia.release();
 }
 

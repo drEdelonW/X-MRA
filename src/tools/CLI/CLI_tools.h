@@ -11,9 +11,9 @@ extern bool fGetEcho;
 
 typedef void (*Func_p)();
 typedef struct {
-    cStringRO   name;
-    Func_p      function;
-    cStringRO   description;
+    cStrRO  name;
+    Func_p  function;
+    cStrRO  description;
 } CommandCLI;
 
 extern const CommandCLI Cmds[];
@@ -24,7 +24,7 @@ extern "C" {
 
     void executeCommand(cStr_p input);
     void trimNewline(cStr_p str);
-    void hexDump(cStringRO label, const Any_p data, size_t size);
+    void hexDump(cStrRO label, const Any_p data, size_t size);
     void cliHelp();
 
 #ifdef __cplusplus

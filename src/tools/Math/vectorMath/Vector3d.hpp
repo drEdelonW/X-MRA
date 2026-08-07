@@ -2,7 +2,20 @@
 
 class Vector3D {
 public:
-    float x, y, z;
+    enum {
+        X_AXIS = 0,
+        Y_AXIS,
+        Z_AXIS,
+        Vec3Dim
+    };
+    union {
+        struct {
+            float x;
+            float y;
+            float z;
+        };
+        float v[Vec3Dim];
+    };
     Vector3D(
         float _x = 0.f,
         float _y = 0.f,
@@ -23,7 +36,7 @@ public:
     Vector3D& operator/=(float scalar);
 
     Vector3D  operator*(const  Vector3D& other) const;
-    float     dot(const   Vector3D& other) const;
+    float     dot(  const Vector3D& other) const;
     Vector3D  cross(const Vector3D& other) const;
 
     float length() const;
@@ -36,3 +49,9 @@ public:
     Vector3D toDeg() const;
 };
 typedef Vector3D* Vector3D_p;
+
+#include <cmath>    // sqrtf()
+static inline float len2D(float f1, float f2) {
+    return sqrtf((f1*f1) + (f2*f2));
+}
+extern const Vector3D V0;

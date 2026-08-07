@@ -10,6 +10,12 @@ Q1/R2 (GPIO17) [BUZZER] | 11 | 12 | [WB_LED](GPIO10/SPI_MOSI)
         (GPIO27) [Trig] | 13 | 14 | [GND]
         (GPIO22) [Echo] | 15 | 16 | [??] (GPIO23)
 
+# BNO080
+    Found device at address 0x4b [BNO080] https://github.com/sparkfun/SparkFun_BNO080_Arduino_Library/tree/main
+    https://cdn.sparkfun.com/assets/1/3/4/5/9/BNO080_Datasheet_v1.3.pdf
 
-Found device at address 0x4b [BNO080]
-Found device at address 0x53 [ADXL345]
+# ADXL345
+    Found device at address 0x53 [ADXL345]
+    https://github.com/sparkfun/SparkFun_ADXL345_Arduino_Library
+
+https://www.thingiverse.com/thing:6934982

@@ -27,7 +27,6 @@ extern "C" {
     void enableRawMode(struct termios* orig);
     void restoreTerminal(const struct termios* orig);
 
-
     extern const KeyFunction fArray[KEY_COUNT];
 
 #ifdef __cplusplus

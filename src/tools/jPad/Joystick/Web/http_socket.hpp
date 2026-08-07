@@ -3,5 +3,5 @@
 
 // int init_server(uint16_t port);
 // int wait_for_client(int server_fd);
-// cStringRO handle_request(cStringRO request);
+// cStrRO handle_request(cStrRO request);
 // int sMain();

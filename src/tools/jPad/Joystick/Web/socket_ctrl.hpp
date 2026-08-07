@@ -13,4 +13,4 @@
 
 int init_server(uint16_t port);
 int waitConnection(int srv_fd);
-int send_all(int fd, cStringRO buf, size_t len) ;
+int send_all(int fd, cStrRO buf, size_t len) ;
