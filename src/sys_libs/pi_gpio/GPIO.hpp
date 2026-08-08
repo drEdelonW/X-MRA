@@ -18,24 +18,26 @@ class GpioChip {
   private:
     gpiod_chip* _chip = nullptr;
 };
+/*============================================================*/
 
 class GpioLine {
   public:
-    GpioLine(const GpioChip& chip, unsigned offset);
+    GpioLine(const GpioChip& chip, unsigned offset, gpiod_line_direction pinDir = GPIOD_LINE_DIRECTION_OUTPUT);
     ~GpioLine();
 
     GpioLine(const GpioLine&) = delete;
     GpioLine& operator=(const GpioLine&) = delete;
 
-    bool ok() const { return request_ != nullptr; }
+    bool ok() const { return _rq != nullptr; }
 
-    void set(gpiod_line_value value);
-    void setB(bool bValue);
+    gpiod_line_value  set(gpiod_line_value value);
+    bool              setB(bool bValue);
 
   private:
-    unsigned offset_;
-    gpiod_line_settings*  settings_ = nullptr;
-    gpiod_line_config*    line_cfg_ = nullptr;
-    gpiod_request_config* req_cfg_ = nullptr;
-    gpiod_line_request*   request_ = nullptr;
+    unsigned              _pinNum;
+    gpiod_line_direction  _pinDir;
+    gpiod_line_settings*  _lineSettings = nullptr;
+    gpiod_line_config*    _lineCfg = nullptr;
+    gpiod_request_config* _rqCfg = nullptr;
+    gpiod_line_request*   _rq = nullptr;
 };

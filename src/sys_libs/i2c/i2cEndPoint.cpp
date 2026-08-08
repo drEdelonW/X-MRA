@@ -11,12 +11,14 @@ bool i2cEndPoint::isInited() {
 
 bool i2cEndPoint::RegRead(uint8_t RegNum, uint8_p pByte) {
     return
-        _bus.setAddr(_addr) &&
-        _bus.RegRead(RegNum, pByte);
+        isInited() &&
+        _bus._fSetAddr(_addr) &&
+        _bus._fRegRead(RegNum, pByte);
 }
 
 bool i2cEndPoint::RegWrite(uint8_t RegNum, uint8_t pByte) {
     return
-        _bus.setAddr(_addr) &&
-        _bus.RegWrite(RegNum, pByte);
+        isInited() &&
+        _bus._fSetAddr(_addr) &&
+        _bus._fRegWrite(RegNum, pByte);
 }

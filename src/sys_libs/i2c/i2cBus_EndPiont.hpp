@@ -53,18 +53,18 @@ class i2cBus {
   public:
     i2cBus(uint8_t bus = 0, bool initOnConstruct = false);
     ~i2cBus();
-    bool Init();  // openBus()
-    void Deinit();// closeBus()
-    bool isInited() { return _isInited; }
+    bool Init();
+    void Deinit();
+    bool isInited() const { return _isInited; }
 
     bool SoftResetAllDevices();
     bool ProbeDevice(i2cAddr_t adr);
 
   private:
-    friend class i2cEndPoint;          // only endpoints get to switch addr / do raw IO
-    bool setAddr(i2cAddr_t adr);
-    bool RegRead(uint8_t RegNum, uint8_p pByte);
-    bool RegWrite(uint8_t RegNum, uint8_t pByte);
+    friend class i2cEndPoint;   // only endpoints get to switch addr / do raw IO
+    bool _fSetAddr(i2cAddr_t adr);
+    bool _fRegRead(uint8_t RegNum, uint8_p pByte);
+    bool _fRegWrite(uint8_t RegNum, uint8_t pByte);
 
     bool      _isInited;
     uint8_t   _bus;

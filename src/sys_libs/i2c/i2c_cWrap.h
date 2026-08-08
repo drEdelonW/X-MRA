@@ -7,7 +7,7 @@ extern "C" {
 
     int busScan();
     int dumpAddr(uint8_t addr);
-    void printI2cName(int8_t addr);
+    cStrRO get_i2cDevName(int8_t adr);
 
 #ifdef __cplusplus
 }

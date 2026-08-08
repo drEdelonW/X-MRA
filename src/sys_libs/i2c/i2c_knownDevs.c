@@ -1,5 +1,3 @@
-
-
 #include "types.h"
 typedef enum {
     I2C_DEV_UNKNOWN = 0x00,
@@ -15,20 +13,23 @@ typedef enum {
     I2C_DEV_COUNT,
 } I2cKnownDevice_t;
 
-static cStrRO i2cDeviceName[I2C_DEV_COUNT] = {
+static cStrRO _i2cDeviceName[I2C_DEV_COUNT] = {
     [I2C_DEV_UNKNOWN] = "Unknown",
-    [I2C_DEV_0x0D]    = "IMU GY273 [0x0D]",
-    [I2C_DEV_0x40]    = "PWM PCA9685-A0 [0x40]",
-    [I2C_DEV_0x41]    = "PWM PCA9685-A1 [0x41]",
-    [I2C_DEV_0x48]    = "ADC ADS7830-A0 [0x48]",
-    [I2C_DEV_0x4B]    = "IMU BNO080 [0x4B]",
-    [I2C_DEV_0x53]    = "IMU ADXL345 [0x53]",
-    [I2C_DEV_0x68]    = "IMU MPU6050-A0 [0x68]",
-    [I2C_DEV_0x70]    = "PWM PCA9685 All-Call [0x70]",
+    [I2C_DEV_0x0D]    = "IMU GY273",
+    [I2C_DEV_0x40]    = "PWM PCA9685-A0",
+    [I2C_DEV_0x41]    = "PWM PCA9685-A1",
+    [I2C_DEV_0x48]    = "ADC ADS7830-A0",
+    [I2C_DEV_0x4B]    = "IMU BNO080",
+    [I2C_DEV_0x53]    = "IMU ADXL345",
+    [I2C_DEV_0x68]    = "IMU MPU6050-A0",
+    [I2C_DEV_0x70]    = "PWM PCA9685 All-Call",
 };
 
-#include <stdio.h>
-void printI2cName(int8_t addr){
-    if (i2cDeviceName[addr])    printf("device \"%s\"", i2cDeviceName[addr]);
-    else                        printf("device at address 0x%02x", addr);
+cStrRO get_i2cDevName(int8_t adr) {
+    if ((adr < I2C_DEV_COUNT) &&
+        (adr > I2C_DEV_UNKNOWN) &&
+        (_i2cDeviceName[adr] != NULL)
+    )   return _i2cDeviceName[adr];
+    else
+        return _i2cDeviceName[I2C_DEV_UNKNOWN];
 }

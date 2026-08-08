@@ -67,12 +67,13 @@ bool i2cBus::_setRegNum(uint8_t RegNum) {
     return ret;
 }
 
-bool i2cBus::setAddr(i2cAddr_t adr) {
+bool i2cBus::_fSetAddr(i2cAddr_t adr) {
     if (adr < 0)
         return false;
     if (_lastAddr == adr)
         return true;
 
+    // TODO: make here Thread safety
     _lastAddr = adr;
     bool ret = _setAddres(adr);
 #if 0
@@ -89,7 +90,7 @@ bool i2cBus::setAddr(i2cAddr_t adr) {
         );
     }
 #endif
-    return ret ;
+    return ret;
 }
 
 
@@ -102,16 +103,16 @@ bool i2cBus::SoftResetAllDevices() {
 bool i2cBus::ProbeDevice(i2cAddr_t adr) {
     uint8_t buf;
     return
-        setAddr(adr) &&
+        _fSetAddr(adr) &&
         _Read(&buf);
 }
 
-bool i2cBus::RegRead(uint8_t RegNum, uint8_p pByte) {
+bool i2cBus::_fRegRead(uint8_t RegNum, uint8_p pByte) {
     return
         _setRegNum(RegNum) &&
         _Read(pByte);
 }
-bool i2cBus::RegWrite(uint8_t RegNum, uint8_t pByte) {
+bool i2cBus::_fRegWrite(uint8_t RegNum, uint8_t pByte) {
     uint8_t buf[2] = {RegNum, pByte};
     return write(_fd, buf, sizeof(buf)) == sizeof(buf);  // must be one I2C transaction: separate write()s would send reg and value as two unrelated START/STOP packets
 }

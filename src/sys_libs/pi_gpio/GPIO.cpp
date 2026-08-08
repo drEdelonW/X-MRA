@@ -10,57 +10,64 @@ GpioChip::~GpioChip() {
     if (_chip)
         gpiod_chip_close(_chip);
 }
+/*============================================================*/
 
-GpioLine::GpioLine(const GpioChip& chip, unsigned offset) : offset_(offset) {
+GpioLine::GpioLine(
+    const GpioChip& chip,
+    unsigned offset,
+    gpiod_line_direction pinDir
+):
+    _pinNum(offset),
+    _pinDir(pinDir)
+{
     if (!chip.ok())
         return;
 
-    settings_ = gpiod_line_settings_new();
-    if (!settings_) {
-        perror("gpiod_line_settings_new");
-        return;
-    }
-    gpiod_line_settings_set_direction(settings_, GPIOD_LINE_DIRECTION_OUTPUT);
-    gpiod_line_settings_set_output_value(settings_, GPIOD_LINE_VALUE_INACTIVE);
+    if (_lineSettings = gpiod_line_settings_new()) {
+        gpiod_line_settings_set_direction(_lineSettings, _pinDir);
+        if (_pinDir == GPIOD_LINE_DIRECTION_OUTPUT)     gpiod_line_settings_set_output_value(_lineSettings, GPIOD_LINE_VALUE_INACTIVE);
 
-    line_cfg_ = gpiod_line_config_new();
-    if (!line_cfg_) {
-        perror("gpiod_line_config_new");
-        return;
-    }
-
-    if (gpiod_line_config_add_line_settings(line_cfg_, &offset_, 1, settings_) != 0) {
-        perror("gpiod_line_config_add_line_settings");
-        return;
-    }
-
-    req_cfg_ = gpiod_request_config_new();
-    if (!req_cfg_) {
-        perror("gpiod_request_config_new");
-        return;
-    }
-    gpiod_request_config_set_consumer(req_cfg_, "gpio_line");
-
-    request_ = gpiod_chip_request_lines(chip.handle(), req_cfg_, line_cfg_);
-    if (!request_)
-        perror("gpiod_chip_request_lines");
+        if (_lineCfg = gpiod_line_config_new())
+        if (gpiod_line_config_add_line_settings(_lineCfg, &_pinNum, 1, _lineSettings) == 0)
+        if (_rqCfg = gpiod_request_config_new()) {
+            gpiod_request_config_set_consumer(_rqCfg, "gpio_line");
+            if (_rq = gpiod_chip_request_lines(chip.handle(), _rqCfg, _lineCfg)) {
+                // ok
+            }
+            else perror("gpiod_chip_request_lines()");
+        }   else perror("gpiod_request_config_new()");
+            else perror("gpiod_line_config_add_line_settings()");
+            else perror("gpiod_line_config_new()");
+    }       else perror("gpiod_line_settings_new()");
 }
 
 GpioLine::~GpioLine() {
-    if (request_) {
-        gpiod_line_request_set_value(request_, offset_, GPIOD_LINE_VALUE_INACTIVE);
-        gpiod_line_request_release(request_);
+    if (_rq) {
+        gpiod_line_request_set_value(_rq, _pinNum, GPIOD_LINE_VALUE_INACTIVE);
+        gpiod_line_request_release(_rq);
     }
-    if (req_cfg_)  gpiod_request_config_free(req_cfg_);
-    if (line_cfg_) gpiod_line_config_free(line_cfg_);
-    if (settings_) gpiod_line_settings_free(settings_);
+    if (_rqCfg)         gpiod_request_config_free(_rqCfg);
+    if (_lineCfg)       gpiod_line_config_free(_lineCfg);
+    if (_lineSettings)  gpiod_line_settings_free(_lineSettings);
 }
 
-void GpioLine::set(gpiod_line_value value) {
-    gpiod_line_request_set_value(request_, offset_, value);
+gpiod_line_value GpioLine::set(gpiod_line_value value) {
+    return (
+        (_pinDir == GPIOD_LINE_DIRECTION_OUTPUT) &&
+        ((gpiod_line_request_set_value(_rq, _pinNum, value)) != 0)
+    )?
+        value : GPIOD_LINE_VALUE_ERROR;
 }
 
-void GpioLine::setB(bool bValue) {
-    GpioLine::set((bValue) ?
-        GPIOD_LINE_VALUE_ACTIVE : GPIOD_LINE_VALUE_INACTIVE);
+bool GpioLine::setB(bool bValue) {
+    if (_pinDir == GPIOD_LINE_DIRECTION_OUTPUT) {
+       return (
+            GpioLine::set(
+                (bValue) ?
+                    GPIOD_LINE_VALUE_ACTIVE :
+                    GPIOD_LINE_VALUE_INACTIVE
+            ) == GPIOD_LINE_VALUE_ACTIVE);
+    }
+    perror("GPIOD_LINE_DIRECTION_INPUT");
+    return false;
 }
