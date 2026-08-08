@@ -75,7 +75,6 @@ OBJS_S 		= $(SRCS_S:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)
 OBJS 		+= $(OBJS_CPP) $(OBJS_C) $(OBJS_S)
 # $(info OBJS:$(OBJS))
 
-include list_include.mk
 INCLUDES=$(addprefix -I,$(INCLUDE_PATHS))
 # include list_defines.mk
     DEFINES =

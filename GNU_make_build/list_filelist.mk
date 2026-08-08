@@ -16,6 +16,9 @@ $(eval SYSLIB_DIR := $(SRC_DIR)/sys_libs) $(eval INCLUDE_PATHS += $(SYSLIB_DIR))
     $(eval POSIX_DIR := $(SYSLIB_DIR)/POSIX_system) $(eval INCLUDE_PATHS += $(POSIX_DIR))
         SRCS += $(POSIX_DIR)/signal_tools.cpp
 
+    $(eval GPIO_DIR := $(SYSLIB_DIR)/pi_gpio) $(eval INCLUDE_PATHS += $(GPIO_DIR))
+        SRCS += $(GPIO_DIR)/GPIO.cpp
+
     $(eval I2C_DIR := $(SYSLIB_DIR)/i2c) $(eval INCLUDE_PATHS += $(I2C_DIR))
         SRCS += $(I2C_DIR)/i2cBus.cpp
         SRCS += $(I2C_DIR)/i2cEndPoint.cpp
@@ -120,4 +123,5 @@ DEFINE_LIST += CLI_AUTOEXEC_CMD=\"dpad\"
 # DEFINE_LIST += CLI_AUTOEXEC_CMD=\"test\"
 
 LDFLAGS += -lSDL2
+LDFLAGS += -lgpiod
 # LDFLAGS += -lX11

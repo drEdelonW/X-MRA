@@ -161,6 +161,7 @@ git push github master --force  # mirror
 git push && git push github master --force
 ```
 
+sudo apt install libgpiod-dev gpiod
 
 gpioinfo -c gpiochip0
 gpiochip0 - 58 lines:
