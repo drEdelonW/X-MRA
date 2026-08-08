@@ -1,11 +1,14 @@
 #include "CLI.h"
 #include "CLI_tools.h"
 
-#include "common_tools.h"
+#include "common_tools.h"   // BUFF_AND_SIZE
 #define HOSTNAME "X-MRA01"
 
 // add to makefile [DEFINE_LIST += CLI_AUTOEXEC_CMD=\"dpad\"]
-// #define CLI_AUTOEXEC_CMD "dpad"
+#define CLI_AUTOEXEC_CMD "dpad"
+#ifdef CLI_AUTOEXEC_CMD
+#   warning defined CLI_AUTOEXEC_CMD
+#endif
 
 void startCLI() {
 #if DEBUG > 0

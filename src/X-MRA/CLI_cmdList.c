@@ -22,6 +22,8 @@ static void _ARM() { xArm(); }
 static void _DISARM() { xDisarm(); }
 static void _adc() { adcReadAll(); }
 
+static void _dpad() { dpad(fArray); }
+
 void test();
 static void _test() { test(); }
 
@@ -34,7 +36,7 @@ const CommandCLI Cmds[] = {
 
     {.name = "adc",     .function = _adc,       .description = "Read ADS7830 ADC all channels"},
 
-    {.name = "dpad",    .function = dpad,       .description = "keyboard control Tool"},
+    {.name = "dpad",    .function = _dpad,      .description = "keyboard control Tool"},
     {.name = "jpad",    .function = jpad,       .description = "SDL GamePad control Tool"},
     // {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
 

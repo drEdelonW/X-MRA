@@ -1,6 +1,18 @@
 #include "X-MRA.hpp"
 
 // https://store.freenove.com/products/fnk0052
+
+#include "GPIO.hpp"
+#define PWR_LOAD    (4)
+#define BUZZER      (17)
+
+GpioChip chip;
+
+GpioLine PwrLoad(chip, PWR_LOAD);
+GpioLine Buzzer(chip,  BUZZER);
+
+void beep(bool bz) { Buzzer.setB(bz); }
+
 #include "i2cBus_EndPiont.hpp"
 i2cBus iBus(1, true);
 
@@ -9,6 +21,21 @@ PCA9685 PWMarray[] = {
     {iBus, PCAaddr_1},
     {iBus, PCAaddr_0}
 };
+
+void PowerAllow(bool alw) {
+    if (!alw) {
+        PWMarray[0].sleepMode();
+        PWMarray[1].sleepMode();
+    }
+    PwrLoad.setB(!alw);
+    if (alw) {
+        PWMarray[0].wakeUp();
+        PWMarray[1].wakeUp();
+        PWMarray[0].setFreq_Hz(Hz(300));
+        PWMarray[1].setFreq_Hz(Hz(300));
+    }
+}
+
 #define PwCh(n)  PWMarray[(n & 0xF0) >> 4].PWM[n & 0x0F]
 
 #define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)

@@ -1,60 +1,50 @@
 #include "dpad.h"
 
-// char _keyBuff[10] = {0};
-uint64_t _keyBuff;
+// private Fn-s
 bool isKeyPressed();
 Key getKeyFromBuffer();
+void printKeyBuf();
 
-struct termios orig;
 
-void dpad() {
-    LOG(TEXT_BOLD "D-Pad started\n\a" TEXT_RESET);
-    // bool isPressed_ = false;
-    enableRawMode(&orig);
+#include <termios.h>
+#include <unistd.h>
+static void _enableRawMode(struct termios* orig) {
+    struct termios raw;
+    tcgetattr(STDIN_FILENO, orig);
+    raw = *orig;
+    raw.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
 
-    while (1) {
-        bool isPressed = isKeyPressed();
-        if (isPressed) {
-            Key lastKey = getKeyFromBuffer();
-            // LOG("%s\n", getKeyName(lastKey));
-            switch (lastKey) {
-                // case KEY_Q:
-                case KEY_ESCAPE: {
-                    LOG("exit\n");
-                    restoreTerminal(&orig);
-                    return;
+void restoreTerminal(const struct termios* orig) {
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, orig);
+}
+
+void dpad(KeyFn_p pfArray) {
+    if (pfArray) {
+        LOG(TEXT_BOLD "D-Pad started\n\a" TEXT_RESET);
+        struct termios orig;
+        tcgetattr(STDIN_FILENO, &orig);
+        _enableRawMode(&orig);
+        while (1) {
+            if (isKeyPressed()) {
+                Key lastKey = getKeyFromBuffer();
+                switch (lastKey) {
+                    // case KEY_Q:
+                    case KEY_ESCAPE: {
+                        LOG("exit\n");
+                        restoreTerminal(&orig);
+                        return;
+                    }
+
+                    case KEY_UNKNOWN: printKeyBuf(); break;
+
+                    default: {
+                        if (pfArray[lastKey]) { pfArray[lastKey](); }
+                        else  LOG("[%s]\n", getKeyName(lastKey));
+                    } break;
                 }
-
-                case KEY_UNKNOWN: {
-#if 0
-                    for (int i = 0; _keyBuff[i]; i++)
-                        LOG("0x%.2X ", _keyBuff[i]);
-                    LOG("\n");
-#endif
-                    LOG("KEY_UNKNOWN: 0x%016llX\n",
-                        (unsigned long long)_keyBuff
-                    ); /* -> 0xDEADBEEFCAFEBAB */
-                } break;
-
-                default:
-                    if (fArray[lastKey] != NULL)
-                        fArray[lastKey]();
-                    else
-                        LOG("[%s]\n", getKeyName(lastKey));
-
-                    break;
             }
         }
-#if 0
-        else
-            LOG("not\n")
-
-        if ((isPressed_ == true) &&
-            (isPressed == false)
-            ) {
-                // Optionally: _doStop();
-            }
-        isPressed_ = isPressed;
-#endif
     }
 }

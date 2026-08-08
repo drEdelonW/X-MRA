@@ -3,67 +3,60 @@
 
 #include "X-MRA.hpp"
 
-#include "PA_PCA9685.hpp"   // PCA9685
-extern PCA9685 PWMarray[];
+#if 0
+#   define servoNum DIMOF(Servo)
+#else
+#   define servoNum (6*3)
+#endif
 
 #include "PS_MG996R.hpp"    // MG996R
 extern MG996R Servo[];
 
-#if 0
-#   define servoNum DIMOF(Servo) 
-#else
-#   define servoNum 18
-#endif
-
+static float _curAngle = 0.f;
 #if 1
-static float _curAngle = 0;
-#define SV_ALL(v)  \
-    LOG("[%.2f]\n", (v)); \
-    _curAngle = (v); \
-    for(int i = 0; i < servoNum; i++) {\
-        Servo[i].setAngle(deg(v));\
-    }
+void SV_ALL(float ang) {
+    LOG("[%.2f]\n", (_curAngle = ang));
+    for(int idxSv = 0; idxSv < servoNum; idxSv++)
+        Servo[idxSv].setAngle(deg(ang));
+}
+#else
+#define SV_ALL(v)                                   \
+    LOG("[%.2f]\n", (v));                           \
+    _curAngle = (v);                                \
+    for(int idxSv = 0; idxSv < servoNum; idxSv++)   \
+        Servo[idxSv].setAngle(deg(v));
 #endif
 
 void _on()  {
     LOG("ON\n");
-    PWMarray[0].wakeUp();
-    PWMarray[1].wakeUp();
-#if 1
-    PWMarray[0].setFreq_Hz(Hz(50));
-    PWMarray[1].setFreq_Hz(Hz(50));
-#else
-    PWMarray[0].setFreq_Hz(Hz(300));
-    PWMarray[1].setFreq_Hz(Hz(300));
-#endif
+    PowerAllow(true);
 }
 void _off() {
     LOG("OFF\n");
-    PWMarray[0].sleepMode();
-    PWMarray[1].sleepMode();
+    PowerAllow(false);
 }
-void _1()  { SV_ALL(  0.0f) }
-void _2()  { SV_ALL(-10.0f) }
-void _3()  { SV_ALL(-20.0f) }
-void _4()  { SV_ALL(-30.0f) }
-void _5()  { SV_ALL(-40.0f) }
-void _6()  { SV_ALL(-50.0f) }
-void _7()  { SV_ALL(-60.0f) }
-void _8()  { SV_ALL(-70.0f) }
-void _9()  { SV_ALL(-80.0f) }
-void _10() { SV_ALL(-90.0f) }
+void _1()  { SV_ALL(  0.0f); }
+void _2()  { SV_ALL(-10.0f); }
+void _3()  { SV_ALL(-20.0f); }
+void _4()  { SV_ALL(-30.0f); }
+void _5()  { SV_ALL(-40.0f); }
+void _6()  { SV_ALL(-50.0f); }
+void _7()  { SV_ALL(-60.0f); }
+void _8()  { SV_ALL(-70.0f); }
+void _9()  { SV_ALL(-80.0f); }
+void _10() { SV_ALL(-90.0f); }
 
-void _1on() { Servo[1].enable(); }
+void _1on()  { Servo[1].enable(); }
 void _1off() { Servo[1].disable(); }
 
-void _2on() { Servo[2].enable(); }
+void _2on()  { Servo[2].enable(); }
 void _2off() { Servo[2].disable(); }
 
-void _left() { SV_ALL(_curAngle - 1) }
-void _right() { SV_ALL(_curAngle + 1) }
+void _left()  { SV_ALL(_curAngle - 1); }
+void _right() { SV_ALL(_curAngle + 1); }
 
 
-const KeyFunction fArray[KEY_COUNT] = {
+KeyFunction fArray[KEY_COUNT] = {
     [KEY_UNKNOWN] = 0,
 
     [KEY_LEFT]          = _left,
