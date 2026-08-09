@@ -90,40 +90,42 @@ enum LegMask : uint8_t {
 #define MAX_LEGS (8)
 typedef int LegIdx_t;
 
-#define PATTERN_LEG         for (LegIdx_t legIdx = 0; legIdx < _legCount; legIdx++) if (_maskCheck(pattern, legIdx))
+#define PATTERN_LEG(ptn)    for (LegIdx_t legIdx = 0; legIdx < _legCount; legIdx++) if (_maskCheck(ptn, legIdx))
 #define LEG_ERROR_OK        do { _lastLegError = MAX_LEGS;  return true;    } while (0)
 #define LEG_ERROR_DISARMED  do { _lastLegError = MAX_LEGS;  return false;   } while (0)
-#define LEG_ERROR           do { _lastLegError = legIdx;    return false;   } while (0)
+#include "common_tools.h"
+#define LEG_ERROR           do { _lastLegError = legIdx;  LOG("[%d]LEG_ERROR\n",legIdx);  return false;   } while (0)
 
+typedef int pattern_t;
 class ArachnidBody {
 public:
     ArachnidBody(ArachnidLeg* legs, size_t legCount);
     ~ArachnidBody();
 
     // mask (bitmask) see ArachnidBody scheme for accord bits with actual legs
-    void    setPatMask(int pattern, LegMask mask);
-    LegMask getPatMask(int pattern);
+    void    setPatMask(pattern_t pattern, LegMask mask);
+    LegMask getPatMask(pattern_t pattern);
 
-    void setOffs(Vector3D offs, int pattern = 0);
-    void addOffs(Vector3D offs, int pattern = 0);
-    void addRotationOX(Angle angle, int pattern = 0);
-    void addRotationOY(Angle angle, int pattern = 0);
-    void addRotationOZ(Angle angle, int pattern = 0);
+    void setOffs(Vector3D offs, pattern_t pattern = 0);
+    void addOffs(Vector3D offs, pattern_t pattern = 0);
+    void addRotationOX(Angle angle, pattern_t pattern = 0);
+    void addRotationOY(Angle angle, pattern_t pattern = 0);
+    void addRotationOZ(Angle angle, pattern_t pattern = 0);
 
-    bool trySetOffs(Vector3D offs, int pattern = 0);
-    bool tryAddOffs(Vector3D offs, int pattern = 0);
-    bool tryAddRotationOX(Angle angle, int pattern = 0);
-    bool tryAddRotationOY(Angle angle, int pattern = 0);
-    bool tryAddRotationOZ(Angle angle, int pattern = 0);
+    bool trySetOffs(Vector3D offs, pattern_t pattern = 0);
+    bool tryAddOffs(Vector3D offs, pattern_t pattern = 0);
+    bool tryAddRotationOX(Angle angle, pattern_t pattern = 0);
+    bool tryAddRotationOY(Angle angle, pattern_t pattern = 0);
+    bool tryAddRotationOZ(Angle angle, pattern_t pattern = 0);
 
     bool animAngDeg(Vector3D from, Vector3D to, MicroSeconds duration = us(0));
 
 
-    bool applyPose(int pattern = 0);
-    void getMatrix(Matrix4x4_p mx, int pattern = 0);
-    void setMatrix(Matrix4x4_p mx, int pattern = 0);
+    bool applyPose(pattern_t pattern = 0);
+    void getMatrix(Matrix4x4_p mx, pattern_t pattern = 0);
+    void setMatrix(Matrix4x4_p mx, pattern_t pattern = 0);
 
-    bool isArmed();
+    bool isArmed() const { return _isArmed; }
     bool ARM();
     void DISARM();
 
@@ -140,11 +142,12 @@ private:
         Vector3D    defaultPose;
         Vector3D    currentPose;
     };
-    inline bool _maskCheck(int pattern, int legIndex) const { return (_legPattMask[pattern] & (1 << legIndex)); }
+    inline bool _maskCheck(pattern_t pattern, int legIndex) const {
+        return (_legPattMask[pattern] & (1 << legIndex));
+    }
 
-    size_t  _legCount = 0;
-
-    bool    _isArmed;
+    int _legCount = 0;
+    bool _isArmed;
 
     LegMask     _legMaskLimit;
     LegMask     _legPattMask[MAX_LEGS];

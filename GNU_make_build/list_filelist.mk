@@ -106,7 +106,7 @@ $(eval XMRA_DIR := $(SRC_DIR)/X-MRA) $(eval INCLUDE_PATHS += $(XMRA_DIR))
     SRCS += $(XMRA_DIR)/CLI_cmdList.c
     SRCS += $(XMRA_DIR)/test.c
     SRCS += $(XMRA_DIR)/dpad_cmds_leg.c
-#     SRCS += $(XMRA_DIR)/dpad_cmds_12servos.c
+    SRCS += $(XMRA_DIR)/dpad_cmds_12servos.c
 
     SRCS += $(XMRA_DIR)/X-MRA_cWrap.cpp
 

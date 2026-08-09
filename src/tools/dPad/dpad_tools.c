@@ -6,9 +6,11 @@
 #include <sys/select.h>
 
 /* ----- helpers ----- */
-#define SEQ8(b0, b1, b2, b3, b4, b5, b6, b7) \
-    ((uint64_t)(b0)       | ((uint64_t)(b1)<< 8) | ((uint64_t)(b2)<<16) | ((uint64_t)(b3)<<24) | \
-     ((uint64_t)(b4)<<32) | ((uint64_t)(b5)<<40) | ((uint64_t)(b6)<<48) | ((uint64_t)(b7)<<56))
+#define SEQ8(b0, b1, b2, b3, b4, b5, b6, b7)        \
+    (((uint64_t)(b0)<< 0) | ((uint64_t)(b1)<< 8) |  \
+     ((uint64_t)(b2)<<16) | ((uint64_t)(b3)<<24) |  \
+     ((uint64_t)(b4)<<32) | ((uint64_t)(b5)<<40) |  \
+     ((uint64_t)(b6)<<48) | ((uint64_t)(b7)<<56))
 
 #define SEQ1(b0)                        SEQ8(b0, 0, 0, 0, 0, 0, 0, 0)
 #define SEQ3(b0,b1,b2)                  SEQ8(b0,b1,b2, 0, 0, 0, 0, 0)
@@ -71,7 +73,7 @@ static const uint64_t keyTable[KEY_COUNT] = {
     [KEY__6] = SEQ1('^'), [KEY__7] = SEQ1('&'),
     [KEY__8] = SEQ1('*'), [KEY__9] = SEQ1('('),
 
-/* 49‒74  letters a..z (lower-case chosen as базовый) */
+/* 49‒74  letters a..z (lower-case chosen as base) */
     [KEY_A] = SEQ1('a'), [KEY_B] = SEQ1('b'),
     [KEY_C] = SEQ1('c'), [KEY_D] = SEQ1('d'),
     [KEY_E] = SEQ1('e'), [KEY_F] = SEQ1('f'),

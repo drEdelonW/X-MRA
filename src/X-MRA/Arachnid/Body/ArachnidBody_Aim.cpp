@@ -38,7 +38,7 @@ bool ArachnidBody::AimSetAngle(Angle  azimuth, Angle  elevation) {
 
     return true;
 }
-bool  ArachnidBody::AimAddAngle(Angle  azimuth, Angle  elevation) {
+bool ArachnidBody::AimAddAngle(Angle  azimuth, Angle  elevation) {
     return AimSetAngle(
         _azimuth + azimuth,
         _elevation + elevation
@@ -49,10 +49,6 @@ void ArachnidBody::AimGetAngle(Angle_p azimuth, Angle_p elevation) {
     *azimuth = _azimuth;
     *elevation = _elevation;
 }
-Angle ArachnidBody::AimGetAngleAzimuth() {
-    return _azimuth;
-}
-Angle ArachnidBody::AimGetAngleElevation() {
-    return _elevation;
-}
+Angle ArachnidBody::AimGetAngleAzimuth() { return _azimuth; }
+Angle ArachnidBody::AimGetAngleElevation() { return _elevation; }
 

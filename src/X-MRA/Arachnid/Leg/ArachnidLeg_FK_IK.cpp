@@ -3,9 +3,9 @@
 void ArachnidLeg::configMount(Millimeters offset, Angle yaw) {
     _legToBody.reset();
     _legToBody *= Matrix4x4::createRotationZ(yaw.asRadians()); {
-        _legToBody *= Matrix4x4::createTranslation({ offset, 0.0f, 0.0f }); {
+        _legToBody *= Matrix4x4::createTranslation({ offset, 0.f, 0.f }); {
             _bodyToLeg.reset();
-        } _bodyToLeg *= Matrix4x4::createTranslation({ -offset, 0.0f, 0.0f });
+        } _bodyToLeg *= Matrix4x4::createTranslation({ -offset, 0.f, 0.f });
     } _bodyToLeg *= Matrix4x4::createRotationZ(-yaw.asRadians());
 }
 
@@ -32,13 +32,13 @@ bool ArachnidLeg::_checkTipPosLegSpace(Millimeters x, Millimeters y, Millimeters
     /* correct law-of-cosines */
     float angleFemurRel = acosf(
         ((a*a) + (c*c) - (b*b)) /
-        (2.0f * a*c)
+        (2.f * a*c)
     );
     float angleFemur = angleToTarget + angleFemurRel;
 
     float angleKnee = acosf(
         ((a*a) + (b*b) - (c*c)) /
-        (2.0f * a*b)
+        (2.f * a*b)
     );
     float angleTibia = M_PI - angleKnee;
 

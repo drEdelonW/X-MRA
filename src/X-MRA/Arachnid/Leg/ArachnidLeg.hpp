@@ -60,8 +60,8 @@ private:
    JointBase& _jnFemur;
    JointBase& _jnTibia;
 
-   const Millimeters coxaLength_  = mm( 27.0f );   // Length of coxa segment
-   const Millimeters femurLength_ = mm( 85.1f );   // Length of femur segment
-   const Millimeters tibiaLength_ = mm(144.23f);   // Length of tibia segment
+   const Millimeters coxaLength_  = mm( 27.0f );
+   const Millimeters femurLength_ = mm( 85.1f );
+   const Millimeters tibiaLength_ = mm(144.23f);
    Matrix4x4 _bodyToLeg, _legToBody;
 };

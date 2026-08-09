@@ -22,16 +22,14 @@ Vector3D ArmSQNC[] = {
     {cSafe, fSafe, tSafe},
 };
 
-bool ArachnidBody::isArmed() {
-    return _isArmed;
-}
 
+
+static pattern_t pattern = (MAX_LEGS - 1);
 bool ArachnidBody::animAngDeg(
     Vector3D from,
     Vector3D to,
     MicroSeconds duration
 ) {
-    int8_t pattern = 0;
     MicroSeconds now = microsNow();
     MicroSeconds tsStart = now;
     MicroSeconds tsEnd = now + duration;
@@ -45,10 +43,9 @@ bool ArachnidBody::animAngDeg(
                 (now - tsStart) /
                     duration
             )
-
         ) {
         // curPose.print(); LOG("now[%lld]\n", now);
-        PATTERN_LEG{
+        PATTERN_LEG(pattern) {
             /**/ if (legIdx >= 4)     ClampMoreThen(&curPose.x, 30.f);
             else if (legIdx >= 2)     ClampMoreThen(&curPose.x, 60.f);
 
@@ -81,9 +78,8 @@ bool ArachnidBody::ARM() {
     }
     LOG("ARMING... ");
 
-    int8_t pattern = 0;
     setPatMask(pattern, LEGS_ALL);
-    PATTERN_LEG{   // First action
+    PATTERN_LEG(pattern){   // First action
         _legs[legIdx].engage();
     }
 
@@ -112,17 +108,16 @@ void ArachnidBody::DISARM() {
         return;
     }
     LOG("DISARMING... ");
-    int8_t pattern = 0;
     setPatMask(pattern, LEGS_ALL);
 #if 0
-    PATTERN_LEG{
+    PATTERN_LEG(pattern) {
         _legs[legIdx].tryJointAngles(
             deg(0), JFREEZE, JFREEZE
         );
     }
 
     for (int ang = 0; ang < 90; ang++) {
-        PATTERN_LEG{
+        PATTERN_LEG(pattern) {
             _legs[legIdx].tryJointAngles(
                 JFREEZE, deg(-ang), deg(-(ang * 0.8f))
             );
@@ -140,7 +135,7 @@ void ArachnidBody::DISARM() {
     animAngDeg(ArmSQNC[1], ArmSQNC[0], PHASE_DUR);
     usleep(1000000);
 
-    PATTERN_LEG{   // Last action
+    PATTERN_LEG(pattern) {   // Last action
         _legs[legIdx].release();
     }
     _isArmed = false;

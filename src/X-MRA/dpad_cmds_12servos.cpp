@@ -27,36 +27,36 @@ void SV_ALL(float ang) {
         Servo[idxSv].setAngle(deg(v));
 #endif
 
-void _on()  {
+static void _on()  {
     LOG("ON\n");
     PowerAllow(true);
 }
-void _off() {
+static void _off() {
     LOG("OFF\n");
     PowerAllow(false);
 }
-void _1()  { SV_ALL(  0.0f); }
-void _2()  { SV_ALL(-10.0f); }
-void _3()  { SV_ALL(-20.0f); }
-void _4()  { SV_ALL(-30.0f); }
-void _5()  { SV_ALL(-40.0f); }
-void _6()  { SV_ALL(-50.0f); }
-void _7()  { SV_ALL(-60.0f); }
-void _8()  { SV_ALL(-70.0f); }
-void _9()  { SV_ALL(-80.0f); }
-void _10() { SV_ALL(-90.0f); }
+static void _1()  { SV_ALL(  0.0f); }
+static void _2()  { SV_ALL(-10.0f); }
+static void _3()  { SV_ALL(-20.0f); }
+static void _4()  { SV_ALL(-30.0f); }
+static void _5()  { SV_ALL(-40.0f); }
+static void _6()  { SV_ALL(-50.0f); }
+static void _7()  { SV_ALL(-60.0f); }
+static void _8()  { SV_ALL(-70.0f); }
+static void _9()  { SV_ALL(-80.0f); }
+static void _10() { SV_ALL(-90.0f); }
 
-void _1on()  { Servo[1].enable(); }
-void _1off() { Servo[1].disable(); }
+static void _1on()  { Servo[1].enable(); }
+static void _1off() { Servo[1].disable(); }
 
-void _2on()  { Servo[2].enable(); }
-void _2off() { Servo[2].disable(); }
+static void _2on()  { Servo[2].enable(); }
+static void _2off() { Servo[2].disable(); }
 
-void _left()  { SV_ALL(_curAngle - 1); }
-void _right() { SV_ALL(_curAngle + 1); }
+static void _left()  { SV_ALL(_curAngle - 1); }
+static void _right() { SV_ALL(_curAngle + 1); }
 
 
-KeyFunction fArray[KEY_COUNT] = {
+KeyFunction Servo12[KEY_COUNT] = {
     [KEY_UNKNOWN] = 0,
 
     [KEY_LEFT]          = _left,

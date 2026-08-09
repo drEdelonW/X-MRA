@@ -31,28 +31,27 @@
 
 #define MRA_PV_ALL(v)  XMRA.trySetOffs(v);
 
-void _dArm()  {
+static void _dArm()  {
     if (XMRA.isArmed()) return;
-    beep(true);
     LOG("ON\n");
-    PowerAllow(true);
-    XMRA.ARM();
-    beep(false);
+    beep(true); {
+        PowerAllow(true);
+        XMRA.ARM();
+    } beep(false);
 }
-void _dDisarm() {
-    beep(true);
+static void _dDisarm() {
     LOG("OFF\n");
-    XMRA.DISARM();
-
-    PowerAllow(false);
-    beep(false);
+    beep(true); {
+        XMRA.DISARM();
+        PowerAllow(false);
+    } beep(false);
 }
 
 Millimeters mStep = 1.f;
 
-void _1()  { mStep =  0.1f; }
-void _2()  { mStep =  1.f;  }
-void _3()  { mStep = 10.f;  }
+static void _1()  { mStep =  0.1f; }
+static void _2()  { mStep =  1.f;  }
+static void _3()  { mStep = 10.f;  }
 
 const Millimeters coxaLength  = mm( 27.f);
 const Millimeters femurLength = mm( 85.1f);
@@ -73,18 +72,18 @@ const Millimeters tibiaZ      = mm(141.6f);
 
 Vector3D _curPose = {DSTx, DSTy, DSTz};
 
-void _xPos() { _curPose.x += mStep;     MRA_PV_ALL(_curPose); }
-void _xNeg() { _curPose.x -= mStep;     MRA_PV_ALL(_curPose); }
+static void _xPos() { _curPose.x += mStep;  MRA_PV_ALL(_curPose); }
+static void _xNeg() { _curPose.x -= mStep;  MRA_PV_ALL(_curPose); }
 
-void _yPos() { _curPose.y -= mStep;     MRA_PV_ALL(_curPose); }
-void _yNeg() { _curPose.y += mStep;     MRA_PV_ALL(_curPose); }
+static void _yPos() { _curPose.y -= mStep;  MRA_PV_ALL(_curPose); }
+static void _yNeg() { _curPose.y += mStep;  MRA_PV_ALL(_curPose); }
 
-void _zPos() { _curPose.z += mStep;     MRA_PV_ALL(_curPose); }
-void _zNeg() { _curPose.z -= mStep;     MRA_PV_ALL(_curPose); }
+static void _zPos() { _curPose.z += mStep;  MRA_PV_ALL(_curPose); }
+static void _zNeg() { _curPose.z -= mStep;  MRA_PV_ALL(_curPose); }
 
-void _goGome()  { _curPose = {DSTx, DSTy, DSTz};    MRA_PV_ALL(_curPose); }
+static void _goHome()  { _curPose = {DSTx, DSTy, DSTz};    MRA_PV_ALL(_curPose); }
 
-void _info() {
+static void _info() {
     for (int idxLeg = 0; idxLeg < 6; idxLeg++){
         LOG("[%d] ", idxLeg);
         LOG("legSpace:");       XMRA._legs[idxLeg].tipPosLegSpace(deg(0), deg(0), deg(0)).print();
@@ -110,7 +109,7 @@ KeyFunction fArray[KEY_COUNT] = {
     [KEY_DELETE] = 0,
     [KEY_PAGE_UP]   = _dArm,
     [KEY_PAGE_DOWN] = _dDisarm,
-    [KEY_HOME]      = _goGome,
+    [KEY_HOME]      = _goHome,
     [KEY_END] = 0,
 
     [KEY_BACKSPACE] = 0,

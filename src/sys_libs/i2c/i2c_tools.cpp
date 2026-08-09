@@ -3,10 +3,10 @@
 
 #include "i2cBus_EndPiont.hpp"
 // Scan all I2C addresses on the bus
-int busScan() {
+void busScan() {
     i2cBus iBus(1, true);
     if (!iBus.isInited())
-        return 1;
+        return;
 
     printf("Scanning I2C bus:\n");
     for (i2cAddr_t
@@ -20,7 +20,7 @@ int busScan() {
             );
     }
     iBus.Deinit();
-    return 0;
+    return;
 }
 
 // Dump register contents of a specific I2C device
