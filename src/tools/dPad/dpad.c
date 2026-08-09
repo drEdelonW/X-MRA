@@ -20,8 +20,11 @@ bool isKeyPressed();
 Key getKeyFromBuffer();
 void printKeyBuf();
 
-void dpad(KeyFn_p pfArray) {
+void dpad(vFv_p pfArray) {
     if (pfArray) {
+        if (pfArray[KEY_UNKNOWN])
+            pfArray[KEY_UNKNOWN]();
+
         LOG(TEXT_BOLD "D-Pad started\n\a" TEXT_RESET);
         struct termios orig;
         _enableRawMode(&orig);

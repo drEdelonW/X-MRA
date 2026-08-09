@@ -19,7 +19,8 @@ typedef enum {
 
     ASCII_a           = 0x61,  /* 'a' Symbol */
     ASCII_z           = 0x7A,  /* 'a' Symbol */
-    ASCII_TILDA       = 0x7E   /* '~' Last printable Symbol */
+    ASCII_TILDA       = 0x7E,  /* '~' Last printable Symbol */
+    ASCII_DEL         = 0x7F   /* Delete */
 } ASCII_t; // TODO: should be uint8_t
 
 static inline bool isPrintable(char chr) {

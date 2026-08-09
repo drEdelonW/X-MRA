@@ -10,16 +10,15 @@
 // #define KEY_REPEAT_TIMOUT   (30)
 // #define KEY_REPEAT_TIMOUT   (35)
 
-typedef void (*KeyFunction)(void);
-typedef KeyFunction* KeyFn_p;
-
-extern KeyFunction fArray[KEY_COUNT];
+typedef void (*vFv)(void);
+typedef vFv* vFv_p;
+typedef vFv dPadBind[KEY_COUNT];
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    void dpad(KeyFn_p pfArray);
+    void dpad(vFv_p pfArray);
 
 #ifdef __cplusplus
 }

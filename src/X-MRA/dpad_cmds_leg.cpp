@@ -62,12 +62,12 @@ const Millimeters tibiaZ      = mm(141.6f);
 
 #if 0
 #   define DSTx    (coxaLength + femurLength + tibiaX)
-#   define DSTy    (0.0f)
+#   define DSTy    (0.f)
 #   define DSTz    (-tibiaZ)
 #else
-#   define DSTx    (0.0f)
-#   define DSTy    (0.0f)
-#   define DSTz    (0.0f)
+#   define DSTx    (0.f)
+#   define DSTy    (0.f)
+#   define DSTz    (0.f)
 #endif
 
 Vector3D _curPose = {DSTx, DSTy, DSTz};
@@ -92,8 +92,21 @@ static void _info() {
     }
 }
 
-KeyFunction fArray[KEY_COUNT] = {
-    [KEY_UNKNOWN] = 0,
+static void _begin() {
+    LOG(CLEAR_SCREEN
+        "Leg begin\n"
+        "</>        - {x}\n"
+        "^/v        - {y}\n"
+        "Sh + ^/v   - {z}\n"
+        "PgUp/PgDown    - Arm/Disarm\n"
+        "Home           - GoHome\n"
+        "i  - Info\n"
+
+    );
+}
+
+dPadBind bindLeg = {
+    [KEY_UNKNOWN] = _begin,
 
     [KEY_LEFT]      = _yPos,
     [KEY_RIGHT]     = _yNeg,

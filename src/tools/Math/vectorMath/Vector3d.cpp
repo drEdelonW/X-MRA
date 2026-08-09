@@ -94,8 +94,8 @@ bool Vector3D::isZero() const {
         (z == 0.f);
 }
 
-Vector3D Vector3D::toRad() const { return *this * (M_PI / 180.0f); }
-Vector3D Vector3D::toDeg() const { return *this * (180.0f / M_PI); }
+Vector3D Vector3D::toRad() const { return *this * (M_PI / 180.f); }
+Vector3D Vector3D::toDeg() const { return *this * (180.f / M_PI); }
 
 #include "terminal_tools.h" // LOG()
 void Vector3D::print()    const { LOG("Vector3D(x: %+.3f, y: %+.3f, z: %+.3f)", x, y, z); }

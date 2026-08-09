@@ -13,8 +13,8 @@ public:
         ProtoPWM& pwm,
         MicroSeconds minPulse   = us(650),
         MicroSeconds maxPulse   = us(2400),
-        Angle maxAngle          = deg(180.0f),
-        Angle offset            = deg(90.0f),
+        Angle maxAngle          = deg(180.f),
+        Angle offset            = deg(90.f),
         rotDir_t reversed       = CW
     );
 

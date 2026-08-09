@@ -14,7 +14,7 @@ public:
         uint8_t     pin,
         PWM_UNIT    minPulseWidth = 180,
         PWM_UNIT    maxPulseWidth = 1040,
-        float       zmaxAngle = 180.0f
+        float       zmaxAngle = 180.f
     );
 
     float    getAngleDegrees() const;

@@ -90,10 +90,10 @@ ServoJoint BackRight[] = {
 ArachnidLeg leg[] = {
     {nameLeg(FrontLeft),  mm( 84.36f), deg(-27.63f)},
     {nameLeg(FrontRight), mm( 84.36f), deg( 27.63f)},
-    {nameLeg(MidleLeft),  mm( 39.25f), deg(-90.0f)},
-    {nameLeg(MidleRight), mm( 39.25f), deg( 90.0f)},
-    {nameLeg(BackLeft),   mm( 84.36f), deg( 27.63f + 180.0f)},
-    {nameLeg(BackRight),  mm( 84.36f), deg(-27.63f + 180.0f)},
+    {nameLeg(MidleLeft),  mm( 39.25f), deg(-90.f)},
+    {nameLeg(MidleRight), mm( 39.25f), deg( 90.f)},
+    {nameLeg(BackLeft),   mm( 84.36f), deg( 27.63f + 180.f)},
+    {nameLeg(BackRight),  mm( 84.36f), deg(-27.63f + 180.f)},
 };
 
 ArachnidBody XMRA(leg, sizeof(leg)/sizeof(leg[0]));

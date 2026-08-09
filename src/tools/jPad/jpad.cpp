@@ -43,7 +43,7 @@ void jpad() {
                     gp.left.y,
                    -gp.left.x,
                    -((GCGetButton(BUTTON_L3)) ?
-                        1.0f : gp.left.z)
+                        1.f : gp.left.z)
                 } *
                 scaleStep,
                 0
@@ -53,7 +53,7 @@ void jpad() {
                     gp.right.y,
                    -gp.right.x,
                    -((GCGetButton(BUTTON_R3)) ?
-                        1.0f : gp.right.z)
+                        1.f : gp.right.z)
                 } *
                 scaleStep,
                 1
@@ -74,7 +74,7 @@ void jpad() {
                            -gp.left.y,
                             gp.left.x,
                             gp.right.z - gp.left.z
-                        } * 3.0f
+                        } * 3.f
                     );
                 }
 #if 1

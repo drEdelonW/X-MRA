@@ -106,11 +106,11 @@ constexpr Hertz operator+(Hertz a, float v) { return Hertz(a.hzValue + v); }
 constexpr Hertz operator-(Hertz a, float v) { return Hertz(a.hzValue - v); }
 
 // period is the reciprocal of frequency: T = 1/f
-constexpr MicroSeconds periodUsOf(Hertz freq)         { return MicroSeconds(static_cast<uint64_t>(1000000.0f / freq.hzValue)); }
-constexpr Hertz frequencyOfUs(MicroSeconds period)    { return Hertz(1000000.0f / static_cast<float>(period.usValue)); }
+constexpr MicroSeconds periodUsOf(Hertz freq)         { return MicroSeconds(static_cast<uint64_t>(1000000.f / freq.hzValue)); }
+constexpr Hertz frequencyOfUs(MicroSeconds period)    { return Hertz(1000000.f / static_cast<float>(period.usValue)); }
 
-constexpr MilliSeconds periodMsOf(Hertz freq)         { return MilliSeconds(static_cast<uint64_t>(1000.0f    / freq.hzValue)); }
-constexpr Hertz frequencyOfMs(MilliSeconds period)    { return Hertz(1000.0f    / static_cast<float>(period.msValue)); }
+constexpr MilliSeconds periodMsOf(Hertz freq)         { return MilliSeconds(static_cast<uint64_t>(1000.f    / freq.hzValue)); }
+constexpr Hertz frequencyOfMs(MilliSeconds period)    { return Hertz(1000.f    / static_cast<float>(period.msValue)); }
 
 
 #endif

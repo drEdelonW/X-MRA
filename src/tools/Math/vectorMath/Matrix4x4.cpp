@@ -101,7 +101,7 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
     Matrix4x4 result;
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j) {
-            result.data[i][j] = 0.0f;
+            result.data[i][j] = 0.f;
             for (int k = 0; k < 4; ++k)
                 result.data[i][j] +=
                     data[i][k] * other.data[k][j];
@@ -126,8 +126,8 @@ Vector3D Matrix4x4::applyTransform(Vector3D& vec) const {
     float w =
         (data[3][0] * vec.x) + (data[3][1] * vec.y) +
         (data[3][2] * vec.z) + (data[3][3]);
-    if ((w != 1.0f) &&
-        (w != 0.0f)
+    if ((w != 1.f) &&
+        (w != 0.f)
         )   result /= w;
 
     return result;
@@ -145,8 +145,8 @@ Vector3D Matrix4x4::applyTransform(const Vector3D& vec) const {
     float w =
         (data[3][0] * vec.x) + (data[3][1] * vec.y) +
         (data[3][2] * vec.z) + (data[3][3]);
-    if ((w != 1.0f) &&
-        (w != 0.0f)
+    if ((w != 1.f) &&
+        (w != 0.f)
         )   result /= w;
 
     return result;

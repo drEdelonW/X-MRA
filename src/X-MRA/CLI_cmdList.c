@@ -17,7 +17,10 @@ static void _DISARM() { xDisarm(); }
 static void _adc() { adcReadAll(); }
 
 #include "dpad.h" // dpad()
-static void _dpad() { dpad(fArray); }
+extern dPadBind bindLeg;
+static void _dpadL() { dpad(bindLeg); }
+extern dPadBind Servo12;
+static void _dpadS() { dpad(Servo12); }
 
 static void _ver_info() { ver_info(); }
 static void _exit() { exit(0); }
@@ -29,7 +32,9 @@ const CommandCLI Cmds[] = {
 
     {.name = "adc",     .function = _adc,       .description = "Read ADS7830 ADC all channels"},
 
-    {.name = "dpad",    .function = _dpad,      .description = "keyboard control Tool"},
+    // {.name = "dpad",    .function = _dpadL,     .description = "keyboard control Tool"},
+    {.name = "dpadL",   .function = _dpadL,     .description = "Leg keyboard control Tool"},
+    {.name = "dpadS",   .function = _dpadS,     .description = "Servo 18 keyboard control Tool"},
     {.name = "jpad",    .function = jpad,       .description = "SDL GamePad control Tool"},
     // {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
 

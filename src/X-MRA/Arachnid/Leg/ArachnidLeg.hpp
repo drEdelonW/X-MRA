@@ -60,7 +60,7 @@ private:
    JointBase& _jnFemur;
    JointBase& _jnTibia;
 
-   const Millimeters coxaLength_  = mm( 27.0f );
+   const Millimeters coxaLength_  = mm( 27.f  );
    const Millimeters femurLength_ = mm( 85.1f );
    const Millimeters tibiaLength_ = mm(144.23f);
    Matrix4x4 _bodyToLeg, _legToBody;

@@ -76,7 +76,7 @@ void Servo::_setAngle(float angle) {
     currentAngleDegrees_ = angle; // Cache the angle in degrees
     float pulseWidth = _map(
         angle,
-        0.0f, maxAngle_,
+        0.f, maxAngle_,
         minPulseWidth_,
         maxPulseWidth_
     );

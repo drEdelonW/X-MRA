@@ -14,7 +14,7 @@ MG996R::MG996R(
       _maxAngle(maxAngle),
       _offset(offset),
       _reversed(reversed),
-      _currentAngle(rad(0.0f)),
+      _currentAngle(rad(0.f)),
       _enabled(true) {}
 
 #include "terminal_tools.h"
@@ -31,7 +31,7 @@ void MG996R::setAngle(const Angle& angle) {
         corrected = _maxAngle - corrected;
     }
 
-    float normalized = clamp(corrected.asRadians() / _maxAngle.asRadians(), 0.0f, 1.0f);
+    float normalized = clamp(corrected.asRadians() / _maxAngle.asRadians(), 0.f, 1.f);
 
     _pwm.setDuration(
         _minPulse + ((_maxPulse - _minPulse) * normalized)

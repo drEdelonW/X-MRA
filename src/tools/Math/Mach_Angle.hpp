@@ -13,7 +13,10 @@ typedef enum : bool {
 
 // Local fallback clamp
 inline float clamp(float val, float minVal, float maxVal) {
-  return (val < minVal) ? minVal : (val > maxVal ? maxVal : val);
+    return (val < minVal) ?
+        minVal :
+        ((val > maxVal) ?
+            maxVal : val);
 }
 
 class Angle {

@@ -35,16 +35,16 @@ static void _off() {
     LOG("OFF\n");
     PowerAllow(false);
 }
-static void _1()  { SV_ALL(  0.0f); }
-static void _2()  { SV_ALL(-10.0f); }
-static void _3()  { SV_ALL(-20.0f); }
-static void _4()  { SV_ALL(-30.0f); }
-static void _5()  { SV_ALL(-40.0f); }
-static void _6()  { SV_ALL(-50.0f); }
-static void _7()  { SV_ALL(-60.0f); }
-static void _8()  { SV_ALL(-70.0f); }
-static void _9()  { SV_ALL(-80.0f); }
-static void _10() { SV_ALL(-90.0f); }
+static void _1()  { SV_ALL(  0.f); }
+static void _2()  { SV_ALL(-10.f); }
+static void _3()  { SV_ALL(-20.f); }
+static void _4()  { SV_ALL(-30.f); }
+static void _5()  { SV_ALL(-40.f); }
+static void _6()  { SV_ALL(-50.f); }
+static void _7()  { SV_ALL(-60.f); }
+static void _8()  { SV_ALL(-70.f); }
+static void _9()  { SV_ALL(-80.f); }
+static void _10() { SV_ALL(-90.f); }
 
 static void _1on()  { Servo[1].enable(); }
 static void _1off() { Servo[1].disable(); }
@@ -55,12 +55,15 @@ static void _2off() { Servo[2].disable(); }
 static void _left()  { SV_ALL(_curAngle - 1); }
 static void _right() { SV_ALL(_curAngle + 1); }
 
+static void _begin() {
+    LOG(CLEAR_SCREEN "12 Servo begin\n");
+}
 
-KeyFunction Servo12[KEY_COUNT] = {
-    [KEY_UNKNOWN] = 0,
+dPadBind Servo12 = {
+    [KEY_UNKNOWN]   = _begin,
 
-    [KEY_LEFT]          = _left,
-    [KEY_RIGHT]         = _right,
+    [KEY_LEFT]      = _left,
+    [KEY_RIGHT]     = _right,
     [KEY_UP] = 0,
     [KEY_DOWN] = 0,
 

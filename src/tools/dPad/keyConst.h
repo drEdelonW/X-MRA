@@ -1,7 +1,7 @@
 #pragma once
 
 typedef enum {
-    KEY_UNKNOWN,
+    KEY_UNKNOWN,    // used for dPad init(first) function
 
     KEY_LEFT,   KEY_RIGHT,
     KEY_UP,     KEY_DOWN,
