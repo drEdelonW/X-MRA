@@ -13,12 +13,12 @@ const char* chName[8] = {
     "Front legs",   // CH7 - hypothesis, pending test with front leg servo
 };
 
-#define ADC_VREF_V           5.0f   // ADS7830 reference voltage, single-ended mode
-#define ADC_MAX_COUNT         255.0f // 8-bit resolution, full-scale code
-#define ADC_BAT_DIVIDER_COEFF  3.0f   // confirmed for vBat Servo / vBat Brain only
+#define ADC_VREF_V              (5.f)   /* ADS7830 reference voltage, single-ended mode */
+#define ADC_MAX_COUNT           (255.f) /* 8-bit resolution, full-scale code */
+#define ADC_BAT_DIVIDER_COEFF   (3.f)   /* confirmed for vBat Servo / vBat Brain only */
 
 #define ADC_BAT_SCALE  (ADC_VREF_V * ADC_BAT_DIVIDER_COEFF / ADC_MAX_COUNT)
-#define ADC_RAW_SCALE  (ADC_VREF_V / ADC_MAX_COUNT) // no divider assumed - uncalibrated channels
+#define ADC_RAW_SCALE  (ADC_VREF_V / ADC_MAX_COUNT) /* no divider assumed - uncalibrated channels */
 
 float vScale[8] = {
     ADC_BAT_SCALE, // ch0  vBat Servo - confirmed
