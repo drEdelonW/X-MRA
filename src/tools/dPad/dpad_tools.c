@@ -1,10 +1,6 @@
 #include "dpad.h"
-#include <stdint.h>
-#include <string.h>
-#include <termios.h>
-#include <unistd.h>
-#include <sys/select.h>
 
+#include "types.h"
 typedef union {
     uint64_t val;
     uint8_t  b[8];
@@ -62,7 +58,7 @@ static const kBuff_t keyTable[KEY_COUNT] = {
 /* 49‒74  letters a..z (lower-case chosen as base) */
     [KEY_A] = B('a'), [KEY_B] = B('b'), [KEY_C] = B('c'), [KEY_D] = B('d'),
     [KEY_E] = B('e'), [KEY_F] = B('f'), [KEY_G] = B('g'), [KEY_H] = B('h'),
-    [KEY_I] = B('i'), [KEY_J] = B('j'), [KEY_K] = B('k'), [KEY_I] = B('l'),
+    [KEY_I] = B('i'), [KEY_J] = B('j'), [KEY_K] = B('k'), [KEY_L] = B('l'),
     [KEY_M] = B('m'), [KEY_N] = B('n'), [KEY_O] = B('o'), [KEY_P] = B('p'),
     [KEY_Q] = B('q'), [KEY_R] = B('r'), [KEY_S] = B('s'), [KEY_T] = B('t'),
     [KEY_U] = B('u'), [KEY_V] = B('v'), [KEY_W] = B('w'), [KEY_X] = B('x'),
@@ -93,6 +89,8 @@ Key getKeyFromBuffer() {
     return KEY_UNKNOWN;
 }
 
+#include <unistd.h>     // FD_SET() STDIN_FILENO STDOUT_FILENO
+#include <sys/select.h> // select()
 #define KEY_TIMEOUT_MS 0
 bool isKeyPressed() {
     static struct timeval _tv = { .tv_usec = KEY_TIMEOUT_MS };
@@ -107,6 +105,7 @@ bool isKeyPressed() {
     return true;
 }
 
+#include "terminal_tools.h"
 void printKeyBuf() {
     LOG("KEY_UNKNOWN: 0x%016llX\n", /* -> 0xDEADBEEFCAFEBAB */
         (unsigned long long int)_keyBuff.val

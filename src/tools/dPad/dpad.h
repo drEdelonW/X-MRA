@@ -1,18 +1,14 @@
 #pragma once
 #include "keyConst.h"
-#include "terminal_tools.h"
-#include <stdbool.h>
-#include <stdint.h>
+#include "types.h"
 
-typedef void (*vFv)(void);
-typedef vFv* vFv_p;
-typedef vFv dPadBind[KEY_COUNT];
+typedef Func dPadBind[KEY_COUNT];
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    void dpad(vFv_p pfArray);
+    void dpad(Func_p pfArray);
     void dPadQuit();
 
 #ifdef __cplusplus

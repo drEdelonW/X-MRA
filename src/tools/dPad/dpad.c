@@ -1,5 +1,4 @@
 #include "dpad.h"
-
 #include <termios.h>
 #include <unistd.h>
 
@@ -20,12 +19,12 @@ bool isKeyPressed();
 Key getKeyFromBuffer();
 void printKeyBuf();
 
+#include "terminal_tools.h"
 static volatile bool _isQuitDPad = false;
 void dPadQuit() { _isQuitDPad = true; }
-void dpad(vFv_p pfArray) {
+void dpad(Func_p pfArray) {
     if (pfArray) {
-        if (pfArray[KEY_UNKNOWN])   // apply "unused case" for InitFunc PlaceHolder
-            pfArray[KEY_UNKNOWN]();
+        if (pfArray[KEY_UNKNOWN]) pfArray[KEY_UNKNOWN]();   // apply "unused case" for InitFunc PlaceHolder
 
         LOG(TEXT_BOLD "D-Pad started\n\a" TEXT_RESET);
         struct termios orig;
@@ -35,11 +34,10 @@ void dpad(vFv_p pfArray) {
                 _isQuitDPad = false;
                 restoreTerminal(&orig);
                 return;
-            } else if (isKeyPressed())
+            }
+            if (isKeyPressed())
                 switch (getKeyFromBuffer()) {
                     case KEY_UNKNOWN: printKeyBuf(); break;
-                    // case KEY_Q:
-                    case KEY_ESCAPE: dPadQuit(); break;
                     default: {
                         Key lastKey = getKeyFromBuffer();
                         if (pfArray[lastKey]) { pfArray[lastKey](); }

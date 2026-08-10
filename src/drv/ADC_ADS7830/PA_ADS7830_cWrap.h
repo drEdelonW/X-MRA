@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-    int adcReadAll();
+    void adcReadAll();
 
 #ifdef __cplusplus
 }

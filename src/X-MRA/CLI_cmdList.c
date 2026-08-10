@@ -5,7 +5,7 @@
 
 #include "i2c_cWrap.h"  // busScan() dumpAddr()
 static void _busD4() {
-    dumpAddr(0x40); dumpAddr(0x41); dumpAddr(0x70);
+    dumpAddr(0x40); dumpAddr(0x41); dumpAddr(0x70); // PCA
     dumpAddr(0x48); dumpAddr(0x68);
 }
 
@@ -17,10 +17,8 @@ static void _DISARM() { xDisarm(); }
 static void _adc() { adcReadAll(); }
 
 #include "dpad.h" // dpad()
-extern dPadBind bL;
-static void _dpadL() { dpad(bL); }
-extern dPadBind bS12;
-static void _dpadS() { dpad(bS12); }
+extern dPadBind bL;     static void _dpadL() { dpad(bL); }
+extern dPadBind bS12;   static void _dpadS() { dpad(bS12); }
 
 static void _ver_info() { ver_info(); }
 static void _exit() { exit(0); }

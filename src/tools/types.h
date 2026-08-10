@@ -73,3 +73,5 @@ typedef double* double_p;
 #    define Q_MINFLOAT  (-FLT_MAX)
 #endif
 
+typedef void (*Func)();
+typedef Func* Func_p;

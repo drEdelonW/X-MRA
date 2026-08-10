@@ -52,16 +52,38 @@
     ((word) & 0x0002 ? '1' : '0'), \
     ((word) & 0x0001 ? '1' : '0')
 
-#include <stdio.h>
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    inline void ver_info() {
+    static inline void ver_info() {
         LOG("Branch: %s\n" TEXT_RESET, TEXT_GREEN TEXT_BOLD GIT_BRANCH);
         LOG("Commit: %s\n" TEXT_RESET, TEXT_BOLD GIT_COMMIT_HASH);
         LOG("Compile date: %s  %s\n" TEXT_RESET, TEXT_BOLD __DATE__, __TIME__);
+    }
+
+    static inline void hexDump(cStrRO label, const Any_p data, size_t size) {
+        const uint8_p bytes = (uint8_p)data;
+        LOG("%s (%zu bytes):\n", label, size);
+        int bytePerLine = 8;
+        for (size_t i = 0; i < size; i += bytePerLine) {
+            LOG("  %04zx  ", i);
+            for (int j = 0; j < bytePerLine; ++j) {
+                if ((i + j) < size)     LOG("%02X ", bytes[i + j]);
+                else                    LOG("   ");
+            }
+            LOG(" ");
+            for (int j = 0; j < bytePerLine; ++j) {
+                if ((i + j) < size)
+                    LOG("%c",
+                        isPrintable(bytes[i + j]) ?
+                            bytes[i + j] : '.'
+                    );
+            }
+            LOG("\n");
+        }
     }
 
 #ifdef __cplusplus

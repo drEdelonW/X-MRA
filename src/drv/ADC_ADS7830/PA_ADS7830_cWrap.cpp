@@ -4,9 +4,15 @@
 
 const char* chName[8] = {
     "vBat Servo",   // CH0
+#if 1
     "aux1",         // CH1
     "aux2",         // CH2
     "aux3",         // CH3
+#else
+    NULL,           // CH1
+    NULL,           // CH2
+    NULL,           // CH3
+#endif
     "vBat Brain",   // CH4
     "Rear  legs",   // CH5 - confirmed: spikes on rear leg servo movement
     "Mid   legs",   // CH6 - confirmed: spikes on middle leg servo movement
@@ -30,24 +36,23 @@ float vScale[8] = {
     ADC_RAW_SCALE, // ch6  Mid legs   - uncalibrated
     ADC_RAW_SCALE, // ch7  Front legs - uncalibrated
 };
-
-int adcReadAll() {
+#include "terminal_tools.h"
+void adcReadAll() {
     i2cBus iBus(1, true);
-    if (!iBus.isInited())
-        return 1;
+    if (iBus.isInited()) {
+        uint8_t values[8];
+        ADS7830 adc(iBus);
+        adc.readAll(values);
 
-    ADS7830 adc(iBus);
-    uint8_t values[8];
-    adc.readAll(values);
-
-    printf("ADS7830 channels:\n");
-    for (uint8_t ch = 0; ch < 8; ++ch)
-        printf("  [%s]: (%3u) %0.1fv\n",
-            chName[ch],
-            values[ch],
-            values[ch] * vScale[ch]
-         );
-
-    iBus.Deinit();
-    return 0;
+        LOG("ADS7830 channels:\n");
+        for (uint8_t ch = 0; ch < 8; ++ch)
+            if (chName[ch])
+                LOG("  [%s]: (%3u) %0.2fv\n",
+                    chName[ch],
+                    values[ch],
+                    values[ch] * vScale[ch]
+                );
+        iBus.Deinit();
+    }
+    return;
 }

@@ -30,7 +30,7 @@ static inline bool isPrintable(char chr) {
     );
 }
 static inline bool isLineEnd(char chr) {
-        return (
+    return (
         (chr == ASCII_NEWLINE) ||
         (chr == ASCII_CARRIAGE)
     );
