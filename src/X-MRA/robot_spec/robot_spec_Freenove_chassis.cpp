@@ -3,13 +3,11 @@
 // https://store.freenove.com/products/fnk0052
 
 #include "GPIO.hpp"
+GpioChip chip;
 #define PWR_LOAD    (4)
 #define BUZZER      (17)
-GpioChip chip;
 
-GpioLine PwrLoad(chip, PWR_LOAD);
 GpioLine Buzzer(chip,  BUZZER);
-
 void beep(bool bz) { Buzzer.setB(bz); }
 
 #include "i2cBus_EndPiont.hpp"
@@ -21,6 +19,7 @@ PCA9685 PWMarray[] = {
     {iBus, PCAaddr_0}
 };
 
+GpioLine PwrLoad(chip, PWR_LOAD);
 void PowerAllow(bool alw) {
     if (!alw) {
         PWMarray[0].sleepMode();

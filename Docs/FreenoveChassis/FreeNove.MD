@@ -1,5 +1,5 @@
 # Spider Shield for Raspberry Pi v1.3
-
+    https://github.com/Freenove/Freenove_Big_Hexapod_Robot_Kit_for_Raspberry_Pi
 ## Pi-GPIO
              [VCC_3.3V] |  1 |  2 | [VCC_5V]
       (GPIO2) [I2C_SDA] |  3 |  4 | [VCC_5V]
