@@ -1,6 +1,6 @@
 #include "ArachnidBody.hpp"
 
-ArachnidBody::ArachnidBody(ArachnidLeg* legs, size_t legCount):
+ArachnidBody::ArachnidBody(ArachnidLeg_p legs, size_t legCount):
     _legs(legs),
     _legCount(legCount),
     _isArmed(false),

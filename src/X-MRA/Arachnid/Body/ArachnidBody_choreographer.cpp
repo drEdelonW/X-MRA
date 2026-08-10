@@ -35,6 +35,7 @@ bool ArachnidBody::applyPose(pattern_t pattern) {
         };
         LEG_ERROR_OK;
     }
+    return false;
 }
 
 void ArachnidBody::getMatrix(Matrix4x4_p mx, pattern_t pattern) {

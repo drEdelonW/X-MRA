@@ -5,7 +5,6 @@
 #include "GPIO.hpp"
 #define PWR_LOAD    (4)
 #define BUZZER      (17)
-
 GpioChip chip;
 
 GpioLine PwrLoad(chip, PWR_LOAD);
@@ -44,9 +43,9 @@ void PowerAllow(bool alw) {
 #include "PS_MG996R.hpp"
 MG996R Servo[] = {
     //FrontLeft
-    { PwCh(9),  CFG_1, CW }, //Tibia
+    { PwCh(9),  CFG_1, CCW }, //Tibia
     { PwCh(8),  CFG_1, CW }, //Femur
-    { PwCh(31), CFG_1, CCW}, //Coxa
+    { PwCh(31), CFG_1, CW }, //Coxa
 
     //FrontRight
     { PwCh(22),  CFG_1, CCW}, //Tibia
@@ -54,9 +53,9 @@ MG996R Servo[] = {
     { PwCh(27),  CFG_1, CCW}, //Coxa
 
     //MidleLeft
-    { PwCh(12),  CFG_1, CW }, //Tibia
+    { PwCh(12),  CFG_1, CCW }, //Tibia
     { PwCh(11),  CFG_1, CW }, //Femur
-    { PwCh(10),  CFG_1, CCW}, //Coxa
+    { PwCh(10),  CFG_1, CW }, //Coxa
 
     //MidleRight
     { PwCh(19),  CFG_1, CCW}, //Tibia
@@ -64,9 +63,9 @@ MG996R Servo[] = {
     { PwCh(21),  CFG_1, CCW}, //Coxa
 
     //BackLeft
-    { PwCh(15),  CFG_1, CW }, //Tibia
+    { PwCh(13),  CFG_1, CCW }, //Tibia
     { PwCh(14),  CFG_1, CW }, //Femur
-    { PwCh(13),  CFG_1, CCW}, //Coxa
+    { PwCh(15),  CFG_1, CW }, //Coxa
 
     //BackRight
     { PwCh(16),  CFG_1, CCW}, //Tibia

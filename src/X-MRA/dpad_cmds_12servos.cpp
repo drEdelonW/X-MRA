@@ -1,67 +1,9 @@
 #include "dpad.h"
-#include "common_tools.h"
 
-#include "X-MRA.hpp"
-
-#if 0
-#   define servoNum DIMOF(Servo)
-#else
-#   define servoNum (6*3)
-#endif
-
-#include "PS_MG996R.hpp"    // MG996R
-extern MG996R Servo[];
-
-static float _curAngle = 0.f;
-#if 1
-void SV_ALL(float ang) {
-    LOG("[%.2f]\n", (_curAngle = ang));
-    for(int idxSv = 0; idxSv < servoNum; idxSv++)
-        Servo[idxSv].setAngle(deg(ang));
-}
-#else
-#define SV_ALL(v)                                   \
-    LOG("[%.2f]\n", (v));                           \
-    _curAngle = (v);                                \
-    for(int idxSv = 0; idxSv < servoNum; idxSv++)   \
-        Servo[idxSv].setAngle(deg(v));
-#endif
-
-static void _on()  {
-    LOG("ON\n");
-    PowerAllow(true);
-}
-static void _off() {
-    LOG("OFF\n");
-    PowerAllow(false);
-}
-static void _1()  { SV_ALL(  0.f); }
-static void _2()  { SV_ALL(-10.f); }
-static void _3()  { SV_ALL(-20.f); }
-static void _4()  { SV_ALL(-30.f); }
-static void _5()  { SV_ALL(-40.f); }
-static void _6()  { SV_ALL(-50.f); }
-static void _7()  { SV_ALL(-60.f); }
-static void _8()  { SV_ALL(-70.f); }
-static void _9()  { SV_ALL(-80.f); }
-static void _10() { SV_ALL(-90.f); }
-
-static void _1on()  { Servo[1].enable(); }
-static void _1off() { Servo[1].disable(); }
-
-static void _2on()  { Servo[2].enable(); }
-static void _2off() { Servo[2].disable(); }
-
-static void _left()  { SV_ALL(_curAngle - 1); }
-static void _right() { SV_ALL(_curAngle + 1); }
-
-static void _begin() {
-    LOG(CLEAR_SCREEN "12 Servo begin\n");
-}
-
-dPadBind Servo12 = {
+static void _begin();
+dPadBind bS12 = {
     [KEY_UNKNOWN]   = _begin,
-
+#if 0
     [KEY_LEFT]      = _left,
     [KEY_RIGHT]     = _right,
     [KEY_UP] = 0,
@@ -148,4 +90,78 @@ dPadBind Servo12 = {
     [KEY_Y] = 0,
     [KEY_Z] = 0,
     //KEY_COUNT
+#endif
 };
+
+#include "common_tools.h"
+
+#include "X-MRA.hpp"
+#if 0
+#   define servoNum DIMOF(Servo)
+#else
+#   define servoNum (6*3)
+// #   define servoNum (2*3)
+#endif
+
+#include "PS_MG996R.hpp"    // MG996R
+extern MG996R Servo[];
+
+static float _curAngle = 0.f;
+void SV_ALL(float ang) {
+    LOG("\r[%.2f]    ", (_curAngle = ang));
+    for(int idxSv = 0; idxSv < servoNum; idxSv++)
+        Servo[idxSv].setAngle(deg(ang));
+}
+static void _left()  { SV_ALL(_curAngle - 1); }
+static void _right() { SV_ALL(_curAngle + 1); }
+
+static void _1()  { SV_ALL(  0.f); }
+static void _2()  { SV_ALL(-10.f); }
+static void _3()  { SV_ALL(-20.f); }
+static void _4()  { SV_ALL(-30.f); }
+static void _5()  { SV_ALL(-40.f); }
+static void _6()  { SV_ALL(-50.f); }
+static void _7()  { SV_ALL(-60.f); }
+static void _8()  { SV_ALL(-70.f); }
+static void _9()  { SV_ALL(-80.f); }
+static void _10() { SV_ALL(-90.f); }
+
+static void _on()  { LOG("ON\n"); PowerAllow(true); }
+static void _off() { LOG("OFF\n"); PowerAllow(false); }
+
+static void _1on()  { Servo[1].enable(); }
+static void _1off() { Servo[1].disable(); }
+
+static void _2on()  { Servo[2].enable(); }
+static void _2off() { Servo[2].disable(); }
+
+static void _begin() {
+    LOG(CLEAR_SCREEN
+        "12 Servo begin\n"
+        "</>        - +/- Angel\n"
+        "0..9       - setAng(0..9)\n"
+        "Sh + 1/2   - On/Off(all)\n"
+        "Sh + 3/4   - On/Off(1)\n"
+        "Sh + 5/6   - On/Off(2)\n"
+    );
+    bS12[KEY_LEFT]  = _left;
+    bS12[KEY_RIGHT] = _right;
+
+    bS12[KEY_1] = _1;
+    bS12[KEY_2] = _2;
+    bS12[KEY_3] = _3;
+    bS12[KEY_4] = _4;
+    bS12[KEY_5] = _5;
+    bS12[KEY_6] = _6;
+    bS12[KEY_7] = _7;
+    bS12[KEY_8] = _8;
+    bS12[KEY_9] = _9;
+    bS12[KEY_0] = _10;
+
+    bS12[KEY__1] = _on;
+    bS12[KEY__2] = _off;
+    bS12[KEY__3] = _1on;
+    bS12[KEY__4] = _1off;
+    bS12[KEY__5] = _2on;
+    bS12[KEY__6] = _2off;
+}

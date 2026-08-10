@@ -3,7 +3,6 @@
 #include "PhysTypes.hpp"
 #include "JointBase.hpp"
 
-
 /*  ArachnidLeg:   /|
                   / |
    [Body]    [Femur]|
@@ -65,3 +64,4 @@ private:
    const Millimeters tibiaLength_ = mm(144.23f);
    Matrix4x4 _bodyToLeg, _legToBody;
 };
+typedef ArachnidLeg* ArachnidLeg_p;

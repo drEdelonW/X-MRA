@@ -42,27 +42,6 @@ MidleLeft           \ | /            MidleRight
              (X - forward, Y - right, Z - up)
 */
 
-#if 0
-#define LEG_FL   (1 << 0)  // FrontLeft
-#define LEG_FR   (1 << 1)  // FrontRight
-#define LEG_ML   (1 << 2)  // MidleLeft
-#define LEG_MR   (1 << 3)  // MidleRight
-#define LEG_BL   (1 << 4)  // BackLeft
-#define LEG_BR   (1 << 5)  // BackRight
-
-#define LEGS_FRONT  (LEG_FL | LEG_FR)
-#define LEGS_MID    (LEG_ML | LEG_MR)
-#define LEGS_BACK   (LEG_BL | LEG_BR)
-
-#define LEGS_LEFT   (LEG_FL | LEG_ML | LEG_BL)
-#define LEGS_RIGHT  (LEG_FR | LEG_MR | LEG_BR)
-
-#define LEGS_ALL    (LEG_FL | LEG_FR | LEG_ML | LEG_MR | LEG_BL | LEG_BR)
-
-#define TRIPOD_A  (LEG_FL | LEG_MR | LEG_BL)  // [0, 3, 4]
-#define TRIPOD_B  (LEG_FR | LEG_ML | LEG_BR)  // [1, 2, 5]
-#else
-
 enum LegBit : uint8_t {
     LEG_FL = (1 << 0), // FrontLeft
     LEG_FR = (1 << 1), // FrontRight
@@ -85,7 +64,6 @@ enum LegMask : uint8_t {
     TRIPOD_A   = LEG_FL | LEG_MR | LEG_BL, // [0, 3, 4]
     TRIPOD_B   = LEG_FR | LEG_ML | LEG_BR, // [1, 2, 5]
 };
-#endif
 
 #define MAX_LEGS (8)
 typedef int LegIdx_t;
@@ -96,10 +74,10 @@ typedef int LegIdx_t;
 #include "common_tools.h"
 #define LEG_ERROR           do { _lastLegError = legIdx;  LOG("[%d]LEG_ERROR\n",legIdx);  return false;   } while (0)
 
-typedef int pattern_t;
+typedef unsigned int pattern_t;
 class ArachnidBody {
 public:
-    ArachnidBody(ArachnidLeg* legs, size_t legCount);
+    ArachnidBody(ArachnidLeg_p legs, size_t legCount);
     ~ArachnidBody();
 
     // mask (bitmask) see ArachnidBody scheme for accord bits with actual legs
@@ -136,7 +114,7 @@ public:
 
     bool AimAddAngle(Angle  azimuth, Angle  elevation);
 
-    ArachnidLeg*    _legs = nullptr;
+    ArachnidLeg_p   _legs = nullptr;
 private:
     struct LegExtras {
         Vector3D    defaultPose;

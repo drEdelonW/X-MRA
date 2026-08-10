@@ -5,7 +5,8 @@
 #define HOSTNAME "X-MRA01"
 
 // add to makefile [DEFINE_LIST += CLI_AUTOEXEC_CMD=\"dpad\"]
-// #define CLI_AUTOEXEC_CMD "dpad"
+// #define CLI_AUTOEXEC_CMD "dpadS"
+#define CLI_AUTOEXEC_CMD "dpadL"
 #ifdef CLI_AUTOEXEC_CMD
 #   warning defined CLI_AUTOEXEC_CMD
 #endif

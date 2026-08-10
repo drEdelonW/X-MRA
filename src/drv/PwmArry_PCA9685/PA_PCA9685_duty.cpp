@@ -25,11 +25,32 @@ void PCA9685::setDutyCycle(
 
     if (channel < PwmChNum) {
         int rOffs = channel * 4;
+#if 1
+        if (dutyCycle >= 1.f) {
+            // LEDn_FULL_ON (bit4 of LEDn_ON_H) forces the output permanently high.
+            _iEP.RegWrite(LED0_OFF_H + rOffs, 0x00); // clear FULL_OFF
+            _iEP.RegWrite(LED0_ON_H  + rOffs, 1 << 4);
+            return;
+        }
+
+        if (dutyCycle <= 0.f) {
+            // LEDn_FULL_OFF (bit4 of LEDn_OFF_H) forces the output permanently low,
+            // overriding the ON/OFF counters and any FULL_ON bit.
+            _iEP.RegWrite(LED0_ON_H  + rOffs, 0x00); // clear FULL_ON
+            _iEP.RegWrite(LED0_OFF_H + rOffs, 1 << 4);
+            return;
+        }
+
+        // Common case: write the ON/OFF counters, masked to the low 4 bits of
+        // the high byte so FULL_ON/FULL_OFF (bit4) is always cleared here too -
+        // otherwise a channel left in full-on/full-off by a previous call, or
+        // on == MAX_VAL from phaseShift == 1.f, could leak into that bit.
+#endif
         _iEP.RegWrite(LED0_ON_L + rOffs, on & 0xFF);
-        _iEP.RegWrite(LED0_ON_H + rOffs, on >> 8);
+        _iEP.RegWrite(LED0_ON_H + rOffs, (on >> 8) & 0x0F);
 
         _iEP.RegWrite(LED0_OFF_L + rOffs, off & 0xFF);
-        _iEP.RegWrite(LED0_OFF_H + rOffs, off >> 8);
+        _iEP.RegWrite(LED0_OFF_H + rOffs, (off >> 8) & 0x0F);
     }
 }
 

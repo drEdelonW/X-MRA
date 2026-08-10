@@ -12,7 +12,7 @@ typedef enum : bool {
 #define rad(v)  Angle::fromRadians(v) /* set float as Radians */
 
 // Local fallback clamp
-inline float clamp(float val, float minVal, float maxVal) {
+inline float Clamp(float minVal, float val, float maxVal) {
     return (val < minVal) ?
         minVal :
         ((val > maxVal) ?

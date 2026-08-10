@@ -17,10 +17,10 @@ static void _DISARM() { xDisarm(); }
 static void _adc() { adcReadAll(); }
 
 #include "dpad.h" // dpad()
-extern dPadBind bindLeg;
-static void _dpadL() { dpad(bindLeg); }
-extern dPadBind Servo12;
-static void _dpadS() { dpad(Servo12); }
+extern dPadBind bL;
+static void _dpadL() { dpad(bL); }
+extern dPadBind bS12;
+static void _dpadS() { dpad(bS12); }
 
 static void _ver_info() { ver_info(); }
 static void _exit() { exit(0); }
