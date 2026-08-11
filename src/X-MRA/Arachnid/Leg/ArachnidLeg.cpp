@@ -2,6 +2,19 @@
 
 ArachnidLeg::ArachnidLeg(
     JointBase*  Jn,
+    // ServoJoint* Jn,
+    Millimeters offs,
+    Angle       rotation
+):
+    _jn{ [Coxa] = &Jn[Coxa],
+        [Femur] = &Jn[Femur],
+        [Tibia] = &Jn[Tibia]}
+{
+    configMount(offs, rotation);
+}
+ArachnidLeg::ArachnidLeg(
+    // JointBase*  Jn,
+    ServoJoint* Jn,
     Millimeters offs,
     Angle       rotation
 ):
@@ -30,7 +43,7 @@ Angle ArachnidLeg::getJointAngles(LegJoint jName){
 
 bool ArachnidLeg::applyPose() {
     for (int jIdx = 0; jIdx < PhalNum; jIdx++)
-        if (!_jn[Coxa]->applyPose())
+        if (!_jn[jIdx]->applyPose())
             return false;
     return true;
 }

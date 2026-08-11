@@ -1,21 +1,21 @@
 #pragma once
-#include "proto_pwmServo.hpp"
-#include "proto_PWM.hpp"
+#include "proto_pwmServo.hpp"   // ProtoServo
+#include "proto_PWM.hpp"        // ProtoPWM
 
 #define TowerPro_MG996R_cfg     us(400), us(2600), deg(210), deg(102)
 #define TowerPro_MG90S_cfg      us(650), us(2400), deg(185), deg(92)
 #define HailangNiao_MG996R_cfg  us(525), us(2500), deg(220), deg(115)
-#define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
+
 
 class MG996R : public ProtoServo {
 public:
     MG996R(
         ProtoPWM& pwm,
         rotDir_t reversed       = CW,
-        MicroSeconds minPulse   = us(650),
+        MicroSeconds minPulse   = us(650),  // TowerPro_MG90S_cfg
         MicroSeconds maxPulse   = us(2400),
-        Angle maxAngle          = deg(180),
-        Angle offset            = deg(90)
+        Angle maxAngle          = deg(185),
+        Angle offset            = deg(92)
     );
 
     Angle getAngle() const override;

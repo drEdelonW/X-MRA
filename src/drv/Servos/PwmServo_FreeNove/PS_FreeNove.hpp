@@ -1,6 +1,6 @@
 #pragma once
-#include "proto_pwmServo.hpp"
-#include "proto_PWM.hpp"
+#include "proto_pwmServo.hpp"   // ProtoServo
+#include "proto_PWM.hpp"        // ProtoPWM
 
 #define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
 class sFreeNove : public ProtoServo {
@@ -14,11 +14,11 @@ public:
         Angle offset            = deg(90)
     );
 
-    void  setAngle(const Angle& angle) override;
     Angle getAngle() const override;
+    void  setAngle(const Angle& angle) override;
 
-    void  setAngleOffset(const Angle& angle) override;
     Angle getAngleOffset() const override;
+    void  setAngleOffset(const Angle& angle) override;
 
     Angle getAngleMax() const override;
 

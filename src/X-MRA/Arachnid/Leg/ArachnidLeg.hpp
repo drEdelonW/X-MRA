@@ -14,6 +14,8 @@
 ==============={Ground}==============
 */
 
+#include "pwmServoJoint.hpp"
+
 #define JFREEZE    rad(NAN)
 
 enum LegJoint {
@@ -27,6 +29,13 @@ public:
 
    ArachnidLeg(
       JointBase*  Jn,
+      // ServoJoint* Jn,
+      Millimeters offs = 0.f,
+      Angle       rotation = deg(0.f)
+   );
+   ArachnidLeg(
+      // JointBase*  Jn,
+      ServoJoint* Jn,
       Millimeters offs = 0.f,
       Angle       rotation = deg(0.f)
    );
@@ -55,25 +64,14 @@ private:
    bool _checkTipPosLegSpace(float x, float y, float z);
    bool _checkTipPosLegSpace(Vector3D pos);
 
-#if 0
-   JointBase& _jnCoxa;
-   JointBase& _jnFemur;
-   JointBase& _jnTibia;
-#else
    JointBase* _jn[PhalNum];
-#endif
+   // ServoJoint* _jn[PhalNum];
 
-#if 0
-   const Millimeters coxaLength_  = mm( 27.f  ); // TODO: make length configurable by constructor
-   const Millimeters femurLength_ = mm( 85.1f );
-   const Millimeters tibiaLength_ = mm(144.23f);
-#else
    const Millimeters _Length[PhalNum] = {
       [Coxa]  = mm( 27.f  ),
       [Femur] = mm( 85.1f ),
       [Tibia] = mm(144.23f)
    };
-#endif
    M4x4 _bodyToLeg, _legToBody;
 };
 typedef ArachnidLeg* ArachnidLeg_p;

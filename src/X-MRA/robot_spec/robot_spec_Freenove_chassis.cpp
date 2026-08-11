@@ -69,6 +69,7 @@ sFreeNove Servo[] = {
 };
 
 #include "pwmServoJoint.hpp"
+typedef ServoJoint* ServoJoint_p;
 typedef ServoJoint sLeg_t[PhalNum];
 
 sLeg_t FrontLeft = {
