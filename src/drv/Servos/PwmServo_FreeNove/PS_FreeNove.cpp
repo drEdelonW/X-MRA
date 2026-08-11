@@ -1,6 +1,6 @@
-#include "PS_MG996R.hpp"
+#include "PS_FreeNove.hpp"
 
-MG996R::MG996R(
+sFreeNove::sFreeNove(
     ProtoPWM& pwm,
     rotDir_t reversed,
     MicroSeconds minPulse,
@@ -19,8 +19,8 @@ MG996R::MG996R(
 {}
 
 #include "terminal_tools.h"
-Angle MG996R::getAngle()    const { return _currentAngle; }
-void MG996R::setAngle(const Angle& angle) {
+Angle sFreeNove::getAngle() const { return _currentAngle; }
+void sFreeNove::setAngle(const Angle& angle) {
     if ((!_enabled) ||
         (isnan(angle.asRadians()))
     )   return;
@@ -43,19 +43,20 @@ void MG996R::setAngle(const Angle& angle) {
     );
 }
 
-Angle MG996R::getAngleOffset()  const { return _offset;}
-void  MG996R::setAngleOffset(const Angle& angle)        { _offset = angle; }
+Angle sFreeNove::getAngleOffset()  const { return _offset;}
+void  sFreeNove::setAngleOffset(const Angle& angle) { _offset = angle; }
 
-Angle MG996R::getAngleMax() const { return _maxAngle;}
+Angle sFreeNove::getAngleMax() const { return _maxAngle;}
 
-void  MG996R::setReversion(const rotDir_t isReversed )  { _reversed = isReversed; }
+void  sFreeNove::setReversion(const rotDir_t isReversed )  { _reversed = isReversed; }
 
-bool  MG996R::isEnabled()   const { return _enabled; }
-void  MG996R::enable() {
+bool  sFreeNove::isEnabled()       const { return _enabled; }
+void  sFreeNove::enable() {
     _enabled = true;
     setAngle(_currentAngle);
 }
-void  MG996R::disable() {
+
+void  sFreeNove::disable() {
     _enabled = false;
     _pwm.setDuration(us(0)); //TODO: make real disabled
 }

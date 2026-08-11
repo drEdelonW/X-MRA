@@ -39,7 +39,7 @@ public:
     IDX_t getVertexCount()   const { return _vertCnt; }
     IDX_t getTriangleCount() const { return _triCnt; }
 
-    bool applyTransformation(const Matrix4x4& matrix);
+    bool applyTransformation(const M4x4& matrix);
     // Method to calculate the bounding box (min and max)
     void getBoundingBox(Vector3D& min, Vector3D& max) const;
 };

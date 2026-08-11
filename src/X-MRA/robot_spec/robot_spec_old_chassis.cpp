@@ -51,39 +51,39 @@ MG996R Servo[] = {
 
 #include "pwmServoJoint.hpp"
 ServoJoint FrontLeft[] = {
-    {Servo[0],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[1],  deg(-105), deg(105), deg(35)},//Femur
-    {Servo[2],  deg(-105), deg(105), deg(0)}, //Coxa
+    {Servo[0], deg(0)}, //Tibia
+    {Servo[1], deg(35)},//Femur
+    {Servo[2], deg(0)}, //Coxa
 };
 
 ServoJoint FrontRight[] = {
-    {Servo[3],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[4],  deg(-105), deg(105), deg(35)},//Femur
-    {Servo[5],  deg(-105), deg(105), deg(0)}, //Coxa
+    {Servo[3], deg(0)}, //Tibia
+    {Servo[4], deg(35)},//Femur
+    {Servo[5], deg(0)}, //Coxa
 };
 
 ServoJoint MidleLeft[] = {
-    {Servo[6],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[7],  deg(-105), deg(105), deg(35)},//Femur
-    {Servo[8],  deg(-105), deg(105), deg(0)}, //Coxa
+    {Servo[6], deg(0)}, //Tibia
+    {Servo[7], deg(35)},//Femur
+    {Servo[8], deg(0)}, //Coxa
 };
 
 ServoJoint MidleRight[] = {
-    {Servo[9],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[10], deg(-105), deg(105), deg(35)},//Femur
-    {Servo[11], deg(-105), deg(105), deg(0)}, //Coxa
+    {Servo[9], deg(0)}, //Tibia
+    {Servo[10], deg(35)},//Femur
+    {Servo[11], deg(0)}, //Coxa
 };
 
 ServoJoint BackLeft[] = {
-    {Servo[12], deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[13], deg(-105), deg(105), deg(35)},//Femur
-    {Servo[14], deg(-105), deg(105), deg(0)}, //Coxa
+    {Servo[12], deg(0)}, //Tibia
+    {Servo[13], deg(35)},//Femur
+    {Servo[14], deg(0)}, //Coxa
 };
 
 ServoJoint BackRight[] = {
-    {Servo[15], deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[16], deg(-105), deg(105), deg(35)},//Femur
-    {Servo[17], deg(-105), deg(105), deg(0)}, //Coxa
+    {Servo[15], deg(0)}, //Tibia
+    {Servo[16], deg(35)},//Femur
+    {Servo[17], deg(0)}, //Coxa
 };
 
 #define nameLeg(v)  v[2], v[1], v[0]

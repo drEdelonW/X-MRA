@@ -5,11 +5,13 @@ class ProtoServo {
 public:
   virtual ~ProtoServo() {}
 
-  virtual void  setAngle(const Angle& angle) = 0; // Set the servo angle
   virtual Angle getAngle() const = 0;             // Get the current servo angle
+  virtual void  setAngle(const Angle& angle) = 0; // Set the servo angle
 
-  virtual void  setAngleOffset(const Angle& angle) = 0; // Set the servo angle base Offset
   virtual Angle getAngleOffset() const = 0;             // Get the current servo angle base Offset
+  virtual void  setAngleOffset(const Angle& angle) = 0; // Set the servo angle base Offset
+
+  virtual Angle getAngleMax() const = 0; // Set the servo Maximum angle
 
   virtual void setReversion(const rotDir_t isReversed) = 0;
 

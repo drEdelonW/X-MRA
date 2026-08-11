@@ -7,18 +7,17 @@ class ServoJoint : public JointBase {
 public:
     ServoJoint(
         ProtoServo& servo,
-        Angle minLim = deg(-90.f),
-        Angle maxLim = deg( 90.f),
         Angle offset = deg(  0.f)
     ):
         _servo(servo),
-        _min(minLim),
-        _max(maxLim),
+        _min(-(_servo.getAngle() / 2.f)),
+        _max( (_servo.getAngle() / 2.f)),
         _offset(offset),
         _plan(deg(NAN)),
         _valid(false),
         _skip(false)
-    {}
+    {
+    }
 
     bool checkPose(const Angle& logical) override {
         if (std::isnan(logical.asRadians()))  // NaN -> skip on apply

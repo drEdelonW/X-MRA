@@ -80,6 +80,9 @@ $(eval DRV_DIR := $(SRC_DIR)/drv) $(eval INCLUDE_PATHS += $(DRV_DIR))
         $(eval PWM_SERVO_DIR := $(SERVO_DIR)/pwm_servo) $(eval INCLUDE_PATHS += $(PWM_SERVO_DIR))
             # SRCS += $(PWM_SERVO_DIR)/pwm_servo.cpp
 
+        $(eval FreeNove_SRV_DIR := $(SERVO_DIR)/PwmServo_FreeNove) $(eval INCLUDE_PATHS += $(FreeNove_SRV_DIR))
+            SRCS += $(FreeNove_SRV_DIR)/PS_FreeNove.cpp
+
         $(eval MG996_SRV_DIR := $(SERVO_DIR)/PwmServo_MG996R) $(eval INCLUDE_PATHS += $(MG996_SRV_DIR))
             SRCS += $(MG996_SRV_DIR)/PS_MG996R.cpp
 

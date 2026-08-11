@@ -16,19 +16,19 @@
 
 #define JFREEZE    rad(NAN)
 
+enum LegJoint {
+   Coxa,
+   Femur,
+   Tibia,
+   PhalNum
+};
 class ArachnidLeg {
 public:
-   enum LegJoint {
-      COXA,
-      FEMUR,
-      TIBIA
-   };
+
    ArachnidLeg(
-      JointBase& coxaJn,
-      JointBase& femurJn,
-      JointBase& tibiaJn,
+      JointBase*  Jn,
       Millimeters offs = 0.f,
-      Angle rotation = deg(0.f)
+      Angle       rotation = deg(0.f)
    );
 
    void configMount(Millimeters offset, Angle yaw);
@@ -55,13 +55,25 @@ private:
    bool _checkTipPosLegSpace(float x, float y, float z);
    bool _checkTipPosLegSpace(Vector3D pos);
 
+#if 0
    JointBase& _jnCoxa;
    JointBase& _jnFemur;
    JointBase& _jnTibia;
+#else
+   JointBase* _jn[PhalNum];
+#endif
 
+#if 0
    const Millimeters coxaLength_  = mm( 27.f  ); // TODO: make length configurable by constructor
    const Millimeters femurLength_ = mm( 85.1f );
    const Millimeters tibiaLength_ = mm(144.23f);
-   Matrix4x4 _bodyToLeg, _legToBody;
+#else
+   const Millimeters _Length[PhalNum] = {
+      [Coxa]  = mm( 27.f  ),
+      [Femur] = mm( 85.1f ),
+      [Tibia] = mm(144.23f)
+   };
+#endif
+   M4x4 _bodyToLeg, _legToBody;
 };
 typedef ArachnidLeg* ArachnidLeg_p;

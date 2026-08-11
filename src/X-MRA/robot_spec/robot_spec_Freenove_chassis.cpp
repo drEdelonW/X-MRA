@@ -4,9 +4,8 @@
 
 #include "GPIO.hpp"
 GpioChip chip;
-#define PWR_LOAD    (4)
-#define BUZZER      (17)
 
+#define BUZZER (17)
 GpioLine Buzzer(chip,  BUZZER);
 void beep(bool bz) { Buzzer.setB(bz); }
 
@@ -18,7 +17,9 @@ PCA9685 PWMarray[] = {
     {iBus, PCAaddr_1},
     {iBus, PCAaddr_0}
 };
+#define PwCh(n)  PWMarray[(n & 0xF0) >> 4].PWM[n & 0x0F]
 
+#define PWR_LOAD (4)
 GpioLine PwrLoad(chip, PWR_LOAD);
 void PowerAllow(bool alw) {
     if (!alw) {
@@ -34,90 +35,85 @@ void PowerAllow(bool alw) {
     }
 }
 
-#define PwCh(n)  PWMarray[(n & 0xF0) >> 4].PWM[n & 0x0F]
-
-#define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
-#define CFG_1 FreeNove_noname_cfg
-
-#include "PS_MG996R.hpp"
-MG996R Servo[] = {
+#include "PS_FreeNove.hpp"  // sFreeNove
+sFreeNove Servo[] = {
     //FrontLeft
-    { PwCh(9),  CFG_1, CCW }, //Tibia
-    { PwCh(8),  CFG_1, CW }, //Femur
-    { PwCh(31), CFG_1, CW }, //Coxa
+    [0]  = {PwCh(9),  CCW}, //Coxa
+    [1]  = {PwCh(8),  CW }, //Femur
+    [2]  = {PwCh(31), CW }, //Tibia
 
     //FrontRight
-    { PwCh(22),  CFG_1, CCW}, //Tibia
-    { PwCh(23),  CFG_1, CCW}, //Femur
-    { PwCh(27),  CFG_1, CCW}, //Coxa
+    [3]  = {PwCh(22), CCW}, //Coxa
+    [4]  = {PwCh(23), CCW}, //Femur
+    [5]  = {PwCh(27), CCW}, //Tibia
 
     //MidleLeft
-    { PwCh(12),  CFG_1, CCW }, //Tibia
-    { PwCh(11),  CFG_1, CW }, //Femur
-    { PwCh(10),  CFG_1, CW }, //Coxa
+    [6]  = {PwCh(12), CCW}, //Coxa
+    [7]  = {PwCh(11), CW }, //Femur
+    [8]  = {PwCh(10), CW }, //Tibia
 
     //MidleRight
-    { PwCh(19),  CFG_1, CCW}, //Tibia
-    { PwCh(20),  CFG_1, CCW}, //Femur
-    { PwCh(21),  CFG_1, CCW}, //Coxa
+    [9]  = {PwCh(19), CCW}, //Coxa
+    [10] = {PwCh(20), CCW}, //Femur
+    [11] = {PwCh(21), CCW}, //Tibia
 
     //BackLeft
-    { PwCh(13),  CFG_1, CCW }, //Tibia
-    { PwCh(14),  CFG_1, CW }, //Femur
-    { PwCh(15),  CFG_1, CW }, //Coxa
+    [12] = {PwCh(13), CCW}, //Coxa
+    [13] = {PwCh(14), CW }, //Femur
+    [14] = {PwCh(15), CW }, //Tibia
 
     //BackRight
-    { PwCh(16),  CFG_1, CCW}, //Tibia
-    { PwCh(17),  CFG_1, CCW}, //Femur
-    { PwCh(18),  CFG_1, CCW}, //Coxa
+    [15] = {PwCh(16), CCW}, //Coxa
+    [16] = {PwCh(17), CCW}, //Femur
+    [17] = {PwCh(18), CCW}, //Tibia
 };
-
 
 #include "pwmServoJoint.hpp"
-ServoJoint FrontLeft[] = {
-    {Servo[0],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[1],  deg(-105), deg(105), deg(35)},//Femur
-    {Servo[2],  deg(-105), deg(105), deg(0)}, //Coxa
+typedef ServoJoint sLeg_t[PhalNum];
+
+sLeg_t FrontLeft = {
+    [Coxa]  = {Servo[0], deg(0)},
+    [Femur] = {Servo[1], deg(35)},
+    [Tibia] = {Servo[2], deg(0)},
 };
 
-ServoJoint FrontRight[] = {
-    {Servo[3],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[4],  deg(-105), deg(105), deg(35)},//Femur
-    {Servo[5],  deg(-105), deg(105), deg(0)}, //Coxa
+sLeg_t FrontRight = {
+    [Coxa]  = {Servo[3], deg(0)},
+    [Femur] = {Servo[4], deg(35)},
+    [Tibia] = {Servo[5], deg(0)},
 };
 
-ServoJoint MidleLeft[] = {
-    {Servo[6],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[7],  deg(-105), deg(105), deg(35)},//Femur
-    {Servo[8],  deg(-105), deg(105), deg(0)}, //Coxa
+sLeg_t MidleLeft = {
+    [Coxa]  = {Servo[6], deg(0)},
+    [Femur] = {Servo[7], deg(35)},
+    [Tibia] = {Servo[8], deg(0)},
 };
 
-ServoJoint MidleRight[] = {
-    {Servo[9],  deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[10], deg(-105), deg(105), deg(35)},//Femur
-    {Servo[11], deg(-105), deg(105), deg(0)}, //Coxa
+sLeg_t MidleRight = {
+    [Coxa]  = {Servo[9],  deg(0)},
+    [Femur] = {Servo[10], deg(35)},
+    [Tibia] = {Servo[11], deg(0)},
 };
 
-ServoJoint BackLeft[] = {
-    {Servo[12], deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[13], deg(-105), deg(105), deg(35)},//Femur
-    {Servo[14], deg(-105), deg(105), deg(0)}, //Coxa
+sLeg_t BackLeft = {
+    [Coxa]  = {Servo[12], deg(0)},
+    [Femur] = {Servo[13], deg(35)},
+    [Tibia] = {Servo[14], deg(0)},
 };
 
-ServoJoint BackRight[] = {
-    {Servo[15], deg(-105), deg(105), deg(0)}, //Tibia
-    {Servo[16], deg(-105), deg(105), deg(35)},//Femur
-    {Servo[17], deg(-105), deg(105), deg(0)}, //Coxa
+sLeg_t BackRight = {
+    [Coxa]  = {Servo[15], deg(0)},
+    [Femur] = {Servo[16], deg(35)},
+    [Tibia] = {Servo[17], deg(0)},
 };
 
-#define nameLeg(v)  v[2], v[1], v[0]
 ArachnidLeg leg[] = {
-    {nameLeg(FrontLeft),  mm( 84.36f), deg(-27.63f)},
-    {nameLeg(FrontRight), mm( 84.36f), deg( 27.63f)},
-    {nameLeg(MidleLeft),  mm( 39.25f), deg(-90.f)},
-    {nameLeg(MidleRight), mm( 39.25f), deg( 90.f)},
-    {nameLeg(BackLeft),   mm( 84.36f), deg( 27.63f + 180.f)},
-    {nameLeg(BackRight),  mm( 84.36f), deg(-27.63f + 180.f)},
+    {FrontLeft,  mm( 84.36f), deg(-27.63f)},
+    {FrontRight, mm( 84.36f), deg( 27.63f)},
+    {MidleLeft,  mm( 39.25f), deg(-90.f)},
+    {MidleRight, mm( 39.25f), deg( 90.f)},
+    {BackLeft,   mm( 84.36f), deg( 27.63f + 180.f)},
+    {BackRight,  mm( 84.36f), deg(-27.63f + 180.f)},
 };
 
 ArachnidBody XMRA(leg, sizeof(leg)/sizeof(leg[0]));

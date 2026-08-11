@@ -33,8 +33,8 @@ bool ArachnidBody::AimSetAngle(Angle  azimuth, Angle  elevation) {
         _azimuth.asDegrees(),
         _elevation.asDegrees()
     );
-    _ctrlMatrix = Matrix4x4::createRotationY(_elevation.asRadians());
-    _ctrlMatrix *= Matrix4x4::createRotationZ(_azimuth.asRadians());
+    _ctrlMatrix = M4x4::mxRotY(_elevation.asRadians());
+    _ctrlMatrix *= M4x4::mxRotZ(_azimuth.asRadians());
 
     return true;
 }

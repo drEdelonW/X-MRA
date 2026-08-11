@@ -33,8 +33,6 @@ dPadBind bL = { [KEY_UNKNOWN] = _begin };
 #define LEG_POFF_ALL() {for(int idxLeg = 0; idxLeg < NUM_LEGS; idxLeg++) { XMRA._legs[idxLeg].release(); }}
 #endif
 
-#define MRA_PV_ALL(v)  XMRA.trySetOffs(v);
-
 static void _dArm()  {
     if (XMRA.isArmed()) return;
     LOG("ON\n");
@@ -76,16 +74,16 @@ const Millimeters tibiaZ      = mm(141.6f);
 
 Vector3D _curPose = {DSTx, DSTy, DSTz};
 
-static void _xPos() { _curPose.x += mStep;  MRA_PV_ALL(_curPose); }
-static void _xNeg() { _curPose.x -= mStep;  MRA_PV_ALL(_curPose); }
+static void _xPos() { _curPose.x += mStep;  XMRA.trySetOffs(_curPose); }
+static void _xNeg() { _curPose.x -= mStep;  XMRA.trySetOffs(_curPose); }
 
-static void _yPos() { _curPose.y -= mStep;  MRA_PV_ALL(_curPose); }
-static void _yNeg() { _curPose.y += mStep;  MRA_PV_ALL(_curPose); }
+static void _yPos() { _curPose.y -= mStep;  XMRA.trySetOffs(_curPose); }
+static void _yNeg() { _curPose.y += mStep;  XMRA.trySetOffs(_curPose); }
 
-static void _zPos() { _curPose.z += mStep;  MRA_PV_ALL(_curPose); }
-static void _zNeg() { _curPose.z -= mStep;  MRA_PV_ALL(_curPose); }
+static void _zPos() { _curPose.z += mStep;  XMRA.trySetOffs(_curPose); }
+static void _zNeg() { _curPose.z -= mStep;  XMRA.trySetOffs(_curPose); }
 
-static void _goHome()  { _curPose = {DSTx, DSTy, DSTz};    MRA_PV_ALL(_curPose); }
+static void _goHome()  { _curPose = {DSTx, DSTy, DSTz};  XMRA.trySetOffs(_curPose); }
 
 static void _info() {
     for (int idxLeg = 0; idxLeg < 6; idxLeg++){
@@ -111,19 +109,13 @@ static void _begin() {
 
     bL[KEY_I] = _info;
 
-    bL[KEY_LEFT]    = _yPos;
-    bL[KEY_RIGHT]   = _yNeg;
-    bL[KEY_UP]      = _xPos;
-    bL[KEY_DOWN]    = _xNeg;
-    bL[KEY__UP]     = _zPos;
-    bL[KEY__DOWN]   = _zNeg;
+    bL[KEY_LEFT]    = _yPos;    bL[KEY_RIGHT]   = _yNeg;
+    bL[KEY_UP]      = _xPos;    bL[KEY_DOWN]    = _xNeg;
+    bL[KEY__UP]     = _zPos;    bL[KEY__DOWN]   = _zNeg;
 
-    bL[KEY_PAGE_UP]   = _dArm;
-    bL[KEY_PAGE_DOWN] = _dDisarm;
-    bL[KEY_HOME]      = _goHome;
+    bL[KEY_PAGE_UP]   = _dArm;  bL[KEY_PAGE_DOWN] = _dDisarm;
+    bL[KEY_HOME]    = _goHome;
 
-    bL[KEY_1]   = _1;
-    bL[KEY_2]   = _2;
-    bL[KEY_3]   = _3;
+    bL[KEY_1] = _1; bL[KEY_2] = _2; bL[KEY_3] = _3;
 }
 

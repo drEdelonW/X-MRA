@@ -10,7 +10,7 @@ void jpad() {
     bool  triAct = false;
     float scaleStep = 50.f;
 
-    Matrix4x4 buMx;
+    M4x4 buMx;
     while(_run){
         if (GCGetButton(BUTTON_PS) &&
             GCGetButton(BUTTON_CROSS)

@@ -4,14 +4,14 @@
 #   define M_PI 3.14159265358979323846f
 #endif
 
-Matrix4x4::Matrix4x4() {
+M4x4::M4x4() {
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
             data[i][j] = ((i == j) ?
                 1.f : 0.f);
 }
 
-Matrix4x4::Matrix4x4(
+M4x4::M4x4(
     float a00, float a01, float a02, float a03,
     float a10, float a11, float a12, float a13,
     float a20, float a21, float a22, float a23,
@@ -23,7 +23,7 @@ Matrix4x4::Matrix4x4(
     data[3][0] = a30; data[3][1] = a31; data[3][2] = a32; data[3][3] = a33;
 }
 
-Matrix4x4& Matrix4x4::reset() {
+M4x4& M4x4::reset() {
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
             data[i][j] = ((i == j) ?
@@ -32,24 +32,24 @@ Matrix4x4& Matrix4x4::reset() {
     return *this;
 }
 
-Matrix4x4 Matrix4x4::createTranslation(Vector3D translation) {
-    Matrix4x4 m;
+M4x4 M4x4::mxTrans(Vector3D translation) {
+    M4x4 m;
     m.data[0][3] = translation.x;
     m.data[1][3] = translation.y;
     m.data[2][3] = translation.z;
     return m;
 }
 
-Matrix4x4 Matrix4x4::createScale(Vector3D& scale) {
-    Matrix4x4 m;
+M4x4 M4x4::mxScale(Vector3D& scale) {
+    M4x4 m;
     m.data[0][0] = scale.x;
     m.data[1][1] = scale.y;
     m.data[2][2] = scale.z;
     return m;
 }
 
-Matrix4x4 Matrix4x4::createRotationX(float angle) {
-    Matrix4x4 m;
+M4x4 M4x4::mxRotX(float angle) {
+    M4x4 m;
     float c = std::cos(angle);
     float s = std::sin(angle);
     m.data[1][1] = c; m.data[1][2] = -s;
@@ -57,8 +57,8 @@ Matrix4x4 Matrix4x4::createRotationX(float angle) {
     return m;
 }
 
-Matrix4x4 Matrix4x4::createRotationY(float angle) {
-    Matrix4x4 m;
+M4x4 M4x4::mxRotY(float angle) {
+    M4x4 m;
     float c = std::cos(angle);
     float s = std::sin(angle);
     m.data[0][0] = c;  m.data[0][2] = s;
@@ -66,8 +66,8 @@ Matrix4x4 Matrix4x4::createRotationY(float angle) {
     return m;
 }
 
-Matrix4x4 Matrix4x4::createRotationZ(float angle) {
-    Matrix4x4 m;
+M4x4 M4x4::mxRotZ(float angle) {
+    M4x4 m;
     float c = std::cos(angle);
     float s = std::sin(angle);
     m.data[0][0] = c; m.data[0][1] = -s;
@@ -75,30 +75,30 @@ Matrix4x4 Matrix4x4::createRotationZ(float angle) {
     return m;
 }
 
-float Matrix4x4::degreesToRadians(float degrees) {
+float M4x4::degreesToRadians(float degrees) {
     return degrees * M_PI / 180.f;
 }
 
-Matrix4x4 Matrix4x4::createRotationXDegrees(float angleDegrees) {
-    return createRotationX(
+M4x4 M4x4::mxRotDegX(float angleDegrees) {
+    return mxRotX(
         degreesToRadians(angleDegrees)
     );
 }
 
-Matrix4x4 Matrix4x4::createRotationYDegrees(float angleDegrees) {
-    return createRotationY(
+M4x4 M4x4::mxRotDegY(float angleDegrees) {
+    return mxRotY(
         degreesToRadians(angleDegrees)
     );
 }
 
-Matrix4x4 Matrix4x4::createRotationZDegrees(float angleDegrees) {
-    return createRotationZ(
+M4x4 M4x4::mxRotDegZ(float angleDegrees) {
+    return mxRotZ(
         degreesToRadians(angleDegrees)
     );
 }
 
-Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
-    Matrix4x4 result;
+M4x4 M4x4::operator*(const M4x4& other) const {
+    M4x4 result;
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j) {
             result.data[i][j] = 0.f;
@@ -109,12 +109,12 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
     return result;
 }
 
-Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& other) {
+M4x4& M4x4::operator*=(const M4x4& other) {
     return *this = *this * other;
 }
 
 
-Vector3D Matrix4x4::applyTransform(Vector3D& vec) const {
+Vector3D M4x4::applyTransform(Vector3D& vec) const {
     Vector3D result = (
         (data[0][0] * vec.x) + (data[0][1] * vec.y) +
         (data[0][2] * vec.z) + data[0][3],
@@ -133,7 +133,7 @@ Vector3D Matrix4x4::applyTransform(Vector3D& vec) const {
     return result;
 }
 
-Vector3D Matrix4x4::applyTransform(const Vector3D& vec) const {
+Vector3D M4x4::applyTransform(const Vector3D& vec) const {
     Vector3D result = (
         (data[0][0] * vec.x) + (data[0][1] * vec.y) +
         (data[0][2] * vec.z) + data[0][3],

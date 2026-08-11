@@ -23,7 +23,7 @@ Mesh::Mesh(
     memcpy(drawColors, defaultColors, sizeof(drawColors));
 
     if (_trVertices != nullptr) {
-        Matrix4x4 identityMatrix;
+        M4x4 identityMatrix;
         applyTransformation(identityMatrix);
     }
 }
@@ -76,7 +76,7 @@ Triangle3D Mesh::getTriangle(IDX_t index) const {
     return Triangle3D();
 }
 
-bool Mesh::applyTransformation(const Matrix4x4& matrix) {
+bool Mesh::applyTransformation(const M4x4& matrix) {
     if (_trVertices != nullptr) {
         for (IDX_t i = 0; i < _vertCnt; ++i) {
             _trVertices[i] = matrix.applyTransform(_origVertices[i]);

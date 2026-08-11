@@ -2,33 +2,33 @@
 
 #include "Vector3d.hpp"
 
-class Matrix4x4 {
+class M4x4 {
 public:
     float data[4][4];
 
-    Matrix4x4();
-    Matrix4x4(
+    M4x4();
+    M4x4(
         float a00, float a01, float a02, float a03,
         float a10, float a11, float a12, float a13,
         float a20, float a21, float a22, float a23,
         float a30, float a31, float a32, float a33
     );
 
-    Matrix4x4& reset();
+    M4x4& reset();
 
-    static Matrix4x4 createTranslation(Vector3D translation);
-    static Matrix4x4 createScale(Vector3D& scale);
-    static Matrix4x4 createRotationX(float angle);
-    static Matrix4x4 createRotationY(float angle);
-    static Matrix4x4 createRotationZ(float angle);
-    static Matrix4x4 createRotationXDegrees(float angleDegrees);
-    static Matrix4x4 createRotationYDegrees(float angleDegrees);
-    static Matrix4x4 createRotationZDegrees(float angleDegrees);
+    static M4x4 mxTrans(Vector3D translation);
+    static M4x4 mxScale(Vector3D& scale);
+    static M4x4 mxRotX(float angle);
+    static M4x4 mxRotY(float angle);
+    static M4x4 mxRotZ(float angle);
+    static M4x4 mxRotDegX(float angleDegrees);
+    static M4x4 mxRotDegY(float angleDegrees);
+    static M4x4 mxRotDegZ(float angleDegrees);
     static float degreesToRadians(float degrees);
 
-    Matrix4x4  operator*( const Matrix4x4& other) const;
-    Matrix4x4& operator*=(const Matrix4x4& other);
+    M4x4  operator*( const M4x4& other) const;
+    M4x4& operator*=(const M4x4& other);
     Vector3D applyTransform(Vector3D& vec) const;
     Vector3D applyTransform(const Vector3D& vec) const;
 };
-typedef Matrix4x4* Matrix4x4_p;
+typedef M4x4* Matrix4x4_p;

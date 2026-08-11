@@ -13,8 +13,13 @@ dPadBind bS12 = { [KEY_UNKNOWN] = _begin };
 // #   define servoNum (2*3)
 #endif
 
+#if 0
 #include "PS_MG996R.hpp"    // MG996R
 extern MG996R Servo[];
+#else
+#include "PS_FreeNove.hpp"  // sFreeNove
+extern sFreeNove Servo[];
+#endif
 
 static float _curAngle = 0.f;
 void allSv(float ang) {
@@ -36,13 +41,13 @@ static void _8()  { allSv(-70.f); } static void __8()  { allSv( 70.f); }
 static void _9()  { allSv(-80.f); } static void __9()  { allSv( 80.f); }
 static void _10() { allSv(-90.f); } static void __10() { allSv( 90.f); }
 
-static void _on()  { LOG("ON\n"); PowerAllow(true); }
+static void _on()  { LOG("ON\n");  PowerAllow(true);  }
 static void _off() { LOG("OFF\n"); PowerAllow(false); }
 
-static void _1on()  { LOG("1 ON\n"); Servo[1].enable(); }
+static void _1on()  { LOG("1 ON\n");  Servo[1].enable();  }
 static void _1off() { LOG("2 OFF\n"); Servo[1].disable(); }
 
-static void _2on()  { LOG("2 ON\n"); Servo[2].enable(); }
+static void _2on()  { LOG("2 ON\n");  Servo[2].enable();  }
 static void _2off() { LOG("2 OFF\n"); Servo[2].disable(); }
 
 extern dPadBind bL;
