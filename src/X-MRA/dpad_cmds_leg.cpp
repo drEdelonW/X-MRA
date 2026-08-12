@@ -113,7 +113,8 @@ static void _begin() {
     bL[KEY_UP]      = _xPos;    bL[KEY_DOWN]    = _xNeg;
     bL[KEY__UP]     = _zPos;    bL[KEY__DOWN]   = _zNeg;
 
-    bL[KEY_PAGE_UP]   = _dArm;  bL[KEY_PAGE_DOWN] = _dDisarm;
+    bL[KEY_O]       = _dArm;    bL[KEY_P] = _dDisarm;
+    bL[KEY_PAGE_UP] = _dArm;    bL[KEY_PAGE_DOWN] = _dDisarm;
     bL[KEY_HOME]    = _goHome;
 
     bL[KEY_1] = _1; bL[KEY_2] = _2; bL[KEY_3] = _3;

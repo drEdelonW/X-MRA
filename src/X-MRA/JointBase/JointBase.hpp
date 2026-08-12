@@ -14,3 +14,4 @@ public:
     virtual void engage() = 0;
     virtual void release() = 0;
 };
+typedef JointBase* JointBase_p;

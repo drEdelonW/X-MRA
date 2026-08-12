@@ -69,43 +69,43 @@ sFreeNove Servo[] = {
 };
 
 #include "pwmServoJoint.hpp"
-typedef ServoJoint* ServoJoint_p;
-typedef ServoJoint sLeg_t[PhalNum];
+
+typedef Phalanx_t sLeg_t[PhalNum];
 
 sLeg_t FrontLeft = {
-    [Coxa]  = {Servo[0], deg(0)},
-    [Femur] = {Servo[1], deg(35)},
-    [Tibia] = {Servo[2], deg(0)},
+    [Coxa]  = { .jn = (ServoJoint{Servo[0], deg(0)}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[1], deg(35)}), .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[2], deg(0)}),  .len = mm(144.23f)}
 };
 
 sLeg_t FrontRight = {
-    [Coxa]  = {Servo[3], deg(0)},
-    [Femur] = {Servo[4], deg(35)},
-    [Tibia] = {Servo[5], deg(0)},
+    [Coxa]  = { .jn = (ServoJoint{Servo[3], deg(0)}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[4], deg(35)}), .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[5], deg(0)}),  .len = mm(144.23f)}
 };
 
 sLeg_t MidleLeft = {
-    [Coxa]  = {Servo[6], deg(0)},
-    [Femur] = {Servo[7], deg(35)},
-    [Tibia] = {Servo[8], deg(0)},
+    [Coxa]  = { .jn = (ServoJoint{Servo[6], deg(0)}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[7], deg(35)}), .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[8], deg(0)}),  .len = mm(144.23f)}
 };
 
 sLeg_t MidleRight = {
-    [Coxa]  = {Servo[9],  deg(0)},
-    [Femur] = {Servo[10], deg(35)},
-    [Tibia] = {Servo[11], deg(0)},
+    [Coxa]  = { .jn = (ServoJoint{Servo[9],  deg(0)}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[10], deg(35)}), .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[11], deg(0)}),  .len = mm(144.23f)}
 };
 
 sLeg_t BackLeft = {
-    [Coxa]  = {Servo[12], deg(0)},
-    [Femur] = {Servo[13], deg(35)},
-    [Tibia] = {Servo[14], deg(0)},
+    [Coxa]  = { .jn = (ServoJoint{Servo[12], deg(0)}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[13], deg(35)}), .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[14], deg(0)}),  .len = mm(144.23f)}
 };
 
 sLeg_t BackRight = {
-    [Coxa]  = {Servo[15], deg(0)},
-    [Femur] = {Servo[16], deg(35)},
-    [Tibia] = {Servo[17], deg(0)},
+    [Coxa]  = { .jn = (ServoJoint{Servo[15], deg(0)}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[16], deg(35)}), .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[17], deg(0)}),  .len = mm(144.23f)}
 };
 
 ArachnidLeg leg[] = {

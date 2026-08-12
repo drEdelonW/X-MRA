@@ -1,5 +1,5 @@
-#include "PA_ADS7830_cWrap.h"
-#include "PA_ADS7830.hpp"
+#include "ADS7830_cWrap.h"
+#include "ADS7830.hpp"
 #include <stdio.h>
 
 const char* chName[8] = {

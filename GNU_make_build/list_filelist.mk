@@ -73,8 +73,8 @@ $(eval DRV_DIR := $(SRC_DIR)/drv) $(eval INCLUDE_PATHS += $(DRV_DIR))
         SRCS += $(PCAPWM_DIR)/PWMChannel.cpp
 
     $(eval ADC_DIR := $(DRV_DIR)/ADC_ADS7830) $(eval INCLUDE_PATHS += $(ADC_DIR))
-        SRCS += $(ADC_DIR)/PA_ADS7830.cpp
-        SRCS += $(ADC_DIR)/PA_ADS7830_cWrap.cpp
+        SRCS += $(ADC_DIR)/ADS7830.cpp
+        SRCS += $(ADC_DIR)/ADS7830_cWrap.cpp
 
     $(eval SERVO_DIR := $(DRV_DIR)/Servos) $(eval INCLUDE_PATHS += $(SERVO_DIR))
         $(eval PWM_SERVO_DIR := $(SERVO_DIR)/pwm_servo) $(eval INCLUDE_PATHS += $(PWM_SERVO_DIR))
@@ -94,6 +94,9 @@ $(eval XMRA_DIR := $(SRC_DIR)/X-MRA) $(eval INCLUDE_PATHS += $(XMRA_DIR))
     $(eval JOINT_DIR := $(XMRA_DIR)/JointBase) $(eval INCLUDE_PATHS += $(JOINT_DIR))
 
     $(eval AR_DIR := $(XMRA_DIR)/Arachnid) $(eval INCLUDE_PATHS += $(AR_DIR))
+        $(eval AR_PHAL_DIR := $(AR_DIR)/Phalanx) $(eval INCLUDE_PATHS += $(AR_PHAL_DIR))
+#             SRCS += $(AR_PHAL_DIR)/Phalanx.cpp
+
         $(eval AR_LEG_DIR := $(AR_DIR)/Leg) $(eval INCLUDE_PATHS += $(AR_LEG_DIR))
             SRCS += $(AR_LEG_DIR)/ArachnidLeg.cpp
             SRCS += $(AR_LEG_DIR)/ArachnidLeg_wrap.cpp

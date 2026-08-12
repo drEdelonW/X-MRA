@@ -13,7 +13,7 @@ static void _busD4() {
 static void _ARM()  { xArm(); }
 static void _DISARM() { xDisarm(); }
 
-#include "PA_ADS7830_cWrap.h" // adcReadAll()
+#include "ADS7830_cWrap.h" // adcReadAll()
 static void _adc() { adcReadAll(); }
 
 #include "dpad.h" // dpad()

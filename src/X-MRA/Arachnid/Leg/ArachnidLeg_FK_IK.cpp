@@ -1,6 +1,6 @@
 #include "ArachnidLeg.hpp"
 
-void ArachnidLeg::configMount(Millimeters offset, Angle yaw) {
+void ArachnidLeg::_configMount(Millimeters offset, Angle yaw) {
     _legToBody.reset(); // begin of forward matrix
     _legToBody *= M4x4::mxRotZ(yaw.asRadians()); {
         _legToBody *= M4x4::mxTrans(Vector3D{ offset, 0.f, 0.f }); {
@@ -14,19 +14,19 @@ void ArachnidLeg::configMount(Millimeters offset, Angle yaw) {
 bool ArachnidLeg::_checkTipPosLegSpace(Vector3D pos) {
     float angle[PhalNum];
     {
-        angle[Coxa] = atan2(pos.y, pos.x);  //  ahead of leg
+        angle[Coxa] = atan2f(pos.y, pos.x);  //  ahead of leg
     }
-    float planarX = len2D(pos.x, pos.y) - _Length[Coxa];
+    float planarX = len2D(pos.x, pos.y) - _Phalanx[Coxa].len;
     float planarZ = pos.z;
 
     float dist = len2D(planarX, planarZ);
-    if  (dist < (fabsf(_Length[Femur] - _Length[Tibia])))   // minReach
+    if  (dist < (fabsf(_Phalanx[Femur].len - _Phalanx[Tibia].len)))   // minReach
         return false;   // unreachable
-    if  (dist > (_Length[Femur] + _Length[Tibia]))          // maxReach
+    if  (dist > (_Phalanx[Femur].len + _Phalanx[Tibia].len))          // maxReach
         return false;   // unreachable
 
-    float a = _Length[Femur];
-    float b = _Length[Tibia];
+    float a = _Phalanx[Femur].len;
+    float b = _Phalanx[Tibia].len;
     float c = dist;
     {
         float angleToTarget = atan2f(planarZ, planarX);
@@ -64,17 +64,21 @@ Vector3D ArachnidLeg::tipPosLegSpace(Angle coxaAng, Angle femurAng, Angle tibiaA
     float aF = femurAng.asRadians();
     float knee = aF + aT;               // femur-tibia plane
     float rx =
-        _Length[Coxa] +
-        _Length[Femur] * cosf(aF) +
-        _Length[Tibia] * cosf(knee);    // projection in Coxa plane
+        _Phalanx[Coxa].len +
+        _Phalanx[Femur].len * cosf(aF) +
+        _Phalanx[Tibia].len * cosf(knee);    // projection in Coxa plane
 
     float rz =
-        _Length[Femur] * sinf(aF) +
-        _Length[Tibia] * sinf(knee);
+        _Phalanx[Femur].len * sinf(aF) +
+        _Phalanx[Tibia].len * sinf(knee);
 
     float aC = coxaAng.asRadians();
     float cx = cosf(aC);
     float sx = sinf(aC);
 
-    return { (rx * cx), (rx * sx), rz };
+    return {
+        (rx * cx),
+        (rx * sx),
+         rz
+    };
 }

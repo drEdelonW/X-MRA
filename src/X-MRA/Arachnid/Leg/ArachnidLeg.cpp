@@ -1,5 +1,6 @@
 #include "ArachnidLeg.hpp"
 
+#if 0
 ArachnidLeg::ArachnidLeg(
     JointBase*  Jn,
     // ServoJoint* Jn,
@@ -10,7 +11,7 @@ ArachnidLeg::ArachnidLeg(
         [Femur] = &Jn[Femur],
         [Tibia] = &Jn[Tibia]}
 {
-    configMount(offs, rotation);
+    _configMount(offs, rotation);
 }
 ArachnidLeg::ArachnidLeg(
     // JointBase*  Jn,
@@ -22,39 +23,53 @@ ArachnidLeg::ArachnidLeg(
         [Femur] = &Jn[Femur],
         [Tibia] = &Jn[Tibia]}
 {
-    configMount(offs, rotation);
+    _configMount(offs, rotation);
 }
-
+#else
+ArachnidLeg::ArachnidLeg(
+    Phalanx_p   Phalanx,
+    Millimeters offs,
+    Angle       rotation
+):
+    _Phalanx{
+         [Coxa] = Phalanx[Coxa],
+        [Femur] = Phalanx[Femur],
+        [Tibia] = Phalanx[Tibia]
+    }
+{
+    _configMount(offs, rotation);
+}
+#endif
 bool ArachnidLeg::checkJointAngles(
     Angle coxaAngle,
     Angle femurAngle,
     Angle tibiaAngle
 ) {
     return
-        _jn[Coxa]->checkPose(coxaAngle) &&
-        _jn[Femur]->checkPose(femurAngle) &&
-        _jn[Tibia]->checkPose(tibiaAngle);
+        _Phalanx[Coxa].jn.checkPose(coxaAngle) &&
+        _Phalanx[Femur].jn.checkPose(femurAngle) &&
+        _Phalanx[Tibia].jn.checkPose(tibiaAngle);
 }
 
 Angle ArachnidLeg::getJointAngles(LegJoint jName){
     return (jName < PhalNum)?
-        _jn[jName]->getAngle() : rad(NAN);
+        _Phalanx[jName].jn.getAngle() : rad(NAN);
 }
 
 bool ArachnidLeg::applyPose() {
     for (int jIdx = 0; jIdx < PhalNum; jIdx++)
-        if (!_jn[jIdx]->applyPose())
+        if (!_Phalanx[jIdx].jn.applyPose())
             return false;
     return true;
 }
 
 void ArachnidLeg::engage() {
     for (int jIdx = 0; jIdx < PhalNum; jIdx++)
-        _jn[jIdx]->engage();
+        _Phalanx[jIdx].jn.engage();
 }
 
 void ArachnidLeg::release() {
     for (int jIdx = 0; jIdx < PhalNum; jIdx++)
-        _jn[jIdx]->release();
+        _Phalanx[jIdx].jn.release();
 }
 

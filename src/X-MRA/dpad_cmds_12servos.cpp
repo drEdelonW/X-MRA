@@ -52,7 +52,7 @@ static void _2off() { LOG("2 OFF\n"); Servo[2].disable(); }
 
 extern dPadBind bL;
 static void _callLegs() { dpad(bL); _begin(); }
-#include "PA_ADS7830_cWrap.h"   // adcReadAll()
+#include "ADS7830_cWrap.h"   // adcReadAll()
 static void _begin() {
     LOG(CLEAR_SCREEN
         "12 Servo begin\n"

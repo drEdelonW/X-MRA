@@ -1,7 +1,6 @@
 #pragma once
 #include "Matrix4x4.hpp" // #include "Vector3d.hpp"
-#include "PhysTypes.hpp"
-#include "JointBase.hpp"
+#include "Phalanx.hpp"
 
 /*  ArachnidLeg:   /|
                   / |
@@ -14,19 +13,11 @@
 ==============={Ground}==============
 */
 
-#include "pwmServoJoint.hpp"
+#define JFREEZE  rad(NAN)
 
-#define JFREEZE    rad(NAN)
-
-enum LegJoint {
-   Coxa,
-   Femur,
-   Tibia,
-   PhalNum
-};
 class ArachnidLeg {
 public:
-
+#if 0
    ArachnidLeg(
       JointBase*  Jn,
       // ServoJoint* Jn,
@@ -39,8 +30,13 @@ public:
       Millimeters offs = 0.f,
       Angle       rotation = deg(0.f)
    );
-
-   void configMount(Millimeters offset, Angle yaw);
+#else
+   ArachnidLeg(
+      Phalanx_p   Phalanx,
+      Millimeters offs = 0.f,
+      Angle       rotation = deg(0.f)
+   );
+#endif
 
    bool  checkJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
    bool    tryJointAngles(Angle coxaAng, Angle femurAng, Angle tibiaAng);
@@ -58,20 +54,17 @@ public:
    void release();
 
 private:
-   Vector3D bodyToLeg(Vector3D bodyPos);
-   Vector3D legToBody(Vector3D legPos);
+   Phalanx_t _Phalanx[PhalNum];
 
-   bool _checkTipPosLegSpace(float x, float y, float z);
+   void _configMount(Millimeters offset, Angle yaw);
+
    bool _checkTipPosLegSpace(Vector3D pos);
+   bool _checkTipPosLegSpace(float x, float y, float z);
 
-   JointBase* _jn[PhalNum];
-   // ServoJoint* _jn[PhalNum];
+   M4x4 _bodyToLeg;
+   Vector3D bodyToLeg(Vector3D bodyPos);
 
-   const Millimeters _Length[PhalNum] = {
-      [Coxa]  = mm( 27.f  ),
-      [Femur] = mm( 85.1f ),
-      [Tibia] = mm(144.23f)
-   };
-   M4x4 _bodyToLeg, _legToBody;
+   M4x4 _legToBody;
+   Vector3D legToBody(Vector3D legPos);
 };
 typedef ArachnidLeg* ArachnidLeg_p;
