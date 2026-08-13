@@ -5,44 +5,36 @@
 #include <sys/ioctl.h>
 #include <linux/spi/spidev.h>
 
-namespace {
-constexpr uint32_t kSpiHz      = 2400000; // 3 SPI bits per WS2812 bit @ 1.25us -> 416.7ns/bit
-constexpr uint8_t  kSpiMode    = SPI_MODE_0;
-constexpr uint8_t  kSpiBits    = 8;
-constexpr int      kResetBytes = 150;       // ~500us of low @2.4MHz, WS2812 needs >=50us to latch
+#define WS2812_SPI_HZ   (2400000) // 3 SPI bits per WS2812 bit @ 1.25us -> 416.7ns/bit
+#define WS2812_SPI_MODE (SPI_MODE_0)
+#define WS2812_SPI_BITS (8)
 
-// One WS2812 bit -> 3 SPI bits, MSB first.
-constexpr uint8_t kSymbolZero = 0b100;
-constexpr uint8_t kSymbolOne  = 0b110;
+// WS2812 wire-level bytes: reset/latch terminator, and the two data-bit
+// symbols, each re-encoded as 3 SPI bits, MSB first.
+typedef enum : uint8_t {
+    WS2812_TERMINATOR = 0x00,  // reset/latch gap - byte held low
+    WS2812_SYM_LO     = 0b100, // "0" bit -> 3 SPI bits (~417ns high / ~833ns low)
+    WS2812_SYM_HI     = 0b110, // "1" bit -> 3 SPI bits (~833ns high / ~417ns low)
+} Ws2812Symbol_t;
 
-// Packs bits MSB-first into a growable byte buffer.
-class BitPacker {
-  public:
-    explicit BitPacker(std::vector<uint8_t>& out) : _out(out) {}
-
-    void pushBits(uint8_t value, int bitCount) {
-        for (int i = bitCount - 1; i >= 0; --i) {
-            if (_bitPos == 0) _out.push_back(0);
-            if ((value >> i) & 0x1) _out.back() |= (0x80 >> _bitPos);
-            _bitPos = (_bitPos + 1) % 8;
-        }
+// Packs bitCount bits of value (MSB first) into buf, advancing *len/*bitPos.
+static void _pushBits(uint8_p buf, int* len, int* bitPos, uint8_t value, int bitCount) {
+    for (int i = bitCount - 1; i >= 0; --i) {
+        if (*bitPos == 0) buf[(*len)++] = 0;
+        if ((value >> i) & 0x1) buf[*len - 1] |= (0x80 >> *bitPos);
+        *bitPos = (*bitPos + 1) % 8;
     }
+}
 
-  private:
-    std::vector<uint8_t>& _out;
-    int                   _bitPos = 0;
-};
-} // namespace
-
-Ws2812Spi::Ws2812Spi(int ledCount, const char* device) : _ledCount(ledCount) {
-    _pixels.assign(ledCount * 3, 0);
-
+Ws2812Spi::Ws2812Spi(int ledCount, cStrRO device) :
+    _ledCount(ledCount > WS2812_MAX_LEDS ? WS2812_MAX_LEDS : ledCount)
+{
     _fd = open(device, O_WRONLY);
     if (_fd < 0) return;
 
-    uint8_t  mode = kSpiMode;
-    uint8_t  bits = kSpiBits;
-    uint32_t hz   = kSpiHz;
+    uint8_t  mode = WS2812_SPI_MODE;
+    uint8_t  bits = WS2812_SPI_BITS;
+    uint32_t hz   = WS2812_SPI_HZ;
     if (ioctl(_fd, SPI_IOC_WR_MODE, &mode)          < 0 ||
         ioctl(_fd, SPI_IOC_WR_BITS_PER_WORD, &bits) < 0 ||
         ioctl(_fd, SPI_IOC_WR_MAX_SPEED_HZ, &hz)    < 0
@@ -68,21 +60,24 @@ void Ws2812Spi::fill(RGB color) {
 }
 
 void Ws2812Spi::_encode() {
-    _spiFrame.clear();
-    _spiFrame.reserve(kResetBytes * 2 + _pixels.size() * 3 + 1);
+    int len = 0;
+    for (int i = 0; i < WS2812_RESET_BYTES; ++i)
+        _spiFrame[len++] = WS2812_TERMINATOR; // reset / latch, low
 
-    _spiFrame.insert(_spiFrame.end(), kResetBytes, 0x00); // reset / latch, low
-
-    BitPacker packer(_spiFrame);
-    for (uint8_t colorByte : _pixels)
+    int bitPos = 0;
+    for (int i = 0; i < _ledCount * 3; ++i)
         for (int bit = 7; bit >= 0; --bit)
-            packer.pushBits((colorByte >> bit) & 0x1 ? kSymbolOne : kSymbolZero, 3);
+            _pushBits(_spiFrame, &len, &bitPos,
+                ((_pixels[i] >> bit) & 0x1) ? WS2812_SYM_HI : WS2812_SYM_LO, 3);
 
-    _spiFrame.insert(_spiFrame.end(), kResetBytes, 0x00); // reset / latch, low
+    for (int i = 0; i < WS2812_RESET_BYTES; ++i)
+        _spiFrame[len++] = WS2812_TERMINATOR; // reset / latch, low
+
+    _frameLen = len;
 }
 
 bool Ws2812Spi::show() {
     if (!ok()) return false;
     _encode();
-    return write(_fd, _spiFrame.data(), _spiFrame.size()) == (ssize_t)_spiFrame.size();
+    return write(_fd, _spiFrame, _frameLen) == (ssize_t)_frameLen;
 }

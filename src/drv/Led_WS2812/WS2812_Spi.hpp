@@ -1,7 +1,6 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
+#include "types.h"
 
 // Minimal SPI-clocked driver for WS2812 / WS2812B addressable LEDs.
 //
@@ -22,9 +21,14 @@
 // Shield (see Docs/FreenoveChassis/FreeNove.MD).
 
 #include "WS_RGB.hpp"
+
+#define WS2812_MAX_LEDS    (32)  // static buffer cap - raise if a longer strip ever gets wired
+#define WS2812_RESET_BYTES (150) // ~500us of low @2.4MHz, WS2812 needs >=50us to latch
+#define WS2812_FRAME_BYTES (WS2812_RESET_BYTES * 2 + WS2812_MAX_LEDS * 3 * 3) // reset + payload + reset
+
 class Ws2812Spi {
   public:
-    explicit Ws2812Spi(int ledCount, const char* device = "/dev/spidev0.0");
+    explicit Ws2812Spi(int ledCount, cStrRO device = "/dev/spidev0.0");
     ~Ws2812Spi();
 
     Ws2812Spi(const Ws2812Spi&) = delete;
@@ -40,10 +44,11 @@ class Ws2812Spi {
     bool show(); // encodes _pixels[] and pushes it out over SPI
 
   private:
-    int                  _fd = -1;
-    int                  _ledCount;
-    std::vector<uint8_t> _pixels;   // wire order G,R,B - 3 bytes per LED
-    std::vector<uint8_t> _spiFrame; // reset + 3-bits-per-WS2812-bit payload + reset
+    int     _fd = -1;
+    int     _ledCount;
+    uint8_t _pixels[WS2812_MAX_LEDS * 3] = {};  // wire order G,R,B - 3 bytes per LED
+    uint8_t _spiFrame[WS2812_FRAME_BYTES] = {}; // reset + payload + reset
+    int     _frameLen = 0;
 
     void _encode();
 };
