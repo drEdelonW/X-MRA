@@ -24,9 +24,12 @@ namespace Colors {
 
 static inline uint8_t _scaleChannel(uint8_t v, float factor) {
     float scaled = v * factor;
-    if (scaled <= 0.f)   return 0;
-    if (scaled >= 255.f) return 255;
-    return (uint8_t)(scaled + 0.5f);
+    if (scaled <= 0.f)
+        return 0;
+    if (scaled >= 255.f)
+        return 255;
+    return
+        (uint8_t)(scaled + 0.5f);
 }
 static inline RGB operator*(RGB c, float factor) {
     return RGB(
