@@ -20,6 +20,8 @@
 // `dtparam=spi=on` in /boot/firmware/config.txt + reboot) and GPIO10
 // (SPI0 MOSI) wired to the strip's DIN - the "WB_LED" pad on the Spider
 // Shield (see Docs/FreenoveChassis/FreeNove.MD).
+
+#include "WS_RGB.hpp"
 class Ws2812Spi {
   public:
     explicit Ws2812Spi(int ledCount, const char* device = "/dev/spidev0.0");
@@ -29,10 +31,11 @@ class Ws2812Spi {
     Ws2812Spi& operator=(const Ws2812Spi&) = delete;
 
     bool ok() const { return _fd >= 0; }
+    int  getNumLeds() const { return _ledCount; }
 
-    void setPixel(int index, uint8_t r, uint8_t g, uint8_t b);
-    void fill(uint8_t r, uint8_t g, uint8_t b);
-    void clear() { fill(0, 0, 0); }
+    void setPixel(int index, RGB color);
+    void fill(RGB color);
+    void clear() { fill(RGB{}); }
 
     bool show(); // encodes _pixels[] and pushes it out over SPI
 

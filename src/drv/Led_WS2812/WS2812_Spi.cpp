@@ -56,15 +56,15 @@ Ws2812Spi::~Ws2812Spi() {
     if (_fd >= 0) close(_fd);
 }
 
-void Ws2812Spi::setPixel(int index, uint8_t r, uint8_t g, uint8_t b) {
+void Ws2812Spi::setPixel(int index, RGB color) {
     if (index < 0 || index >= _ledCount) return;
-    _pixels[index * 3 + 0] = g; // WS2812 wire order is G,R,B
-    _pixels[index * 3 + 1] = r;
-    _pixels[index * 3 + 2] = b;
+    _pixels[index * 3 + 0] = color.g; // WS2812 wire order is G,R,B
+    _pixels[index * 3 + 1] = color.r;
+    _pixels[index * 3 + 2] = color.b;
 }
 
-void Ws2812Spi::fill(uint8_t r, uint8_t g, uint8_t b) {
-    for (int i = 0; i < _ledCount; ++i) setPixel(i, r, g, b);
+void Ws2812Spi::fill(RGB color) {
+    for (int i = 0; i < _ledCount; ++i) setPixel(i, color);
 }
 
 void Ws2812Spi::_encode() {
