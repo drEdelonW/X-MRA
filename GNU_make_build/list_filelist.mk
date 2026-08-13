@@ -76,6 +76,10 @@ $(eval DRV_DIR := $(SRC_DIR)/drv) $(eval INCLUDE_PATHS += $(DRV_DIR))
         SRCS += $(ADC_DIR)/ADS7830.cpp
         SRCS += $(ADC_DIR)/ADS7830_cWrap.cpp
 
+    $(eval WSLED_DIR := $(DRV_DIR)/Led_WS2812) $(eval INCLUDE_PATHS += $(WSLED_DIR))
+        SRCS += $(WSLED_DIR)/WS2812_Spi.cpp
+        SRCS += $(WSLED_DIR)/WS2812_cWrap.cpp
+
     $(eval SERVO_DIR := $(DRV_DIR)/Servos) $(eval INCLUDE_PATHS += $(SERVO_DIR))
         $(eval PWM_SERVO_DIR := $(SERVO_DIR)/pwm_servo) $(eval INCLUDE_PATHS += $(PWM_SERVO_DIR))
             # SRCS += $(PWM_SERVO_DIR)/pwm_servo.cpp

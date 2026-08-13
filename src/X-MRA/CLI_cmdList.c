@@ -16,6 +16,8 @@ static void _DISARM() { xDisarm(); }
 #include "ADS7830_cWrap.h" // adcReadAll()
 static void _adc() { adcReadAll(); }
 
+#include "WS2812_cWrap.h" // wsLedTest()
+
 #include "dpad.h" // dpad()
 extern dPadBind bL;     static void _dpadL() { dpad(bL); }
 extern dPadBind bS12;   static void _dpadS() { dpad(bS12); }
@@ -29,6 +31,7 @@ const CommandCLI Cmds[] = {
     {.name = "i2cD4",   .function = _busD4,     .description = "I2C Bus dump 0x40 device"},
 
     {.name = "adc",     .function = _adc,       .description = "Read ADS7830 ADC all channels"},
+    {.name = "wsled",   .function = wsLedTest,  .description = "WS2812 addressable LED test"},
 
     // {.name = "dpad",    .function = _dpadL,     .description = "keyboard control Tool"},
     {.name = "dpadL",   .function = _dpadL,     .description = "Leg keyboard control Tool"},

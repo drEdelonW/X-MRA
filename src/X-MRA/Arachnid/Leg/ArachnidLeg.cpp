@@ -1,31 +1,5 @@
 #include "ArachnidLeg.hpp"
 
-#if 0
-ArachnidLeg::ArachnidLeg(
-    JointBase*  Jn,
-    // ServoJoint* Jn,
-    Millimeters offs,
-    Angle       rotation
-):
-    _jn{ [Coxa] = &Jn[Coxa],
-        [Femur] = &Jn[Femur],
-        [Tibia] = &Jn[Tibia]}
-{
-    _configMount(offs, rotation);
-}
-ArachnidLeg::ArachnidLeg(
-    // JointBase*  Jn,
-    ServoJoint* Jn,
-    Millimeters offs,
-    Angle       rotation
-):
-    _jn{ [Coxa] = &Jn[Coxa],
-        [Femur] = &Jn[Femur],
-        [Tibia] = &Jn[Tibia]}
-{
-    _configMount(offs, rotation);
-}
-#else
 ArachnidLeg::ArachnidLeg(
     Phalanx_p   Phalanx,
     Millimeters offs,
@@ -39,21 +13,22 @@ ArachnidLeg::ArachnidLeg(
 {
     _configMount(offs, rotation);
 }
-#endif
+
 bool ArachnidLeg::checkJointAngles(
-    Angle coxaAngle,
+    Angle  coxaAngle,
     Angle femurAngle,
     Angle tibiaAngle
 ) {
     return
-        _Phalanx[Coxa].jn.checkPose(coxaAngle) &&
+         _Phalanx[Coxa].jn.checkPose( coxaAngle) &&
         _Phalanx[Femur].jn.checkPose(femurAngle) &&
         _Phalanx[Tibia].jn.checkPose(tibiaAngle);
 }
 
 Angle ArachnidLeg::getJointAngles(LegJoint jName){
-    return (jName < PhalNum)?
-        _Phalanx[jName].jn.getAngle() : rad(NAN);
+    return
+        (jName < PhalNum)?
+            _Phalanx[jName].jn.getAngle() : rad(NAN);
 }
 
 bool ArachnidLeg::applyPose() {
