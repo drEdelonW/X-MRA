@@ -4,7 +4,11 @@
 
 struct RGB {
     uint8_t r, g, b;
-    constexpr RGB(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0) : r(r), g(g), b(b) {}
+    constexpr RGB(
+        uint8_t r = 0,
+        uint8_t g = 0,
+        uint8_t b = 0
+    ) : r(r), g(g), b(b) {}
 };
 
 namespace Colors {
@@ -18,11 +22,6 @@ namespace Colors {
     constexpr RGB Magenta(255, 0,   255);
 }
 
-
-
-// Per-channel multiply/divide, clamped to [0,255].
-
-// Scales one channel by factor and clamps to a valid uint8_t, rounding to nearest.
 static inline uint8_t _scaleChannel(uint8_t v, float factor) {
     float scaled = v * factor;
     if (scaled <= 0.f)   return 0;
@@ -30,7 +29,11 @@ static inline uint8_t _scaleChannel(uint8_t v, float factor) {
     return (uint8_t)(scaled + 0.5f);
 }
 static inline RGB operator*(RGB c, float factor) {
-    return RGB(_scaleChannel(c.r, factor), _scaleChannel(c.g, factor), _scaleChannel(c.b, factor));
+    return RGB(
+        _scaleChannel(c.r, factor),
+        _scaleChannel(c.g, factor),
+        _scaleChannel(c.b, factor)
+    );
 }
 inline RGB operator*(float factor, RGB c) { return c * factor; }
 
