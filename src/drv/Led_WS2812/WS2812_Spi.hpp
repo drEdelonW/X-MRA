@@ -33,11 +33,11 @@ class Ws2812Spi {
     Ws2812Spi(const Ws2812Spi&) = delete;
     Ws2812Spi& operator=(const Ws2812Spi&) = delete;
 
-    bool ok() const { return _fd >= 0; }
+    bool ok()         const { return _fd >= 0; }
     int  getNumLeds() const { return _ledCount; }
 
+    RGB  getPixel(unsigned int index) const { return (index < _ledCount)? _pixels[index] : RGB{}; }
     void setPixel(unsigned int index, RGB color);
-    RGB getPixel(unsigned int index) const { return (index < _ledCount)? _pixels[index] : RGB{}; }
     void fill(RGB color);
     void clear() { fill(RGB{}); }
 

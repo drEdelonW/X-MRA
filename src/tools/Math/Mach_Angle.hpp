@@ -36,19 +36,19 @@ public:
 
     Angle operator-() const;
 
-    Angle  operator+(const Angle& other) const;
+    Angle  operator+( const Angle& other) const;
     Angle& operator+=(const Angle& other);
-    Angle  operator-(const Angle& other) const;
+    Angle  operator-( const Angle& other) const;
     Angle& operator-=(const Angle& other);
 
-    Angle  operator*(float scalar) const;
+    Angle  operator*( float scalar) const;
     Angle& operator*=(float scalar);
-    Angle  operator/(float scalar) const;
+    Angle  operator/( float scalar) const;
     Angle& operator/=(float scalar);
 
-    Angle  operator*(int scalar) const;
+    Angle  operator*( int scalar) const;
     Angle& operator*=(int scalar);
-    Angle  operator/(int scalar) const;
+    Angle  operator/( int scalar) const;
     Angle& operator/=(int scalar);
 
     bool operator==(const Angle& other) const;

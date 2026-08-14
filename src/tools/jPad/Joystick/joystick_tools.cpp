@@ -14,6 +14,11 @@ void printAllButtons() {
         return;
 
     for (GameControllerButton i = BUTTON_CROSS; i < BUTTON_MAX; i = (GameControllerButton)(i + 1))
-        printf((GCGetButton(i)) ? "[%i]":" %i ", i);
-    printf("\n");
+        LOG((GCGetButton(i)) ?
+            (TEXT_WHITE TEXT_BOLD "[%i]" TEXT_RESET) :
+            " %i ",
+            i
+        );
+    // LOG("\n");
+    LOG("%c", ASCII_CARRIAGE);
 }

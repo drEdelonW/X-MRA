@@ -4,10 +4,10 @@
 GamePad gp;
 static std::thread _joyThr;
 volatile bool jQuit = true;
-volatile bool joy_echo = false;
+volatile bool joy_echo = true;
 
-void (*thJoyFunc)() = NULL;
-// void (*thJoyFunc)() = SDL_GCHandler;
+// void (*thJoyFunc)() = NULL;
+void (*thJoyFunc)() = SDL_GCHandler;
 // void (*thJoyFunc)() = Web_GCHandler;
 
 bool GCInit() {

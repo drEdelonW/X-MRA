@@ -19,7 +19,7 @@ void SDL_GCHandler() {
     for (int i = 0; i < numJoysticks; i++) {
         if (SDL_IsGameController(i)) {
             gPad = SDL_GameControllerOpen(i);
-            if (gPad) { LOG("Game controller connected: %s\n", SDL_GameControllerName(gPad)); break; }
+            if (gPad)   LOG("Game controller connected: %s\n", SDL_GameControllerName(gPad));
             else        LOG("Could not open game controller %i: %s\n", i, SDL_GetError());
         } else          LOG("Joystick %i is not a game controller.\n", i);
     }
@@ -75,7 +75,6 @@ void SDL_GCHandler() {
                         default: WARNING("unhandled AXIS [0x%X]\n", event.caxis.axis);   break;
                     }
                 } break;
-
 
                 case SDL_CONTROLLERBUTTONDOWN:
                 case SDL_CONTROLLERBUTTONUP: {

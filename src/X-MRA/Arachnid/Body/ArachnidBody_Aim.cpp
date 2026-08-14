@@ -11,14 +11,14 @@ bool ArachnidBody::AimSetAngle(Angle  azimuth, Angle  elevation) {
         if (!isnan(azimuth.asRadians())) {
             if (fabsf(azimuth.asDegrees()) > AZIM_LIMIT)
                 return false;
-
-            _azimuth = azimuth;
+            else
+                _azimuth = azimuth;
         }
         else {
             if (fabsf(elevation.asDegrees()) > ELEV_LIMIT)
                 return false;
-
-            _elevation = elevation;
+            else
+                _elevation = elevation;
         }
     }
     else {
@@ -29,10 +29,12 @@ bool ArachnidBody::AimSetAngle(Angle  azimuth, Angle  elevation) {
         _azimuth = azimuth;
         _elevation = elevation;
     }
+#if 0
     LOG("az[%f],el[%f]\n",
         _azimuth.asDegrees(),
         _elevation.asDegrees()
     );
+#endif
     _ctrlMatrix = M4x4::mxRotY(_elevation.asRadians());
     _ctrlMatrix *= M4x4::mxRotZ(_azimuth.asRadians());
 

@@ -68,3 +68,5 @@ private:
    Vector3D legToBody(Vector3D legPos);
 };
 typedef ArachnidLeg* ArachnidLeg_p;
+
+typedef Phalanx_t sLeg_t[PhalNum];

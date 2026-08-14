@@ -18,9 +18,8 @@ sFreeNove::sFreeNove(
     _enabled(true)
 {}
 
-#include "terminal_tools.h"
 Angle sFreeNove::getAngle() const { return _currentAngle; }
-void sFreeNove::setAngle(const Angle& angle) {
+void  sFreeNove::setAngle(const Angle& angle) {
     if ((!_enabled) ||
         (isnan(angle.asRadians()))
     )   return;
@@ -43,14 +42,13 @@ void sFreeNove::setAngle(const Angle& angle) {
     );
 }
 
-Angle sFreeNove::getAngleOffset()  const { return _offset;}
-void  sFreeNove::setAngleOffset(const Angle& angle) { _offset = angle; }
+Angle sFreeNove::getAngleOffset()   const { return _offset;}
+void  sFreeNove::setAngleOffset(const Angle& angle)     { _offset = angle; }
 
-Angle sFreeNove::getAngleMax() const { return _maxAngle;}
+Angle sFreeNove::getAngleMax()  const { return _maxAngle;}
+void  sFreeNove::setReversion(const rotDir_t isReversed)    { _reversed = isReversed; }
 
-void  sFreeNove::setReversion(const rotDir_t isReversed )  { _reversed = isReversed; }
-
-bool  sFreeNove::isEnabled()       const { return _enabled; }
+bool  sFreeNove::isEnabled()    const { return _enabled; }
 void  sFreeNove::enable() {
     _enabled = true;
     setAngle(_currentAngle);

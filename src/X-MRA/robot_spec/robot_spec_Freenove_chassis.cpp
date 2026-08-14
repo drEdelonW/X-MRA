@@ -70,8 +70,6 @@ sFreeNove Servo[] = {
 
 #include "pwmServoJoint.hpp"
 
-typedef Phalanx_t sLeg_t[PhalNum];
-
 sLeg_t FrontLeft = {
     [Coxa]  = { .jn = (ServoJoint{Servo[0], deg(0)}),  .len = mm( 27.f  )},
     [Femur] = { .jn = (ServoJoint{Servo[1], deg(35)}), .len = mm( 85.1f )},

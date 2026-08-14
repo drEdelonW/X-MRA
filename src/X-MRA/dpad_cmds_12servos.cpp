@@ -75,14 +75,14 @@ static void _begin() {
     bS12[KEY_4] = _4;    bS12[KEY__4] = __4;
     bS12[KEY_5] = _5;    bS12[KEY__5] = __5;
     bS12[KEY_6] = _6;    bS12[KEY__6] = __6;
-    bS12[KEY_7] = _7;    bS12[KEY__7] = __7;
-    bS12[KEY_8] = _8;    bS12[KEY__8] = __8;
-    bS12[KEY_9] = _9;    bS12[KEY__9] = __9;
-    bS12[KEY_0] = _10;   bS12[KEY__0] = __10;
+    // bS12[KEY_7] = _7;    bS12[KEY__7] = __7;
+    // bS12[KEY_8] = _8;    bS12[KEY__8] = __8;
+    // bS12[KEY_9] = _9;    bS12[KEY__9] = __9;
+    // bS12[KEY_0] = _10;   bS12[KEY__0] = __10;
 
-    bS12[KEY_Q]  = _on;  bS12[KEY__Q] = _off;
-    bS12[KEY_W]  = _1on; bS12[KEY__W] = _1off;
-    bS12[KEY_E]  = _2on; bS12[KEY__E] = _2off;
+    bS12[KEY__Q] = _on;  bS12[KEY_Q] = _off;
+    bS12[KEY__W] = _1on; bS12[KEY_W] = _1off;
+    bS12[KEY__E] = _2on; bS12[KEY_E] = _2off;
 
     bS12[KEY__A] = adcReadAll;
 }

@@ -41,8 +41,17 @@ cd /opt/hexafpv/ && motion -c cam.conf
 sudo apt-get update
 sudo apt-get install bluez bluez-tools
 sudo apt-get install bluez libbluetooth-dev
+rfkill list
+0: hci0: Bluetooth
+        Soft blocked: yes   <== bad
+        Hard blocked: no
+1: phy0: Wireless LAN
+        Soft blocked: no
+        Hard blocked: no
+sudo rfkill unblock bluetooth
 ```
 
+    [A0:FA:9C:EB:79:A9] hacky DualSense Wireless Controller
     [10:18:49:62:5C:3C] hacky DS
     [AC:36:1B:5C:14:6E] black DS
 

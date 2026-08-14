@@ -21,21 +21,21 @@ void Angle::setDegrees(Degrees d) { _aRadians = d.dValue * (M_PI / 180.f); }
 Angle Angle::operator-() const { return Angle{ Radians(-_aRadians) }; }
 
 Angle  Angle::operator+( const Angle& other) const  { return Angle(Radians{_aRadians + other._aRadians}); }
-Angle& Angle::operator+=(const Angle& other)        { _aRadians += other._aRadians; return *this; }
+Angle& Angle::operator+=(const Angle& other)        { return *this = *this + other; }
 Angle  Angle::operator-( const Angle& other) const  { return Angle(Radians{_aRadians - other._aRadians}); }
-Angle& Angle::operator-=(const Angle& other)        { _aRadians -= other._aRadians; return *this; }
+Angle& Angle::operator-=(const Angle& other)        { return *this = *this - other; }
 
 // float scale
 Angle  Angle::operator*( float scalar) const { return Angle::fromRadians(_aRadians * scalar); }
-Angle& Angle::operator*=(float scalar)       { _aRadians *= scalar; return *this; }
+Angle& Angle::operator*=(float scalar)       { return *this = *this * scalar; }
 Angle  Angle::operator/( float scalar) const { return Angle::fromRadians(_aRadians / scalar); }
-Angle& Angle::operator/=(float scalar)       { _aRadians /= scalar; return *this; }
+Angle& Angle::operator/=(float scalar)       { return *this = *this / scalar; }
 
 // int scale
 Angle  Angle::operator*( int scalar) const   { return *this * static_cast<float>(scalar); }
-Angle& Angle::operator*=(int scalar)         { return *this *= static_cast<float>(scalar); }
+Angle& Angle::operator*=(int scalar)         { return *this = *this * scalar; }
 Angle  Angle::operator/( int scalar) const   { return *this / static_cast<float>(scalar); }
-Angle& Angle::operator/=(int scalar)         { return *this /= static_cast<float>(scalar); }
+Angle& Angle::operator/=(int scalar)         { return *this = *this / scalar; }
 
 // ----- comparisons -----
 bool Angle::operator==(const Angle& other) const { return _aRadians == other._aRadians; }
