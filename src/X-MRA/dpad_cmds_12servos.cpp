@@ -3,8 +3,6 @@
 static void _begin();
 dPadBind bS12 = { [KEY_UNKNOWN] = _begin };
 
-// #include "common_tools.h"
-
 #include "X-MRA.hpp"
 #include "WS2812_Spi.hpp"
 #define WS_LED_COUNT (7)
@@ -14,31 +12,36 @@ Ws2812Spi RING7(WS_LED_COUNT);
 #include "PS_FreeNove.hpp"  // sFreeNove
 extern sFreeNove Servo[];
 
-uint8_t lPatt = 0b111111;
-uint8_t jPatt = 0x07;
+uint8_t lPatt = 0b0111111;
+uint8_t jPatt = 0b0111;
 inline bool isActive(int i) {
      return
         (lPatt & (1 << (i / 3))) &&
         (jPatt & (1 << (i % 3)));
 }
 
-int map[7] = {2, 4, 1, 5, 0, 6, 3};
+int map[6] = {2, 4, 1, 5, 0, 6}; // 3
 bool isAll = false;
 static float _curAngle = 2.f;
+
 void allSv(float ang, float dAng = 0.f) {
-    LOG("\r[%.2f]    ", (_curAngle = ang));
+    LOG("\r[%.2f]    ",
+        (dAng == 0.f) ?
+            (_curAngle = ang) :
+            (_curAngle += dAng)
+    );
     for(int idxSv = 0; idxSv < servoNum; idxSv++)
         if (isAll ||
             (isActive(idxSv))
-            )   if (dAng != 0.f) {
+            ) {
+                if (dAng != 0.f)
                     Servo[idxSv].setAngle(
                         Servo[idxSv].getAngle() + deg(dAng)
                     );
-                } else {
+                else
                     Servo[idxSv].setAngle(deg(ang));
-                }
-
-    for (int i = 0; i < RING7.getNumLeds(); i++) {
+            }
+    for (int i = 0; i < 6; i++) {
         RING7.setPixel(
             map[i],
             RGB(
@@ -51,30 +54,28 @@ void allSv(float ang, float dAng = 0.f) {
     RING7.show();
 }
 
-static void _left()  { allSv(0.f, -_curAngle); }
-static void _right() { allSv(0.f, _curAngle); }
+static void _left()  { allSv(0.f, -0.1f); }
+static void _right() { allSv(0.f,  0.1f); }
 
-static void  _1()   { lPatt = (1 << 0); allSv(0); }
-static void  _2()   { lPatt = (1 << 1); allSv(0); }
-static void  _3()   { lPatt = (1 << 2); allSv(0); }
-static void  _4()   { lPatt = (1 << 3); allSv(0); }
-static void  _5()   { lPatt = (1 << 4); allSv(0); }
-static void  _6()   { lPatt = (1 << 5); allSv(0); }
-
-static void __1()   { lPatt ^= (1 << 0); allSv(0); }
-static void __2()   { lPatt ^= (1 << 1); allSv(0); }
-static void __3()   { lPatt ^= (1 << 2); allSv(0); }
-static void __4()   { lPatt ^= (1 << 3); allSv(0); }
-static void __5()   { lPatt ^= (1 << 4); allSv(0); }
-static void __6()   { lPatt ^= (1 << 5); allSv(0); }
+static void  _1()   { lPatt ^= (1 << 0); allSv(0); }
+static void __1()   { lPatt  = (1 << 0); allSv(0); }
+static void  _2()   { lPatt ^= (1 << 1); allSv(0); }
+static void __2()   { lPatt  = (1 << 1); allSv(0); }
+static void  _3()   { lPatt ^= (1 << 2); allSv(0); }
+static void __3()   { lPatt  = (1 << 2); allSv(0); }
+static void  _4()   { lPatt ^= (1 << 3); allSv(0); }
+static void __4()   { lPatt  = (1 << 3); allSv(0); }
+static void  _5()   { lPatt ^= (1 << 4); allSv(0); }
+static void __5()   { lPatt  = (1 << 4); allSv(0); }
+static void  _6()   { lPatt ^= (1 << 5); allSv(0); }
+static void __6()   { lPatt  = (1 << 5); allSv(0); }
 
 static void __7()   { jPatt ^= (1 << 0); allSv(0); }
 static void __8()   { jPatt ^= (1 << 1); allSv(0); }
 static void __9()   { jPatt ^= (1 << 2); allSv(0); }
 
-
-static void _on()  { LOG("ON\n");  PowerAllow(true);  }
-static void _off() { LOG("OFF\n"); PowerAllow(false); }
+static void _on()   { LOG("ON\n");  PowerAllow(true);  }
+static void _off()  { LOG("OFF\n"); PowerAllow(false); }
 
 static void _1on()  { LOG("1 ON\n");  Servo[1].enable();  }
 static void _1off() { LOG("1 OFF\n"); Servo[1].disable(); }
@@ -99,7 +100,7 @@ static void _begin() {
     bS12[KEY_RIGHT] = _right;
 
     bS12[KEY_ESCAPE] = dPadQuit;
-    bS12[KEY_L] = _callLegs;
+    bS12[KEY_L]      = _callLegs;
 
     bS12[KEY_1] = _1;    bS12[KEY__1] = __1;
     bS12[KEY_2] = _2;    bS12[KEY__2] = __2;
@@ -119,4 +120,6 @@ static void _begin() {
     bS12[KEY__E] = _2on; bS12[KEY_E] = _2off;
 
     bS12[KEY__A] = adcReadAll;
+
+    allSv(0);
 }
