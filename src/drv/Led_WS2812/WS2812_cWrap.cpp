@@ -21,13 +21,11 @@ void wsLedTest() {
     LOG("WS2812: blue\n");  strip.fill(Bright * Colors::Blue);  strip.show(); usleep(600000);
 
     LOG("WS2812: chase (confirms per-pixel addressing / real strip length)\n");
-    for (int pass = 0; pass < 2; ++pass) {
+    for (int pass = 0; pass < 2; ++pass)
         for (int i = 0; i < strip.getNumLeds(); i++) {
             strip.clear(); strip.setPixel(i, Bright * Colors::Blue); strip.show(); usleep(240000);
         }
-    }
 
     LOG("WS2812: off\n");
-    strip.clear();
-    strip.show();
+    strip.clear(); strip.show();
 }

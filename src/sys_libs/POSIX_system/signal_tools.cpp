@@ -5,16 +5,16 @@
 #include "common_tools.h"
 
 static void handle_signal(int signal) {
-    if ((signal == SIGINT) ||
-        (signal == SIGTERM) ||
-        (signal == SIGHUP)     // TODO: fix messages
-        ) {
-        WARNING("Received SIGINT (Ctrl+C). Exiting...\n");
-        sysDeinit();
-        exit(0);
+    switch (signal) {
+        case SIGINT:
+        case SIGTERM:
+        case SIGHUP: {   // TODO: fix messages
+            WARNING("Received SIGINT (Ctrl+C). Exiting...\n");
+            sysDeinit();
+            exit(0);
+        }
+        default:    WARNING("Unhandled signal is[%d]\n", signal);
     }
-    else
-        WARNING("Unhandled signal is[%d]\n", signal);
 }
 
 #include <termios.h>

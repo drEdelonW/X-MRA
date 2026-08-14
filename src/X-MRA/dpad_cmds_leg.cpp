@@ -88,7 +88,7 @@ static void _goHome()  { _curPose = {DSTx, DSTy, DSTz};  XMRA.trySetOffs(_curPos
 static void _info() {
     for (int idxLeg = 0; idxLeg < 6; idxLeg++){
         LOG("[%d] ", idxLeg);
-        LOG("legSpace:");       XMRA._legs[idxLeg].tipPosLegSpace(deg(0), deg(0), deg(0)).print();
+        LOG("legSpace:");       XMRA._legs[idxLeg].tipPosLegSpace( deg(0), deg(0), deg(0)).print();
         LOG("\t bodySpace:");   XMRA._legs[idxLeg].tipPosBodySpace(deg(0), deg(0), deg(0)).print();
         LOG("\n");
     }
@@ -96,7 +96,8 @@ static void _info() {
 
 static void _begin() {
     LOG(CLEAR_SCREEN
-        "Leg dPad begin\n"
+        TEXT_BOLD TEXT_WHITE
+        "Leg dPad begin\n" TEXT_RESET
         "</>        - {x}\n"
         "^/v        - {y}\n"
         "Sh + ^/v   - {z}\n"
