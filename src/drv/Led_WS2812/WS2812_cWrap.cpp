@@ -5,7 +5,6 @@
 #include <unistd.h> // usleep()
 
 #define WS_LED_COUNT    (7) // TODO: adjust to the actual number of LEDs wired on WB_LED (GPIO10)
-float Bright = 0.01f;       // keep low for a first bring-up test (0.0-1.0, multiplier on Colors::*)
 
 void wsLedTest() {
     Ws2812Spi strip(WS_LED_COUNT);
@@ -16,6 +15,7 @@ void wsLedTest() {
         return;
     }
 
+    float Bright = 0.01f;
     LOG("WS2812: red\n");   strip.fill(Bright * Colors::Red);   strip.show(); usleep(600000);
     LOG("WS2812: green\n"); strip.fill(Bright * Colors::Green); strip.show(); usleep(600000);
     LOG("WS2812: blue\n");  strip.fill(Bright * Colors::Blue);  strip.show(); usleep(600000);

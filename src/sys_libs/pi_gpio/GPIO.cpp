@@ -32,7 +32,7 @@ GpioLine::GpioLine(
         if (_rqCfg = gpiod_request_config_new()) {
             gpiod_request_config_set_consumer(_rqCfg, "gpio_line");
             if (_rq = gpiod_chip_request_lines(chip.handle(), _rqCfg, _lineCfg)) {
-                // ok
+                return; // ok
             }
             else perror("gpiod_chip_request_lines()");
         }   else perror("gpiod_request_config_new()");

@@ -22,10 +22,9 @@
 
 #include "WS_RGB.hpp"
 
-#define WS2812_MAX_LEDS    (32)  // static buffer cap - raise if a longer strip ever gets wired
-// #define WS2812_RESET_BYTES (150) // ~500us of low @2.4MHz, WS2812 needs >=50us to latch
-#define BIT_MULT  (3)
-// #define WS2812_FRAME_BYTES ((WS2812_MAX_LEDS * 3) * BIT_MULT) // payload
+#define WS2812_MAX_LEDS (32) // static buffer cap - raise if a longer strip ever gets wired
+#define BIT_MULT        (3)  // SPI bits per WS2812 bit (3-bit encoding, see .cpp)
+
 class Ws2812Spi {
   public:
     explicit Ws2812Spi(int ledCount, cStrRO device = "/dev/spidev0.0");
@@ -37,19 +36,20 @@ class Ws2812Spi {
     bool ok() const { return _fd >= 0; }
     int  getNumLeds() const { return _ledCount; }
 
-    void setPixel(int index, RGB color);
+    void setPixel(unsigned int index, RGB color);
+    RGB getPixel(unsigned int index) const { return (index < _ledCount)? _pixels[index] : RGB{}; }
     void fill(RGB color);
     void clear() { fill(RGB{}); }
 
-    bool show(); // encodes _pixels[] and pushes it out over SPI
+    bool show(); // pushes _pixels[] over SPI; caller must leave a WS2812 latch gap (~280us+) between calls - not yet done internally
 
   private:
     int     _ledCount;
     int     _fd = -1;
     RGB     _pixels[WS2812_MAX_LEDS] = {};
-    uint8_t _spiFrame[sizeof(_pixels) * BIT_MULT] = {}; // payload
+    uint8_t _spiFrame[sizeof(_pixels) * BIT_MULT] = {};
 
-    int     _len;
-    int     _bitPos;
+    int     _len    = 0; // _spiFrame write cursor, byte-granular
+    int     _bitPos = 0; // bit cursor within _spiFrame[_len]
     void    _pushBits(uint8_t value);
 };
