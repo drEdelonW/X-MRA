@@ -7,7 +7,9 @@ GpioChip chip;
 
 #define BUZZER (17)
 GpioLine Buzzer(chip,  BUZZER);
-void beep(bool bz) { Buzzer.setB(bz); }
+void beep(bool bz) {
+    //  Buzzer.setB(bz);1
+     }
 
 #include "i2cBus_EndPiont.hpp"
 i2cBus iBus(1, true);
@@ -43,9 +45,9 @@ sFreeNove Servo[] = {
     [2]  = {PwCh(31), CW }, //Tibia
 
     //FrontRight
-    [3]  = {PwCh(22), CCW}, //Coxa
-    [4]  = {PwCh(23), CCW}, //Femur
-    [5]  = {PwCh(27), CCW}, //Tibia
+    [3]  = {PwCh(23), CCW}, //Coxa
+    [4]  = {PwCh(27), CCW}, //Femur
+    [5]  = {PwCh(22), CCW}, //Tibia
 
     //MidleLeft
     [6]  = {PwCh(12), CCW}, //Coxa
@@ -53,9 +55,9 @@ sFreeNove Servo[] = {
     [8]  = {PwCh(10), CW }, //Tibia
 
     //MidleRight
-    [9]  = {PwCh(19), CCW}, //Coxa
+    [9]  = {PwCh(21), CCW}, //Coxa
     [10] = {PwCh(20), CCW}, //Femur
-    [11] = {PwCh(21), CCW}, //Tibia
+    [11] = {PwCh(19), CCW}, //Tibia
 
     //BackLeft
     [12] = {PwCh(13), CCW}, //Coxa
@@ -63,9 +65,9 @@ sFreeNove Servo[] = {
     [14] = {PwCh(15), CW }, //Tibia
 
     //BackRight
-    [15] = {PwCh(16), CCW}, //Coxa
+    [15] = {PwCh(18), CCW}, //Coxa
     [16] = {PwCh(17), CCW}, //Femur
-    [17] = {PwCh(18), CCW}, //Tibia
+    [17] = {PwCh(16), CCW}, //Tibia
 };
 
 #include "pwmServoJoint.hpp"

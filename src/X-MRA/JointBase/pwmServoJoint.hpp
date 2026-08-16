@@ -10,8 +10,8 @@ public:
         Angle offset = deg(  0.f)
     ):
         _servo(servo),
-        _min(-(_servo.getAngle() / 2.f)),
-        _max( (_servo.getAngle() / 2.f)),
+        _min(-(_servo.getAngleMax() / 2.f)),
+        _max( (_servo.getAngleMax() / 2.f)),
         _offset(offset),
         _plan(deg(NAN)),
         _valid(false),
@@ -22,8 +22,8 @@ public:
     bool checkPose(const Angle& logical) override {
         if (std::isnan(logical.asRadians()))  // NaN -> skip on apply
             return _skip = true;
-
-        _skip = false;
+        else
+            _skip = false;
 
         Angle phys = logical + _offset;
         if ((phys < _min) ||

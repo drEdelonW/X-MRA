@@ -12,7 +12,9 @@ bool ArachnidLeg::checkTipPosLegSpace(Vector3D pos) {
 }
 
 bool ArachnidLeg::checkTipPosBodySpace(Vector3D bodyPos) {
-    return _checkTipPosLegSpace(bodyToLeg(bodyPos));
+    return _checkTipPosLegSpace(
+        bodyToLeg(bodyPos)
+    );
 }
 
 Vector3D ArachnidLeg::tipPosBodySpace(Angle coxaAng, Angle femurAng, Angle tibiaAng) {

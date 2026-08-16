@@ -10,7 +10,8 @@ static void _enableRawMode(struct termios* orig) {
     tcgetattr(STDIN_FILENO, orig);
 
     struct termios raw = *orig;
-    raw.c_lflag &= ~(ICANON | ECHO);
+    raw.c_lflag &= ~(ICANON);
+    // raw.c_lflag &= ~(ICANON | ECHO);
     restoreTerminal(&raw);
 }
 

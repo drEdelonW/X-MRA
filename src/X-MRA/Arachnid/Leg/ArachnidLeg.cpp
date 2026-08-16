@@ -20,7 +20,7 @@ bool ArachnidLeg::checkJointAngles(
     Angle tibiaAngle
 ) {
     return
-         _Phalanx[Coxa].jn.checkPose( coxaAngle) &&
+        _Phalanx[ Coxa].jn.checkPose( coxaAngle) &&
         _Phalanx[Femur].jn.checkPose(femurAngle) &&
         _Phalanx[Tibia].jn.checkPose(tibiaAngle);
 }

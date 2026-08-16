@@ -17,7 +17,7 @@ extern sFreeNove Servo[];
     uint8_t jPatt = 0b0111; // Tibia Femur Coxa
 #else
     uint8_t lPatt = 0b0000001;
-    uint8_t jPatt = 0b0110; // Tibia Femur Coxa
+    uint8_t jPatt = 0b0100; // Tibia Femur Coxa
 #endif
 inline bool isActive(int i) {
      return
@@ -48,7 +48,7 @@ void allSv(float ang, float dAng = 0.f) {
         RING7.setPixel(
             map[i],
             RGB(
-                ((jPatt & (1 << Coxa)) != 0),
+                ((jPatt & (1 << Coxa))  != 0),
                 ((jPatt & (1 << Femur)) != 0),
                 ((jPatt & (1 << Tibia)) != 0)
             ) * ((lPatt & (1 << i)) != 0)
@@ -57,10 +57,8 @@ void allSv(float ang, float dAng = 0.f) {
     RING7.show();
 }
 
-static void __left()    { allSv(0.f, -0.1f); }
-static void _left()     { allSv(0.f, -1.f); }
-static void __right()   { allSv(0.f,  0.1f); }
-static void _right()    { allSv(0.f,  1.f); }
+static void _left()  { allSv(0.f, -1.f); }   static void __left()  { allSv(0.f, -0.1f); }
+static void _right() { allSv(0.f,  1.f); }   static void __right() { allSv(0.f,  0.1f); }
 
 static void  _1()   { lPatt ^= (1 << 0); allSv(0); }
 static void __1()   { lPatt  = (1 << 0); allSv(0); }
@@ -75,9 +73,9 @@ static void __5()   { lPatt  = (1 << 4); allSv(0); }
 static void  _6()   { lPatt ^= (1 << 5); allSv(0); }
 static void __6()   { lPatt  = (1 << 5); allSv(0); }
 
-static void __7()   { jPatt ^= (1 << 0); allSv(0); }
-static void __8()   { jPatt ^= (1 << 1); allSv(0); }
-static void __9()   { jPatt ^= (1 << 2); allSv(0); }
+static void __7()   { jPatt ^= (1 << Coxa);  allSv(0); }
+static void __8()   { jPatt ^= (1 << Femur); allSv(0); }
+static void __9()   { jPatt ^= (1 << Tibia); allSv(0); }
 
 static void _0()   { allSv(0, 0); }
 

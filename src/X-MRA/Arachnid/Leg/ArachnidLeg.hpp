@@ -2,14 +2,15 @@
 #include "Matrix4x4.hpp" // #include "Vector3d.hpp"
 #include "Phalanx.hpp"
 
-/*  ArachnidLeg:   /|
-                  / |
-   [Body]    [Femur]|
-      |        /    |
-      |-[Coxa]/     |
-      |          [Tibia]
-   [Body]           |
-                    |
+/*  ArachnidLeg:  [Tibia]
+                    /|
+                   / |
+   [Body]         /  |
+      |          /   |
+   [Coxa]---[Femur]  |
+      |              |
+   [Body]            |
+                     |
 ==============={Ground}==============
 */
 

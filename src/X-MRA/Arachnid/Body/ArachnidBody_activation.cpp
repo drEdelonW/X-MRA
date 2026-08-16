@@ -3,27 +3,30 @@
 #include "terminal_tools.h"
 #include "CLAMP.h"
 
+#if 0
 // Vector3D cPark = V0;
-float cPark = 85.f;
-float cSafe = 0.f;
+    float cPark =   85.f;   float cSafe =   0.f;
+    float fPark = -125.f;   float fSafe = -90.f;
+    float tPark =  -80.f;   float tSafe = -30.f;
+#   define PHASE_DUR  us(1000000) /* 1 sec duration */
+#else
+    float cPark =  60.f;        float cSafe =   0.f;    //
+    float fPark = -35.f -79;    float fSafe = -35.f;    // neg is rise ?
+    float tPark = -79.f;        float tSafe =  45.f;    float tRise = 0.f;// pos out
+#   define PHASE_DUR  us(2000000) /* 1 sec duration */
+#endif
 
-float fPark = -125.f;
-float fSafe = -90.f;
-
-float tPark = -80.f;
-float tSafe = -30.f;
-
-#define PHASE_DUR  us(1000000) /* 1 sec duration */
 
 Vector3D ArmSQNC[] = {
-    {cPark, fPark, tPark},
-    {cPark, fPark, tSafe},
-    {cSafe, fPark, tSafe},
-    {cSafe, fSafe, tSafe},
+    [0] = {cPark, fPark, tPark},  // Park Tibia
+    [1] = {cPark, fPark, tSafe},  // Rise Tibia
+    [2] = {cSafe, fPark, tSafe},
+    [3] = {cSafe, fSafe, tRise},
+    [4] = {cSafe, fSafe, tRise},
 };
 
 
-
+#include "CLAMP.h"
 static pattern_t pattern = (MAX_LEGS - 1);
 bool ArachnidBody::animAngDeg(
     Vector3D from,
@@ -31,18 +34,15 @@ bool ArachnidBody::animAngDeg(
     MicroSeconds duration
 ) {
     MicroSeconds now = microsNow();
-    MicroSeconds tsStart = now;
     MicroSeconds tsEnd = now + duration;
+#if 1
+    MicroSeconds tsStart = now;
     Vector3D delta = to - from;
     setPatMask(pattern, LEGS_ALL);
     for (
         Vector3D curPose = from;
-        (now = microsNow()) < tsEnd;
-        curPose += delta *
-            (
-                (now - tsStart) /
-                    duration
-            )
+        now < tsEnd;
+        curPose += delta * (((now = microsNow()) - tsStart) / duration)
         ) {
         // curPose.print(); LOG("now[%lld]\n", now);
         PATTERN_LEG(pattern) {
@@ -60,7 +60,22 @@ bool ArachnidBody::animAngDeg(
                 return false;
             }
         }
+        tsStart = now;
     }
+#else
+    PATTERN_LEG(pattern) {
+        /**/ if (legIdx >= 4)     ClampMoreThen(&to.x, 30.f);
+        else if (legIdx >= 2)     ClampMoreThen(&to.x, 60.f);
+
+        _legs[legIdx].tryJointAngles(
+            (legIdx % 2) ?
+                deg(to.x) : -deg(to.x),
+            deg(to.y),
+            deg(to.z)
+        );
+    }
+#endif
+    while (tsEnd > microsNow()) {}
     return true;
 }
 
@@ -86,10 +101,12 @@ bool ArachnidBody::ARM() {
     animAngDeg(ArmSQNC[0], ArmSQNC[1], PHASE_DUR);
     animAngDeg(ArmSQNC[1], ArmSQNC[2], PHASE_DUR);
     animAngDeg(ArmSQNC[2], ArmSQNC[3], PHASE_DUR / 2);
+#if 1
     animAngDeg(ArmSQNC[3], ArmSQNC[4], PHASE_DUR);
 
     AimSetAngle(deg(0), deg(0));
     trySetOffs(Vector3D{});
+#endif
 
     LOG("DONE\n");
     return _isArmed = true;
@@ -129,7 +146,9 @@ void ArachnidBody::DISARM() {
 
     trySetOffs(Vector3D{});
     usleep(1000000);
+#if 0
     animAngDeg(ArmSQNC[4], ArmSQNC[3], PHASE_DUR);
+#endif
     animAngDeg(ArmSQNC[3], ArmSQNC[2], PHASE_DUR);
     animAngDeg(ArmSQNC[2], ArmSQNC[1], PHASE_DUR);
     animAngDeg(ArmSQNC[1], ArmSQNC[0], PHASE_DUR);
