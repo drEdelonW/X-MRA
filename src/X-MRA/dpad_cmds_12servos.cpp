@@ -16,8 +16,8 @@ extern sFreeNove Servo[];
     uint8_t lPatt = 0b0111111;
     uint8_t jPatt = 0b0111; // Tibia Femur Coxa
 #else
-    uint8_t lPatt = 0b0000001;
-    uint8_t jPatt = 0b0100; // Tibia Femur Coxa
+    uint8_t lPatt = 0b0111111;
+    uint8_t jPatt = 0b0111; // Tibia Femur Coxa
 #endif
 inline bool isActive(int i) {
      return

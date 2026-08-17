@@ -10,8 +10,9 @@ Angle Angle::fromDegrees(float deg) { return Angle(Degrees{deg}); }
 Angle Angle::fromRadians(float rad) { return Angle(Radians{rad}); }
 
 // ----- conversions -----
-float Angle::asRadians() const { return _aRadians; }
-float Angle::asDegrees() const { return _aRadians * (180.f / M_PI); }
+float Angle::asRAW() const { return _aRadians; }
+float Angle::asRadians() const { return asRAW(); }
+float Angle::asDegrees() const { return asRAW() * (180.f / M_PI); }
 
 // ----- setters -----
 void Angle::setRadians(Radians r) { _aRadians = r.rValue; }

@@ -19,8 +19,9 @@ static void _adc() { adcReadAll(); }
 #include "WS2812_cWrap.h" // wsLedTest()
 
 #include "dpad.h" // dpad()
-extern dPadBind bL;     static void _dpadL() { dpad(bL); }
 extern dPadBind bS12;   static void _dpadS() { dpad(bS12); }
+extern dPadBind bL;     static void _dpadL() { dpad(bL); }
+extern dPadBind bB;     static void _dpadB() { dpad(bB); }
 
 static void _ver_info() { ver_info(); }
 static void _exit() { exit(0); }
@@ -34,8 +35,9 @@ const CommandCLI Cmds[] = {
     {.name = "led",     .function = wsLedTest,  .description = "WS2812 addressable LED test"},
 
     // {.name = "dpad",    .function = _dpadL,     .description = "keyboard control Tool"},
-    {.name = "dpadL",   .function = _dpadL,     .description = "Leg keyboard control Tool"},
     {.name = "dpadS",   .function = _dpadS,     .description = "Servo 18 keyboard control Tool"},
+    {.name = "dpadL",   .function = _dpadL,     .description = "Leg keyboard control Tool"},
+    {.name = "dpadB",   .function = _dpadB,     .description = "Body keyboard control Tool"},
     {.name = "jpad",    .function = jpad,       .description = "SDL GamePad control Tool"},
     // {.name = "wpad",    .function = wpad,       .description = "Web GamePad control Tool"},
 

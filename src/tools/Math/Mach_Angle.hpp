@@ -28,6 +28,7 @@ public:
     static Angle fromDegrees(float deg);
     static Angle fromRadians(float rad);
 
+    float asRAW() const;    // get in stored data format without unnecessary distortions
     float asRadians() const;
     float asDegrees() const;
 

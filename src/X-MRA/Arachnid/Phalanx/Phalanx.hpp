@@ -4,15 +4,8 @@
 #include "JointBase.hpp"
 #include "pwmServoJoint.hpp"
 
-enum LegJoint {
-   Coxa,
-   Femur,
-   Tibia,
-   PhalNum
-};
-
 typedef struct {
-//    JointBase_p jn;
+//    JointBase_p jn; // TODO: use abstract type
    ServoJoint  jn;
    Millimeters len;
 } Phalanx_t;

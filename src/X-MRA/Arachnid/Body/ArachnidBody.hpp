@@ -127,13 +127,13 @@ private:
     int _legCount = 0;
     bool _isArmed;
 
-    LegMask     _legMaskLimit;
-    LegMask     _legPattMask[MAX_LEGS];
-    M4x4   _legPattMatrix[MAX_LEGS];
-    int8_t      _lastLegError;
+    LegMask _legMaskLimit;
+    LegMask _legPattMask[MAX_LEGS];
+    M4x4    _legPattMatrix[MAX_LEGS];
+    int8_t  _lastLegError;
 
-    M4x4   _ctrlMatrix;
-    M4x4   _stabMatrix;
+    M4x4    _ctrlMatrix;
+    M4x4    _stabMatrix;
 
     LegExtras   _legExtras[MAX_LEGS];
 

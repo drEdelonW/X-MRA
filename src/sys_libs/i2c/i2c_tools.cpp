@@ -3,8 +3,9 @@
 
 #include "i2cBus_EndPiont.hpp"
 // Scan all I2C addresses on the bus
+extern i2cBus iBus;
 void busScan() {
-    i2cBus iBus(1, true);
+    // i2cBus iBus(1, true);
     if (!iBus.isInited())
         return;
 
@@ -19,13 +20,13 @@ void busScan() {
                 addr, get_i2cDevName(addr)
             );
     }
-    iBus.Deinit();
+    // iBus.Deinit();
     return;
 }
 
 // Dump register contents of a specific I2C device
 int dumpAddr(uint8_t addr) {
-    i2cBus iBus(1, true);
+    // i2cBus iBus(1, true);
     if (!iBus.isInited())
         return 1;
 
@@ -44,6 +45,6 @@ int dumpAddr(uint8_t addr) {
         );
     }
 
-    iBus.Deinit();
+    // iBus.Deinit();
     return 0;
 }

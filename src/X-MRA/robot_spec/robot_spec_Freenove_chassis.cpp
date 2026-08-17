@@ -40,32 +40,32 @@ void PowerAllow(bool alw) {
 #include "PS_FreeNove.hpp"  // sFreeNove
 sFreeNove Servo[] = {
     //FrontLeft
-    [0]  = {PwCh(9),  CCW}, //Coxa
+    [0]  = {PwCh(9),  CCW, deg(90.f)}, //Coxa
     [1]  = {PwCh(8),  CW }, //Femur
     [2]  = {PwCh(31), CW }, //Tibia
 
     //FrontRight
-    [3]  = {PwCh(23), CCW}, //Coxa
-    [4]  = {PwCh(27), CCW}, //Femur
-    [5]  = {PwCh(22), CCW}, //Tibia
+    [3]  = {PwCh(23), CCW, deg(90.f)}, //Coxa
+    [4]  = {PwCh(22), CCW}, //Femur
+    [5]  = {PwCh(27), CCW}, //Tibia
 
     //MidleLeft
-    [6]  = {PwCh(12), CCW}, //Coxa
+    [6]  = {PwCh(12), CCW, deg(90.f)}, //Coxa
     [7]  = {PwCh(11), CW }, //Femur
     [8]  = {PwCh(10), CW }, //Tibia
 
     //MidleRight
-    [9]  = {PwCh(21), CCW}, //Coxa
+    [9]  = {PwCh(21), CCW, deg(90.f)}, //Coxa
     [10] = {PwCh(20), CCW}, //Femur
     [11] = {PwCh(19), CCW}, //Tibia
 
     //BackLeft
-    [12] = {PwCh(13), CCW}, //Coxa
+    [12] = {PwCh(13), CCW, deg(90.f)}, //Coxa
     [13] = {PwCh(14), CW }, //Femur
     [14] = {PwCh(15), CW }, //Tibia
 
     //BackRight
-    [15] = {PwCh(18), CCW}, //Coxa
+    [15] = {PwCh(18), CCW, deg(90.f)}, //Coxa
     [16] = {PwCh(17), CCW}, //Femur
     [17] = {PwCh(16), CCW}, //Tibia
 };
@@ -73,39 +73,39 @@ sFreeNove Servo[] = {
 #include "pwmServoJoint.hpp"
 
 sLeg_t FrontLeft = {
-    [Coxa]  = { .jn = (ServoJoint{Servo[0], deg(0)}),  .len = mm( 27.f  )},
-    [Femur] = { .jn = (ServoJoint{Servo[1], deg(35)}), .len = mm( 85.1f )},
-    [Tibia] = { .jn = (ServoJoint{Servo[2], deg(0)}),  .len = mm(144.23f)}
+    [Coxa]  = { .jn = (ServoJoint{Servo[0]}),   .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[1]}),   .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[2]}),   .len = mm(144.23f)}
 };
 
 sLeg_t FrontRight = {
-    [Coxa]  = { .jn = (ServoJoint{Servo[3], deg(0)}),  .len = mm( 27.f  )},
-    [Femur] = { .jn = (ServoJoint{Servo[4], deg(35)}), .len = mm( 85.1f )},
-    [Tibia] = { .jn = (ServoJoint{Servo[5], deg(0)}),  .len = mm(144.23f)}
+    [Coxa]  = { .jn = (ServoJoint{Servo[3]}),   .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[4]}),   .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[5]}),   .len = mm(144.23f)}
 };
 
 sLeg_t MidleLeft = {
-    [Coxa]  = { .jn = (ServoJoint{Servo[6], deg(0)}),  .len = mm( 27.f  )},
-    [Femur] = { .jn = (ServoJoint{Servo[7], deg(35)}), .len = mm( 85.1f )},
-    [Tibia] = { .jn = (ServoJoint{Servo[8], deg(0)}),  .len = mm(144.23f)}
+    [Coxa]  = { .jn = (ServoJoint{Servo[6]}),   .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[7]}),   .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[8]}),   .len = mm(144.23f)}
 };
 
 sLeg_t MidleRight = {
-    [Coxa]  = { .jn = (ServoJoint{Servo[9],  deg(0)}),  .len = mm( 27.f  )},
-    [Femur] = { .jn = (ServoJoint{Servo[10], deg(35)}), .len = mm( 85.1f )},
-    [Tibia] = { .jn = (ServoJoint{Servo[11], deg(0)}),  .len = mm(144.23f)}
+    [Coxa]  = { .jn = (ServoJoint{Servo[9]}),   .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[10]}),  .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[11]}),  .len = mm(144.23f)}
 };
 
 sLeg_t BackLeft = {
-    [Coxa]  = { .jn = (ServoJoint{Servo[12], deg(0)}),  .len = mm( 27.f  )},
-    [Femur] = { .jn = (ServoJoint{Servo[13], deg(35)}), .len = mm( 85.1f )},
-    [Tibia] = { .jn = (ServoJoint{Servo[14], deg(0)}),  .len = mm(144.23f)}
+    [Coxa]  = { .jn = (ServoJoint{Servo[12]}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[13]}),  .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[14]}),  .len = mm(144.23f)}
 };
 
 sLeg_t BackRight = {
-    [Coxa]  = { .jn = (ServoJoint{Servo[15], deg(0)}),  .len = mm( 27.f  )},
-    [Femur] = { .jn = (ServoJoint{Servo[16], deg(35)}), .len = mm( 85.1f )},
-    [Tibia] = { .jn = (ServoJoint{Servo[17], deg(0)}),  .len = mm(144.23f)}
+    [Coxa]  = { .jn = (ServoJoint{Servo[15]}),  .len = mm( 27.f  )},
+    [Femur] = { .jn = (ServoJoint{Servo[16]}),  .len = mm( 85.1f )},
+    [Tibia] = { .jn = (ServoJoint{Servo[17]}),  .len = mm(144.23f)}
 };
 
 ArachnidLeg leg[] = {

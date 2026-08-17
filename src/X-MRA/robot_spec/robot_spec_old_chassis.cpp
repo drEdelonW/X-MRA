@@ -1,5 +1,5 @@
 #include "robot_spec.hpp"
-
+#error deprecated
 // https://ca.robotshop.com/products/lynxmotion-phoenix-3dof-hexapod-black-no-servos-electronics
 
 // #include "PS_MG996R.hpp"

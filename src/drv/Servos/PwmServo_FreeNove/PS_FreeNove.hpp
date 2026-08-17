@@ -2,16 +2,16 @@
 #include "proto_pwmServo.hpp"   // ProtoServo
 #include "proto_PWM.hpp"        // ProtoPWM
 
-#define FreeNove_noname_cfg     us(560), us(2650), deg(160), deg(90)
+// #define FreeNove_noname_cfg     deg(180.f), us(560), us(2650)
 class sFreeNove : public ProtoServo {
 public:
     sFreeNove(
         ProtoPWM& pwm,
         rotDir_t reversed       = CW,
+        Angle offset            = deg(0.f),
+        Angle maxAngle          = deg(180.f),
         MicroSeconds minPulse   = us(560),
-        MicroSeconds maxPulse   = us(2650),
-        Angle maxAngle          = deg(160),
-        Angle offset            = deg(90)
+        MicroSeconds maxPulse   = us(2650)
     );
 
     Angle getAngle() const override;
@@ -31,8 +31,9 @@ public:
 private:
     ProtoPWM& _pwm;
 
-    MicroSeconds    _minPulse;
-    MicroSeconds    _maxPulse;
+    MicroSeconds  _minPulse;
+    MicroSeconds  _PulseRange;
+
     Angle   _maxAngle;
     Angle   _offset;
 

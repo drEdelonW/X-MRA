@@ -11,18 +11,20 @@ ArachnidLeg::ArachnidLeg(
         [Tibia] = Phalanx[Tibia]
     }
 {
-    _configMount(offs, rotation);
+    _legToBody.reset(); // begin of forward matrix
+    _legToBody *= M4x4::mxRotZ(rotation.asRadians()); {
+        _legToBody *= M4x4::mxTrans(Vector3D{ offs, 0.f, 0.f }); {
+
+            _bodyToLeg.reset(); // begin of reverse matrix
+        } _bodyToLeg *= M4x4::mxTrans(Vector3D{ -offs, 0.f, 0.f });
+    } _bodyToLeg *= M4x4::mxRotZ(-rotation.asRadians());
 }
 
-bool ArachnidLeg::checkJointAngles(
-    Angle  coxaAngle,
-    Angle femurAngle,
-    Angle tibiaAngle
-) {
+bool ArachnidLeg::checkJointAngles(legJn Ang) {
     return
-        _Phalanx[ Coxa].jn.checkPose( coxaAngle) &&
-        _Phalanx[Femur].jn.checkPose(femurAngle) &&
-        _Phalanx[Tibia].jn.checkPose(tibiaAngle);
+        _Phalanx[ Coxa].jn.checkPose(Ang[ Coxa]) &&
+        _Phalanx[Femur].jn.checkPose(Ang[Femur]) &&
+        _Phalanx[Tibia].jn.checkPose(Ang[Tibia]);
 }
 
 Angle ArachnidLeg::getJointAngles(LegJoint jName){

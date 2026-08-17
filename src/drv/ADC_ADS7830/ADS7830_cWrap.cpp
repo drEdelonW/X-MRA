@@ -37,8 +37,9 @@ float vScale[8] = {
     ADC_RAW_SCALE, // ch7  Front legs - uncalibrated
 };
 #include "terminal_tools.h"
+extern i2cBus iBus;
 void adcReadAll() {
-    i2cBus iBus(1, true);
+    // i2cBus iBus(1, true);
     if (iBus.isInited()) {
         uint8_t values[8];
         ADS7830 adc(iBus);
@@ -52,7 +53,7 @@ void adcReadAll() {
                     values[ch],
                     values[ch] * vScale[ch]
                 );
-        iBus.Deinit();
+        // iBus.Deinit();
     }
     return;
 }

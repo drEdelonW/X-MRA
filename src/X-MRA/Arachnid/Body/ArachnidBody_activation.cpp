@@ -3,18 +3,10 @@
 #include "terminal_tools.h"
 #include "CLAMP.h"
 
-#if 0
-// Vector3D cPark = V0;
-    float cPark =   85.f;   float cSafe =   0.f;
-    float fPark = -125.f;   float fSafe = -90.f;
-    float tPark =  -80.f;   float tSafe = -30.f;
-#   define PHASE_DUR  us(1000000) /* 1 sec duration */
-#else
-    float cPark =  60.f;        float cSafe =   0.f;    //
-    float fPark = -35.f -79;    float fSafe = -35.f;    // neg is rise ?
-    float tPark = -79.f;        float tSafe =  45.f;    float tRise = 0.f;// pos out
-#   define PHASE_DUR  us(2000000) /* 1 sec duration */
-#endif
+float cPark =  60.f;        float cSafe =   0.f;    //
+float fPark = -35.f -79;    float fSafe = -35.f;    // neg is rise ?
+float tPark = -79.f;        float tSafe =  45.f;    float tRise = 0.f; // pos out
+#define PHASE_DUR  us(2000000) /* 1 sec duration */
 
 
 Vector3D ArmSQNC[] = {
@@ -50,10 +42,12 @@ bool ArachnidBody::animAngDeg(
             else if (legIdx >= 2)     ClampMoreThen(&curPose.x, 60.f);
 
             if (!_legs[legIdx].tryJointAngles(
-                    (legIdx % 2) ?
-                        deg(curPose.x) : -deg(curPose.x),
-                    deg(curPose.y),
-                    deg(curPose.z)
+                    (legJn){
+                        (legIdx % 2) ?
+                            deg(curPose.x) : -deg(curPose.x),
+                        deg(curPose.y),
+                        deg(curPose.z)
+                    }
                 )
             ) {
                 LOG("FALSE\n");
