@@ -170,9 +170,12 @@ git push github master --force  # mirror
 git push && git push github master --force
 ```
 
+```bash
 sudo apt install libgpiod-dev gpiod
 
 gpioinfo -c gpiochip0
+```
+"
 gpiochip0 - 58 lines:
         line   0:       "ID_SDA"                input
         line   1:       "ID_SCL"                input
@@ -232,3 +235,6 @@ gpiochip0 - 58 lines:
         line  55:       "RGMII_TXD1"            input
         line  56:       "RGMII_TXD2"            input
         line  57:       "RGMII_TXD3"            input
+"
+
+# SparkFun_BNO080_Arduino_Library  [https://github.com/sparkfun/SparkFun_BNO080_Arduino_Library/blob/main/src/SparkFun_BNO080_Arduino_Library.h]

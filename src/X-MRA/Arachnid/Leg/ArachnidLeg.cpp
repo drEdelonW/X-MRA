@@ -6,11 +6,12 @@ ArachnidLeg::ArachnidLeg(
     Angle       rotation
 ):
     _Phalanx{
-         [Coxa] = Phalanx[Coxa],
+        [ Coxa] = Phalanx[Coxa],
         [Femur] = Phalanx[Femur],
         [Tibia] = Phalanx[Tibia]
     }
 {
+    // TODO: make a decision - where responsibility of body space matrix
     _legToBody.reset(); // begin of forward matrix
     _legToBody *= M4x4::mxRotZ(rotation.asRadians()); {
         _legToBody *= M4x4::mxTrans(Vector3D{ offs, 0.f, 0.f }); {
