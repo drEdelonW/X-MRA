@@ -72,7 +72,7 @@ typedef int LegIdx_t;
 #define LEG_ERROR_OK        do { _lastLegError = MAX_LEGS;  return true;    } while (0)
 #define LEG_ERROR_DISARMED  do { _lastLegError = MAX_LEGS;  return false;   } while (0)
 #include "common_tools.h"
-#define LEG_ERROR           do { _lastLegError = legIdx;  LOG("[%d]LEG_ERROR\n",legIdx);  return false;   } while (0)
+#define LEG_ERROR           do { _lastLegError = legIdx;  LOG("[%d]LEG_ERROR\n",legIdx);  return false; } while (0)
 
 typedef unsigned int pattern_t;
 class ArachnidBody {

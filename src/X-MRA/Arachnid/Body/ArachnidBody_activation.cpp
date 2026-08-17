@@ -3,10 +3,10 @@
 #include "terminal_tools.h"
 #include "CLAMP.h"
 
-float cPark =  60.f;        float cSafe =   0.f;    //
-float fPark = -35.f -79;    float fSafe = -35.f;    // neg is rise ?
-float tPark = -79.f;        float tSafe =  45.f;    float tRise = 0.f; // pos out
-#define PHASE_DUR  us(2000000) /* 1 sec duration */
+float cPark =  90.f;    float cSafe =   0.f;    //
+float fPark =  3.f;     float fSafe =  30.f;    // neg is rise ?
+float tPark =  0.f;     float tSafe =  45.f;    float tRise = 10.f; // pos out
+#define PHASE_DUR  us(1000000) /* 1 sec duration */
 
 
 Vector3D ArmSQNC[] = {
@@ -25,51 +25,44 @@ bool ArachnidBody::animAngDeg(
     Vector3D to,
     MicroSeconds duration
 ) {
-    MicroSeconds now = microsNow();
-    MicroSeconds tsEnd = now + duration;
-#if 1
-    MicroSeconds tsStart = now;
-    Vector3D delta = to - from;
     setPatMask(pattern, LEGS_ALL);
-    for (
-        Vector3D curPose = from;
-        now < tsEnd;
-        curPose += delta * (((now = microsNow()) - tsStart) / duration)
-        ) {
+
+    MicroSeconds tsEnd = microsNow() + duration;
+#if 1
+    MicroSeconds tsStart = microsNow();
+    Vector3D delta = to - from;
+    Vector3D curPose = from;
+    for (; microsNow() < tsEnd;) {
         // curPose.print(); LOG("now[%lld]\n", now);
         PATTERN_LEG(pattern) {
-            /**/ if (legIdx >= 4)     ClampMoreThen(&curPose.x, 30.f);
-            else if (legIdx >= 2)     ClampMoreThen(&curPose.x, 60.f);
+            /**/ if (legIdx >= 4)   ClampMoreThen(&curPose.x, 30.f);
+            else if (legIdx >= 2)   ClampMoreThen(&curPose.x, 60.f);
 
-            if (!_legs[legIdx].tryJointAngles(
-                    (legJn){
-                        (legIdx % 2) ?
-                            deg(curPose.x) : -deg(curPose.x),
-                        deg(curPose.y),
-                        deg(curPose.z)
-                    }
-                )
-            ) {
+            legJn jAng = {deg(curPose.x), deg(curPose.y), deg(curPose.z)};
+            if (!(legIdx & 1))      jAng[Coxa] = -jAng[Coxa];
+
+            if (!_legs[legIdx].tryJointAngles(jAng)) {
                 LOG("FALSE\n");
                 return false;
             }
         }
-        tsStart = now;
+        curPose = from + delta * ((microsNow() - tsStart) / duration);
     }
 #else
-    PATTERN_LEG(pattern) {
-        /**/ if (legIdx >= 4)     ClampMoreThen(&to.x, 30.f);
-        else if (legIdx >= 2)     ClampMoreThen(&to.x, 60.f);
+        PATTERN_LEG(pattern) {
+            /**/ if (legIdx >= 4)   ClampMoreThen(&to.x, 30.f);
+            else if (legIdx >= 2)   ClampMoreThen(&to.x, 60.f);
 
-        _legs[legIdx].tryJointAngles(
-            (legIdx % 2) ?
-                deg(to.x) : -deg(to.x),
-            deg(to.y),
-            deg(to.z)
-        );
-    }
-#endif
+            legJn jAng = {deg(to.x), deg(to.y), deg(to.z)};
+            if (!(legIdx & 1))      jAng[Coxa] = -jAng[Coxa];
+
+            if (!_legs[legIdx].tryJointAngles(jAng)) {
+                LOG("FALSE\n");
+                return false;
+            }
+        }
     while (tsEnd > microsNow()) {}
+#endif
     return true;
 }
 
@@ -95,9 +88,9 @@ bool ArachnidBody::ARM() {
     animAngDeg(ArmSQNC[0], ArmSQNC[1], PHASE_DUR);
     animAngDeg(ArmSQNC[1], ArmSQNC[2], PHASE_DUR);
     animAngDeg(ArmSQNC[2], ArmSQNC[3], PHASE_DUR / 2);
-#if 1
     animAngDeg(ArmSQNC[3], ArmSQNC[4], PHASE_DUR);
 
+#if 1
     AimSetAngle(deg(0), deg(0));
     trySetOffs(Vector3D{});
 #endif
@@ -141,8 +134,8 @@ void ArachnidBody::DISARM() {
     trySetOffs(Vector3D{});
     usleep(1000000);
 #if 0
-    animAngDeg(ArmSQNC[4], ArmSQNC[3], PHASE_DUR);
 #endif
+    animAngDeg(ArmSQNC[4], ArmSQNC[3], PHASE_DUR);
     animAngDeg(ArmSQNC[3], ArmSQNC[2], PHASE_DUR);
     animAngDeg(ArmSQNC[2], ArmSQNC[1], PHASE_DUR);
     animAngDeg(ArmSQNC[1], ArmSQNC[0], PHASE_DUR);
